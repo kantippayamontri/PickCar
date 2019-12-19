@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "922491930657",
+    "firebase_url": "https://kanjamefinal1.firebaseio.com",
+    "project_id": "kanjamefinal1",
+    "storage_bucket": "kanjamefinal1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:922491930657:android:60e443055fce3f3f40fb60",
+        "android_client_info": {
+          "package_name": "com.example.pickcar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "922491930657-ullr4gm28mnsduhbpch8t07lu7k45o58.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCD9WEDzkVXuhD1fUlihOsztDgWGeXVtDA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "922491930657-ullr4gm28mnsduhbpch8t07lu7k45o58.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
