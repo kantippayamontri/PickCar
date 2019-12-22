@@ -42,14 +42,9 @@ class _LoginPageState extends State<LoginPage> {
 
   void _signup(){
     print('press sign up ja');
+    Navigator.of(context).pushNamed(Datamanager.signuppage);
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {

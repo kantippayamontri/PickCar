@@ -9,15 +9,14 @@ class PickCarLogin extends StatefulWidget {
   TextEditingController emailctrl;
   TextEditingController passctrl;
   GlobalKey<FormState> formkey;
-  PickCarLogin(this.emailctrl, this.passctrl, this.summitdata , this.formkey);
+  PickCarLogin(this.emailctrl, this.passctrl, this.summitdata, this.formkey);
   @override
   _PickCarLoginState createState() => _PickCarLoginState();
 }
 
 class _PickCarLoginState extends State<PickCarLogin> {
-  
-  var email;
-  var password;
+  //var email;
+  //var password;
 
   TextStyle _textstyle() {
     return TextStyle(
@@ -27,8 +26,6 @@ class _PickCarLoginState extends State<PickCarLogin> {
       color: PickCarColor.colormain,
     );
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -64,14 +61,14 @@ class _PickCarLoginState extends State<PickCarLogin> {
                   ),
                   TextFormField(
                     controller: widget.emailctrl,
-                    onSaved: (val) => email = val,
+                    //onSaved: (val) => email = val,
                     decoration: InputDecoration(
                         hintText: 'Email',
                         hintStyle: TextStyle(color: Colors.grey, fontSize: 12)),
                     validator: (value) {
                       //print('email validate : $value');
 
-                      if(value.isEmpty){
+                      if (value.isEmpty) {
                         return "Please Enter an email";
                       }
 
@@ -94,12 +91,12 @@ class _PickCarLoginState extends State<PickCarLogin> {
                     controller: widget.passctrl,
                     obscureText: true,
                     keyboardType: TextInputType.visiblePassword,
-                    onSaved: (val) => password = val,
+                    //onSaved: (val) => password = val,
                     decoration: InputDecoration(
                         hintText: 'Password',
                         hintStyle: TextStyle(color: Colors.grey, fontSize: 12)),
                     validator: (value) {
-                     // print("pass validate : $value");
+                      // print("pass validate : $value");
                       if (value.isEmpty) {
                         return 'Please enter Passwaord';
                       } else {
@@ -133,7 +130,7 @@ class _PickCarLoginState extends State<PickCarLogin> {
                         child: GradientButton(
                           callback: () {
                             //print('email : ${widget.emailctrl.text}');
-                           // print("pass : ${widget.passctrl.text}");
+                            // print("pass : ${widget.passctrl.text}");
                             //widget.summitdata();
                             widget.summitdata();
                           },
