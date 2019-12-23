@@ -36,6 +36,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   _container(MediaQuery.of(context).size.height * 0.15,
                       MediaQuery.of(context).size.width * 0.9, [
+                    Text(
+                      UseString.university,
+                      style: _textstyle(),
+                    ),
                     DropDownFormField(
                       titleText: null,
                       hintText: UseString.chooseuniversity,
@@ -47,10 +51,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         });
                       },
                       onChanged: (val) {
-                        setState(() {print("onchange uni val : $val");
+                        setState(() {
+                          print("onchange uni val : $val");
                           _signupbloc.university = val;
-                          _signupbloc.facultylist = Datamanager.univeresity.where((uni) => uni["university"] == val).map((uni) => uni["faculty"]);
-                          
                         });
                       },
                       dataSource: Datamanager.univeresity,
@@ -66,18 +69,36 @@ class _SignUpPageState extends State<SignUpPage> {
                   SizedBox(
                     height: 20,
                   ),
-                  _signupbloc.faculty != null ? _container(MediaQuery.of(context).size.height *0.7,
+                  _container(MediaQuery.of(context).size.height * 0.15,
                       MediaQuery.of(context).size.width * 0.9, [
-                    DropDownField(
+                    Text(
+                      UseString.faculty,
+                      style: _textstyle(),
+                    ),
+                    DropDownFormField(
+                      titleText: null,
+                      hintText: UseString.choosefaculty,
                       value: _signupbloc.faculty,
-                      required: true,
-                      strict: true,
-                      items: _signupbloc.facultylist,
-                      setter: (newval) {
-                        _signupbloc.faculty = newval;
+                      onSaved: (val) {
+                        setState(() {
+                          _signupbloc.faculty = val;
+                        });
                       },
+                      onChanged: (val) {
+                        setState(() {
+                          _signupbloc.faculty = val;
+                        });
+                      },
+                      dataSource: Datamanager.faculty,
+                      validator: (val) {
+                        if (val == null) {
+                          return UseString.choosefaculty;
+                        }
+                      },
+                      textField: "faculty",
+                      valueField: "faculty",
                     )
-                  ]) : SizedBox(),
+                  ]),
                   SizedBox(
                     height: 20,
                   ),

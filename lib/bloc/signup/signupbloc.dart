@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:pickcar/bloc/signup/signupevent.dart';
 import 'package:pickcar/bloc/signup/signupstate.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../datamanager.dart';
 
@@ -11,7 +12,6 @@ class SignUpBloc extends Bloc<SignUpEvent , SignUpState>{
   var namecontroller = TextEditingController();
   String university;
   String faculty;
-  List<String> facultylist;
 
   @override
   SignUpState get initialState => StartState();
@@ -22,10 +22,6 @@ class SignUpBloc extends Bloc<SignUpEvent , SignUpState>{
     return null;
   }
 
-  void setfaculty(String nameuni){
-    facultylist = Datamanager.univeresity.where((uni) => uni["university"] == uni).map((uni) => uni["faculty"]);
-    print("faculty : $facultylist");
-  }
 
   void signupform(){
     final form = formkey.currentState;

@@ -7,17 +7,33 @@ class Datamanager {
 
   static var univeresity = [
     {
-       "university" : "Chaing Mai University",
-       "faculty" : ["Engineering" , "Science" , "Humantility"]
-    },{
-       "university" : "sdfasdfasd",
-       "faculty" : ["sdfasdfas" , "sdfasdfs" , "sdfasdfasd"]
-    },{
-       "university" : "dfasdfsdfasdf",
-       "faculty" : ["sdfasdfsd" , "sdfasd" , "sdfasdfsdfas"]
+      "university": "Chaing Mai University",
+      "faculty": ["Engineering", "Science", "Humantility"]
+    },
+    {
+      "university": "sdfasdfasd",
+      "faculty": ["sdfasdfas", "sdfasdfs", "sdfasdfasd"]
+    },
+    {
+      "university": "dfasdfsdfasdf",
+      "faculty": ["sdfasdfsd", "sdfasd", "sdfasdfsdfas"]
     }
   ];
-  static var year = [1, 2, 3, 4, 5, 6];
+
+  static var faculty = [
+    {"faculty": "Engineering"},
+    {"faculty": "Science"},
+    {"faculty": "Humantility"}
+  ];
+
+  static var year = [
+    {"year": "1"},
+    {"year": "2"},
+    {"year": "3"},
+    {"year": "4"},
+    {"year": "5"},
+    {"year": "6"},
+  ];
 }
 
 class UseString {
