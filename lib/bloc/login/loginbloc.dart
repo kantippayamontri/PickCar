@@ -24,7 +24,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     
 
     if (event is SignInwithEmailEvent) {
-      yield LoadingSnackBarState();
       print('pass maptoevent LoadingSnackBarState');
       try {
         await Datamanager.firebaseauth.signInWithEmailAndPassword(

@@ -7,6 +7,4 @@ abstract class LoginState {
 
 class StartState extends LoginState{}
 
-class LoadingSnackBarState extends LoginState{
-  var xxx = "dfasdfasdfasdfasdfasd";
-}
+
