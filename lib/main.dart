@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/page/loginpage.dart';
 import 'package:pickcar/page/signuppage.dart';
+import 'package:pickcar/page/tabscreen.dart';
 
 void main() => runApp(MyApp());
 
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
                   color: PickCarColor.colormain))),
       routes: {
         '/': (ctx) => LoginPage(),
-        Datamanager.signuppage : (ctx) => SignUpPage()
+        Datamanager.signuppage : (ctx) => SignUpPage(),
+        Datamanager.tabpage : (ctx) => TabScreenPage(),
         //'loginpickcarpage': (ctx) => LoginPickCarPage()
       },
       onGenerateRoute: (setting) {},

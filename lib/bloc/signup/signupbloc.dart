@@ -174,7 +174,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   void choosegall(
       int option, PermissionStatus status, Function changeimg) async {
     if (option == 0)
-      profileimage = await ImagePicker.pickImage(source: ImageSource.camera);
+      profileimage = await ImagePicker.pickImage(source: ImageSource.gallery);
     if (option == 1)
       idcardimage = await ImagePicker.pickImage(source: ImageSource.gallery);
     if (option == 2)
@@ -182,10 +182,10 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           await ImagePicker.pickImage(source: ImageSource.gallery);
     if (option == 3)
       driverliscensemotorcycleimage =
-          await ImagePicker.pickImage(source: ImageSource.camera);
+          await ImagePicker.pickImage(source: ImageSource.gallery);
     if (option == 4)
       driverliscensecarimage =
-          await ImagePicker.pickImage(source: ImageSource.camera);
+          await ImagePicker.pickImage(source: ImageSource.gallery);
     changeimg();
   }
 
@@ -268,7 +268,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         });
   }
 
-  void signupform() {
+  void signupform() async {
     //putdatatostorage("8qceK19vvBPloVN5hVDNW27b0gs1");
     //Firestore.instance.collection("test").document().setData({'name' : 'eiei' , 'surname' : 'eieimore'});
     /*if(profileimage != null){
@@ -288,7 +288,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     }
     if (form.validate()) {
       form.save();
-      createuser();
+      await createuser();
+      Navigator.of(context).pushNamedAndRemoveUntil(Datamanager.tabpage, ModalRoute.withName('/'));
     }
   }
 
@@ -322,13 +323,16 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           drivemotorimgtype: drivemotorimgtype,
           drivecarimg: driverliscensecarimage,
           drivecarimgtype: drivecarimgtype,
+          money: 500
         );
-        Datamanager.firestore
+        await Datamanager.firestore
             .collection('User')
             .document()
             .setData(Datamanager.user.toJson());
         print("Sign Up User Successful");
       }
+
+      //Navigator.of(context).pushAndRemoveUntil(context , );
     }).catchError((onError) {
       print(onError);
     });

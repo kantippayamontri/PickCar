@@ -6,12 +6,15 @@ import 'package:flutter/material.dart';
 import 'models/user.dart';
 
 class Datamanager {
-  static String signuppage = "signuppage";
+  static String signuppage = "/signuppage";
+  static String tabpage = "/tabpage";
+
+
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
   static  FirebaseUser firebaseuser = null;
   static Firestore firestore = Firestore.instance;
   static User user = null;
-  static final firebasestorage = FirebaseStorage.instance;
+  static FirebaseStorage firebasestorage = FirebaseStorage.instance;
 
   static var univeresity = [
     {

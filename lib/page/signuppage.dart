@@ -284,7 +284,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       style: _textstyle(),
                     ),
                     TextFormField(
-                      keyboardType: TextInputType.phone,
+                      keyboardType: TextInputType.text,
                       controller: _signupbloc.telcontroller,
                       decoration: InputDecoration(
                         hintText: UseString.telnumber,

@@ -23,6 +23,7 @@ class User{
   String universityimgtype;
   String drivemotorimgtype;
   String drivecarimgtype; 
+  double money;
 
   User({
   @required this.uid,  
@@ -43,6 +44,7 @@ class User{
   @required this.universityimgtype,
   @required this.drivemotorimgtype,
   @required this.drivecarimgtype,
+  @required this.money,
   });
 
   Map<String , dynamic> toJson(){
@@ -63,7 +65,9 @@ class User{
       'university' : university,
       'faculty' : faculty,
       'name' : name,
-      'money' : 500
+      'profilepicpath' : 'profile',
+      'profilepictype' : profileimgtype,
+      'money' : money
     };
   }
 }
