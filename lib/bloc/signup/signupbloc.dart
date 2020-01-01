@@ -323,7 +323,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           drivemotorimgtype: drivemotorimgtype,
           drivecarimg: driverliscensecarimage,
           drivecarimgtype: drivecarimgtype,
-          money: 500
+          money: 500.00
         );
         await Datamanager.firestore
             .collection('User')

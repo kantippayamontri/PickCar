@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -116,6 +117,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                       drivemotorimgtype: doc['driveliscensemotorpictype'],
                       drivecarimg: dricarimg,
                       drivecarimgtype: doc['driveliscensecarpictype'],
+                      money:  double.parse(doc['money'].toString()),
                     );
                     print(Datamanager.user);
                   }));

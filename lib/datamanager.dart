@@ -8,10 +8,13 @@ import 'models/user.dart';
 class Datamanager {
   static String signuppage = "/signuppage";
   static String tabpage = "/tabpage";
-
+  static String registerpage = "/registerpage";
+  static String motorregisterpage = "/motorregisterpage";
+  static String carregisterpage = "/carregisterpage";
+  static String rentalpage = "/rentalpage";
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
-  static  FirebaseUser firebaseuser = null;
+  static FirebaseUser firebaseuser = null;
   static Firestore firestore = Firestore.instance;
   static User user = null;
   static FirebaseStorage firebasestorage = FirebaseStorage.instance;
@@ -45,8 +48,6 @@ class Datamanager {
     {"year": "5"},
     {"year": "6"},
   ];
-
-  
 }
 
 class UseString {
@@ -71,13 +72,21 @@ class UseString {
   static String addressval = "Please Enter Address";
   static String idcard = "ID Card";
   static String universitycard = "University Card";
-  static String driverliscensemotorcycle = "Driver Liscense Card(for motorcycle)";
+  static String driverliscensemotorcycle =
+      "Driver Liscense Card(for motorcycle)";
   static String driverliscensecarcycle = "Driver Liscense Card(for car)";
-
+  static String rentaltitle =
+      "Pickcar has created for make the great experience when you rental car from another one and make your life is excited.";
+  static String rentalbutton = "Rental Car";
+  static String registertitle =
+      "The best way to make money from your car via Pickcar. We will give your new experience to earn more income. Let you make money with your car.";
+  static String registerbutton = "Register Car";
+  static String motorcycle = "Motorcycle";
+  static String car = "Car";
 }
 
 enum authProblems { UserNotFound, PasswordNotValid, NetworkError }
-enum chooseimgenum {CAMERA , GALLERY}
+enum chooseimgenum { CAMERA, GALLERY }
 
 class PickCarColor {
   static var colormain = Color.fromARGB(255, 60, 179, 113);

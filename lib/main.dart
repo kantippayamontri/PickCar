@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/page/loginpage.dart';
+import 'package:pickcar/page/register/carregisterpage.dart';
+import 'package:pickcar/page/register/motorregisterpage.dart';
+import 'package:pickcar/page/register/registerpage.dart';
+import 'package:pickcar/page/rental/rentalpage.dart';
 import 'package:pickcar/page/signuppage.dart';
 import 'package:pickcar/page/tabscreen.dart';
 
@@ -23,6 +27,10 @@ class MyApp extends StatelessWidget {
         '/': (ctx) => LoginPage(),
         Datamanager.signuppage : (ctx) => SignUpPage(),
         Datamanager.tabpage : (ctx) => TabScreenPage(),
+        Datamanager.registerpage : (ctx) => RegisterPage(),
+        Datamanager.motorregisterpage : (ctx) => MotorRegisterPage(),
+        Datamanager.carregisterpage : (ctx) => CarRegisterPage(),
+        Datamanager.rentalpage : (ctx) => RentalPage(),
         //'loginpickcarpage': (ctx) => LoginPickCarPage()
       },
       onGenerateRoute: (setting) {},
