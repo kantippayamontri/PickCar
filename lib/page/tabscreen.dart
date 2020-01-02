@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
-import 'package:pickcar/page/chatpage.dart';
-import 'package:pickcar/page/homepage.dart';
-import 'package:pickcar/page/listcarpage.dart';
-import 'package:pickcar/page/profilepage.dart';
-import 'package:pickcar/page/settingpage.dart';
 
 class TabScreenPage extends StatefulWidget {
   @override
@@ -13,18 +8,9 @@ class TabScreenPage extends StatefulWidget {
 
 class _TabScreenPageState extends State<TabScreenPage> {
   int _selecedindex = 0;
-  //List<Map<String, Object>> _pages;
 
   @override
   void initState() {
-    // TODO: implement initState
-    // _pages = [
-    //   {'page': HomePage(), 'title': 'Home'},
-    //   {'page': ChatPage(), 'title': 'Chat'},
-    //   {'page': ListCarPage(), 'title': 'ListCar'},
-    //   {'page': ProfilePage(), 'title': 'Profile'},
-    //   {'page': SettingPage(), 'title': 'setting'},
-    // ];
     super.initState();
   }
 
@@ -39,40 +25,35 @@ class _TabScreenPageState extends State<TabScreenPage> {
     return Scaffold(
       body: Datamanager.pages[_selecedindex]['page'],
       bottomNavigationBar: BottomNavigationBar(
-        onTap: (index) => _selectedtab(index),
-        backgroundColor: Colors.white,
-        unselectedItemColor: Colors.white,
-        selectedItemColor: PickCarColor.colormain,
-        currentIndex: _selecedindex,
-        type: BottomNavigationBarType.shifting,
-        items: [
-          BottomNavigationBarItem(
-            backgroundColor: Colors.yellow,
-            title: Text("1"),
-             icon: Icon(Icons.category),
-          ),
-          BottomNavigationBarItem(
-            backgroundColor:  Colors.yellow,
-            title: Text("2"),
-             icon: Icon(Icons.category),
-          ),
-          BottomNavigationBarItem(
-            backgroundColor:  Colors.yellow,
-            title: Text("3"),
-             icon: Icon(Icons.category),
-          ),
-          BottomNavigationBarItem(
-            backgroundColor:  Colors.yellow,
-            title: Text("4"),
-             icon: Icon(Icons.category),
-          ),
-          BottomNavigationBarItem(
-            backgroundColor:  Colors.yellow,
-            title: Text("5"),
-             icon: Icon(Icons.category),
-          ),
-        ],
-      ),
+      // fixedColor: Colors.white,
+      backgroundColor: Colors.white,
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          title: Text('Home'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          title: Text('Search'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.list),
+          title: Text('List'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.assignment_ind),
+          title: Text('Profile'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          title: Text('Setting'),
+        ),
+      ],
+      currentIndex: _selecedindex,
+      selectedItemColor: Color.fromRGBO(33, 197, 155, 1),
+      onTap: (index) => _selectedtab(index),
+      type: BottomNavigationBarType.fixed,
+    ),
     );
   }
 }

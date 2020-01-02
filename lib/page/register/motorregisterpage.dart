@@ -73,11 +73,7 @@ class _MotorRegisterPageState extends State<MotorRegisterPage> {
                               borderRadius: BorderRadius.circular(30),
                               side: BorderSide(color: PickCarColor.colormain)),
                           onPressed: () {
-<<<<<<< HEAD
                             // _motorregisterbloc.add(ChangeMotorProfile(_motorprofilechange));
-=======
-                            _motorregisterbloc.add(ChangeMotorProfile(changeimg : _motorprofilechange));
->>>>>>> a03b381f1602e39144dc6ae15fe25c411376313f
                           },
                           color: PickCarColor.colormain,
                           textColor: Colors.white,
