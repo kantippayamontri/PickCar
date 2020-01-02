@@ -26,7 +26,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     if (event is SignInwithEmailEvent) {
-      print('pass maptoevent LoadingSnackBarState');
+      //print('pass maptoevent LoadingSnackBarState');
+      print("dfadsfasdfasdfadsf");
       try {
         await Datamanager.firebaseauth.signInWithEmailAndPassword(
             email: event.email, password: event.password);
