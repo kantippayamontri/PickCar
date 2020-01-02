@@ -13,10 +13,17 @@ class MotorRegisterPage extends StatefulWidget {
 class _MotorRegisterPageState extends State<MotorRegisterPage> {
   MotorRegisterBloc _motorregisterbloc;
   var motorprofile;
+  var ownerliscense;
 
   void _motorprofilechange() {
     setState(() {
       motorprofile = _motorregisterbloc.motorprofile;
+    });
+  }
+
+  void _ownerliscensechange(){
+    setState(() {
+      ownerliscense = _motorregisterbloc.ownerliscense;
     });
   }
 
@@ -66,7 +73,11 @@ class _MotorRegisterPageState extends State<MotorRegisterPage> {
                               borderRadius: BorderRadius.circular(30),
                               side: BorderSide(color: PickCarColor.colormain)),
                           onPressed: () {
+<<<<<<< HEAD
                             // _motorregisterbloc.add(ChangeMotorProfile(_motorprofilechange));
+=======
+                            _motorregisterbloc.add(ChangeMotorProfile(changeimg : _motorprofilechange));
+>>>>>>> a03b381f1602e39144dc6ae15fe25c411376313f
                           },
                           color: PickCarColor.colormain,
                           textColor: Colors.white,
@@ -222,7 +233,44 @@ class _MotorRegisterPageState extends State<MotorRegisterPage> {
                 SizedBox(
                   height: 200,
                 ),
-                /****************************************************************** */
+                /********************************LiscenPic********************************** */
+                _container(MediaQuery.of(context).size.height * 0.5,
+                    MediaQuery.of(context).size.width * 0.9, [
+                  Text(UseString.ownerliscense),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      ownerliscense == null
+                          ? Image.asset(
+                              "assets/images/user.png",
+                              fit: BoxFit.contain,
+                              height: MediaQuery.of(context).size.height * 0.35,
+                              width: MediaQuery.of(context).size.width * 0.8,
+                            )
+                          : Image.file(
+                              _motorregisterbloc.ownerliscense,
+                              height: MediaQuery.of(context).size.height * 0.35,
+                              width: MediaQuery.of(context).size.width * 0.8,
+                            ),
+                    ],
+                  ),
+                  Expanded(
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              side: BorderSide(color: PickCarColor.colormain)),
+                          onPressed: () {
+                            _motorregisterbloc.add(ChangeOwnerLiscense(changeimg: _ownerliscensechange));
+                          },
+                          color: PickCarColor.colormain,
+                          textColor: Colors.white,
+                          child: Text("Change"),
+                        ),
+                      ),
+                    )
+                ]),
                 RaisedButton(
                   onPressed: () {
                     final form = _motorregisterbloc.formkey.currentState;

@@ -21,6 +21,7 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
   File motorback;
   File motorleftside;
   File motorrightside;
+  File ownerliscense;
   String gear;
   var permission_status_camera;
   var permission_status_gallery;
@@ -37,6 +38,9 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
     if (event is ChangeMotorProfile) {
       print("Change motor profile event");
       openbottomsheetmotorprofile(event.changeimg);
+    }
+    if(event is ChangeOwnerLiscense){
+      print("Change motor ");
     }
   }
 

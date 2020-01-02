@@ -25,6 +25,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   void initState() {
     _signupbloc = SignUpBloc(context);
+    
   }
 
   void _changeimgprofile() {
