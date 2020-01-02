@@ -2,6 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:pickcar/page/chatpage.dart';
+import 'package:pickcar/page/homepage.dart';
+import 'package:pickcar/page/listcarpage.dart';
+import 'package:pickcar/page/profilepage.dart';
+import 'package:pickcar/page/settingpage.dart';
 
 import 'models/user.dart';
 
@@ -18,6 +23,14 @@ class Datamanager {
   static Firestore firestore = Firestore.instance;
   static User user = null;
   static FirebaseStorage firebasestorage = FirebaseStorage.instance;
+
+  static List<Map<String, Object>> pages  = [
+      {'page': HomePage(), 'title': 'Home'},
+      {'page': ChatPage(), 'title': 'Chat'},
+      {'page': ListCarPage(), 'title': 'ListCar'},
+      {'page': ProfilePage(), 'title': 'Profile'},
+      {'page': SettingPage(), 'title': 'setting'},
+    ];
 
   static var univeresity = [
     {
@@ -95,7 +108,7 @@ class UseString {
   static String colorval = "Please Enter Color";
   static String motorprofile = "Motorcycle Profile";
   static String motorprofileval = "Please choose Motorcycle Profile";
-  
+  static String ownerliscense = "Owner liscense (If you not an owner)";
 
 }
 

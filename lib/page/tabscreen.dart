@@ -13,18 +13,18 @@ class TabScreenPage extends StatefulWidget {
 
 class _TabScreenPageState extends State<TabScreenPage> {
   int _selecedindex = 0;
-  List<Map<String, Object>> _pages;
+  //List<Map<String, Object>> _pages;
 
   @override
   void initState() {
     // TODO: implement initState
-    _pages = [
-      {'page': HomePage(), 'title': 'Home'},
-      {'page': ChatPage(), 'title': 'Chat'},
-      {'page': ListCarPage(), 'title': 'ListCar'},
-      {'page': ProfilePage(), 'title': 'Profile'},
-      {'page': SettingPage(), 'title': 'setting'},
-    ];
+    // _pages = [
+    //   {'page': HomePage(), 'title': 'Home'},
+    //   {'page': ChatPage(), 'title': 'Chat'},
+    //   {'page': ListCarPage(), 'title': 'ListCar'},
+    //   {'page': ProfilePage(), 'title': 'Profile'},
+    //   {'page': SettingPage(), 'title': 'setting'},
+    // ];
     super.initState();
   }
 
@@ -37,7 +37,7 @@ class _TabScreenPageState extends State<TabScreenPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selecedindex]['page'],
+      body: Datamanager.pages[_selecedindex]['page'],
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) => _selectedtab(index),
         backgroundColor: Colors.white,
