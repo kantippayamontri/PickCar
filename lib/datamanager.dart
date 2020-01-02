@@ -83,6 +83,20 @@ class UseString {
   static String registerbutton = "Register Car";
   static String motorcycle = "Motorcycle";
   static String car = "Car";
+  static String brand = "Brand";
+  static String brandval = "Please Enter Brand";
+  static String generation = "Generation";
+  static String generationval = "Please Enter Generation";
+  static String cc = "CC";
+  static String ccval = "Please Enter CC";
+  static String gear = "Gear";
+  static String gearval = "Please Enter Gear";
+  static String color = "Color";
+  static String colorval = "Please Enter Color";
+  static String motorprofile = "Motorcycle Profile";
+  static String motorprofileval = "Please choose Motorcycle Profile";
+  
+
 }
 
 enum authProblems { UserNotFound, PasswordNotValid, NetworkError }
@@ -91,4 +105,14 @@ enum chooseimgenum { CAMERA, GALLERY }
 class PickCarColor {
   static var colormain = Color.fromARGB(255, 60, 179, 113);
   static var colorcmu = Color.fromARGB(255, 66, 26, 94);
+}
+
+class GearMotor {
+  static String auto = "AUTO";
+  static String manual = "MANUAL";
+
+  static var gearmotormap = [
+    {'gear': GearMotor.auto},
+    {'gear': GearMotor.manual}
+  ];
 }
