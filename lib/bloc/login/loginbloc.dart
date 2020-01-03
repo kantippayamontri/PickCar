@@ -26,8 +26,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     if (event is SignInwithEmailEvent) {
-      //print('pass maptoevent LoadingSnackBarState');
-      print("dfadsfasdfasdfadsf");
+      print('pass maptoevent LoadingSnackBarState');
       try {
         await Datamanager.firebaseauth.signInWithEmailAndPassword(
             email: event.email, password: event.password);
@@ -120,6 +119,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                       drivecarimgtype: doc['driveliscensecarpictype'],
                       money:  double.parse(doc['money'].toString()),
                     );
+                    Datamanager.user.documentid = doc['documentid'];
                     print(Datamanager.user);
                   }));
         });

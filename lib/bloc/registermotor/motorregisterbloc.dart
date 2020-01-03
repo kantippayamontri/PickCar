@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pickcar/bloc/registermotor/motorregisterevent.dart';
 import 'package:pickcar/bloc/registermotor/motorregisterstate.dart';
+import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/page/register/motorregisterpage.dart';
 import 'package:pickcar/widget/signup/cameragall.dart';
 
@@ -39,9 +40,22 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
       print("Change motor profile event");
       openbottomsheetmotorprofile(event.changeimg);
     }
-    if(event is ChangeOwnerLiscense){
-      print("Change motor ");
+    if (event is ChangeOwnerLiscense) {
+      print("Change owner liscense");
+      openbottomsheetownerliscense(event.changeimg);
     }
+  }
+
+  void openbottomsheetownerliscense(Function changeimg) {
+    showModalBottomSheet(
+        context: context,
+        builder: (_) {
+          return CameraGall(MediaQuery.of(context), () {
+            choosecamera(1, permission_status_camera, changeimg);
+          }, () {
+            choosegall(1, permission_status_gallery, changeimg);
+          });
+        });
   }
 
   void openbottomsheetmotorprofile(Function changeimg) {
@@ -69,10 +83,9 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
       print("123456789");
 
       if (option == 0)
-        //profileimage = await ImagePicker.pickImage(source: ImageSource.camera);
         motorprofile = await ImagePicker.pickImage(source: ImageSource.camera);
       if (option == 1)
-      //idcardimage = await ImagePicker.pickImage(source: ImageSource.camera);
+        ownerliscense = await ImagePicker.pickImage(source: ImageSource.camera);
       if (option == 2)
       //universityimage =
       //await ImagePicker.pickImage(source: ImageSource.camera);
@@ -91,13 +104,13 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
       if (option == 0) {
         motorprofile = await ImagePicker.pickImage(source: ImageSource.camera);
       }
-      //profileimage = await ImagePicker.pickImage(source: ImageSource.camera);
 
-      if (option == 1) {}
-      //idcardimage = await ImagePicker.pickImage(source: ImageSource.camera);
+      if (option == 1) {
+        ownerliscense = await ImagePicker.pickImage(source: ImageSource.camera);
+      }
+
       if (option == 2) {}
-      //universityimage =
-      // await ImagePicker.pickImage(source: ImageSource.camera);
+
       if (option == 3) {}
       //driverliscensemotorcycleimage =
       // await ImagePicker.pickImage(source: ImageSource.camera);
@@ -113,10 +126,9 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
     if (option == 0) {
       motorprofile = await ImagePicker.pickImage(source: ImageSource.gallery);
     }
-    //profileimage = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-    if (option == 1) {}
-    //idcardimage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if (option == 1) {
+      ownerliscense = await ImagePicker.pickImage(source: ImageSource.gallery);
+    }
     if (option == 2) {}
     //universityimage =
     // await ImagePicker.pickImage(source: ImageSource.gallery);
