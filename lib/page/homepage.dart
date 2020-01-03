@@ -1,7 +1,10 @@
+import 'dart:typed_data';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/widget/home/cardrental.dart';
-
+int i=0;
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();

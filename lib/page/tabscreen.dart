@@ -30,23 +30,23 @@ class _TabScreenPageState extends State<TabScreenPage> {
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
-          title: Text('Home'),
+          title: Text(UseString.navhome),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.search),
-          title: Text('Search'),
+          title: Text(UseString.navsearch),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.list),
-          title: Text('List'),
+          title: Text(UseString.navlist),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.assignment_ind),
-          title: Text('Profile'),
+          title: Text(UseString.navprofile),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.settings),
-          title: Text('Setting'),
+          title: Text(UseString.navsetting),
         ),
       ],
       currentIndex: _selecedindex,

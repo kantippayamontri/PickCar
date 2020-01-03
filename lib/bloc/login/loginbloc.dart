@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pickcar/bloc/login/loginevent.dart';
@@ -97,7 +98,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                     }else{
                       dricarimg = null;
                     }
-
                     Datamanager.user = User(
                       uid: doc['uid'],
                       email: doc['email'],
@@ -119,6 +119,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                       drivecarimgtype: doc['driveliscensecarpictype'],
                       money:  double.parse(doc['money'].toString()),
                     );
+                    print("run");
+                    var maxSize = 7*1024*1024;
+                    final StorageReference ref = FirebaseStorage.instance.ref()
+                    .child("User")
+                    .child(Datamanager.user.uid);
+                    await ref.child("profile." + Datamanager.user.profileimgtype).getData(maxSize).then((data){
+                      ImageProfiles.profileUrl = data;
+                    }).catchError((error){
+                      print("------");
+                      debugPrint(error.toString());
+                    });
                     print(Datamanager.user);
                   }));
         });

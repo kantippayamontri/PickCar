@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:pickcar/page/chatpage.dart';
 import 'package:pickcar/page/homepage.dart';
 import 'package:pickcar/page/listcarpage.dart';
-import 'package:pickcar/page/profilepage.dart';
+import 'package:pickcar/page/profile/profilepage.dart';
 import 'package:pickcar/page/settingpage.dart';
+import 'dart:typed_data';
 
 import 'models/user.dart';
 
@@ -17,6 +18,9 @@ class Datamanager {
   static String motorregisterpage = "/motorregisterpage";
   static String carregisterpage = "/carregisterpage";
   static String rentalpage = "/rentalpage";
+
+  static String editprofile = "/editprofile";
+  static String editdetail = "/editdetail";
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
   static FirebaseUser firebaseuser = null;
@@ -109,7 +113,17 @@ class UseString {
   static String motorprofile = "Motorcycle Profile";
   static String motorprofileval = "Please choose Motorcycle Profile";
   static String ownerliscense = "Owner liscense (If you not an owner)";
+  static String navhome = "Home";
+  static String navsearch = "Search";
+  static String navlist = "List";
+  static String navprofile = "Profile";
+  static String navsetting = "Setting";
+  static String facultyof = "Facuty of";
 
+}
+
+class ImageProfiles{
+  static Uint8List profileUrl;
 }
 
 enum authProblems { UserNotFound, PasswordNotValid, NetworkError }
@@ -118,6 +132,8 @@ enum chooseimgenum { CAMERA, GALLERY }
 class PickCarColor {
   static var colormain = Color.fromARGB(255, 60, 179, 113);
   static var colorcmu = Color.fromARGB(255, 66, 26, 94);
+  static var colorFont1 = Color.fromARGB(255, 69,79,99);
+
 }
 
 class GearMotor {
