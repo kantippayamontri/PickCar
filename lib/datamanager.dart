@@ -109,6 +109,11 @@ class UseString {
   static String motorprofile = "Motorcycle Profile";
   static String motorprofileval = "Please choose Motorcycle Profile";
   static String ownerliscense = "Owner liscense (If you not an owner)";
+  static String motorfront = "Motorcycle front picture";
+  static String motorleft = "Motorcycle left picture";
+  static String motorright = "Motorcycle right picture";
+  static String motorback = "Motorcycle back picture";
+  static String waiting = "Wait a few seconds";
 
 }
 
