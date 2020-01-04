@@ -90,6 +90,9 @@ flutter:
           weight: 500
         - asset: assets/fonts/Pridi-SemiBold.ttf
           weight: 600
+    - family: Correcticon
+      fonts:
+        - asset: assets/fonts/Correcticon.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
+import 'package:pickcar/page/listcarpage.dart';
 import 'package:pickcar/page/loginpage.dart';
 import 'package:pickcar/page/register/carregisterpage.dart';
 import 'package:pickcar/page/register/motorregisterpage.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         Datamanager.motorregisterpage : (ctx) => MotorRegisterPage(),
         Datamanager.carregisterpage : (ctx) => CarRegisterPage(),
         Datamanager.rentalpage : (ctx) => RentalPage(),
+        Datamanager.listcarpage : (ctx) => ListCarPage(),
         //'loginpickcarpage': (ctx) => LoginPickCarPage()
       },
       onGenerateRoute: (setting) {},

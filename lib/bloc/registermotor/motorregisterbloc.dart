@@ -1,15 +1,19 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mime_type/mime_type.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pickcar/bloc/registermotor/motorregisterevent.dart';
 import 'package:pickcar/bloc/registermotor/motorregisterstate.dart';
 import 'package:pickcar/datamanager.dart';
+import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/page/register/motorregisterpage.dart';
 import 'package:pickcar/widget/signup/cameragall.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:pickcar/icon/correcticon_icons.dart';
 
 class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
   BuildContext context;
@@ -24,16 +28,22 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
   File motorleftside;
   File motorrightside;
   File ownerliscense;
+  String motorprofiletype;
+  String ownerliscensetype;
+  String motorfronttype;
+  String motorbacktype;
+  String motorlefttype;
+  String motorrighttype;
   String gear;
+  String docstorageid;
   var permission_status_camera;
   var permission_status_gallery;
-
-  ProgressDialog _prwaitingforsubmitdata;
+  ProgressDialog prwaitingforsubmitdata;
 
   MotorRegisterBloc(this.context) {
-    _prwaitingforsubmitdata = ProgressDialog(this.context,
-        type: ProgressDialogType.Normal, isDismissible: true);
-    _prwaitingforsubmitdata.style(
+    prwaitingforsubmitdata = ProgressDialog(this.context,
+        type: ProgressDialogType.Normal, isDismissible: false);
+    prwaitingforsubmitdata.style(
         message: UseString.waiting,
         elevation: 10,
         backgroundColor: Colors.white,
@@ -79,9 +89,196 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
 
     if (event is MotorSubmitForm) {
       //yield WaitingSubmitForm();
-      _prwaitingforsubmitdata.show();
+      prwaitingforsubmitdata.show();
       await submitform();
-      
+    }
+  }
+
+  void showdialogpicval(String title, String msg) {
+    showDialog(
+        context: this.context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(title),
+            content: Text(msg),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(UseString.close),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  Future<bool> putdatastorage() async {
+    docstorageid =
+        Datamanager.user.uid + Key(DateTime.now().toString()).toString();
+    File img;
+    String ext;
+    String contenttype;
+    bool check = true;
+    StorageUploadTask uploadtask;
+    StorageReference ref = Datamanager.firebasestorage
+        .ref()
+        .child("Car")
+        .child("Motorcycle")
+        .child(docstorageid);
+
+    //TODO motor profile
+    img = motorprofile;
+    contenttype = mime(img.path);
+    ext = contenttype.split('/').last;
+    uploadtask = ref
+        .child("motorprofile.${ext}")
+        .putFile(img, StorageMetadata(contentType: contenttype));
+    await uploadtask.onComplete;
+    if (uploadtask.isComplete) {
+      print("upload motor profile success");
+      motorprofiletype = ext;
+    } else {
+      check = false;
+    }
+
+    //TODO owner liscense
+    img = ownerliscense;
+    contenttype = mime(img.path);
+    ext = contenttype.split('/').last;
+    uploadtask = ref
+        .child("ownerliscense.${ext}")
+        .putFile(img, StorageMetadata(contentType: contenttype));
+    await uploadtask.onComplete;
+    if (uploadtask.isComplete) {
+      print("upload  ownerliscense motor success");
+      ownerliscensetype = ext;
+    } else {
+      check = false;
+    }
+
+    //TODO motor front
+    img = motorfront;
+    contenttype = mime(img.path);
+    ext = contenttype.split('/').last;
+    uploadtask = ref
+        .child("motorfront.${ext}")
+        .putFile(img, StorageMetadata(contentType: contenttype));
+    await uploadtask.onComplete;
+    if (uploadtask.isComplete) {
+      print("upload  motor front success");
+      motorfronttype = ext;
+    } else {
+      check = false;
+    }
+
+    //TODO motor left
+    img = motorleftside;
+    contenttype = mime(img.path);
+    ext = contenttype.split('/').last;
+    uploadtask = ref
+        .child("motorleft.${ext}")
+        .putFile(img, StorageMetadata(contentType: contenttype));
+    await uploadtask.onComplete;
+    if (uploadtask.isComplete) {
+      print("upload  motor left success");
+      motorlefttype = ext;
+    } else {
+      check = false;
+    }
+
+    //TODO motor right
+    img = motorrightside;
+    contenttype = mime(img.path);
+    ext = contenttype.split('/').last;
+    uploadtask = ref
+        .child("motorright.${ext}")
+        .putFile(img, StorageMetadata(contentType: contenttype));
+    await uploadtask.onComplete;
+    if (uploadtask.isComplete) {
+      print("upload  motor right success");
+      motorrighttype = ext;
+    } else {
+      check = false;
+    }
+
+    //todo motor back
+    img = motorback;
+    contenttype = mime(img.path);
+    ext = contenttype.split('/').last;
+    uploadtask = ref
+        .child("motorback.${ext}")
+        .putFile(img, StorageMetadata(contentType: contenttype));
+    await uploadtask.onComplete;
+    if (uploadtask.isComplete) {
+      print("upload  motor back success");
+      motorbacktype = ext;
+    } else {
+      check = false;
+    }
+
+    return check;
+  }
+
+  void createmotor() async {
+    print("in createmotor");
+    if (await putdatastorage()) {
+      print("ready for createmotor");
+      Motorcycle motorcycle = Motorcycle(
+        profilepath: "motorprofile",
+        profiletype: motorprofiletype,
+        ownerliscensepath: "ownerliscense",
+        ownerliscensetype: ownerliscensetype,
+        motorfrontpath: "motorfront",
+        motorfronttype: motorfronttype,
+        motorbackpath: "motorback",
+        motorbacktype: motorbacktype,
+        motorleftpath: "motorleft",
+        motorlefttype: motorlefttype,
+        motorrightpath: "motorright",
+        motorrighttype: motorrighttype,
+        brand: brandcontroller.text,
+        cc: int.parse(cccontroller.text),
+        color: colorcontroller.text,
+        gear: gear,
+        generation: generationcontroller.text,
+        owneruid: Datamanager.user.uid,
+        storagedocid: docstorageid,
+      );
+
+      final docref = await Datamanager.firestore
+          .collection("Motorcycle")
+          .add(motorcycle.toJson());
+      String docid = docref.documentID;
+      await Datamanager.firestore
+          .collection("Motorcycle")
+          .document(docid)
+          .updateData({'firestoredocid': docid});
+      prwaitingforsubmitdata.update(
+          message: "Register Success",
+          progressWidget: Center(
+            child: Center(
+              child: Stack(
+                children: <Widget>[
+                  Icon(
+                    Correcticon.done,
+                    color: PickCarColor.colormain,
+                  ),
+                  Icon(
+                    Correcticon.ok_circle,
+                    color: PickCarColor.colormain,
+                  )
+                ],
+              ),
+            ),
+          ));
+      await Future.delayed(const Duration(milliseconds: 2000), () {
+        Navigator.of(context).pop();
+      });
+      Navigator.popAndPushNamed(this.context, Datamanager.listcarpage);
+    } else {
+      showdialogpicval(
+          UseString.registermotorfail, UseString.registermotorfail);
     }
   }
 
@@ -98,15 +295,19 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
     print("in submitform in motorbloc");
     final form = formkey.currentState;
 
-    
-
     if (form.validate()) {
-      if(checkpictureval()){
+      if (checkpictureval()) {
         print("form  motor success");
-        _prwaitingforsubmitdata.hide();
-      }else{
+        await createmotor();
+      } else {
+        //prwaitingforsubmitdata.update(message: "sdfasdfasdfasdf");
+        if (prwaitingforsubmitdata.isShowing()) {
+          prwaitingforsubmitdata.hide();
+          Navigator.pop(context);
+        }
         print("pic mai kob");
-        _prwaitingforsubmitdata.hide();
+        showdialogpicval(UseString.picuploadval, UseString.picuploadval);
+        return;
       }
     }
   }

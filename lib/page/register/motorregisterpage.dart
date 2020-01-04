@@ -22,6 +22,7 @@ class _MotorRegisterPageState extends State<MotorRegisterPage> {
   var motorright;
   var motorback;
 
+
   void _motorbackpicchange() {
     setState(() {
       motorback = _motorregisterbloc.motorback;
@@ -353,6 +354,7 @@ class _MotorRegisterPageState extends State<MotorRegisterPage> {
                             ),
                           )
                         ]),
+                        SizedBox(height: 20,),
                         /***************************************front pic*************************************************** */
                         _container(MediaQuery.of(context).size.height * 0.5,
                             MediaQuery.of(context).size.width * 0.9, [
@@ -450,6 +452,7 @@ class _MotorRegisterPageState extends State<MotorRegisterPage> {
                             ),
                           )
                         ]),
+                        SizedBox(height: 20,),
 
                         //TODO Right Pic
                         _container(MediaQuery.of(context).size.height * 0.5,
@@ -549,7 +552,7 @@ class _MotorRegisterPageState extends State<MotorRegisterPage> {
                         SizedBox(
                           height: 20,
                         ),
-                        _registermotorbutton(_motorregisterbloc.context, () {
+                        _registermotorbutton(context, () {
                           _motorregisterbloc.add(MotorSubmitForm());
                         }),
                         SizedBox(

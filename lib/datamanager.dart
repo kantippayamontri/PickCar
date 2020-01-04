@@ -17,6 +17,7 @@ class Datamanager {
   static String motorregisterpage = "/motorregisterpage";
   static String carregisterpage = "/carregisterpage";
   static String rentalpage = "/rentalpage";
+  static String listcarpage = "/listcarpage";
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
   static FirebaseUser firebaseuser = null;
@@ -114,6 +115,9 @@ class UseString {
   static String motorright = "Motorcycle right picture";
   static String motorback = "Motorcycle back picture";
   static String waiting = "Wait a few seconds";
+  static String picuploadval = "Please select all images.";
+  static String close = "Close";
+  static String registermotorfail = "Fail to register motorcycle.";
 
 }
 
