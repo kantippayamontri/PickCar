@@ -18,6 +18,7 @@ class Datamanager {
   static String carregisterpage = "/carregisterpage";
   static String rentalpage = "/rentalpage";
   static String listcarpage = "/listcarpage";
+  static String loginpage = "/loginpage";
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
   static FirebaseUser firebaseuser = null;

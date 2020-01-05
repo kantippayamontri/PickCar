@@ -21,6 +21,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   var username = '';
   var password = '';
+
+  //todo initusername and pass
+  
   
 
   final _scaffoldkey = GlobalKey<ScaffoldState>();
@@ -50,6 +53,11 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     loginbloc.context = context;
+    //todo test user
+    loginbloc.emailcontroller.text = "g@g.com";
+    loginbloc.passcontroller.text = "123456789";
+
+
     List<Widget> _titlewidget() {
       return [
         Text(
