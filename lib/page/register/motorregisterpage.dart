@@ -73,7 +73,7 @@ class _MotorRegisterPageState extends State<MotorRegisterPage> {
                               borderRadius: BorderRadius.circular(30),
                               side: BorderSide(color: PickCarColor.colormain)),
                           onPressed: () {
-                            // _motorregisterbloc.add(ChangeMotorProfile(_motorprofilechange));
+                            _motorregisterbloc.add(ChangeMotorProfile(changeimg : _motorprofilechange));
                           },
                           color: PickCarColor.colormain,
                           textColor: Colors.white,
@@ -227,7 +227,7 @@ class _MotorRegisterPageState extends State<MotorRegisterPage> {
                   )
                 ]),
                 SizedBox(
-                  height: 200,
+                  height: 20,
                 ),
                 /********************************LiscenPic********************************** */
                 _container(MediaQuery.of(context).size.height * 0.5,

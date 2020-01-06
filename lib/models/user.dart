@@ -24,6 +24,7 @@ class User{
   String drivemotorimgtype;
   String drivecarimgtype; 
   double money;
+  String documentid;
 
   User({
   @required this.uid,  
@@ -67,7 +68,8 @@ class User{
       'name' : name,
       'profilepicpath' : 'profile',
       'profilepictype' : profileimgtype,
-      'money' : money
+      'money' : money,
+      'documentid' : documentid
     };
   }
 }

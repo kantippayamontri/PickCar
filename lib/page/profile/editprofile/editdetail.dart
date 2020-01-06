@@ -1,70 +1,67 @@
+import 'package:dropdown_formfield/dropdown_formfield.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:path/path.dart';
+import 'package:pickcar/bloc/profile/editdetail/editdetailbloc.dart';
 import 'dart:typed_data';
+import 'package:pickcar/datamanager.dart';
+// import 'package:pickcar/bloc/profile/editdetailevent.dart';
 
 // import 'package:intl/intl.dart';
 // import 'package:intl/date_symbol_data_local.dart';
 // int i =0;
 class EditDetail extends StatefulWidget {
-  int i=0;
   @override
   _EditDetail createState() => _EditDetail();
 }
 class _EditDetail extends State<EditDetail> {
+  var _editdetailbloc;
   File _image;
   Uint8List imagefile;
-  List<DropdownMenuItem<String>> listDrop = [];
+  List<DropdownMenuItem<String>> listDropUniversity = [];
+  List<DropdownMenuItem<String>> listDropFaculty = [];
+
+  @override
+  void initState() {
+    _editdetailbloc = Editdetailbloc(context);
+  }
+  String universitytext = Datamanager.user.university;
+  String factorytext = Datamanager.user.faculty;
   @override
   Widget build(BuildContext context) {
     final data = MediaQuery.of(context);
-    void loadData(){
-      listDrop = [];
-      listDrop.add(new DropdownMenuItem(
-        child: new Text('Address1',
-            style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*25,color: Color.fromRGBO(69,79,99,1)),
+    var dropdownTextstyle = TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*25,color: PickCarColor.colorFont1);
+    void loadDataFacuty(){
+      listDropFaculty = [];
+      for (var values in Datamanager.faculty2){
+        listDropFaculty.add(new DropdownMenuItem(
+        child: new Text(values,
+            style: dropdownTextstyle,
           ),
-        value: "changmai",
+        value: values,
         ),
       );
-      listDrop.add(new DropdownMenuItem(
-        child: new Text('Address2',
-            style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*25,color: Color.fromRGBO(69,79,99,1)),
-          ),
-        value: "changmai2",
-        ),
-      );
-      listDrop.add(new DropdownMenuItem(
-        child: new Text('Address3',
-            style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*25,color: Color.fromRGBO(69,79,99,1)),
-          ),
-        value: "changmai3",
-        ),
-      );
+      }
     }
-    loadData();
+    void loadDataUniversity(){
+      listDropUniversity = [];
+      for (var values in Datamanager.univeresity2){
+        listDropUniversity.add(new DropdownMenuItem(
+        child: new Text(values,
+            style: dropdownTextstyle,
+          ),
+        value: values,
+        ),
+      );
+      }
+    }
+    loadDataFacuty();
+    loadDataUniversity();
 
     // void inti() {
       // super.initState();
-      void getProfile(){
-        if(widget.i==0){
-          print("run");
-          var maxSize = 7*1024*1024;
-          final StorageReference ref = FirebaseStorage.instance.ref()
-          .child("profile")
-          .child("id");
-          ref.child("a.png").getData(maxSize).then((data){
-            this.setState((){
-              widget.i=1;
-              imagefile = data;
-            });
-          }).catchError((error){
-            print("------");
-            debugPrint(error.toString());
-          });
-        }
-      }
       void confirmChange(BuildContext context){
       showDialog(context: context,builder:  (BuildContext context){
         return AlertDialog(
@@ -72,7 +69,7 @@ class _EditDetail extends State<EditDetail> {
             child: Column(
               children: <Widget>[
                 Text("Are you sure?",
-                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*30,color: Color.fromRGBO(69,79,99,1)), 
+                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*30,color: PickCarColor.colorFont1), 
                 ),
                 Container(
                   child: Row(
@@ -83,6 +80,7 @@ class _EditDetail extends State<EditDetail> {
                           color: Colors.lightBlue,
                           onPressed: () {
                           // uploadPic(context);
+                          _editdetailbloc.edtidetail();
                           Navigator.pop(context);
                           Navigator.pop(context);
                           },
@@ -118,38 +116,19 @@ class _EditDetail extends State<EditDetail> {
       }
     );
   }
-
-    // }
-    // @override
-    // void initState() {
-    //     super.initState();
-    //     print("a");
-    // }
-    
-    Widget checkImage(){
-      getProfile();
-      if(imagefile == null){
-        return Container();
-      }else{
-        // var _img = I.decodeImage(imagefile);
-        //  File('_img.png')..writeAsBytesSync(I.encodePng(_img));
-        return Image.memory(imagefile,fit: BoxFit.fill,);
-      }
-    }
-
     return Scaffold(
       appBar: AppBar(
        backgroundColor: Colors.white,
        centerTitle: true,
        flexibleSpace: Image(
-          image: AssetImage('asset/appbar/background.png'),
+          image: AssetImage('assets/images/imagesprofile/appbar/background.png'),
           fit: BoxFit.cover,
         ),
-       title: Text('Profile Details',
+       title: Text(UseString.profile+' '+UseString.detail,
           style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color: Colors.white), 
        ),
        leading: IconButton(
-          icon: Icon(Icons.arrow_left,
+          icon: Icon(Icons.keyboard_arrow_left,
           color: Colors.white,
           ),
           onPressed: () {
@@ -172,12 +151,13 @@ class _EditDetail extends State<EditDetail> {
                 children: <Widget>[
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('ชื่อ',
-                      style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*16,color: Color.fromRGBO(69,79,99,1)),
+                    child: Text(UseString.name,
+                      style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*16,color: PickCarColor.colorFont1),
                     ),
                   ),
                   Container(
-                    child: TextField(
+                    child: TextFormField(
+                      controller: _editdetailbloc.namecontroller,
                       style: TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: data.textScaleFactor*25,
@@ -185,101 +165,138 @@ class _EditDetail extends State<EditDetail> {
                       ),
                       decoration: InputDecoration(
                         // border: InputBorder.none,
-                        hintText: 'Namtam Snow'
+                        hintText: Datamanager.user.name,
                       ),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return UseString.nameemptyval;
+                        }
+                      },
                     ),
                   ),
                   Container(padding: EdgeInsets.only(top: 10),),
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('ที่อยู่',
-                      style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*16,color: Color.fromRGBO(69,79,99,1)),
+                    child: Text(UseString.university,
+                      style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*16,color: PickCarColor.colorFont1),
                     ),
                   ),
                   Container(
-                    child: TextField(
-                      style: TextStyle(
-                          fontWeight: FontWeight.normal,
-                          fontSize: data.textScaleFactor*25,
-                          // color: Color.fromRGBO(69,79,99,1)
+                    width: data.size.width,
+                    child: DropdownButton(
+                      isExpanded: true,
+                      items: listDropUniversity,
+                      hint: Text(universitytext.toString(),
+                        style: TextStyle(fontSize: data.textScaleFactor*25,color: PickCarColor.colorFont1),
+                        textAlign: TextAlign.right,
                       ),
-                      decoration: InputDecoration(
-                        // border: InputBorder.none,
-                        hintText: '12/5'
-                      ),
+                      value: universitytext,
+                      onChanged: (value){
+                        _editdetailbloc.university = value;
+                        setState(() {
+                          universitytext =value;
+                        });
+                      },
                     ),
                   ),
+                  // Align(
+                  //   alignment: Alignment.centerLeft,
+                  //   child: Text(UseString.university,
+                  //     style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*16,color: PickCarColor.colorFont1),
+                  //   ),
+                  // ),
+                  // Container(
+                  //   child: TextField(
+                  //     style: TextStyle(
+                  //         fontWeight: FontWeight.normal,
+                  //         fontSize: data.textScaleFactor*25,
+                  //         // color: Color.fromRGBO(69,79,99,1)
+                  //     ),
+                  //     decoration: InputDecoration(
+                  //       // border: InputBorder.none,
+                  //       hintText: Datamanager.user.university,
+                  //     ),
+                  //   ),
+                  // ),
                   Container(padding: EdgeInsets.only(top: 10),),
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('จังหวัด',
-                      style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*25,color: Color.fromRGBO(69,79,99,1)),
+                    child: Text(UseString.faculty,
+                      style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*16,color: PickCarColor.colorFont1),
                     ),
                   ),
+                  // DropDownFormField(
+                  //   titleText: null,
+                  //   hintText: Datamanager.user.faculty,
+                    
+                  //   value: _editdetailbloc.faculty,
+                  //   onSaved: (val) {
+                  //     setState(() {
+                  //       _editdetailbloc.faculty = val;
+                  //     });
+                  //   },
+                  //   onChanged: (val) {
+                  //     setState(() {
+                  //       _editdetailbloc.faculty = val;
+                  //     });
+                  //   },
+                  //   dataSource: Datamanager.faculty,
+                  //   validator: (val) {
+                  //     if (val == null) {
+                  //       return UseString.choosefaculty;
+                  //     }
+                  //   },
+                  //   textField: "faculty",
+                  //   valueField: "faculty",
+                  // ),
                   Container(
-                    padding: EdgeInsets.only(right: 10),
                     width: data.size.width,
                     child: DropdownButton(
                       isExpanded: true,
-                      items: listDrop,
-                      hint: Text("เลือก จังหวัด",
-                        style: TextStyle(fontSize: data.textScaleFactor*25),
+                      items: listDropFaculty,
+                      hint: Text(factorytext,
+                        style: TextStyle(fontSize: data.textScaleFactor*25,color: PickCarColor.colorFont1),
                         textAlign: TextAlign.right,
                       ),
+                      value: factorytext,
                       onChanged: (value){
-                        print(value);
+                        _editdetailbloc.faculty = value;
+                        setState(() {
+                          factorytext = value;
+                        });
                       },
                     ),
                   ),
+                //  Align(
+                //     alignment: Alignment.centerLeft,
+                //     child: Text(UseString.faculty,
+                //       style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*16,color: Color.fromRGBO(69,79,99,1)),
+                //     ),
+                //   ),
+                //   Container(
+                //     child: TextField(
+                //       style: TextStyle(
+                //           fontWeight: FontWeight.normal,
+                //           fontSize: data.textScaleFactor*25,
+                //           // color: Color.fromRGBO(69,79,99,1)
+                //       ),
+                //       decoration: InputDecoration(
+                //         // border: InputBorder.none,
+                //         hintText: Datamanager.user.faculty,
+                //       ),
+                //     ),
+                //   ),
+                  Container(padding: EdgeInsets.only(top: 10),),
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('อำเภอ',
-                      style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*25,color: Color.fromRGBO(69,79,99,1)),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(right: 10),
-                    width: data.size.width,
-                    child: DropdownButton(
-                      isExpanded: true,
-                      items: listDrop,
-                      hint: Text("เลือก อำเภอ",
-                        style: TextStyle(fontSize: data.textScaleFactor*25),
-                        textAlign: TextAlign.right,
-                      ),
-                      onChanged: (value){
-                        print(value);
-                      },
-                    ),
-                  ),
-                   Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('ตำบล',
-                      style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*25,color: Color.fromRGBO(69,79,99,1)),
-                    ),
-                  ),
-                  Container(
-                    width: data.size.width,
-                    child: DropdownButton(
-                      isExpanded: true,
-                      items: listDrop,
-                      hint: Text("เลือก ตำบล",
-                        style: TextStyle(fontSize: data.textScaleFactor*25),
-                        textAlign: TextAlign.right,
-                      ),
-                      onChanged: (value){
-                        print(value);
-                      },
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('รหัสไปรษณีย์',
+                    child: Text(UseString.telnumber,
                       style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*16,color: Color.fromRGBO(69,79,99,1)),
                     ),
                   ),
                   Container(
-                    child: TextField(
+                    child: TextFormField(
+                      controller: _editdetailbloc.telcontroller,
+                      keyboardType: TextInputType.number,
                       style: TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: data.textScaleFactor*25,
@@ -287,9 +304,8 @@ class _EditDetail extends State<EditDetail> {
                       ),
                       decoration: InputDecoration(
                         // border: InputBorder.none,
-                        hintText: '50130'
+                        hintText: Datamanager.user.tel,
                       ),
-                      keyboardType: TextInputType.number
                     ),
                   ),
                   Container(padding: EdgeInsets.only(top: 30),),

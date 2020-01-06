@@ -4,6 +4,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:mime_type/mime_type.dart';
 import 'dart:io';
 import 'package:path/path.dart';
+import 'package:pickcar/bloc/profile/editprofile/editprofilebloc.dart';
+import 'package:pickcar/bloc/profile/editprofile/editprofileevent.dart';
 import 'dart:typed_data';
 import 'dart:async';
 
@@ -18,79 +20,20 @@ class EditProfile extends StatefulWidget {
 }
 class _EditProfileState extends State<EditProfile> {
   File _image;
+  File profile;
+  File motordri;
+  File idcard;
+  File universitycard;
   Uint8List imagefile;
-  // void getProfile(){
-  //   if(widget.i==0){
-  //     print("run");
-  //     var maxSize = 7*1024*1024;
-  //     final StorageReference ref = FirebaseStorage.instance.ref()
-  //     .child("profile")
-  //     .child("id");
-  //     ref.child("a.png").getData(maxSize).then((data){
-  //       this.setState((){
-  //         widget.i=1;
-  //         imagefile = data;
-  //       });
-  //     }).catchError((error){
-  //       print("------");
-  //       debugPrint(error.toString());
-  //     });
-  //   }
-  // }
-  
-  Future uploadPic(BuildContext context) async{
-    String contenttype;
-    String ext;
-    StorageReference ref =
-        Datamanager.firebasestorage.ref().child("User").child(Datamanager.user.uid);
-    StorageUploadTask uploadtask;
-    bool check = true;
-
-    contenttype = mime(_image.path);
-    ext = contenttype.split('/').last;
-    uploadtask = ref
-        .child("profile.${ext}")
-        .putFile(_image, StorageMetadata(contentType: contenttype));
-    await uploadtask.onComplete;
-    if (uploadtask.isComplete) {
-      print("upload profile success");
-      Datamanager.user.profileimgtype = ext;
-      // await Datamanager.firestore
-      //       .collection('User')
-      //       .where(field)
-      //       .then((val){
-      //         if(val.documents.length > 0){
-      //             print(val.documents[0].data["field"]);
-      //         }
-      //         else{
-      //             print("Not Found");
-      //         }
-      //       });
-            // .document(Datamanager.user.uid)
-            // .document()
-            // .where("uid", isEqualTo: Datamanager.user.uid)
-            // .updateData({'profilepictype': ext});
-        print("Sign Up User Successful");
-    } else {
-      check = false;
-    }
-      
+  var _editprofilebloc;
+  @override
+  void initState() {
+    _editprofilebloc = EditProfilebloc(context);
   }
-  // Widget checkImage(){
-  //   getProfile();
-  //   if(imagefile == null){
-  //     return Container();
-  //   }else{
-  //     // var _img = I.decodeImage(imagefile);
-  //     //  File('_img.png')..writeAsBytesSync(I.encodePng(_img));
-  //     return Image.memory(imagefile,fit: BoxFit.fill,);
-  //   }
-  // }
  @override
  Widget build(BuildContext context) {
-  int _selectedIndex = 3;
   final data = MediaQuery.of(context);
-  void confirmUpload(BuildContext context){
+  void confirmUpload(BuildContext context,String type){
     showDialog(context: context,builder:  (BuildContext context){
       return AlertDialog(
         title: Center(
@@ -107,9 +50,17 @@ class _EditProfileState extends State<EditProfile> {
                       child: RaisedButton(
                         color: Colors.lightBlue,
                         onPressed: () {
-                        uploadPic(context);
-                        Navigator.pop(context);
-                        Navigator.pop(context);
+                          if(type == "profileimg"){
+                            _editprofilebloc.add(ChangeProfileImage(context,profile));
+                          }else if(type == "motorliscense"){
+                            _editprofilebloc.add(ChangeDriMotor(context,motordri));
+                          }else if(type == "idcard"){
+                            _editprofilebloc.add(ChangeIDCardImage(context,idcard));
+                          }else if(type == "universitycard"){
+                            _editprofilebloc.add(ChangeUniversityCardImage(context,universitycard));
+                          } 
+                          Navigator.pop(context);
+                          Navigator.pop(context);
                         },
                         child: Text('Confirm',
                           // style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Color(0x78849E)),
@@ -125,7 +76,15 @@ class _EditProfileState extends State<EditProfile> {
                         Navigator.pop(context);
                         Navigator.pop(context);
                         setState((){
-                          _image = null;
+                          if(type == "profileimg"){
+                            profile = null;
+                          }else if(type == "motorliscense"){
+                            motordri = null;
+                          }else if(type == "idcard"){
+                            idcard = null;
+                          }else if(type == "universitycard"){
+                            universitycard = null;
+                          }
                         });
                       },
                       child: Text('Cancle',
@@ -144,61 +103,77 @@ class _EditProfileState extends State<EditProfile> {
     }
     );
   }
-  Future getImageGallery() async {
+  Future getImageGallery(String type) async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
-      _image = image;
-        print('Image Path $_image');
+      if(type == "profileimg"){
+        profile = image;
+      }else if(type == "motorliscense"){
+        motordri = image;
+      }else if(type == "idcard"){
+        idcard = image;
+      }else if(type == "universitycard"){
+        universitycard = image;
+      } 
+        print('Image Path $image');
         if(image != null){
-          confirmUpload(context);
+          confirmUpload(context,type);
         }else{
           Navigator.pop(context);
         }
         // uploadPic(context);
     });
   }
-  Future getImageCamera() async {
+  Future getImageCamera(String type) async {
   var image = await ImagePicker.pickImage(source: ImageSource.camera);
 
     setState(() {
-      _image = image;
-        print('Image Path $_image');
+      if(type == "profileimg"){
+        profile = image;
+      }else if(type == "motorliscense"){
+        motordri = image;
+      }else if(type == "idcard"){
+        idcard = image;
+      }else if(type == "universitycard"){
+        universitycard = image;
+      } 
+        print('Image Path $image');
         if(image != null){
-          confirmUpload(context);
+          confirmUpload(context,type);
         }else{
           Navigator.pop(context);
         }
         // uploadPic(context);
     });
   }
-  Column listColumn(){
+  Column listColumn(String type){
     return Column(
       children: <Widget>[
         ListTile(
           leading: Icon(Icons.camera_alt),
-          title: Text('Camera'),
+          title: Text(UseString.camera),
           onTap: (){
-            getImageCamera();
+            getImageCamera(type);
           },
         ),
         ListTile(
           leading: Icon(Icons.image),
-          title: Text('Gallery'),
+          title: Text(UseString.galley),
           onTap: (){
-            getImageGallery();
+            getImageGallery(type);
           },
         ),
       ],
     );
   }
 
-  void bottompopup(){
+  void bottompopup(String type){
     showModalBottomSheet(
       context: context,
       builder: (context){
         return Container(
           height: 120,
-          child: listColumn(),
+          child: listColumn(type),
         );
       }
     );
@@ -209,7 +184,7 @@ class _EditProfileState extends State<EditProfile> {
        backgroundColor: Colors.white,
        centerTitle: true,
        flexibleSpace: Image(
-          image: AssetImage('asset/appbar/background.png'),
+          image: AssetImage('assets/images/imagesprofile/appbar/background.png'),
           fit: BoxFit.cover,
         ),
        title: Stack(children: <Widget>[
@@ -220,7 +195,7 @@ class _EditProfileState extends State<EditProfile> {
        ),
        
        leading: IconButton(
-          icon: Icon(Icons.arrow_left,
+          icon: Icon(Icons.keyboard_arrow_left,
           color: Colors.white,
           ),
           onPressed: () {
@@ -243,7 +218,7 @@ class _EditProfileState extends State<EditProfile> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.only(top: 20,left: 30),
-                      child: Text('Profile Image',
+                      child: Text(UseString.profileimg,
                         style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorFont1),
                       ),
                     ),
@@ -252,11 +227,11 @@ class _EditProfileState extends State<EditProfile> {
                       padding: EdgeInsets.only(top: 10,right: 30),
                       child: RaisedButton(
                         onPressed: (){
-                          bottompopup();
+                          bottompopup("profileimg");
                         },
                         color: Colors.white,
                         child: Text(
-                            'Edit',
+                            UseString.edit,
                             style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: Colors.lightBlue),
                           ),
                       ),
@@ -268,8 +243,8 @@ class _EditProfileState extends State<EditProfile> {
                   width: data.size.width/2,
                   height: data.size.height/3,
                   child: Center(
-                    child: (_image!=null)?Image.file(
-                      _image,
+                    child: (profile!=null)?Image.file(
+                      profile,
                       fit: BoxFit.fill,
                     ): 
                     imageProfile(ImageProfiles.profileUrl),
@@ -284,7 +259,7 @@ class _EditProfileState extends State<EditProfile> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.only(top: 20,left: 30),
-                      child: Text('Profile Details',
+                      child: Text(UseString.profilede,
                         style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorFont1),
                       ),
                     ),
@@ -297,7 +272,7 @@ class _EditProfileState extends State<EditProfile> {
                         },
                         color: Colors.white,
                         child: Text(
-                            'Edit',
+                            UseString.edit,
                             style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: Colors.lightBlue),
                           ),
                       ),
@@ -376,7 +351,7 @@ class _EditProfileState extends State<EditProfile> {
                                 Icons.account_balance,
                               ),
                               Text(
-                              '   '+Datamanager.user.university+' '+UseString.university,
+                              '   '+Datamanager.user.university,
                               textAlign: TextAlign.left,
                               style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*18,color: PickCarColor.colorFont1),
                             ),
@@ -423,7 +398,130 @@ class _EditProfileState extends State<EditProfile> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.only(top: 20,left: 30),
-                      child: Text('Email',
+                      child: Text(UseString.motorliscense,
+                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorFont1),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      padding: EdgeInsets.only(top: 10,right: 30),
+                      child: RaisedButton(
+                        onPressed: (){
+                          bottompopup("motorliscense");
+                        },
+                        color: Colors.white,
+                        child: Text(
+                            UseString.edit,
+                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: Colors.lightBlue),
+                          ),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  padding: EdgeInsets.only(bottom: 10),
+                  width: data.size.width/2,
+                  height: data.size.height/3,
+                  child: Center(
+                    child: (motordri!=null)?Image.file(
+                      motordri,
+                      fit: BoxFit.fill,
+                    ): 
+                    imageProfile(ImageProfiles.drimotorcard),
+                  ),
+                ),
+                Container(
+                  width: data.size.width,
+                  height: 1,
+                  color: Colors.grey[300],
+                ),
+                Stack(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 20,left: 30),
+                      child: Text(UseString.idcard,
+                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorFont1),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      padding: EdgeInsets.only(top: 10,right: 30),
+                      child: RaisedButton(
+                        onPressed: (){
+                          bottompopup("idcard");
+                        },
+                        color: Colors.white,
+                        child: Text(
+                            UseString.edit,
+                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: Colors.lightBlue),
+                          ),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  padding: EdgeInsets.only(bottom: 10),
+                  width: data.size.width/2,
+                  height: data.size.height/3,
+                  child: Center(
+                    child: (idcard!=null)?Image.file(
+                      idcard,
+                      fit: BoxFit.fill,
+                    ): 
+                    imageProfile(ImageProfiles.idcard),
+                  ),
+                ),
+                Container(
+                  width: data.size.width,
+                  height: 1,
+                  color: Colors.grey[300],
+                ),
+                Stack(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 20,left: 30),
+                      child: Text(UseString.universitycard,
+                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorFont1),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      padding: EdgeInsets.only(top: 10,right: 30),
+                      child: RaisedButton(
+                        onPressed: (){
+                          bottompopup("universitycard");
+                        },
+                        color: Colors.white,
+                        child: Text(
+                            UseString.edit,
+                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: Colors.lightBlue),
+                          ),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  padding: EdgeInsets.only(bottom: 10),
+                  width: data.size.width/2,
+                  height: data.size.height/3,
+                  child: Center(
+                    child: (universitycard!=null)?Image.file(
+                      universitycard,
+                      fit: BoxFit.fill,
+                    ): 
+                    imageProfile(ImageProfiles.universitycard),
+                  ),
+                ),
+                Container(
+                  width: data.size.width,
+                  height: 1,
+                  color: Colors.grey[300],
+                ),
+                Stack(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 20,left: 30),
+                      child: Text(UseString.email,
                         style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorFont1),
                       ),
                     ),

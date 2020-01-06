@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/page/loginpage.dart';
+import 'package:pickcar/page/profile/editprofile/NewPassword.dart';
+import 'package:pickcar/page/profile/editprofile/changepassword.dart';
 import 'package:pickcar/page/profile/editprofile/editdetail.dart';
 import 'package:pickcar/page/profile/editprofile/editprofile.dart';
+import 'package:pickcar/page/profile/editprofile/emailsend.dart';
 import 'package:pickcar/page/register/carregisterpage.dart';
 import 'package:pickcar/page/register/motorregisterpage.dart';
 import 'package:pickcar/page/register/registerpage.dart';
@@ -26,7 +29,7 @@ class MyApp extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   color: PickCarColor.colormain))),
       routes: {
-        '/': (ctx) => LoginPage(),
+        Datamanager.loginpage: (ctx) => LoginPage(),
         Datamanager.signuppage : (ctx) => SignUpPage(),
         Datamanager.tabpage : (ctx) => TabScreenPage(),
         Datamanager.registerpage : (ctx) => RegisterPage(),
@@ -35,6 +38,9 @@ class MyApp extends StatelessWidget {
         Datamanager.rentalpage : (ctx) => RentalPage(),
         Datamanager.editprofile : (ctx) => EditProfile(),
         Datamanager.editdetail : (ctx) => EditDetail(),
+        Datamanager.changepassword : (ctx) => ChangePassword(),
+        Datamanager.newpassword : (ctx) => NewPassword(),
+        Datamanager.emailsend : (ctx) => EmailSend(),
         //'loginpickcarpage': (ctx) => LoginPickCarPage()
       },
       onGenerateRoute: (setting) {},

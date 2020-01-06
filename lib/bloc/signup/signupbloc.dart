@@ -289,7 +289,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     if (form.validate()) {
       form.save();
       await createuser();
-      Navigator.of(context).pushNamedAndRemoveUntil(Datamanager.tabpage, ModalRoute.withName('/'));
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          Datamanager.tabpage, ModalRoute.withName('/'));
     }
   }
 
@@ -305,30 +306,39 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
       if (await putdatatostorage(Datamanager.firebaseuser.uid)) {
         Datamanager.user = User(
-          uid: Datamanager.firebaseuser.uid,
-          email: emailcontroller.text,
-          password: passwordcontroller.text,
-          name: namecontroller.text,
-          address: addresscontroller.text,
-          university: university,
-          faculty: faculty,
-          tel: telcontroller.text,
-          profileimg: profileimage,
-          profileimgtype: profileimgtype,
-          idcardimg: idcardimage,
-          idcardimgtype: idcardimgtype,
-          universityimg: universityimage,
-          universityimgtype: universityimgtype,
-          drivemotorimg: driverliscensemotorcycleimage,
-          drivemotorimgtype: drivemotorimgtype,
-          drivecarimg: driverliscensecarimage,
-          drivecarimgtype: drivecarimgtype,
-          money: 500.00
+            uid: Datamanager.firebaseuser.uid,
+            email: emailcontroller.text,
+            password: passwordcontroller.text,
+            name: namecontroller.text,
+            address: addresscontroller.text,
+            university: university,
+            faculty: faculty,
+            tel: telcontroller.text,
+            profileimg: profileimage,
+            profileimgtype: profileimgtype,
+            idcardimg: idcardimage,
+            idcardimgtype: idcardimgtype,
+            universityimg: universityimage,
+            universityimgtype: universityimgtype,
+            drivemotorimg: driverliscensemotorcycleimage,
+            drivemotorimgtype: drivemotorimgtype,
+            drivecarimg: driverliscensecarimage,
+            drivecarimgtype: drivecarimgtype,
+            money: 500.00);
+
+        final docref = await Datamanager.firestore
+            .collection("User")
+            .add(Datamanager.user.toJson());
+        String docid = docref.documentID;
+        await Datamanager.firestore.collection("User").document(docid).updateData(
+          {'documentid' : docid}
         );
-        await Datamanager.firestore
-            .collection('User')
-            .document()
-            .setData(Datamanager.user.toJson());
+        Datamanager.user.documentid = docid;
+        // await Datamanager.firestore
+        //     .collection('User')
+        //     .document()
+        //     .setData(Datamanager.user.toJson());
+
         print("Sign Up User Successful");
       }
 

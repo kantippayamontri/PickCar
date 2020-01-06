@@ -6,12 +6,13 @@ import 'package:pickcar/page/chatpage.dart';
 import 'package:pickcar/page/homepage.dart';
 import 'package:pickcar/page/listcarpage.dart';
 import 'package:pickcar/page/profile/profilepage.dart';
-import 'package:pickcar/page/settingpage.dart';
+import 'package:pickcar/page/setting/settingpage.dart';
 import 'dart:typed_data';
 
 import 'models/user.dart';
 
 class Datamanager {
+  static String loginpage = "/";
   static String signuppage = "/signuppage";
   static String tabpage = "/tabpage";
   static String registerpage = "/registerpage";
@@ -21,6 +22,9 @@ class Datamanager {
 
   static String editprofile = "/editprofile";
   static String editdetail = "/editdetail";
+  static String changepassword = "/ChangePassword";
+  static String newpassword = "/Newpassword";
+  static String emailsend = "/Emailsend";
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
   static FirebaseUser firebaseuser = null;
@@ -35,6 +39,7 @@ class Datamanager {
       {'page': ProfilePage(), 'title': 'Profile'},
       {'page': SettingPage(), 'title': 'setting'},
     ];
+
 
   static var univeresity = [
     {
@@ -55,6 +60,16 @@ class Datamanager {
     {"faculty": "Engineering"},
     {"faculty": "Science"},
     {"faculty": "Humantility"}
+  ];
+  static var faculty2 = [
+    "Engineering",
+    "Science",
+    "Humantility",
+  ];
+  static var univeresity2 = [
+    "Chaing Mai University",
+    "sdfasdfasd",
+    "dfasdfsdfasdf",
   ];
 
   static var year = [
@@ -119,11 +134,33 @@ class UseString {
   static String navprofile = "Profile";
   static String navsetting = "Setting";
   static String facultyof = "Facuty of";
+  static String camera = "Camera";
+  static String galley = "Gallery";
+  static String detail = "Details";
+  static String currentpass = "Your Current Password.";
+  static String forgetpass = "if you forget password.";
+  static String changepass = "Change password.";
+  static String newpass = "New Password";
+  static String repeatpass = "Repeat new Password";
+  static String passwordinvalid = "Password is incorrect.";
+  static String forgetpasspage = "Forget password";
+  static String enteraccount = "Please enter the email account you.";
+  static String send = "Send";
+  static String emailinvalid = "Email is incorrect.";
+  static String edit = "Edit";
+  static String profileimg = "Profile Image";
+  static String motorliscense = "Driveliscense Motorcycle";
+  static String profilede = "Profile detail";
+  static String logout = "Log Out";
+
 
 }
 
 class ImageProfiles{
   static Uint8List profileUrl;
+  static Uint8List drimotorcard;
+  static Uint8List idcard;
+  static Uint8List universitycard;
 }
 
 enum authProblems { UserNotFound, PasswordNotValid, NetworkError }
@@ -135,6 +172,7 @@ class PickCarColor {
   static var colorFont1 = Color.fromARGB(255, 69,79,99);
 
 }
+
 
 class GearMotor {
   static String auto = "AUTO";

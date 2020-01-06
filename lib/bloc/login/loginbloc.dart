@@ -130,6 +130,26 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                       print("------");
                       debugPrint(error.toString());
                     });
+
+                    await ref.child("drimotorcard." + Datamanager.user.drivemotorimgtype).getData(maxSize).then((data){
+                      ImageProfiles.drimotorcard = data;
+                    }).catchError((error){
+                      print("------");
+                      debugPrint(error.toString());
+                    });
+                    await ref.child("universitycard." + Datamanager.user.universityimgtype).getData(maxSize).then((data){
+                      ImageProfiles.universitycard = data;
+                    }).catchError((error){
+                      print("------");
+                      debugPrint(error.toString());
+                    });
+                     await ref.child("idcard." + Datamanager.user.idcardimgtype).getData(maxSize).then((data){
+                      ImageProfiles.idcard = data;
+                    }).catchError((error){
+                      print("------");
+                      debugPrint(error.toString());
+                    });
+                    Datamanager.user.documentid = doc['documentid'];
                     print(Datamanager.user);
                   }));
         });
