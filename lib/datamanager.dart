@@ -19,6 +19,7 @@ class Datamanager {
   static String motorregisterpage = "/motorregisterpage";
   static String carregisterpage = "/carregisterpage";
   static String rentalpage = "/rentalpage";
+  static String listcarpage = "/listcarpage";
 
   static String editprofile = "/editprofile";
   static String editdetail = "/editdetail";
@@ -153,6 +154,14 @@ class UseString {
   static String profilede = "Profile detail";
   static String logout = "Log Out";
 
+  static String motorfront = "Motorcycle front picture";
+  static String motorleft = "Motorcycle left picture";
+  static String motorright = "Motorcycle right picture";
+  static String motorback = "Motorcycle back picture";
+  static String waiting = "Wait a few seconds";
+  static String picuploadval = "Please select all images.";
+  static String close = "Close";
+  static String registermotorfail = "Fail to register motorcycle.";
 
 }
 
@@ -182,4 +191,11 @@ class GearMotor {
     {'gear': GearMotor.auto},
     {'gear': GearMotor.manual}
   ];
+}
+
+class CarStatus{
+  static String nothing = "NOTHING";
+  static String waiting = "WAITING";
+  static String booked = "BOOKED";
+  static String working = "WORKING";
 }
