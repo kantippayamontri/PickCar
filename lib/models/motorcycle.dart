@@ -1,5 +1,4 @@
-import 'package:flutter/cupertino.dart';
-
+import 'package:flutter/foundation.dart';
 class Motorcycle{
 
   String profilepath;
@@ -22,6 +21,13 @@ class Motorcycle{
   String storagedocid;
   String firestoredocid;
   String owneruid;
+  String motorprofilelink;
+  String motorownerliscenselink;
+  String motorfrontlink;
+  String motorbacklink;
+  String motorleftlink;
+  String motorrightlink;
+  String carstatus;
 
   Motorcycle({
     @required this.profilepath,
@@ -42,7 +48,14 @@ class Motorcycle{
     @required this.color,
     @required this.gear,
     @required this.owneruid,
-    @required this.storagedocid
+    @required this.storagedocid,
+    @required this.motorprofilelink,
+    @required this.motorownerliscenselink,
+    @required this.motorfrontlink,
+    @required this.motorbacklink,
+    @required this.motorleftlink,
+    @required this.motorrightlink,
+    @required this.carstatus
   });
 
   Map<String , dynamic> toJson(){
@@ -66,7 +79,14 @@ class Motorcycle{
       'motorleftpath' : this.motorleftpath,
       'motorlefttype' : this.motorlefttype,
       'motorrightpath' : this.motorrightpath,
-      'motorrighttype' : this.motorrighttype
+      'motorrighttype' : this.motorrighttype,
+      'motorprofilelink' : this.motorprofilelink,
+      'motorownerliscenselink' : this.motorownerliscenselink,
+      'motorfrontlink' : this.motorfrontlink,
+      'motorbacklink' : this.motorbacklink,
+      'motorleftlink' : this.motorleftlink,
+      'motorrightlink' : this.motorrightlink,
+      'carstatus' : this.carstatus
     };
   }
 }

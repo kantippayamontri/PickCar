@@ -39,6 +39,12 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
   var permission_status_camera;
   var permission_status_gallery;
   ProgressDialog prwaitingforsubmitdata;
+  String motorprofilelink;
+  String motorownerliscenselink;
+  String motorfrontlink;
+  String motorbacklink;
+  String motorleftlink;
+  String motorrightlink;
 
   MotorRegisterBloc(this.context) {
     prwaitingforsubmitdata = ProgressDialog(this.context,
@@ -121,6 +127,7 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
     String contenttype;
     bool check = true;
     StorageUploadTask uploadtask;
+    StorageReference downloadref;
     StorageReference ref = Datamanager.firebasestorage
         .ref()
         .child("Car")
@@ -128,9 +135,12 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
         .child(docstorageid);
 
     //TODO motor profile
+    
     img = motorprofile;
     contenttype = mime(img.path);
     ext = contenttype.split('/').last;
+    downloadref = ref
+        .child("motorprofile.${ext}");
     uploadtask = ref
         .child("motorprofile.${ext}")
         .putFile(img, StorageMetadata(contentType: contenttype));
@@ -138,14 +148,20 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
     if (uploadtask.isComplete) {
       print("upload motor profile success");
       motorprofiletype = ext;
+      await downloadref.getDownloadURL().then((val){
+        motorprofilelink = val.toString();
+      });
     } else {
       check = false;
     }
 
     //TODO owner liscense
+    
     img = ownerliscense;
     contenttype = mime(img.path);
     ext = contenttype.split('/').last;
+    downloadref = ref
+        .child("ownerliscense.${ext}");
     uploadtask = ref
         .child("ownerliscense.${ext}")
         .putFile(img, StorageMetadata(contentType: contenttype));
@@ -153,14 +169,20 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
     if (uploadtask.isComplete) {
       print("upload  ownerliscense motor success");
       ownerliscensetype = ext;
+      await downloadref.getDownloadURL().then((val){
+        motorownerliscenselink = val.toString();
+      });
     } else {
       check = false;
     }
 
     //TODO motor front
+    
     img = motorfront;
     contenttype = mime(img.path);
     ext = contenttype.split('/').last;
+    downloadref = ref
+        .child("motorfront.${ext}");
     uploadtask = ref
         .child("motorfront.${ext}")
         .putFile(img, StorageMetadata(contentType: contenttype));
@@ -168,14 +190,20 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
     if (uploadtask.isComplete) {
       print("upload  motor front success");
       motorfronttype = ext;
+      await downloadref.getDownloadURL().then((val){
+        motorfrontlink = val.toString();
+      });
     } else {
       check = false;
     }
 
     //TODO motor left
+    
     img = motorleftside;
     contenttype = mime(img.path);
     ext = contenttype.split('/').last;
+    downloadref = ref
+        .child("motorleft.${ext}");
     uploadtask = ref
         .child("motorleft.${ext}")
         .putFile(img, StorageMetadata(contentType: contenttype));
@@ -183,14 +211,20 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
     if (uploadtask.isComplete) {
       print("upload  motor left success");
       motorlefttype = ext;
+      await downloadref.getDownloadURL().then((val){
+        motorleftlink = val.toString();
+      });
     } else {
       check = false;
     }
 
     //TODO motor right
+    
     img = motorrightside;
     contenttype = mime(img.path);
     ext = contenttype.split('/').last;
+    downloadref = ref
+        .child("motorright.${ext}");
     uploadtask = ref
         .child("motorright.${ext}")
         .putFile(img, StorageMetadata(contentType: contenttype));
@@ -198,14 +232,20 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
     if (uploadtask.isComplete) {
       print("upload  motor right success");
       motorrighttype = ext;
+      await downloadref.getDownloadURL().then((val){
+        motorrightlink = val.toString();
+      });
     } else {
       check = false;
     }
 
     //todo motor back
+    
     img = motorback;
     contenttype = mime(img.path);
     ext = contenttype.split('/').last;
+    downloadref = ref
+        .child("motorback.${ext}");
     uploadtask = ref
         .child("motorback.${ext}")
         .putFile(img, StorageMetadata(contentType: contenttype));
@@ -213,6 +253,9 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
     if (uploadtask.isComplete) {
       print("upload  motor back success");
       motorbacktype = ext;
+      await downloadref.getDownloadURL().then((val){
+        motorbacklink = val.toString();
+      });
     } else {
       check = false;
     }
@@ -244,6 +287,13 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
         generation: generationcontroller.text,
         owneruid: Datamanager.user.uid,
         storagedocid: docstorageid,
+        motorprofilelink: motorprofilelink,
+        motorownerliscenselink: motorownerliscenselink,
+        motorfrontlink: motorfrontlink,
+        motorbacklink: motorbacklink,
+        motorleftlink: motorleftlink,
+        motorrightlink: motorrightlink,
+        carstatus: CarStatus.nothing
       );
 
       final docref = await Datamanager.firestore

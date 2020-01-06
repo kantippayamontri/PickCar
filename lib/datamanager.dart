@@ -139,3 +139,10 @@ class GearMotor {
     {'gear': GearMotor.manual}
   ];
 }
+
+class CarStatus{
+  static String nothing = "NOTHING";
+  static String waiting = "WAITING";
+  static String booked = "BOOKED";
+  static String working = "WORKING";
+}
