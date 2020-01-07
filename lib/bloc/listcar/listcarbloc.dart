@@ -23,25 +23,19 @@ class ListCarBloc extends Bloc<ListCarEvent, ListCarState> {
       yield ListCarStartState();
       print("Loading data list car naja");
       loadingmotordata();
-      printeiei();
       yield ListCarShowData(motorcyclelist: motorcyclelist);
     }
   }
 
-  void printeiei() {
-    print('rrrrrrrrrrrrrrrrrrrrrrrr');
-  }
-
-   void loadingmotordata() {
+  void loadingmotordata() {
     Datamanager.firestore
         .collection('Motorcycle')
         .where("owneruid", isEqualTo: Datamanager.user.uid)
         .snapshots()
         .listen((data) {
       data.documents.forEach((doc) {
-        
         print("Motor doc id : ${doc['firestoredocid']}");
-        motorcyclelist.add(Motorcycle(
+        Motorcycle motor = Motorcycle(
           carstatus: doc['carstatus'],
           brand: doc['brand'],
           cc: int.parse(doc['cc'].toString()),
@@ -68,7 +62,10 @@ class ListCarBloc extends Bloc<ListCarEvent, ListCarState> {
           motorrightpath: doc['motorrightpath'],
           motorrighttype: doc['motorrighttype'],
           motorrightlink: doc['motorrightlink'],
-        ));
+        );
+        motor.firestoredocid = doc['firestoredocid'];
+        
+        motorcyclelist.add(motor);
       });
     });
 

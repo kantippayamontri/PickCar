@@ -20,12 +20,12 @@ class Datamanager {
   static String carregisterpage = "/carregisterpage";
   static String rentalpage = "/rentalpage";
   static String listcarpage = "/listcarpage";
-
   static String editprofile = "/editprofile";
   static String editdetail = "/editdetail";
   static String changepassword = "/ChangePassword";
   static String newpassword = "/Newpassword";
   static String emailsend = "/Emailsend";
+  static String motordetailpage = "/motordetail";
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
   static FirebaseUser firebaseuser = null;
@@ -153,7 +153,6 @@ class UseString {
   static String motorliscense = "Driveliscense Motorcycle";
   static String profilede = "Profile detail";
   static String logout = "Log Out";
-
   static String motorfront = "Motorcycle front picture";
   static String motorleft = "Motorcycle left picture";
   static String motorright = "Motorcycle right picture";
@@ -162,6 +161,7 @@ class UseString {
   static String picuploadval = "Please select all images.";
   static String close = "Close";
   static String registermotorfail = "Fail to register motorcycle.";
+  static String waitingforrent = "Waiting for rent";
 
 }
 
@@ -194,8 +194,8 @@ class GearMotor {
 }
 
 class CarStatus{
-  static String nothing = "NOTHING";
-  static String waiting = "WAITING";
-  static String booked = "BOOKED";
-  static String working = "WORKING";
+  static const String nothing = "NOTHING";
+  static const String waiting = "WAITING";
+  static const String booked = "BOOKED";
+  static const String working = "WORKING";
 }

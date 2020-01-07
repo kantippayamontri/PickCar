@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
+import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/page/listcarpage.dart';
 import 'package:pickcar/page/loginpage.dart';
+import 'package:pickcar/page/motordetailpage.dart';
 import 'package:pickcar/page/profile/editprofile/NewPassword.dart';
 import 'package:pickcar/page/profile/editprofile/changepassword.dart';
 import 'package:pickcar/page/profile/editprofile/editdetail.dart';
@@ -31,18 +33,19 @@ class MyApp extends StatelessWidget {
                   color: PickCarColor.colormain))),
       routes: {
         Datamanager.loginpage: (ctx) => LoginPage(),
-        Datamanager.signuppage : (ctx) => SignUpPage(),
-        Datamanager.tabpage : (ctx) => TabScreenPage(),
-        Datamanager.registerpage : (ctx) => RegisterPage(),
-        Datamanager.motorregisterpage : (ctx) => MotorRegisterPage(),
-        Datamanager.carregisterpage : (ctx) => CarRegisterPage(),
-        Datamanager.rentalpage : (ctx) => RentalPage(),
-        Datamanager.editprofile : (ctx) => EditProfile(),
-        Datamanager.editdetail : (ctx) => EditDetail(),
-        Datamanager.changepassword : (ctx) => ChangePassword(),
-        Datamanager.newpassword : (ctx) => NewPassword(),
-        Datamanager.emailsend : (ctx) => EmailSend(),
-        Datamanager.listcarpage : (ctx) => ListCarPage(),
+        Datamanager.signuppage: (ctx) => SignUpPage(),
+        Datamanager.tabpage: (ctx) => TabScreenPage(),
+        Datamanager.registerpage: (ctx) => RegisterPage(),
+        Datamanager.motorregisterpage: (ctx) => MotorRegisterPage(),
+        Datamanager.carregisterpage: (ctx) => CarRegisterPage(),
+        Datamanager.rentalpage: (ctx) => RentalPage(),
+        Datamanager.editprofile: (ctx) => EditProfile(),
+        Datamanager.editdetail: (ctx) => EditDetail(),
+        Datamanager.changepassword: (ctx) => ChangePassword(),
+        Datamanager.newpassword: (ctx) => NewPassword(),
+        Datamanager.emailsend: (ctx) => EmailSend(),
+        Datamanager.listcarpage: (ctx) => ListCarPage(),
+        //Datamanager.motordetailpage: (ctx) => MotorDetailPage(),
         //'loginpickcarpage': (ctx) => LoginPickCarPage()
       },
       onGenerateRoute: (setting) {},

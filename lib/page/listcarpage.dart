@@ -3,7 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pickcar/bloc/listcar/listcarbloc.dart';
 import 'package:pickcar/bloc/listcar/listcarevent.dart';
 import 'package:pickcar/bloc/listcar/listcarstate.dart';
+import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/motorcycle.dart';
+import 'package:pickcar/widget/listcar/listcaritem.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class ListCarPage extends StatefulWidget {
   @override
@@ -44,8 +47,26 @@ class _ListCarPageState extends State<ListCarPage> {
                 child: Text("Dont have data"),
               );
             } else {
-              Motorcycle motor = _listCarBloc.motorcyclelist[0];
-              return Center(child: Text("Have data"),);
+              return LayoutBuilder(
+                builder: (layoutcintext, constrant) {
+                  return ListView(
+                      children: _listCarBloc.motorcyclelist
+                          .map((motor) => Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  ListCarItem(
+                                    key: ValueKey(motor.firestoredocid),
+                                    constrant: constrant,
+                                    motor: motor,
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  )
+                                ],
+                              ))
+                          .toList());
+                },
+              );
             }
           }
         },

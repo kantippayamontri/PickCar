@@ -55,7 +55,7 @@ class Motorcycle{
     @required this.motorbacklink,
     @required this.motorleftlink,
     @required this.motorrightlink,
-    @required this.carstatus
+    @required this.carstatus,
   });
 
   Map<String , dynamic> toJson(){
