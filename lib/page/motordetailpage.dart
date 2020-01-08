@@ -4,7 +4,7 @@ import 'package:pickcar/bloc/motordetail/motordetailbloc.dart';
 import 'package:pickcar/bloc/motordetail/motordetailevent.dart';
 import 'package:pickcar/bloc/motordetail/motordetailstate.dart';
 import 'package:pickcar/main.dart';
-import 'package:pickcar/page/rental/motorrentaldefind.dart';
+import 'package:pickcar/page/rental/motorrentaldefindpage.dart';
 
 class MotorDetailPage extends StatefulWidget {
   String motordocid;
@@ -58,7 +58,7 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => MotorRentalDefind(
+                            builder: (context) => MotorRentalDefindPage(
                                 motorcycle: _motorDetailBloc.motorcycle)),
                       );
                     },
