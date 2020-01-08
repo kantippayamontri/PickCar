@@ -55,12 +55,12 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                   RaisedButton(
                     child: Text("${state.motorcycle.firestoredocid}"),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MotorRentalDefindPage(
-                                motorcycle: _motorDetailBloc.motorcycle)),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => MotorRentalDefindPage(
+                      //           motorcycle: _motorDetailBloc.motorcycle)),
+                      // );
                     },
                   ),
                 ],
