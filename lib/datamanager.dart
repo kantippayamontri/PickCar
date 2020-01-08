@@ -33,14 +33,13 @@ class Datamanager {
   static User user = null;
   static FirebaseStorage firebasestorage = FirebaseStorage.instance;
 
-  static List<Map<String, Object>> pages  = [
-      {'page': HomePage(), 'title': 'Home'},
-      {'page': ChatPage(), 'title': 'Chat'},
-      {'page': ListCarPage(), 'title': 'ListCar'},
-      {'page': ProfilePage(), 'title': 'Profile'},
-      {'page': SettingPage(), 'title': 'setting'},
-    ];
-
+  static List<Map<String, Object>> pages = [
+    {'page': HomePage(), 'title': 'Home'},
+    {'page': ChatPage(), 'title': 'Chat'},
+    {'page': ListCarPage(), 'title': 'ListCar'},
+    {'page': ProfilePage(), 'title': 'Profile'},
+    {'page': SettingPage(), 'title': 'setting'},
+  ];
 
   static var univeresity = [
     {
@@ -162,10 +161,9 @@ class UseString {
   static String close = "Close";
   static String registermotorfail = "Fail to register motorcycle.";
   static String waitingforrent = "Waiting for rent";
-
 }
 
-class ImageProfiles{
+class ImageProfiles {
   static Uint8List profileUrl;
   static Uint8List drimotorcard;
   static Uint8List idcard;
@@ -178,10 +176,8 @@ enum chooseimgenum { CAMERA, GALLERY }
 class PickCarColor {
   static var colormain = Color.fromARGB(255, 60, 179, 113);
   static var colorcmu = Color.fromARGB(255, 66, 26, 94);
-  static var colorFont1 = Color.fromARGB(255, 69,79,99);
-
+  static var colorFont1 = Color.fromARGB(255, 69, 79, 99);
 }
-
 
 class GearMotor {
   static String auto = "AUTO";
@@ -193,9 +189,28 @@ class GearMotor {
   ];
 }
 
-class CarStatus{
+class CarStatus {
   static const String nothing = "NOTHING";
   static const String waiting = "WAITING";
   static const String booked = "BOOKED";
   static const String working = "WORKING";
+}
+
+class CarTimeSlot {
+
+  static String sub1 = "8.00 - 9.30";
+  static String sub2 = "9.30 - 11.00";
+  static String sub3 = "11.00 - 12.30";
+  static String sub4 = "13.00 - 14.30";
+  static String sub5 = "14.30 - 16.00";
+  static String sub6 = "16.00 - 17.30";
+
+  static List<String> timelist = [
+    "8.00 - 9.30",
+    "9.30 - 11.00",
+    "11.00 - 12.30",
+    "13.00 - 14.30",
+    "14.30 - 16.00",
+    "16.00 - 17.30",
+  ];
 }
