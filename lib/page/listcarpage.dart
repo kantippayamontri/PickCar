@@ -44,8 +44,26 @@ class _ListCarPageState extends State<ListCarPage> {
                 child: Text("Dont have data"),
               );
             } else {
-              Motorcycle motor = _listCarBloc.motorcyclelist[0];
-              return Center(child: Text("Have data"),);
+              return LayoutBuilder(
+                builder: (layoutcintext, constrant) {
+                  return ListView(
+                      children: _listCarBloc.motorcyclelist
+                          .map((motor) => Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  ListCarItem(
+                                    key: ValueKey(motor.firestoredocid),
+                                    constrant: constrant,
+                                    motor: motor,
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  )
+                                ],
+                              ))
+                          .toList());
+                },
+              );
             }
           }
         },
