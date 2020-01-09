@@ -4,6 +4,7 @@ import 'package:pickcar/bloc/listcar/listcarbloc.dart';
 import 'package:pickcar/bloc/listcar/listcarevent.dart';
 import 'package:pickcar/bloc/listcar/listcarstate.dart';
 import 'package:pickcar/models/motorcycle.dart';
+import 'package:pickcar/widget/listcar/listcatitem.dart';
 
 class ListCarPage extends StatefulWidget {
   @override
