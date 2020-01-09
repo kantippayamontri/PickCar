@@ -19,7 +19,7 @@ class Motorcycle{
   String gear;
   String color;
   String storagedocid;
-  String firestoredocid;
+  String firestoredocid=null;
   String owneruid;
   String motorprofilelink;
   String motorownerliscenselink;
@@ -60,7 +60,7 @@ class Motorcycle{
 
   Map<String , dynamic> toJson(){
     return {
-      'firestoredocid' : null,
+      'firestoredocid' : this.firestoredocid,
       'storagedocid' : this.storagedocid,
       'owneruid' : this.owneruid,
       'gear' : this.gear,

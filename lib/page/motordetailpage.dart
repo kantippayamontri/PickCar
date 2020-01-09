@@ -4,7 +4,6 @@ import 'package:pickcar/bloc/motordetail/motordetailbloc.dart';
 import 'package:pickcar/bloc/motordetail/motordetailevent.dart';
 import 'package:pickcar/bloc/motordetail/motordetailstate.dart';
 import 'package:pickcar/main.dart';
-import 'package:pickcar/page/rental/motorrentaldefindpage.dart';
 
 class MotorDetailPage extends StatefulWidget {
   String motordocid;
@@ -52,6 +51,7 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text("${state.motorcycle.carstatus}"),
+                  Text("${state.motorcycle.firestoredocid}"),
                   RaisedButton(
                     child: Text("${state.motorcycle.firestoredocid}"),
                     onPressed: () {
