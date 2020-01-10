@@ -4,6 +4,7 @@ import 'package:pickcar/bloc/motordetail/motordetailbloc.dart';
 import 'package:pickcar/bloc/motordetail/motordetailevent.dart';
 import 'package:pickcar/bloc/motordetail/motordetailstate.dart';
 import 'package:pickcar/main.dart';
+import 'package:pickcar/page/motorrentalformpage.dart';
 
 class MotorDetailPage extends StatefulWidget {
   String motordocid;
@@ -55,12 +56,11 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                   RaisedButton(
                     child: Text("${state.motorcycle.firestoredocid}"),
                     onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => MotorRentalDefindPage(
-                      //           motorcycle: _motorDetailBloc.motorcycle)),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MotorRentalFormPage(motorcycle: _motorDetailBloc.motorcycle,)),
+                      );
                     },
                   ),
                 ],

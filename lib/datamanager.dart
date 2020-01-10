@@ -20,7 +20,6 @@ class Datamanager {
   static String carregisterpage = "/carregisterpage";
   static String rentalpage = "/rentalpage";
   static String listcarpage = "/listcarpage";
-
   static String editprofile = "/editprofile";
   static String editdetail = "/editdetail";
   static String changepassword = "/ChangePassword";
@@ -33,14 +32,13 @@ class Datamanager {
   static User user = null;
   static FirebaseStorage firebasestorage = FirebaseStorage.instance;
 
-  static List<Map<String, Object>> pages  = [
-      {'page': HomePage(), 'title': 'Home'},
-      {'page': ChatPage(), 'title': 'Chat'},
-      {'page': ListCarPage(), 'title': 'ListCar'},
-      {'page': ProfilePage(), 'title': 'Profile'},
-      {'page': SettingPage(), 'title': 'setting'},
-    ];
-
+  static List<Map<String, Object>> pages = [
+    {'page': HomePage(), 'title': 'Home'},
+    {'page': ChatPage(), 'title': 'Chat'},
+    {'page': ListCarPage(), 'title': 'ListCar'},
+    {'page': ProfilePage(), 'title': 'Profile'},
+    {'page': SettingPage(), 'title': 'setting'},
+  ];
 
   static var univeresity = [
     {
@@ -161,11 +159,14 @@ class UseString {
   static String picuploadval = "Please select all images.";
   static String close = "Close";
   static String registermotorfail = "Fail to register motorcycle.";
-   static String waitingforrent = "Waiting for rent";
-
+  static String waitingforrent = "Waiting for rent";
+  static String price = "Price (Baht)";
+  static String minimumprice = "Minimum price is ";
+  static String baht = "Baht";
+  static String choosedate = "Please choose date";
 }
 
-class ImageProfiles{
+class ImageProfiles {
   static Uint8List profileUrl;
   static Uint8List drimotorcard;
   static Uint8List idcard;
@@ -178,10 +179,8 @@ enum chooseimgenum { CAMERA, GALLERY }
 class PickCarColor {
   static var colormain = Color.fromARGB(255, 60, 179, 113);
   static var colorcmu = Color.fromARGB(255, 66, 26, 94);
-  static var colorFont1 = Color.fromARGB(255, 69,79,99);
-
+  static var colorFont1 = Color.fromARGB(255, 69, 79, 99);
 }
-
 
 class GearMotor {
   static String auto = "AUTO";
@@ -193,9 +192,13 @@ class GearMotor {
   ];
 }
 
-class CarStatus{
+class CarStatus {
   static const String nothing = "NOTHING";
   static const String waiting = "WAITING";
   static const String booked = "BOOKED";
   static const String working = "WORKING";
+}
+
+class CarPrice{
+  static const double motorminprice = 50.0;
 }
