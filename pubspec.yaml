@@ -35,6 +35,8 @@ dependencies:
   permission_handler: '^4.0.0'
   mime_type: ^0.2.4
   transparent_image: ^1.0.0
+  jiffy: ^2.2.0
+  flutter_tags: "^0.4.5"
   dropdownfield: 1.0.0
   
   

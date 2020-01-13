@@ -60,7 +60,10 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => MotorRentalFormPage(motorcycle: _motorDetailBloc.motorcycle,)),
-                      );
+                      ).then((_){
+                        print("in then in detailpage");
+                        _motorDetailBloc.add(MotorDetailLoadData());
+                      });
                     },
                   ),
                 ],

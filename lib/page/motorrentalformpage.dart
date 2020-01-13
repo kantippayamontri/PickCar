@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tags/tag.dart';
+import 'package:gradient_widgets/gradient_widgets.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:pickcar/bloc/motorrentalform/motorrantalformbloc.dart';
+import 'package:pickcar/bloc/motorrentalform/motorrentalformevent.dart';
 import 'package:pickcar/models/motorcycle.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import '../datamanager.dart';
 
@@ -21,21 +26,65 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
     super.initState();
   }
 
+  void setstate() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height -
-              MediaQuery.of(context).padding.top,
-          width: MediaQuery.of(context).size.width,
-          margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-          child: LayoutBuilder(
-            builder: (ctx, constraint) {
-              return Form(
+      body: Container(
+        height: MediaQuery.of(context).size.height -
+            MediaQuery.of(context).padding.top,
+        width: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+        child: LayoutBuilder(
+          builder: (ctx, constraint) {
+            return SingleChildScrollView(
+              child: Form(
                 key: _motorRentalFormBloc.formkey,
                 child: Column(
                   children: <Widget>[
+                    //todo profile
+                    SizedBox(
+                      height: 20,
+                    ),
+
+                    _container(
+                        constraint.maxHeight * 0.3, constraint.maxWidth * 0.9, [
+                      Text(
+                        UseString.profile,
+                        style: _textstyle(),
+                      ),
+                      SizedBox(height: 5,),
+                      Container(
+                          height: constraint.maxHeight * 0.2,
+                          width: constraint.maxWidth * 0.8,
+                          child: Stack(
+                            children: <Widget>[
+                              Center(child: CircularProgressIndicator()),
+                              Center(
+                                child: FadeInImage.memoryNetwork(
+                                  placeholder: kTransparentImage,
+                                  image: _motorRentalFormBloc
+                                      .motorcycle.motorprofilelink,
+                                  fit: BoxFit.fill,
+                                ),
+                              )
+                            ],
+                          )),
+                      // Stack(children: <Widget>[
+                      //   Center(child: CircularProgressIndicator()),
+                      //   Center(
+                      //     child: FadeInImage.memoryNetwork(
+                      //         placeholder: kTransparentImage,
+                      //         image: _motorRentalFormBloc.motorcycle.motorprofilelink,
+                      //         fit: BoxFit.fill,
+                      //       ),
+                      //   )
+                      // ],)
+                    ]),
+
                     SizedBox(
                       height: constraint.maxHeight * 0.05,
                     ),
@@ -68,14 +117,92 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
                     _container(
                         constraint.maxHeight * 0.2, constraint.maxWidth * 0.9, [
                       Text(
-                        UseString.choosedate,
+                        UseString.pleasechoosedate,
                         style: _textstyle(),
                       ),
-                    ])
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(Jiffy([
+                            _motorRentalFormBloc.dateTime.year,
+                            _motorRentalFormBloc.dateTime.month,
+                            _motorRentalFormBloc.dateTime.day
+                          ]).yMMMMd)
+                        ],
+                      ),
+                      _button(UseString.choosedate, () {
+                        setState(() {
+                          _motorRentalFormBloc.datepicker(setstate);
+                        });
+                      })
+                    ]),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    _container(
+                        constraint.maxHeight * 0.2, constraint.maxWidth * 0.9, [
+                      Text(
+                        UseString.choosetime,
+                        style: _textstyle(),
+                      ),
+                      Tags(
+                        key: UniqueKey(),
+                        itemCount: TimeSlot.toList().length,
+                        itemBuilder: (int index) {
+                          final String timeslot = TimeSlot.toList()[index];
+                          return ItemTags(
+                            key: Key(timeslot),
+                            index: index,
+                            title: timeslot,
+                            active: false,
+                            removeButton: null,
+                            onPressed: (ts) {
+                              print("click is ${ts.title}");
+                              _motorRentalFormBloc.checkitemtimeslot(ts);
+                            },
+                            color: Colors.white,
+                            activeColor: PickCarColor.colormain,
+                          );
+                        },
+                      ),
+                    ]),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    _submitbutton(this.context, () {
+                      _motorRentalFormBloc
+                          .add(MotorRentalFormSubmitFormEvent());
+                    })
                   ],
                 ),
-              );
-            },
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _submitbutton(BuildContext context, Function onclick) {
+    return ButtonTheme(
+      height: 75,
+      minWidth: MediaQuery.of(context).size.width * 0.9,
+      child: GradientButton(
+        elevation: 5,
+        callback: () {
+          onclick();
+        },
+        gradient: LinearGradient(colors: [
+          PickCarColor.colormain,
+          PickCarColor.colormain.withOpacity(0.7),
+          Colors.yellow
+        ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+        child: Center(
+          child: Text(
+            UseString.signup,
+            style: TextStyle(fontSize: 24),
           ),
         ),
       ),
@@ -105,6 +232,28 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[...wg],
         ));
+  }
+
+  Widget _button(
+    String txt,
+    Function onpress,
+  ) {
+    return Expanded(
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: RaisedButton(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+              side: BorderSide(color: PickCarColor.colormain)),
+          onPressed: () {
+            onpress();
+          },
+          color: PickCarColor.colormain,
+          textColor: Colors.white,
+          child: Text(txt),
+        ),
+      ),
+    );
   }
 
   TextStyle _textstyle() {

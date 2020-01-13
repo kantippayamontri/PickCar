@@ -20,6 +20,7 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
   Stream<MotorDetailState> mapEventToState(MotorDetailEvent event) async* {
     // TODO: implement mapEventToState
     if (event is MotorDetailLoadData) {
+      print("MotorDetailLoadData");
       yield MotorDetailStartState();
       await loaddata();
       yield MotorDetailShowdata(motorcycle: this.motorcycle);

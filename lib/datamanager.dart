@@ -163,7 +163,9 @@ class UseString {
   static String price = "Price (Baht)";
   static String minimumprice = "Minimum price is ";
   static String baht = "Baht";
-  static String choosedate = "Please choose date";
+  static String pleasechoosedate = "Please choose date";
+  static String choosedate = "Choose Date";
+  static String choosetime = "Choose Time";
 }
 
 class ImageProfiles {
@@ -199,6 +201,57 @@ class CarStatus {
   static const String working = "WORKING";
 }
 
-class CarPrice{
+class CarPrice {
   static const double motorminprice = 50.0;
+}
+
+
+
+class TimeSlot {
+
+  //TimeSlot();
+
+  static const String sub1 = "8.00 - 9.30";
+  static const String sub2 = "9.30 - 11.00";
+  static const String sub3 = "11.00 - 12.30";
+  static const String sub4 = "13.00 - 14.30";
+  static const String sub5 = "14.30 - 16.00";
+  static const String sub6 = "16.00 - 17.30";
+
+  static List<String> timeslotlist = List<String>();
+  static DateTime now = DateTime.now();
+  static int year = now.year;
+  static int month = now.month;
+  static int day = now.day;
+  static int hr = now.hour;
+  static int min = now.minute;
+
+  static List<String> loadlist(){
+    timeslotlist =  List<String>();
+    if(now.isBefore(DateTime(year,month,day,8,0))){
+      timeslotlist.add(sub1);
+    }
+    if(now.isBefore(DateTime(year,month,day,9,30))){
+      timeslotlist.add(sub2);
+    }
+    if(now.isBefore(DateTime(year ,month , day , 11,0))){
+      timeslotlist.add(sub3);
+    }
+
+    if(now.isBefore(DateTime(year,month,day,13,0))){
+      timeslotlist.add(sub4);
+    }
+    if(now.isBefore(DateTime(year,month,day,14,30))){
+      timeslotlist.add(sub5);
+    }
+    if(now.isBefore(DateTime(year,month,day,16,0))){
+      timeslotlist.add(sub6);
+    }
+
+    return timeslotlist;
+  }
+
+  static List<String> toList() {
+    return loadlist();
+  }
 }
