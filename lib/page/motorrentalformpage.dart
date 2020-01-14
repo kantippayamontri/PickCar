@@ -56,7 +56,9 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
                         UseString.profile,
                         style: _textstyle(),
                       ),
-                      SizedBox(height: 5,),
+                      SizedBox(
+                        height: 5,
+                      ),
                       Container(
                           height: constraint.maxHeight * 0.2,
                           width: constraint.maxWidth * 0.8,
@@ -147,9 +149,10 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
                       ),
                       Tags(
                         key: UniqueKey(),
-                        itemCount: TimeSlot.toList().length,
+                        itemCount: TimeSlot.toList(_motorRentalFormBloc.dateTime).length,
                         itemBuilder: (int index) {
-                          final String timeslot = TimeSlot.toList()[index];
+                          final String timeslot = TimeSlot.toList(
+                              _motorRentalFormBloc.dateTime)[index];
                           return ItemTags(
                             key: Key(timeslot),
                             index: index,

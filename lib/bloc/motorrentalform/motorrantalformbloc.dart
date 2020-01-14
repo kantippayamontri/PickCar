@@ -36,6 +36,8 @@ class MotorRentalFormBloc
       print("in MotorRentalFormSubmitFormEvent");
       await submitform();
       await adddatamotorforrent();
+      await resetstatusmotor();
+      print("rental success");
 
       Navigator.of(context).pushNamedAndRemoveUntil(
         Datamanager.listcarpage,
@@ -48,7 +50,7 @@ class MotorRentalFormBloc
     final form = formkey.currentState;
     if (form.validate()) {
       print("form validate naja");
-      await changstatusmotorFirsestore();
+      //await changstatusmotorFirsestore();
     }
   }
 
@@ -68,7 +70,19 @@ class MotorRentalFormBloc
         .document(docid)
         .updateData({'motorforrentdocid': docid});
 
-    print("rental success");
+    
+  }
+
+  Future<Null> resetstatusmotor() async {
+    this.motorcycle.iswaiting = true;
+    this.motorcycle.carstatus = CarStatus.checkcarstatus(this.motorcycle);
+    await Datamanager.firestore
+        .collection("Motorcycle")
+        .document(this.motorcycle.firestoredocid)
+        .updateData({
+          'iswaiting' : true,
+          'carstatus' : this.motorcycle.carstatus,
+        });
   }
 
   Future<Null> changstatusmotorFirsestore() async {

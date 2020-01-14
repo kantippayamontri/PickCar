@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/page/chatpage.dart';
 import 'package:pickcar/page/homepage.dart';
 import 'package:pickcar/page/listcarpage.dart';
@@ -166,6 +167,7 @@ class UseString {
   static String pleasechoosedate = "Please choose date";
   static String choosedate = "Choose Date";
   static String choosetime = "Choose Time";
+  static String information = "Information";
 }
 
 class ImageProfiles {
@@ -199,16 +201,53 @@ class CarStatus {
   static const String waiting = "WAITING";
   static const String booked = "BOOKED";
   static const String working = "WORKING";
+  static const String waitbook = "WAITING  BOOKED";
+  static const String waitwork = "WAIT  WORKING";
+  static const String bookwork = "BOOKED  WORK";
+  static const String waitbookwork = "WAITING  BOOKED  WORKING";
+
+  static String checkcarstatus(Motorcycle motorcycle) {
+    bool iswait = motorcycle.iswaiting;
+    bool isbook = motorcycle.isbook;
+    bool iswork = motorcycle.isworking;
+
+    if (isbook && iswait && iswork) {
+      return CarStatus.waitbookwork;
+    }
+
+    if (isbook && iswait) {
+      return CarStatus.waitbook;
+    }
+
+    if (iswait && iswork) {
+      return CarStatus.waitwork;
+    }
+
+    if (isbook && iswork) {
+      return CarStatus.bookwork;
+    }
+
+    if (isbook) {
+      return CarStatus.booked;
+    }
+
+    if (iswait) {
+      return CarStatus.waiting;
+    }
+
+    if (iswork) {
+      return CarStatus.working;
+    }
+
+    return CarStatus.nothing;
+  }
 }
 
 class CarPrice {
   static const double motorminprice = 50.0;
 }
 
-
-
 class TimeSlot {
-
   //TimeSlot();
 
   static const String sub1 = "8.00 - 9.30";
@@ -226,32 +265,35 @@ class TimeSlot {
   static int hr = now.hour;
   static int min = now.minute;
 
-  static List<String> loadlist(){
-    timeslotlist =  List<String>();
-    if(now.isBefore(DateTime(year,month,day,8,0))){
+  static List<String> loadlist(DateTime timecheck) {
+    timeslotlist = List<String>();
+    bool check = !((year == timecheck.year) &&
+        (month == timecheck.month) &&
+        (day == timecheck.day));
+    if (now.isBefore(DateTime(year, month, day, 8, 0)) || check) {
       timeslotlist.add(sub1);
     }
-    if(now.isBefore(DateTime(year,month,day,9,30))){
+    if (now.isBefore(DateTime(year, month, day, 9, 30)) || check) {
       timeslotlist.add(sub2);
     }
-    if(now.isBefore(DateTime(year ,month , day , 11,0))){
+    if (now.isBefore(DateTime(year, month, day, 11, 0)) || check) {
       timeslotlist.add(sub3);
     }
 
-    if(now.isBefore(DateTime(year,month,day,13,0))){
+    if (now.isBefore(DateTime(year, month, day, 13, 0)) || check) {
       timeslotlist.add(sub4);
     }
-    if(now.isBefore(DateTime(year,month,day,14,30))){
+    if (now.isBefore(DateTime(year, month, day, 14, 30)) || check) {
       timeslotlist.add(sub5);
     }
-    if(now.isBefore(DateTime(year,month,day,16,0))){
+    if (now.isBefore(DateTime(year, month, day, 16, 0)) || check) {
       timeslotlist.add(sub6);
     }
 
     return timeslotlist;
   }
 
-  static List<String> toList() {
-    return loadlist();
+  static List<String> toList(DateTime date) {
+    return loadlist(date);
   }
 }

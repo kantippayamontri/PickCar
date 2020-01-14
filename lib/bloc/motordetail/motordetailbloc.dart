@@ -10,7 +10,10 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
   BuildContext context;
   String firestoredocid;
   Motorcycle motorcycle;
-  MotorDetailBloc({@required this.context, @required this.firestoredocid});
+  List<String> listcorousel;
+  MotorDetailBloc({@required this.context, @required this.firestoredocid}){
+    listcorousel = List<String>();
+  }
 
   @override
   // TODO: implement initialState
@@ -72,6 +75,15 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
     );
 
     motor.firestoredocid = ds['firestoredocid'];
+    motor.isbook = ds['isbook'];
+    motor.iswaiting = ds['iswaiting'];
+    motor.isworking = ds['isworking'];
+
+    listcorousel.add(ds['motorfrontlink']);
+    listcorousel.add(ds['motorleftlink']);
+    listcorousel.add(ds['motorrightlink']);
+    listcorousel.add(ds['motorbacklink']);
+
 
     print("endtdfasdfadsfasdfas");
 

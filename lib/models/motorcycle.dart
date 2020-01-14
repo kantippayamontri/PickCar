@@ -28,6 +28,10 @@ class Motorcycle{
   String motorleftlink;
   String motorrightlink;
   String carstatus;
+  bool isbook = false;
+  bool iswaiting = false;
+  bool isworking = false;
+
 
   Motorcycle({
     @required this.profilepath,
@@ -86,7 +90,10 @@ class Motorcycle{
       'motorbacklink' : this.motorbacklink,
       'motorleftlink' : this.motorleftlink,
       'motorrightlink' : this.motorrightlink,
-      'carstatus' : this.carstatus
+      'carstatus' : this.carstatus,
+      'isbook' : this.isbook,
+      'iswaiting' : this.iswaiting,
+      'isworking' : this.isworking
     };
   }
 }
