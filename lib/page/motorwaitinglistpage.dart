@@ -87,7 +87,9 @@ class _MotorWaitingListPageState extends State<MotorWaitingListPage> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[],
+                                    children: <Widget>[
+                                      
+                                    ],
                                     )
                                 ),
                               ],
