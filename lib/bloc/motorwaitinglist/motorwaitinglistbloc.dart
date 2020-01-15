@@ -32,7 +32,8 @@ class MotorWaitingListBloc
     }
   }
 
-  Future<Null> loaddata() async {
+  Future<Null> loaddata() async { 
+
     QuerySnapshot querySnapshot = await Datamanager.firestore
         .collection("Motorcycleforrent")
         .orderBy('dateTime')

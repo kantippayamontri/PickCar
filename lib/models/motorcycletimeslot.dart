@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
 class MotorcycleTimeSlot {
@@ -10,6 +11,7 @@ class MotorcycleTimeSlot {
   String motorcycledocid;
   String motorforrentdocid;
 
+ 
   MotorcycleTimeSlot({
     @required this.tiemslot,
     @required this.dateTime,

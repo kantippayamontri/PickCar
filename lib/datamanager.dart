@@ -3,10 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:pickcar/models/motorcycle.dart';
-import 'package:pickcar/page/chatpage.dart';
 import 'package:pickcar/page/homepage.dart';
 import 'package:pickcar/page/listcarpage.dart';
 import 'package:pickcar/page/profile/profilepage.dart';
+import 'package:pickcar/page/searchpage/search.dart';
 import 'package:pickcar/page/setting/settingpage.dart';
 import 'dart:typed_data';
 
@@ -26,6 +26,9 @@ class Datamanager {
   static String changepassword = "/ChangePassword";
   static String newpassword = "/Newpassword";
   static String emailsend = "/Emailsend";
+
+  static String listcar = "/Listcar";
+  
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
   static FirebaseUser firebaseuser = null;
@@ -247,6 +250,9 @@ class CarStatus {
 class CarPrice {
   static const double motorminprice = 50.0;
 }
+class DataFetch{
+  static int fetchmotor = 0; 
+}
 
 class TimeSlot {
   //TimeSlot();
@@ -297,4 +303,5 @@ class TimeSlot {
   static List<String> toList(DateTime date) {
     return loadlist(date);
   }
+
 }
