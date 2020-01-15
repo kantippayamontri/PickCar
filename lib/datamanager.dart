@@ -168,6 +168,7 @@ class UseString {
   static String choosedate = "Choose Date";
   static String choosetime = "Choose Time";
   static String information = "Information";
+  static String aroundmotorcycle = "Around the motorcycle";
 }
 
 class ImageProfiles {

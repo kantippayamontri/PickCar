@@ -9,6 +9,7 @@ import 'package:pickcar/page/motorrentalformpage.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import '../datamanager.dart';
+import 'motorwaitinglistpage.dart';
 
 class MotorDetailPage extends StatefulWidget {
   String motordocid;
@@ -91,24 +92,38 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                     height: 20,
                   ),
                   //todo corousel
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      CarouselSlider(
-                        height: MediaQuery.of(context).size.height * 0.3,
-                        items: _motorDetailBloc.listcorousel.map((imgUrl){
-                          return Builder(builder: (BuildContext ctx){
-                            return Container(
-                              width: MediaQuery.of(context).size.width * 0.9,
-                              margin: EdgeInsets.symmetric(horizontal: 10.0),
-                              child: Image.network(imgUrl,fit: BoxFit.fill,),
-                              );
-                          },);
-                        }).toList(),
-                      )
-                    ],
-                  ),
+                  _container(MediaQuery.of(context).size.height * 0.35,
+                      MediaQuery.of(context).size.width * 0.8, [
+                    Text(
+                      UseString.aroundmotorcycle,
+                      style: _textstyle(),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        CarouselSlider(
+                          height: MediaQuery.of(context).size.height * 0.275,
+                          items: _motorDetailBloc.listcorousel.map((imgUrl) {
+                            return Builder(
+                              builder: (BuildContext ctx) {
+                                return Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.9,
+                                  margin:
+                                      EdgeInsets.symmetric(horizontal: 10.0),
+                                  child: Image.network(
+                                    imgUrl,
+                                    fit: BoxFit.fill,
+                                  ),
+                                );
+                              },
+                            );
+                          }).toList(),
+                        )
+                      ],
+                    ),
+                  ]),
 
                   //todo information
                   _container(MediaQuery.of(context).size.height * 0.5,
@@ -156,7 +171,15 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                   _motorDetailBloc.motorcycle.iswaiting
                       ? RaisedButton(
                           child: Text("waitinglist"),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MotorWaitingListPage(
+                                          motorcycle:
+                                              this._motorDetailBloc.motorcycle,
+                                        )));
+                          },
                         )
                       : SizedBox(),
                   _motorDetailBloc.motorcycle.isbook
@@ -172,7 +195,7 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                         )
                       : SizedBox(),
 
-                  /*Text("${state.motorcycle.carstatus}"),
+                  Text("${state.motorcycle.carstatus}"),
                   Text("${state.motorcycle.firestoredocid}"),
                   RaisedButton(
                     child: Text("${state.motorcycle.firestoredocid}"),
@@ -186,7 +209,7 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                         _motorDetailBloc.add(MotorDetailLoadData());
                       });
                     },
-                  ),*/
+                  ),
                 ],
               ),
             );

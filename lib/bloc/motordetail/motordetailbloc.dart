@@ -78,6 +78,7 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
     motor.isbook = ds['isbook'];
     motor.iswaiting = ds['iswaiting'];
     motor.isworking = ds['isworking'];
+    
 
     listcorousel.add(ds['motorfrontlink']);
     listcorousel.add(ds['motorleftlink']);
@@ -85,7 +86,7 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
     listcorousel.add(ds['motorbacklink']);
 
 
-    print("endtdfasdfadsfasdfas");
+    
 
     return motor;
   }

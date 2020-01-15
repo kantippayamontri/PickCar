@@ -31,6 +31,7 @@ class Motorcycle{
   bool isbook = false;
   bool iswaiting = false;
   bool isworking = false;
+  
 
 
   Motorcycle({
@@ -93,7 +94,8 @@ class Motorcycle{
       'carstatus' : this.carstatus,
       'isbook' : this.isbook,
       'iswaiting' : this.iswaiting,
-      'isworking' : this.isworking
+      'isworking' : this.isworking,
+      
     };
   }
 }

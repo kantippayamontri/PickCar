@@ -69,8 +69,11 @@ class MotorRentalFormBloc
         .collection("Motorcycleforrent")
         .document(docid)
         .updateData({'motorforrentdocid': docid});
-
-    
+    //todo update motorforrent in motorcycle
+    await Datamanager.firestore
+        .collection("Motorcycle")
+        .document(this.motorcycle.firestoredocid)
+        .updateData({'motorforrentdocid': docid});
   }
 
   Future<Null> resetstatusmotor() async {
@@ -80,9 +83,9 @@ class MotorRentalFormBloc
         .collection("Motorcycle")
         .document(this.motorcycle.firestoredocid)
         .updateData({
-          'iswaiting' : true,
-          'carstatus' : this.motorcycle.carstatus,
-        });
+      'iswaiting': true,
+      'carstatus': this.motorcycle.carstatus,
+    });
   }
 
   Future<Null> changstatusmotorFirsestore() async {
