@@ -33,7 +33,7 @@ class _ListcarState extends State<Listcar> {
 
   Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('Motorcycleforrent').snapshots(),
+      stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: 14).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();
 
@@ -70,6 +70,7 @@ class _ListcarState extends State<Listcar> {
               return Center(child: Text('Error: ${snapshot.error}'));
             else{
               motorshow = MotorcycleShow.fromSnapshot(snapshot.data);
+              // print(motorshow.generation+' '+ motorshow.brand);
               return Stack(
                 children: <Widget>[
                   Text(motorshow.generation),
