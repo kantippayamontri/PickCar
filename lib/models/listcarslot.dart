@@ -101,3 +101,34 @@ class MotorcycleShow{
      : this.fromMap(snapshot.data, reference: snapshot.reference);
   
 }
+
+class Usershow{
+
+  String name;
+  String uid;
+  String profilepicpath;
+  String profilepictype;
+  String documentid;
+  String documentchat;
+  final DocumentReference reference;
+
+  
+   Usershow.fromMap(Map<String, dynamic> map, {this.reference})
+     : assert(map['name'] != null),
+       assert(map['uid'] != null),
+       assert(map['profilepicpath'] != null),
+       assert(map['profilepictype'] != null),
+       assert(map['documentid'] != null),
+       assert(map['documentchat'] != null),
+       name = map['name'],
+       uid = map['uid'],
+       profilepicpath = map['profilepicpath'],
+       profilepictype = map['profilepictype'],
+       documentid = map['documentid'],
+       documentchat = map['documentchat'];
+      
+
+  Usershow.fromSnapshot(DocumentSnapshot snapshot)
+     : this.fromMap(snapshot.data, reference: snapshot.reference);
+  
+}
