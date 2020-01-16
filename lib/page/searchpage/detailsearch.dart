@@ -69,6 +69,12 @@ CarouselSlider carouselSlider;
               color: Colors.grey[400],
             ),
             Container(
+              margin: EdgeInsets.only(top: data.size.height),
+              width: data.size.width,
+              height: data.size.height,
+              color: Colors.grey[400],
+            ),
+            Container(
               width: data.size.width,
               height: 350,
               color: Colors.white,
@@ -192,10 +198,190 @@ CarouselSlider carouselSlider;
                 )
             ),
             Container(
-              margin: EdgeInsets.only(top: 325,left: 340),
-              child: Text(UseString.name,
-                  style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*18,color: PickCarColor.colorFont1), 
+              width: 100,
+              height: 20,
+              margin: EdgeInsets.only(top: 325,left: 310),
+              // color: Colors.black,
+              child: Center(
+                child: Text(UseString.name,
+                    style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*18,color: PickCarColor.colorFont1), 
+                ),
               ),
+            ),
+
+            Container(
+              width: 195,
+              height: 250,
+              margin: EdgeInsets.only(top: 355),
+              color: Colors.white,
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(top: 10,left: 20),
+                    child: Text(UseString.detail,
+                      style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*18,color: PickCarColor.colormain),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 40,left: 40),
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Container(
+                              height: 30,
+                              width: 30,
+                              child: Image.asset('assets/images/imagesearch/gears.png',fit: BoxFit.fill,),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 2),
+                              child: Text("autometic"+' ',
+                                style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*18,color: PickCarColor.colorFont2),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(top: 5),
+                              height: 30,
+                              width: 30,
+                              child: Image.asset('assets/images/imagesearch/cc.png',fit: BoxFit.fill,),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 2,top: 5),
+                              child: Text("123"+' '+UseString.cc,
+                                style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*18,color: PickCarColor.colorFont2),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(top: 5),
+                              height: 30,
+                              width: 30,
+                              child: Image.asset('assets/images/imagesearch/gas.png',fit: BoxFit.fill,),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 2,top: 5),
+                              child: Text("123"+' '+UseString.cc,
+                                style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*18,color: PickCarColor.colorFont2),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(top: 5),
+                              height: 30,
+                              width: 30,
+                              child: Image.asset('assets/images/imagesearch/color.png',fit: BoxFit.fill,),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 2,top: 5),
+                              child: Text("red",
+                                style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*18,color: PickCarColor.colorFont2),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: 215,
+              height: 250,
+              margin: EdgeInsets.only(top: 355,left: 201),
+              color: Colors.white,
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(top: 10,left: 20),
+                    child: Text(UseString.included,
+                      style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colormain),
+                    ),
+                  ),
+                  Container(
+                     margin: EdgeInsets.only(top: 47,left: 17),
+                     child: Icon(Icons.done,color: PickCarColor.colormain,),
+                  ),
+                  Container(
+                     margin: EdgeInsets.only(top: 93,left: 17),
+                     child: Icon(Icons.done,color: PickCarColor.colormain,),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 47,left: 40),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(UseString.freecancle,
+                            style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*18,color: PickCarColor.colorFont2),
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          margin: EdgeInsets.only(top: 5),
+                          child: Text(UseString.insurancemotorcycle,
+                            style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*18,color: PickCarColor.colorFont2),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: data.size.width,
+              height: 200,
+              margin: EdgeInsets.only(top: 610),
+              color: Colors.white,
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(left: 20,top: 20),
+                    child: Text(UseString.precautions,
+                      style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color: PickCarColor.colormain),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 20,top: 50),
+                    child: Text(UseString.precautionsdetail,
+                      style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*20,color: PickCarColor.colorFont2),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 20,top: 150),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(right: 3),
+                          height: 20,
+                          width: 20,
+                          child: Image.asset('assets/images/imagesearch/warning.png',fit: BoxFit.fill,),
+                        ),
+                        Text(UseString.warnning,
+                          style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*15,color: Colors.red),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: data.size.width,
+              height: 200,
+              margin: EdgeInsets.only(top: 815),
+              color: Colors.white,
             ),
           ],
         ),

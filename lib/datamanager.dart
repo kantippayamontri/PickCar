@@ -179,6 +179,12 @@ class UseString {
   static String information = "Information";
   static String aroundmotorcycle = "Around the motorcycle";
   static String forrent = "For rent by";
+  static String included = "Included in the price";
+  static String freecancle = "Free cancellation before 30 minute.";
+  static String insurancemotorcycle = "Free motorcycle insurance.";
+  static String precautions = "Precautions";
+  static String precautionsdetail = "\t\t\tYou have to return the motorcycle before time out. \n\t\t\tyou can always cancel for free until 30 minutes before you receive the motorcycle.";
+  static String warnning = "If you do not do as described above you will pay fee.";
 }
 class Currency{
   static String thb = "THB";
