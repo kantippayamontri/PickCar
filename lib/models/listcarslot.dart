@@ -9,7 +9,7 @@ class Listcarslot {
   int day;
   int month;
   int year;
-  double prize;
+  double price;
   String motorcycledocid;
   String motorforrentdocid;
   final DocumentReference reference;
@@ -20,7 +20,7 @@ class Listcarslot {
        assert(map['day'] != null),
        assert(map['month'] != null),
        assert(map['year'] != null),
-      //  assert(map['prize'] != null),
+       assert(map['price'] != null),
        assert(map['motorcycledocid'] != null),
        assert(map['motorforrentdocid'] != null),
        timeslotlist = List.from(map['timeslotlist']),
@@ -28,7 +28,7 @@ class Listcarslot {
        day = map['day'],
        month = map['month'],
        year = map['year'],
-       prize = map['prize'],
+       price = map['price'].toDouble(),
        motorcycledocid = map['motorcycledocid'],
        motorforrentdocid = map['motorforrentdocid'];
 

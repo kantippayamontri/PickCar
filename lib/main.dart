@@ -11,6 +11,7 @@ import 'package:pickcar/page/register/carregisterpage.dart';
 import 'package:pickcar/page/register/motorregisterpage.dart';
 import 'package:pickcar/page/register/registerpage.dart';
 import 'package:pickcar/page/rental/rentalpage.dart';
+import 'package:pickcar/page/searchpage/detailsearch.dart';
 import 'package:pickcar/page/searchpage/listcar.dart';
 import 'package:pickcar/page/signuppage.dart';
 import 'package:pickcar/page/tabscreen.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         Datamanager.emailsend : (ctx) => EmailSend(),
         Datamanager.listcarpage : (ctx) => ListCarPage(),
         Datamanager.listcar : (ctx) => Listcar(),
+        Datamanager.detailsearch : (ctx) => Detailsearch(),
         //'loginpickcarpage': (ctx) => LoginPickCarPage()
       },
       onGenerateRoute: (setting) {},

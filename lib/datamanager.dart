@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/page/homepage.dart';
 import 'package:pickcar/page/listcarpage.dart';
@@ -28,12 +29,17 @@ class Datamanager {
   static String emailsend = "/Emailsend";
 
   static String listcar = "/Listcar";
+  static String detailsearch = "/Detailsearch";
   
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
   static FirebaseUser firebaseuser = null;
   static Firestore firestore = Firestore.instance;
   static User user = null;
+  static MotorcycleShow motorcycleShow;
+  static Usershow usershow;
+  static Listcarslot listcarslot;
+
   static FirebaseStorage firebasestorage = FirebaseStorage.instance;
 
   static List<Map<String, Object>> pages = [
@@ -172,8 +178,11 @@ class UseString {
   static String choosetime = "Choose Time";
   static String information = "Information";
   static String aroundmotorcycle = "Around the motorcycle";
+  static String forrent = "For rent by";
 }
-
+class Currency{
+  static String thb = "THB";
+}
 class ImageProfiles {
   static Uint8List profileUrl;
   static Uint8List drimotorcard;
@@ -188,6 +197,7 @@ class PickCarColor {
   static var colormain = Color.fromARGB(255, 60, 179, 113);
   static var colorcmu = Color.fromARGB(255, 66, 26, 94);
   static var colorFont1 = Color.fromARGB(255, 69, 79, 99);
+  static var colorFont2 = Color.fromARGB(255, 148, 145, 145);
 }
 
 class GearMotor {
