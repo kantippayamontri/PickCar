@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flat_icons_flutter/flat_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
@@ -71,7 +72,7 @@ CarouselSlider carouselSlider;
             Container(
               margin: EdgeInsets.only(top: data.size.height),
               width: data.size.width,
-              height: data.size.height,
+              height: 400,
               color: Colors.grey[400],
             ),
             Container(
@@ -379,9 +380,82 @@ CarouselSlider carouselSlider;
             ),
             Container(
               width: data.size.width,
-              height: 200,
+              height: 175,
               margin: EdgeInsets.only(top: 815),
               color: Colors.white,
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(left: 20,top: 20),
+                    child: Text(UseString.location,
+                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color: PickCarColor.colormain),
+                          ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 20,top: 50),
+                    child: Text(UseString.locationdetail,
+                      style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*20,color: PickCarColor.colorFont2),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: (){
+                      print('aaa');
+                    },
+                    child: Stack(
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(left: 177,top: 80),
+                          width: 50,
+                          height: 55,
+                          child: Image.asset('assets/images/imagesearch/pin.png',fit: BoxFit.fill,),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 174,top: 130),
+                          width: 60,
+                          height: 55,
+                          child: Text(UseString.location,
+                            style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*15,color: PickCarColor.colormain),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 120,
+              margin: EdgeInsets.only(top: 995),
+              width: data.size.width,
+              color: Colors.white,
+              child: Stack(
+                children: <Widget>[
+                  Center(
+                    child: Image.asset('assets/images/imagesearch/buttom.png',fit: BoxFit.fill,),
+                  ),
+                  GestureDetector(
+                    onTap: (){
+                      print('zzz');
+                    },
+                    child: Center(
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 9),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(18),
+                          // color: Colors.black,
+                        ),
+                        width: 148,
+                        height: 45,
+                        child: Center(
+                          child: Text(UseString.booking,
+                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: Colors.white),
+                          ),
+                      ),
+                    ),
+                  ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

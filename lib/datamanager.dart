@@ -185,6 +185,9 @@ class UseString {
   static String precautions = "Precautions";
   static String precautionsdetail = "\t\t\tYou have to return the motorcycle before time out. \n\t\t\tyou can always cancel for free until 30 minutes before you receive the motorcycle.";
   static String warnning = "If you do not do as described above you will pay fee.";
+  static String location = "Location";
+  static String locationdetail = "\t\t\tThe location of vehicle and key box.";
+  static String booking = "BOOKING";
 }
 class Currency{
   static String thb = "THB";
