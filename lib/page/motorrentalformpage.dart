@@ -51,7 +51,7 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
                     ),
 
                     _container(
-                        constraint.maxHeight * 0.3, constraint.maxWidth * 0.9, [
+                        constraint.maxHeight * 0.35, constraint.maxWidth * 0.9, [
                       Text(
                         UseString.profile,
                         style: _textstyle(),
@@ -92,7 +92,7 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
                     ),
                     //todo price
                     _container(
-                        constraint.maxHeight * 0.2, constraint.maxWidth * 0.9, [
+                        constraint.maxHeight * 0.275, constraint.maxWidth * 0.9, [
                       Text(
                         UseString.price,
                         style: _textstyle(),
@@ -117,7 +117,7 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
                       height: 20,
                     ),
                     _container(
-                        constraint.maxHeight * 0.2, constraint.maxWidth * 0.9, [
+                        constraint.maxHeight * 0.25, constraint.maxWidth * 0.9, [
                       Text(
                         UseString.pleasechoosedate,
                         style: _textstyle(),
@@ -142,7 +142,7 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
                       height: 20,
                     ),
                     _container(
-                        constraint.maxHeight * 0.2, constraint.maxWidth * 0.9, [
+                        constraint.maxHeight * 0.25, constraint.maxWidth * 0.9, [
                       Text(
                         UseString.choosetime,
                         style: _textstyle(),

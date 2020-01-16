@@ -34,34 +34,63 @@ class MotorWaitingListBloc
 
   Future<Null> loaddata() async {
     QuerySnapshot querySnapshot = await Datamanager.firestore
-        .collection("Motorcycleforrent")
+        .collection("MotorcycleforrentSlot")
         .orderBy('dateTime')
         .getDocuments();
+
     var list = querySnapshot.documents;
     list = list
-        .where((motorforrent) =>
-            motorforrent['motorcycledocid'] == motorcycle.firestoredocid)
+        .where((motorforrentslot) =>
+            motorforrentslot['ownerdocid'] == Datamanager.user.documentid)
         .toList();
 
     for (var doc in list) {
-      List<String> slotlist = List<String>();
-      slotlist = List.from(doc['timeslotlist']);
-      for (var timeslot in slotlist) {
-        MotorcycleTimeSlot motorcycleTimeSlot = MotorcycleTimeSlot(
-            dateTime: (doc['dateTime'] as Timestamp).toDate(),
-            day: doc['day'],
-            month: doc['month'],
-            year: doc['year'],
-            motorcycledocid: doc['motorcycledocid'],
-            motorforrentdocid: doc['motorforrentdocid'],
-            prize: doc['prize'],
-            tiemslot: timeslot);
+      // print("//Timeslot//");
+      // print(doc['timeslot']);
+      MotorcycleTimeSlot motorcycleTimeSlot = MotorcycleTimeSlot(
+        dateTime: (doc['dateTime'] as Timestamp).toDate(),
+        day: doc['day'],
+        month: doc['month'],
+        year: doc['year'],
+        motorcycledocid: doc['motorcycledocid'],
+        motorforrentdocid: doc['motorforrentdocid'],
+        ownerdocid: doc['ownerdocid'],
+        prize: doc['prize'],
+        timeslot: doc['timeslot'],
+      );
 
-        motorcycletimeslotlist.add(motorcycleTimeSlot);
-      }
+      motorcycletimeslotlist.add(motorcycleTimeSlot);
     }
 
-    
+    // QuerySnapshot querySnapshot = await Datamanager.firestore
+    //     .collection("Motorcycleforrent")
+    //     .orderBy('dateTime')
+    //     .getDocuments();
+    // var list = querySnapshot.documents;
+    // list = list
+    //     .where((motorforrent) =>
+    //         motorforrent['motorcycledocid'] == motorcycle.firestoredocid)
+    //     .toList();
 
+    // for (var doc in list) {
+    //   List<String> slotlist = List<String>();
+    //   slotlist = List.from(doc['timeslotlist']);
+    //   for (var timeslot in slotlist) {
+    //     MotorcycleTimeSlot motorcycleTimeSlot = MotorcycleTimeSlot(
+    //         dateTime: (doc['dateTime'] as Timestamp).toDate(),
+    //         day: doc['day'],
+    //         month: doc['month'],
+    //         year: doc['year'],
+    //         motorcycledocid: doc['motorcycledocid'],
+    //         motorforrentdocid: doc['motorforrentdocid'],
+    //         prize:  double.parse(doc['price'].toString()) ,
+    //         timeslot: timeslot);
+
+    //         //print("Prize is ${doc['prize']}");
+    //         //print("Timeslot is ${timeslot}");
+
+    //     motorcycletimeslotlist.add(motorcycleTimeSlot);
+    //   }
+    // }
   }
 }
