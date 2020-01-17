@@ -49,7 +49,7 @@ CarouselSlider carouselSlider;
           fit: BoxFit.cover,
         ),
        centerTitle: true,
-       title: Text(UseString.changepass,
+       title: Text(UseString.detail,
           style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color: Colors.white), 
        ),
        leading: IconButton(
@@ -435,7 +435,7 @@ CarouselSlider carouselSlider;
                   ),
                   GestureDetector(
                     onTap: (){
-                      print('zzz');
+                      Navigator.of(context).pushNamed(Datamanager.slottiempage);
                     },
                     child: Center(
                       child: Container(

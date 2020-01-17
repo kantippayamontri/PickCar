@@ -11,6 +11,7 @@ class Listcarslot {
   int year;
   double price;
   String motorcycledocid;
+  String ownerdocid;
   String motorforrentdocid;
   final DocumentReference reference;
 
@@ -22,6 +23,7 @@ class Listcarslot {
        assert(map['year'] != null),
        assert(map['price'] != null),
        assert(map['motorcycledocid'] != null),
+       assert(map['ownerdocid'] != null),
        assert(map['motorforrentdocid'] != null),
        timeslotlist = List.from(map['timeslotlist']),
        dateTime = (map['dateTime'] as Timestamp).toDate(),
@@ -30,6 +32,7 @@ class Listcarslot {
        year = map['year'],
        price = map['price'].toDouble(),
        motorcycledocid = map['motorcycledocid'],
+       ownerdocid = map['ownerdocid'],
        motorforrentdocid = map['motorforrentdocid'];
 
   Listcarslot.fromSnapshot(DocumentSnapshot snapshot)
@@ -132,3 +135,42 @@ class Usershow{
      : this.fromMap(snapshot.data, reference: snapshot.reference);
   
 }
+class Slottime{
+
+  int day;
+  int month;
+  double price;
+  String timeslot;
+  String university;
+  int year;
+  String motorcycledocid;
+  String motorforrentdocid;
+  String ownerdocid;
+  final DocumentReference reference;
+
+  
+   Slottime.fromMap(Map<String, dynamic> map, {this.reference})
+     : assert(map['day'] != null),
+       assert(map['month'] != null),
+       assert(map['prize'] != null),
+       assert(map['timeslot'] != null),
+       assert(map['university'] != null),
+       assert(map['year'] != null),
+       assert(map['motorcycledocid'] != null),
+       assert(map['motorforrentdocid'] != null),
+       assert(map['ownerdocid'] != null),
+       day = map['day'],
+       month = map['month'],
+       price = map['prize'].toDouble(),
+       timeslot = map['timeslot'],
+       university = map['university'],
+       motorcycledocid = map['motorcycledocid'],
+       motorforrentdocid = map['motorforrentdocid'],
+       ownerdocid = map['ownerdocid'],
+       year = map['year'];
+
+  Slottime.fromSnapshot(DocumentSnapshot snapshot)
+     : this.fromMap(snapshot.data, reference: snapshot.reference);
+  
+}
+

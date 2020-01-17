@@ -30,6 +30,8 @@ class Datamanager {
 
   static String listcar = "/Listcar";
   static String detailsearch = "/Detailsearch";
+  static String slottiempage = "/SlotTiemPage";
+  static String confirmpage = "/ConfirmPage";
   
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
@@ -39,6 +41,7 @@ class Datamanager {
   static MotorcycleShow motorcycleShow;
   static Usershow usershow;
   static Listcarslot listcarslot;
+  static Slottime slottime;
 
   static FirebaseStorage firebasestorage = FirebaseStorage.instance;
 
@@ -188,6 +191,7 @@ class UseString {
   static String location = "Location";
   static String locationdetail = "\t\t\tThe location of vehicle and key box.";
   static String booking = "BOOKING";
+  static String selecttiem = "Select Time";
 }
 class Currency{
   static String thb = "THB";

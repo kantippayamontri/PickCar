@@ -11,8 +11,8 @@ class ChatPage extends StatelessWidget {
             Text("ChatPage"),
             RaisedButton(
               onPressed: (){
-                // Navigator.of(context).pushNamed(Datamanager.listcar);
-                Navigator.of(context).pushNamed(Datamanager.detailsearch);
+                Navigator.of(context).pushNamed(Datamanager.listcar);
+                // Navigator.of(context).pushNamed(Datamanager.detailsearch);
               },
               child: Text("search"),
             ),
