@@ -6,6 +6,7 @@ import 'package:pickcar/bloc/motorwaitinglist/motorwaitinglistevent.dart';
 import 'package:pickcar/bloc/motorwaitinglist/motorwaitingliststate.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/motorcycle.dart';
+import 'package:pickcar/widget/motorwaitingitem/motorwaitinglistitem.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class MotorWaitingListPage extends StatefulWidget {
@@ -47,7 +48,25 @@ class _MotorWaitingListPageState extends State<MotorWaitingListPage> {
               if (state is MotorWaitingShowDataState) {
                 return LayoutBuilder(
                   builder: (ctx, constraint) {
-                    return Center(
+                    return ListView(
+                      children: _motorWaitingListBloc.motorcycletimeslotlist
+                          .map((motorslot) => Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  MotorWaitingListItem(
+                                    key: UniqueKey(),
+                                    constraints: constraint,
+                                    motorcycle: _motorWaitingListBloc.motorcycle,
+                                    motorWaitingListItem: motorslot,
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  )
+                                ],
+                              )).toList(),
+                    );
+
+                    /*Center(
                       child: Card(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
@@ -140,7 +159,7 @@ class _MotorWaitingListPageState extends State<MotorWaitingListPage> {
                           ],
                         ),
                       ),
-                    );
+                    );*/
                   },
                 );
               }
