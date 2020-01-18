@@ -8,6 +8,7 @@ import 'package:pickcar/main.dart';
 import 'package:pickcar/page/motorrentalformpage.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+import '../arguments.dart';
 import '../datamanager.dart';
 import 'motorwaitinglistpage.dart';
 
@@ -181,19 +182,21 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                                         )));
                           },
                         )
-                      : SizedBox(),
+                      : SizedBox(width: 0,),
                   _motorDetailBloc.motorcycle.isbook
                       ? RaisedButton(
                           child: Text("isbooklist"),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, Datamanager.motorbooklistpage , arguments: MotorBookListArguments(motorcycle: _motorDetailBloc.motorcycle));
+                          },
                         )
-                      : SizedBox(),
+                      : SizedBox(width: 0,),
                   _motorDetailBloc.motorcycle.isworking
                       ? RaisedButton(
                           child: Text("isworkinglist"),
                           onPressed: () {},
                         )
-                      : SizedBox(),
+                      : SizedBox(width: 0,),
 
                   Text("${state.motorcycle.carstatus}"),
                   Text("${state.motorcycle.firestoredocid}"),

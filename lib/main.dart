@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/page/listcarpage.dart';
 import 'package:pickcar/page/loginpage.dart';
+import 'package:pickcar/page/motorbooklistpage.dart';
 import 'package:pickcar/page/profile/editprofile/NewPassword.dart';
 import 'package:pickcar/page/profile/editprofile/changepassword.dart';
 import 'package:pickcar/page/profile/editprofile/editdetail.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
         Datamanager.newpassword : (ctx) => NewPassword(),
         Datamanager.emailsend : (ctx) => EmailSend(),
         Datamanager.listcarpage : (ctx) => ListCarPage(),
+        Datamanager.motorbooklistpage : (ctx) => MotorBookListPage(),
         //'loginpickcarpage': (ctx) => LoginPickCarPage()
       },
       onGenerateRoute: (setting) {},

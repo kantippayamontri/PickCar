@@ -11,6 +11,8 @@ class MotorcycleTimeSlot {
   String motorcycledocid;
   String motorforrentdocid;
   String ownerdocid;
+  String university;
+  String docid;
 
   MotorcycleTimeSlot({
     @required this.timeslot,
@@ -22,6 +24,8 @@ class MotorcycleTimeSlot {
     @required this.motorcycledocid,
     @required this.motorforrentdocid,
     @required this.ownerdocid,
+    @required this.university,
+    @required this.docid
   }) {}
 
   Map<String , dynamic> toJson(){
@@ -34,7 +38,9 @@ class MotorcycleTimeSlot {
       'prize' : this.prize,
       'motorcycledocid' : this.motorcycledocid,
       'motorforrentdocid' : this.motorforrentdocid,
-      'ownerdocid' : this.ownerdocid
+      'ownerdocid' : this.ownerdocid,
+      'university' : this.university,
+      'docid' : this.docid,
     };
   }
 }

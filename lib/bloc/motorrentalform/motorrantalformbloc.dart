@@ -62,7 +62,8 @@ class MotorRentalFormBloc
         price: double.parse(this.pricecontroller.text),
         status: CarStatus.waiting,
         timeslotlist: timeslotlist,
-        ownerdocid: Datamanager.user.documentid);
+        ownerdocid: Datamanager.user.documentid,
+        university: Datamanager.user.university);
     final docref = await Datamanager.firestore
         .collection("Motorcycleforrent")
         .add(motorForRent.toJson());
@@ -89,11 +90,18 @@ class MotorRentalFormBloc
           motorforrentdocid: docid,
           ownerdocid: Datamanager.user.documentid,
           prize: double.parse(this.pricecontroller.text),
-          timeslot: timeslot);
+          timeslot: timeslot,
+          university: Datamanager.user.university,
+          docid: null
+          );
 
-      Datamanager.firestore
+      final docref = await Datamanager.firestore
           .collection("MotorcycleforrentSlot")
           .add(motorslot.toJson());
+
+      Datamanager.firestore.collection("MotorcycleforrentSlot").document(docref.documentID).updateData({
+        'docid' : docref.documentID
+      });
 
     }
   }

@@ -57,6 +57,8 @@ class MotorWaitingListBloc
         ownerdocid: doc['ownerdocid'],
         prize: doc['prize'],
         timeslot: doc['timeslot'],
+        university: doc['university'],
+        docid: null
       );
 
       motorcycletimeslotlist.add(motorcycleTimeSlot);

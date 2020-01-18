@@ -11,10 +11,11 @@ class MotorWaitingListItem extends StatefulWidget {
   MotorcycleTimeSlot motorWaitingListItem;
   BoxConstraints constraints;
   MotorWaitingListItem(
-      {
-        Key key,@required this.motorWaitingListItem,
+      {Key key,
+      @required this.motorWaitingListItem,
       @required this.constraints,
-      @required this.motorcycle}) : super(key: key);
+      @required this.motorcycle})
+      : super(key: key);
 
   @override
   _MotorWaitingListItemState createState() => _MotorWaitingListItemState();
@@ -31,6 +32,14 @@ class _MotorWaitingListItemState extends State<MotorWaitingListItem> {
     _constraints = widget.constraints;
     _motorcycle = widget.motorcycle;
     super.initState();
+  }
+
+  void _deletemotorslot(){
+
+  }
+
+  void _editmotorslot(){
+    
   }
 
   @override
@@ -55,52 +64,85 @@ class _MotorWaitingListItemState extends State<MotorWaitingListItem> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15), color: Colors.white),
             padding: EdgeInsets.all(5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            child: Column(
               children: <Widget>[
-                Flexible(
-                  flex: 1,
-                  child: Stack(
-                    children: <Widget>[
-                      Center(
-                        child: CircularProgressIndicator(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Flexible(
+                      flex: 1,
+                      child: Stack(
+                        children: <Widget>[
+                          //Align(alignment: AlignmentDirectional.center,child: CircularProgressIndicator()),
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: FadeInImage.memoryNetwork(
+                                placeholder: kTransparentImage,
+                                image: this._motorcycle.motorprofilelink,
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: FadeInImage.memoryNetwork(
-                          placeholder: kTransparentImage,
-                          image: this._motorcycle.motorprofilelink,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                    Flexible(
+                        flex: 3,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            FittedBox(
+                              fit: BoxFit.contain,
+                              child: Text(this._motorcycle.brand +
+                                  " " +
+                                  this._motorcycle.generation),
+                            ),
+                            Text(UseString.price +
+                                " : " +
+                                _motortimeslot.prize.toString()),
+                            Text(UseString.time +
+                                " : " +
+                                _motortimeslot.timeslot),
+                            Text(UseString.date +
+                                " : " +
+                                Jiffy([
+                                  _motortimeslot.year,
+                                  _motortimeslot.month,
+                                  _motortimeslot.day
+                                ]).format("MMM do yy")),
+                          ],
+                        )),
+                  ],
                 ),
-                Flexible(
-                    flex: 3,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        FittedBox(
-                          fit: BoxFit.contain,
-                          child: Text(this._motorcycle.brand +
-                              " " +
-                              this._motorcycle.generation),
-                        ),
-                        Text(UseString.price +
-                            " : " +
-                            _motortimeslot.prize.toString()),
-                        Text(UseString.time + " : " + _motortimeslot.timeslot),
-                        Text(UseString.date +
-                            " : " +
-                            Jiffy([
-                              _motortimeslot.year,
-                              _motortimeslot.month,
-                              _motortimeslot.day
-                            ]).format("MMM do yy")),
-                      ],
-                    )),
+                Row(
+                  children: <Widget>[
+                    Expanded(child: SizedBox(),),
+                    RaisedButton(
+                      color: Colors.blue,
+                      child: Text(
+                        UseString.edit,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () {
+
+                      },
+                    ),
+                    SizedBox(width: 20,),
+                    RaisedButton(
+                      color : Colors.red,
+                      child: Text(
+                        UseString.delete,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: (){
+
+                      },
+                    )
+                  ],
+                )
               ],
             ),
           )

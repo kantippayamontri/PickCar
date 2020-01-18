@@ -26,6 +26,7 @@ class Datamanager {
   static String changepassword = "/ChangePassword";
   static String newpassword = "/Newpassword";
   static String emailsend = "/Emailsend";
+  static String motorbooklistpage = "/motorbooklistpage";
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
   static FirebaseUser firebaseuser = null;
@@ -171,6 +172,8 @@ class UseString {
   static String aroundmotorcycle = "Around the motorcycle";
   static String time = "Time";
   static String date = "Date";
+  static String delete = "Delete";
+
 }
 
 class ImageProfiles {
@@ -299,4 +302,6 @@ class TimeSlot {
   static List<String> toList(DateTime date) {
     return loadlist(date);
   }
+  
 }
+
