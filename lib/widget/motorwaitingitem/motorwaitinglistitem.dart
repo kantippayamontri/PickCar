@@ -10,11 +10,18 @@ class MotorWaitingListItem extends StatefulWidget {
   Motorcycle motorcycle;
   MotorcycleTimeSlot motorWaitingListItem;
   BoxConstraints constraints;
+  Function deleteslot;
+  Function editslot;
+  Function showbottomsheet;
   MotorWaitingListItem(
       {Key key,
       @required this.motorWaitingListItem,
       @required this.constraints,
-      @required this.motorcycle})
+      @required this.motorcycle,
+      @required this.deleteslot,
+      @required this.editslot,
+      @required this.showbottomsheet
+      })
       : super(key: key);
 
   @override
@@ -25,6 +32,7 @@ class _MotorWaitingListItemState extends State<MotorWaitingListItem> {
   Motorcycle _motorcycle;
   MotorcycleTimeSlot _motortimeslot;
   BoxConstraints _constraints;
+  
   @override
   void initState() {
     // TODO: implement initState
@@ -34,13 +42,7 @@ class _MotorWaitingListItemState extends State<MotorWaitingListItem> {
     super.initState();
   }
 
-  void _deletemotorslot(){
-
-  }
-
-  void _editmotorslot(){
-    
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +129,9 @@ class _MotorWaitingListItemState extends State<MotorWaitingListItem> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
-
+                        widget.showbottomsheet(
+                          this._motortimeslot
+                        );
                       },
                     ),
                     SizedBox(width: 20,),
@@ -137,8 +141,8 @@ class _MotorWaitingListItemState extends State<MotorWaitingListItem> {
                         UseString.delete,
                         style: TextStyle(color: Colors.white),
                       ),
-                      onPressed: (){
-
+                      onPressed: () async {
+                        await widget.deleteslot(_motortimeslot);
                       },
                     )
                   ],

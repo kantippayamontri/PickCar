@@ -186,8 +186,13 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                   _motorDetailBloc.motorcycle.isbook
                       ? RaisedButton(
                           child: Text("isbooklist"),
-                          onPressed: () {
-                            Navigator.pushNamed(context, Datamanager.motorbooklistpage , arguments: MotorBookListArguments(motorcycle: _motorDetailBloc.motorcycle));
+                          onPressed: () async{
+                            final result = await Navigator.pushNamed(context, Datamanager.motorbooklistpage , arguments: MotorBookListArguments(motorcycle: _motorDetailBloc.motorcycle));
+                            print("before if result");
+                            if(result){
+                              print("in if result");
+                              _motorDetailBloc.add(MotorDetailLoadData());
+                            }
                           },
                         )
                       : SizedBox(width: 0,),

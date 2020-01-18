@@ -6,6 +6,7 @@ import 'package:pickcar/bloc/motorwaitinglist/motorwaitinglistevent.dart';
 import 'package:pickcar/bloc/motorwaitinglist/motorwaitingliststate.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/motorcycle.dart';
+import 'package:pickcar/models/motorcycletimeslot.dart';
 import 'package:pickcar/widget/motorwaitingitem/motorwaitinglistitem.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -19,12 +20,24 @@ class MotorWaitingListPage extends StatefulWidget {
 
 class _MotorWaitingListPageState extends State<MotorWaitingListPage> {
   MotorWaitingListBloc _motorWaitingListBloc;
+  
+
+  void setstate() {
+    setState(() {
+      
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     this._motorWaitingListBloc = MotorWaitingListBloc(
-        context: this.context, motorcycle: widget.motorcycle);
+        context: this.context,
+        motorcycle: widget.motorcycle,
+        setstate: setstate);
+
     _motorWaitingListBloc.add(MotorWaitingListLoadDataEvent());
+   
   }
 
   @override
@@ -56,14 +69,20 @@ class _MotorWaitingListPageState extends State<MotorWaitingListPage> {
                                   MotorWaitingListItem(
                                     key: UniqueKey(),
                                     constraints: constraint,
-                                    motorcycle: _motorWaitingListBloc.motorcycle,
+                                    motorcycle:
+                                        _motorWaitingListBloc.motorcycle,
                                     motorWaitingListItem: motorslot,
+                                    deleteslot:
+                                        _motorWaitingListBloc.deleteslot,
+                                    editslot: _motorWaitingListBloc.editslot,
+                                    showbottomsheet: _motorWaitingListBloc.showbottomsheet,
                                   ),
                                   SizedBox(
                                     height: 10,
                                   )
                                 ],
-                              )).toList(),
+                              ))
+                          .toList(),
                     );
 
                     /*Center(
