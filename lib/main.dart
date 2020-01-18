@@ -3,6 +3,7 @@ import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/page/listcarpage.dart';
 import 'package:pickcar/page/loginpage.dart';
 import 'package:pickcar/page/map/mappage.dart';
+import 'package:pickcar/page/map/mapaddmark.dart';
 import 'package:pickcar/page/profile/editprofile/NewPassword.dart';
 import 'package:pickcar/page/profile/editprofile/changepassword.dart';
 import 'package:pickcar/page/profile/editprofile/editdetail.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
         Datamanager.slottiempage : (ctx) => SlotTimePage(),
         Datamanager.confirmpage : (ctx) => ConfirmPage(),
         Datamanager.mappage : (ctx) => MapPage(),
+        Datamanager.mapaddmark : (ctx) => Mapaddmark(),
         //'loginpickcarpage': (ctx) => LoginPickCarPage()
       },
       onGenerateRoute: (setting) {},

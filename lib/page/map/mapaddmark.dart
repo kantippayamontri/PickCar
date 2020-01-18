@@ -4,13 +4,13 @@ import 'package:location/location.dart';
 import 'dart:async';
 
 import 'package:pickcar/datamanager.dart';
-class MapPage extends StatefulWidget {
+class Mapaddmark extends StatefulWidget {
   double zoom = 16;
   @override
-  _MapPageState createState() => _MapPageState();
+  _MapaddmarkState createState() => _MapaddmarkState();
 }
 
-class _MapPageState extends State<MapPage> {
+class _MapaddmarkState extends State<Mapaddmark> {
   BitmapDescriptor _markerIcon;
   List<Marker> allMarkers = [];
   @override
@@ -81,7 +81,11 @@ class _MapPageState extends State<MapPage> {
             ),
           ],
         ),
-      )
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: getlocationnow,
+        child: Icon(Icons.near_me),
+      ),
     );
   }
 }

@@ -38,6 +38,7 @@ class _SlotTimePageState extends State<SlotTimePage> {
     );
   }
   Widget _buildBody(BuildContext context) {
+    print(Datamanager.listcarslot.motorforrentdocid);
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('MotorcycleforrentSlot')
                                 .where("motorforrentdocid", isEqualTo: Datamanager.listcarslot.motorforrentdocid)

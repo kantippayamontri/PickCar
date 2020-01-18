@@ -22,10 +22,10 @@ class _ListcarState extends State<Listcar> {
       var indexs = [];
       var slot1 = true;
       var slot2 = true;
-      var slot3 = false;
-      var slot4 = false;
-      var slot5 = false;
-      var slot6 = false;
+      var slot3 = true;
+      var slot4 = true;
+      var slot5 = true;
+      var slot6 = true;
       int isintime = 0;
       print(slot);
       if(slot1){
@@ -58,7 +58,7 @@ class _ListcarState extends State<Listcar> {
   Widget loaddata(BuildContext context){
     var datasize = MediaQuery.of(context);
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: 21).snapshots(),
+      stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: 25).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) { 
           print("wait");
@@ -173,7 +173,7 @@ class _ListcarState extends State<Listcar> {
       );
     }else{
       return StreamBuilder<QuerySnapshot>(
-        stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: 21).orderBy('priority', descending: true).snapshots(),
+        stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: 25).orderBy('priority', descending: true).snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
              return Container(
@@ -223,16 +223,16 @@ class _ListcarState extends State<Listcar> {
                             .document(Datamanager.user.documentchat)
                             .collection('groupchat').document(usershow.documentid);
     }
-    
-    if(timeslot.ownerdocid != Datamanager.user.documentid && timeslot.university == 'Chaing Mai University'){
+    // timeslot.ownerdocid != Datamanager.user.documentid &&
+    if( timeslot.university == 'Chaing Mai University'){
       if(checkmatch(timeslot) != 0){
           return GestureDetector(
             onTap: (){
-              Navigator.of(context).pushNamed(Datamanager.slottiempage);
               Datamanager.usershow = usershow;
               Datamanager.motorcycleShow = motorshow;
               Datamanager.listcarslot = timeslot;
               Datamanager.usershow.imageurl = imageusershow;
+              Navigator.of(context).pushNamed(Datamanager.slottiempage);
             },
             child: FutureBuilder<DocumentSnapshot>(
             future: fetchdatamotorcycle(timeslot.motorcycledocid), 

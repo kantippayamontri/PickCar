@@ -33,6 +33,7 @@ class Datamanager {
   static String slottiempage = "/SlotTiemPage";
   static String confirmpage = "/ConfirmPage";
   static String mappage = "/Mappage";
+  static String mapaddmark = "/Mapaddmark";
   
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;

@@ -24,6 +24,14 @@ class SearchPage extends StatelessWidget {
               },
               child: Text("goto map"),
             ),
+            SizedBox(height: 20,),
+            RaisedButton(
+              onPressed: (){
+                Navigator.of(context).pushNamed(Datamanager.mapaddmark);
+                // Navigator.of(context).pushNamed(Datamanager.detailsearch);
+              },
+              child: Text("goto add mark"),
+            ),
           ],
         ),
       ),
