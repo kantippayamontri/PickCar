@@ -64,7 +64,7 @@ class _SlotTimePageState extends State<SlotTimePage> {
     return GestureDetector(
       onTap: (){
         Datamanager.slottime = slottime;
-        Navigator.of(context).pushNamed(Datamanager.confirmpage);
+        Navigator.of(context).pushNamed(Datamanager.detailsearch);
       },
       child: Container(
         // margin: EdgeInsets.only(top: 5),
@@ -82,14 +82,20 @@ class _SlotTimePageState extends State<SlotTimePage> {
         child: Row(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(left: 100),
+              margin: EdgeInsets.only(left: 30),
               width: 50,
               height: 50,
               child: Image.asset('assets/images/imagesearch/cc.png'),
             ),
             Container(
-              margin: EdgeInsets.only(left:10),
+              margin: EdgeInsets.only(left:20),
               child: Text(slottime.timeslot,
+                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*25,color: PickCarColor.colorFont2), 
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left:35),
+              child: Text(slottime.price.toString()+' '+Currency.thb,
                   style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*25,color: PickCarColor.colorFont2), 
               ),
             ),

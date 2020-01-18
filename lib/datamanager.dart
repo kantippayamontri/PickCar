@@ -192,6 +192,8 @@ class UseString {
   static String locationdetail = "\t\t\tThe location of vehicle and key box.";
   static String booking = "BOOKING";
   static String selecttiem = "Select Time";
+  static String next = "NEXT";
+  static String searching = "Searching...";
 }
 class Currency{
   static String thb = "THB";

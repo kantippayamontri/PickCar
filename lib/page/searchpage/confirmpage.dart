@@ -51,7 +51,7 @@ class ConfirmPage extends StatelessWidget {
                             .document(Datamanager.listcarslot.motorcycledocid)
                             .updateData({"iswaiting": false});
       }
-      // Datamanager.firestore.collection('MotorcycleforrentSlot').document().delete();
+      Datamanager.firestore.collection('MotorcycleforrentSlot').document(Datamanager.slottime.docid).delete();
     }
     return Scaffold(
       body: Center(

@@ -24,10 +24,10 @@ class _DetailsearchState extends State<Detailsearch> {
 CarouselSlider carouselSlider;
   int _current = 0;
   List imgList = [
-    'https://images.unsplash.com/photo-1502117859338-fd9daa518a9a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
-    'https://images.unsplash.com/photo-1554321586-92083ba0a115?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
-    'https://images.unsplash.com/photo-1536679545597-c2e5e1946495?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
-    'https://images.unsplash.com/photo-1543922596-b3bbaba80649?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60'
+    Datamanager.motorcycleShow.motorfrontlink,
+    Datamanager.motorcycleShow.motorleftlink,
+    Datamanager.motorcycleShow.motorbacklink,
+    Datamanager.motorcycleShow.motorrightlink,
   ];
  
   List<T> map<T>(List list, Function handler) {
@@ -83,15 +83,15 @@ CarouselSlider carouselSlider;
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.only(top: 10,left: 10),
-                    child: Text("name",
-                        style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*25,color: PickCarColor.colorFont1), 
+                    child: Text(Datamanager.motorcycleShow.brand+' '+Datamanager.motorcycleShow.generation,
+                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*30,color: PickCarColor.colorFont1), 
                     ),
                   ),
                   Center(
                     child: Container(
-                      margin: EdgeInsets.only(top: 10),
+                      margin: EdgeInsets.only(top: 20),
                       width: 370,
-                      height: 280,
+                      height: 270,
                       // color: Colors.black,
                       child: Container(
                         child: Stack(
@@ -99,7 +99,7 @@ CarouselSlider carouselSlider;
                           // crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             carouselSlider = CarouselSlider(
-                              height: 230.0,
+                              height: 220.0,
                               initialPage: 0,
                               enlargeCenterPage: true,
                               // autoPlay: true,
@@ -179,7 +179,7 @@ CarouselSlider carouselSlider;
             ),
             Container(
               margin: EdgeInsets.only(top: 290,left: 10),
-              child: Text(Currency.thb+" 2000.0",
+              child: Text(Currency.thb+' '+Datamanager.slottime.price.toString(),
                   style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*30,color: PickCarColor.colorFont1), 
               ),
             ),
@@ -195,8 +195,12 @@ CarouselSlider carouselSlider;
               height: 45,
               decoration: new BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.grey,
+                image: new DecorationImage(
+                    fit: BoxFit.fill,
+                    image: new NetworkImage(
+                        Datamanager.usershow.imageurl)
                 )
+              )
             ),
             Container(
               width: 100,
@@ -204,7 +208,7 @@ CarouselSlider carouselSlider;
               margin: EdgeInsets.only(top: 325,left: 310),
               // color: Colors.black,
               child: Center(
-                child: Text(UseString.name,
+                child: Text(Datamanager.usershow.name,
                     style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*18,color: PickCarColor.colorFont1), 
                 ),
               ),
@@ -435,7 +439,7 @@ CarouselSlider carouselSlider;
                   ),
                   GestureDetector(
                     onTap: (){
-                      Navigator.of(context).pushNamed(Datamanager.slottiempage);
+                      Navigator.of(context).pushNamed(Datamanager.confirmpage);
                     },
                     child: Center(
                       child: Container(
@@ -447,7 +451,7 @@ CarouselSlider carouselSlider;
                         width: 148,
                         height: 45,
                         child: Center(
-                          child: Text(UseString.booking,
+                          child: Text(UseString.next,
                             style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: Colors.white),
                           ),
                       ),

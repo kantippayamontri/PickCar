@@ -13,6 +13,7 @@ class Listcarslot {
   String motorcycledocid;
   String ownerdocid;
   String motorforrentdocid;
+  String university;
   final DocumentReference reference;
 
   Listcarslot.fromMap(Map<String, dynamic> map, {this.reference})
@@ -25,6 +26,7 @@ class Listcarslot {
        assert(map['motorcycledocid'] != null),
        assert(map['ownerdocid'] != null),
        assert(map['motorforrentdocid'] != null),
+       assert(map['university'] != null),
        timeslotlist = List.from(map['timeslotlist']),
        dateTime = (map['dateTime'] as Timestamp).toDate(),
        day = map['day'],
@@ -33,6 +35,8 @@ class Listcarslot {
        price = map['price'].toDouble(),
        motorcycledocid = map['motorcycledocid'],
        ownerdocid = map['ownerdocid'],
+       university = map['university'],
+       
        motorforrentdocid = map['motorforrentdocid'];
 
   Listcarslot.fromSnapshot(DocumentSnapshot snapshot)
@@ -113,6 +117,7 @@ class Usershow{
   String profilepictype;
   String documentid;
   String documentchat;
+  var imageurl;
   final DocumentReference reference;
 
   
@@ -146,6 +151,7 @@ class Slottime{
   String motorcycledocid;
   String motorforrentdocid;
   String ownerdocid;
+  String docid;
   final DocumentReference reference;
 
   
@@ -159,6 +165,7 @@ class Slottime{
        assert(map['motorcycledocid'] != null),
        assert(map['motorforrentdocid'] != null),
        assert(map['ownerdocid'] != null),
+       assert(map['docid'] != null),
        day = map['day'],
        month = map['month'],
        price = map['prize'].toDouble(),
@@ -167,6 +174,7 @@ class Slottime{
        motorcycledocid = map['motorcycledocid'],
        motorforrentdocid = map['motorforrentdocid'],
        ownerdocid = map['ownerdocid'],
+       docid = map['docid'],
        year = map['year'];
 
   Slottime.fromSnapshot(DocumentSnapshot snapshot)

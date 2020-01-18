@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/widget/profile/profileImage.dart';
@@ -85,10 +86,6 @@ class _ListcarState extends State<Listcar> {
     }
     return Container();
   }
-  // void initState() {
-
-  //   super.initState();
-  // }
   Widget load(BuildContext context){
     if(DataFetch.fetchpiority == 0){
       return loaddata(context);
@@ -134,9 +131,32 @@ class _ListcarState extends State<Listcar> {
   }
 
   Widget _buildBody(BuildContext context) {
+    var datasize = MediaQuery.of(context);
     if(DataFetch.fetchpiority == 0){
       wait();
-      return Container();
+      return Center(
+        child: Container(
+          width: datasize.size.width,
+          height: datasize.size.height,
+          color: PickCarColor.colormain,
+          child: Row(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(left: 120),
+                child: SpinKitCircle(
+                  color: Colors.white,
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 10),
+                child:  Text(UseString.searching,
+                  style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*25,color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
     }else{
       return StreamBuilder<QuerySnapshot>(
         stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: 20).orderBy('priority', descending: true).snapshots(),
@@ -160,6 +180,7 @@ class _ListcarState extends State<Listcar> {
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
     var datasize = MediaQuery.of(context);
     final timeslot = Listcarslot.fromSnapshot(data);
+    var imageusershow;
     MotorcycleShow motorshow;
     Usershow usershow;
     Future<DocumentSnapshot> fetchdatamotorcycle(String docid) async {
@@ -179,15 +200,16 @@ class _ListcarState extends State<Listcar> {
                             .document(Datamanager.user.documentchat)
                             .collection('groupchat').document(usershow.documentid);
     }
-    if(timeslot.ownerdocid != Datamanager.user.documentid){
+    if(timeslot.ownerdocid != Datamanager.user.documentid && timeslot.university == 'Chaing Mai University'){
       
       if(checkmatch(timeslot) != 0){
           return GestureDetector(
             onTap: (){
-              Navigator.of(context).pushNamed(Datamanager.detailsearch);
+              Navigator.of(context).pushNamed(Datamanager.slottiempage);
               Datamanager.usershow = usershow;
               Datamanager.motorcycleShow = motorshow;
               Datamanager.listcarslot = timeslot;
+              Datamanager.usershow.imageurl = imageusershow;
             },
             child: FutureBuilder<DocumentSnapshot>(
             future: fetchdatamotorcycle(timeslot.motorcycledocid), 
@@ -327,7 +349,7 @@ class _ListcarState extends State<Listcar> {
                         Row(
                           children: <Widget>[
                             Container(
-                              width: 230,
+                              width: 350,
                               height: 50,
                               margin: EdgeInsets.only(left: 20,top: 228),
                               // color: Colors.black,
@@ -356,13 +378,14 @@ class _ListcarState extends State<Listcar> {
                                       return Stack(
                                         children: <Widget>[
                                           Container(
-                                            width: 190,
+                                            width: 350,
                                             height: 45,
                                             color: Colors.transparent,
                                           ),
                                           FutureBuilder(
                                             future: _getImage(context, usershow),
                                             builder: (context, snapshot) {
+                                              imageusershow = snapshot.data;
                                               if (snapshot.connectionState == ConnectionState.waiting){
                                                 return Container(
                                                 );
@@ -373,6 +396,12 @@ class _ListcarState extends State<Listcar> {
                                               }else{
                                                 return Row(
                                                   children: <Widget>[
+                                                    Container(
+                                                      margin: EdgeInsets.only(left: 10),
+                                                      child: Text(UseString.forrent,
+                                                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*20,color: PickCarColor.colorcmu),
+                                                      ),
+                                                    ),
                                                     Container(
                                                       margin: EdgeInsets.only(left: 10),
                                                       width: 45,
@@ -388,7 +417,7 @@ class _ListcarState extends State<Listcar> {
                                                     ),
                                                     Padding(padding: EdgeInsets.only(left: 10),),
                                                     Text(usershow.name,
-                                                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*25,color: PickCarColor.colorcmu),
+                                                      style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*25,color: PickCarColor.colorcmu),
                                                     ),
                                                   ],
                                                 );
@@ -400,18 +429,6 @@ class _ListcarState extends State<Listcar> {
                                     }
                                   },
                                 ),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 230),
-                              child: Text(timeslot.price.toString(),
-                              style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*25,color: PickCarColor.colorFont1),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 230),
-                              child: Text(' '+Currency.thb,
-                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*25,color: PickCarColor.colorFont1),
                               ),
                             ),
                           ],
