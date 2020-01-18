@@ -520,8 +520,9 @@ class _ListcarState extends State<Listcar> {
       }else{
         return Center(
           child: Container(
+            height: datasize.size.height/2,
             child: Text(UseString.notfound,
-              style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*16,color: PickCarColor.colorFont2),
+              style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*36,color: PickCarColor.colorFont2),
             ),
           ) 
         );
@@ -529,8 +530,9 @@ class _ListcarState extends State<Listcar> {
     }else{
       return Center(
         child: Container(
+          height: datasize.size.height/2,
           child: Text(UseString.notfound,
-            style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*16,color: Colors.white),
+            style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*36,color: Colors.white),
           ),
         ) 
       );
