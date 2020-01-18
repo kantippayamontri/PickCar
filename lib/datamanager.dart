@@ -32,6 +32,7 @@ class Datamanager {
   static String detailsearch = "/Detailsearch";
   static String slottiempage = "/SlotTiemPage";
   static String confirmpage = "/ConfirmPage";
+  static String mappage = "/Mappage";
   
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
@@ -47,7 +48,7 @@ class Datamanager {
 
   static List<Map<String, Object>> pages = [
     {'page': HomePage(), 'title': 'Home'},
-    {'page': ChatPage(), 'title': 'Chat'},
+    {'page': SearchPage(), 'title': 'Chat'},
     {'page': ListCarPage(), 'title': 'ListCar'},
     {'page': ProfilePage(), 'title': 'Profile'},
     {'page': SettingPage(), 'title': 'setting'},
@@ -278,6 +279,7 @@ class CarPrice {
 class DataFetch{
   static int fetchmotor = 0; 
   static int fetchpiority = 0; 
+  static int checkhavedata = 0; 
 }
 
 class TimeSlot {

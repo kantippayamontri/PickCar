@@ -14,6 +14,7 @@ class _ListcarState extends State<Listcar> {
   @override
   void initState() {
     DataFetch.fetchpiority = 0;
+    DataFetch.checkhavedata = 0;
     super.initState();
   }
    int checkmatch(Listcarslot timeslot){
@@ -55,11 +56,23 @@ class _ListcarState extends State<Listcar> {
       return isintime;
   }
   Widget loaddata(BuildContext context){
+    var datasize = MediaQuery.of(context);
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: 19).snapshots(),
+      stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: 21).snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return LinearProgressIndicator();
+        if (!snapshot.hasData) { 
+          print("wait");
+          return Container(
+          height: datasize.size.height/1.4,
+          child: Center(
+            child: Text(UseString.notfound,
+              style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*36,color: Colors.white),
+            ),
+          ),
+        );
+      }else{
         return loaddata2(context, snapshot.data.documents);
+      }
       },
     );
   }
@@ -160,11 +173,20 @@ class _ListcarState extends State<Listcar> {
       );
     }else{
       return StreamBuilder<QuerySnapshot>(
-        stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: 19).orderBy('priority', descending: true).snapshots(),
+        stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: 21).orderBy('priority', descending: true).snapshots(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return LinearProgressIndicator();
-
-          return _buildList(context, snapshot.data.documents);
+          if (!snapshot.hasData) {
+             return Container(
+              height: datasize.size.height/1.4,
+              child: Center(
+                child: Text(UseString.notfound,
+                  style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*36,color: Colors.white),
+                ),
+              ),
+            );
+          }else{
+            return _buildList(context, snapshot.data.documents);
+          }
         },
       );
     }
@@ -518,23 +540,23 @@ class _ListcarState extends State<Listcar> {
           ),
         );
       }else{
-        return Center(
-          child: Container(
-            height: datasize.size.height/2,
+        return Container(
+          height: datasize.size.height/1.4,
+          child: Center(
             child: Text(UseString.notfound,
               style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*36,color: PickCarColor.colorFont2),
             ),
-          ) 
+          ),
         );
       }
     }else{
-      return Center(
-        child: Container(
-          height: datasize.size.height/2,
+      return Container(
+        height: datasize.size.height/1.4,
+        child: Center(
           child: Text(UseString.notfound,
             style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*36,color: Colors.white),
           ),
-        ) 
+        ),
       );
     }
   }
