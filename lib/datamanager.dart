@@ -194,6 +194,7 @@ class UseString {
   static String selecttiem = "Select Time";
   static String next = "NEXT";
   static String searching = "Searching...";
+  static String notfound = "Result not found.";
 }
 class Currency{
   static String thb = "THB";

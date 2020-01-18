@@ -26,7 +26,7 @@ class _ListcarState extends State<Listcar> {
       var slot5 = false;
       var slot6 = false;
       int isintime = 0;
-      // print(slot);
+      print(slot);
       if(slot1){
         indexs.add(slot.indexOf("8.00 - 9.30"));
       }
@@ -45,17 +45,18 @@ class _ListcarState extends State<Listcar> {
       if(slot6){
         indexs.add(slot.indexOf("16.00 - 17.30"));
       }
+      print(indexs);
       for(var slots in indexs) {
         if(slots != -1){
           isintime += 1;
         }
       }
-      // print(isintime);
+      print(isintime);
       return isintime;
   }
   Widget loaddata(BuildContext context){
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: 20).snapshots(),
+      stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: 19).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();
         return loaddata2(context, snapshot.data.documents);
@@ -159,7 +160,7 @@ class _ListcarState extends State<Listcar> {
       );
     }else{
       return StreamBuilder<QuerySnapshot>(
-        stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: 20).orderBy('priority', descending: true).snapshots(),
+        stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: 19).orderBy('priority', descending: true).snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return LinearProgressIndicator();
 
@@ -200,8 +201,8 @@ class _ListcarState extends State<Listcar> {
                             .document(Datamanager.user.documentchat)
                             .collection('groupchat').document(usershow.documentid);
     }
+    
     if(timeslot.ownerdocid != Datamanager.user.documentid && timeslot.university == 'Chaing Mai University'){
-      
       if(checkmatch(timeslot) != 0){
           return GestureDetector(
             onTap: (){
@@ -517,10 +518,22 @@ class _ListcarState extends State<Listcar> {
           ),
         );
       }else{
-        return Container();
+        return Center(
+          child: Container(
+            child: Text(UseString.notfound,
+              style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*16,color: PickCarColor.colorFont2),
+            ),
+          ) 
+        );
       }
     }else{
-      return Container();
+      return Center(
+        child: Container(
+          child: Text(UseString.notfound,
+            style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*16,color: Colors.white),
+          ),
+        ) 
+      );
     }
   }
 }
