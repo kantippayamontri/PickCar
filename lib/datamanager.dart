@@ -269,12 +269,12 @@ class CarStatus {
     return CarStatus.nothing;
   }
 }
-
 class CarPrice {
   static const double motorminprice = 50.0;
 }
 class DataFetch{
   static int fetchmotor = 0; 
+  static int fetchpiority = 0; 
 }
 
 class TimeSlot {

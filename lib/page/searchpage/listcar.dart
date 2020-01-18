@@ -10,7 +10,102 @@ class Listcar extends StatefulWidget {
 }
 
 class _ListcarState extends State<Listcar> {
+  @override
+  void initState() {
+    DataFetch.fetchpiority = 0;
+    super.initState();
+  }
+   int checkmatch(Listcarslot timeslot){
+    var slot =timeslot.timeslotlist;
+      var indexs = [];
+      var slot1 = true;
+      var slot2 = true;
+      var slot3 = false;
+      var slot4 = false;
+      var slot5 = false;
+      var slot6 = false;
+      int isintime = 0;
+      // print(slot);
+      if(slot1){
+        indexs.add(slot.indexOf("8.00 - 9.30"));
+      }
+      if(slot2){
+        indexs.add(slot.indexOf("9.30 - 11.00"));
+      }
+      if(slot3){
+        indexs.add(slot.indexOf("11.00 - 12.30"));
+      }
+      if(slot4){
+        indexs.add(slot.indexOf("13.00 - 14.30"));
+      }
+      if(slot5){
+        indexs.add(slot.indexOf("14.30 - 16.00"));
+      }
+      if(slot6){
+        indexs.add(slot.indexOf("16.00 - 17.30"));
+      }
+      for(var slots in indexs) {
+        if(slots != -1){
+          isintime += 1;
+        }
+      }
+      // print(isintime);
+      return isintime;
+  }
+  Widget loaddata(BuildContext context){
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: 20).snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return LinearProgressIndicator();
+        return loaddata2(context, snapshot.data.documents);
+      },
+    );
+  }
+   Widget loaddata2(BuildContext context, List<DocumentSnapshot> snapshot) {
+    return ListView(
+      padding: const EdgeInsets.only(top: 20.0),
+      children: snapshot.map((data) => loaddata3(context, data)).toList(),
+    );
+  }
+
+  uploadpiority(Listcarslot timeshow,int priority){
+    Datamanager.firestore.collection('Motorcycleforrent')
+                          .document(timeshow.motorforrentdocid)
+                          .updateData({'priority' : priority})
+                          .whenComplete((){
+                            print('complete add priority');
+                          });
+  }
+  Widget loaddata3(BuildContext context, DocumentSnapshot data) {
+    var datasize = MediaQuery.of(context);
+    var timesshow = Listcarslot.fromSnapshot(data);
+    if(timesshow.ownerdocid != Datamanager.user.documentid){
+      int priority = checkmatch(timesshow);
+      uploadpiority(timesshow,priority);
+    }
+    return Container();
+  }
+  // void initState() {
+
+  //   super.initState();
+  // }
+  Widget load(BuildContext context){
+    if(DataFetch.fetchpiority == 0){
+      return loaddata(context);
+    }else{
+      return Container();
+    }
+  }
+  wait(){
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      // print('wait');
+      DataFetch.fetchpiority = 1;
+      setState(() {
+      });
+    });
+  }
   Widget build(BuildContext context) {
+   
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -23,25 +118,35 @@ class _ListcarState extends State<Listcar> {
           ),
           onPressed: () {
             Navigator.pop(context);
-            DataFetch.fetchmotor = 0;
+            DataFetch.fetchpiority = 0;
           },
           // tooltip: 'Share',
         ),
       ),
       backgroundColor: PickCarColor.colormain,
-      body: _buildBody(context),
+      body: Stack(
+        children: <Widget>[
+          load(context),
+          _buildBody(context),
+        ],
+      ),
     );
   }
 
   Widget _buildBody(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: 19).snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return LinearProgressIndicator();
+    if(DataFetch.fetchpiority == 0){
+      wait();
+      return Container();
+    }else{
+      return StreamBuilder<QuerySnapshot>(
+        stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: 20).orderBy('priority', descending: true).snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return LinearProgressIndicator();
 
-        return _buildList(context, snapshot.data.documents);
-      },
-    );
+          return _buildList(context, snapshot.data.documents);
+        },
+      );
+    }
   }
  
 
@@ -75,40 +180,8 @@ class _ListcarState extends State<Listcar> {
                             .collection('groupchat').document(usershow.documentid);
     }
     if(timeslot.ownerdocid != Datamanager.user.documentid){
-      var slot =timeslot.timeslotlist;
-      var indexs = [];
-      var slot1 = false;
-      var slot2 = false;
-      var slot3 = false;
-      var slot4 = false;
-      var slot5 = false;
-      var slot6 = false;
-      bool isintime = false;
-      // print(slot);
-      if(slot1){
-        indexs.add(slot.indexOf("8.00 - 9.00"));
-      }
-      if(slot2){
-        indexs.add(slot.indexOf("9.30 - 11.00"));
-      }
-      if(slot3){
-        indexs.add(slot.indexOf("11.00 - 12.30"));
-      }
-      if(slot4){
-        indexs.add(slot.indexOf("13.00 - 14.30"));
-      }
-      if(slot5){
-        indexs.add(slot.indexOf("14.30 - 16.00"));
-      }
-      if(slot6){
-        indexs.add(slot.indexOf("16.00 - 17.30"));
-      }
-      for(var slots in indexs) {
-        if(slots != -1){
-          isintime = true;
-        }
-      }
-      if(isintime){
+      
+      if(checkmatch(timeslot) != 0){
           return GestureDetector(
             onTap: (){
               Navigator.of(context).pushNamed(Datamanager.detailsearch);
@@ -280,7 +353,6 @@ class _ListcarState extends State<Listcar> {
                                         datadocument = data;
                                       }).toList();
                                       usershow = Usershow.fromSnapshot(datadocument);
-                                      print(usershow.name);
                                       return Stack(
                                         children: <Widget>[
                                           Container(
