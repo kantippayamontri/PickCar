@@ -18,6 +18,7 @@ class MotorRentalFormBloc
   DateTime dateTime;
   DateTime datenow;
   List<String> timeslotlist = List<String>();
+  List<Map<String , dynamic>> realts = List<Map<String , dynamic>>();
 
   MotorRentalFormBloc({@required this.context, @required this.motorcycle}) {
     pricecontroller.text = CarPrice.motorminprice.toString();
@@ -47,7 +48,7 @@ class MotorRentalFormBloc
     }
 
     if(event is MotorRentalFormLoadDataEvent){
-      
+
     }
 
 
