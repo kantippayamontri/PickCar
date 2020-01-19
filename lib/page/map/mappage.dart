@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'dart:async';
-
+import 'package:flutter/services.dart';
 import 'package:pickcar/datamanager.dart';
 class MapPage extends StatefulWidget {
   double zoom = 16;
@@ -31,7 +31,12 @@ class _MapPageState extends State<MapPage> {
   Completer<GoogleMapController> _controller = Completer();
   Future<LocationData> getCurrentLocation() async {
     Location location = Location();
-      return await location.getLocation();
+      try{
+        return await location.getLocation();
+      } on PlatformException catch (e) {
+        print(e.message);
+        location = null;
+    }
   }
   Future getlocationnow() async {
     LocationData currentLocation;
@@ -45,6 +50,7 @@ class _MapPageState extends State<MapPage> {
           currentLocation.longitude),
       zoom: 16,
     )));
+    return currentLocation;
   }
   // Future _createMarkerImageFromAsset(BuildContext context) async {
   //   if (_markerIcon == null) {
@@ -60,7 +66,7 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     var data = MediaQuery.of(context);
     // _createMarkerImageFromAsset(context);
-    getlocationnow();
+    var currentlocation = getlocationnow();
     return  Scaffold(
       body: Container(
         width: data.size.width,
