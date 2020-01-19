@@ -223,8 +223,7 @@ class _ListcarState extends State<Listcar> {
                             .document(Datamanager.user.documentchat)
                             .collection('groupchat').document(usershow.documentid);
     }
-    // timeslot.ownerdocid != Datamanager.user.documentid &&
-    if( timeslot.university == 'Chaing Mai University'){
+    if( timeslot.ownerdocid != Datamanager.user.documentid &&timeslot.university == 'Chaing Mai University'){
       if(checkmatch(timeslot) != 0){
           return GestureDetector(
             onTap: (){
