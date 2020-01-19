@@ -1,31 +1,34 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'dart:ui' as ui;
+
 import 'package:pickcar/datamanager.dart';
 class MapPage extends StatefulWidget {
   double zoom = 16;
+  double latitude = 18.802587;
+  double logtitude = 98.951556;
   @override
-  _MapPageState createState() => _MapPageState();
+  _MappageState createState() => _MappageState();
 }
 
-class _MapPageState extends State<MapPage> {
+class _MappageState extends State<MapPage> {
   BitmapDescriptor _markerIcon;
   List<Marker> allMarkers = [];
   @override
   void initState(){
+    UseString.pin = "Pin Here";
+    //bankok
+    widget.latitude = 13.736717;
+    widget.logtitude = 100.523186;
+    //chiangmai university
+    widget.latitude = 18.802587;
+    widget.logtitude = 98.951556;
     super.initState();
-    allMarkers.add(
-      Marker(
-        markerId: MarkerId('myMarker'),
-        draggable: false,
-        onTap: (){
-          print('tapnow');
-        },
-        position: LatLng(40.0,22.0),
-      ),
-    );
   }
 
   Completer<GoogleMapController> _controller = Completer();
@@ -38,11 +41,54 @@ class _MapPageState extends State<MapPage> {
         location = null;
     }
   }
+  marker() async {
+    allMarkers = [];
+    LocationData currentLocation;
+    currentLocation = await getCurrentLocation();
+    setState(() {
+      allMarkers.add(
+        Marker(
+          icon: _markerIcon,
+          markerId: MarkerId('myMarker'),
+          draggable: true,
+          // onTap: (){
+          //   print('tapnow');
+          // },
+          position: LatLng(
+            currentLocation.latitude,
+            currentLocation.longitude),
+        ),
+      );
+    });
+    GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newLatLngZoom(LatLng(currentLocation.latitude,currentLocation.longitude), 17.0));
+  }
+  markertap(LatLng location) async {
+    allMarkers = [];
+    setState(() {
+      allMarkers.add(
+        Marker(
+          icon: _markerIcon,
+          markerId: MarkerId('myMarker'),
+          draggable: true,
+          // onTap: (){
+          //   print('tapnow');
+          // },
+          position: LatLng(
+            location.latitude,
+            location.longitude),
+        ),
+      );
+      UseString.pin = "Add Here";
+    });
+    GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newLatLngZoom(location, 17.0));
+  }
   Future getlocationnow() async {
     LocationData currentLocation;
     final GoogleMapController controller = await _controller.future;
     currentLocation = await getCurrentLocation();
-    print(currentLocation.latitude.toString()+' '+currentLocation.longitude.toString());
+    // print(currentLocation.latitude.toString()+' '+currentLocation.longitude.toString());
     controller.animateCamera(CameraUpdate.newCameraPosition(
     CameraPosition(
       target: LatLng(
@@ -50,44 +96,95 @@ class _MapPageState extends State<MapPage> {
           currentLocation.longitude),
       zoom: 16,
     )));
-    return currentLocation;
   }
-  // Future _createMarkerImageFromAsset(BuildContext context) async {
-  //   if (_markerIcon == null) {
-  //     ImageConfiguration configuration = ImageConfiguration();
-  //     BitmapDescriptor bmpd = await BitmapDescriptor.fromAssetImage(
-  //         configuration, 'assets/images/imagemap/car.png');
-  //     setState(() {
-  //       _markerIcon = bmpd;
-  //     });
-  //   }
-  // }
+  Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png)).buffer.asUint8List();
+  }
+  Future _createMarkerImageFromAsset(BuildContext context) async {
+    if (_markerIcon == null) {
+     final Uint8List markerIcon = await getBytesFromAsset('assets/images/imagemap/key.png', 200);
+      BitmapDescriptor bmpd = BitmapDescriptor.fromBytes(markerIcon);
+      setState(() {
+        _markerIcon = bmpd;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     var data = MediaQuery.of(context);
-    // _createMarkerImageFromAsset(context);
-    var currentlocation = getlocationnow();
+    _createMarkerImageFromAsset(context);
     return  Scaffold(
+      appBar: AppBar(
+       backgroundColor: Colors.white,
+       flexibleSpace: Image(
+          image: AssetImage('assets/images/imagesprofile/appbar/background.png'),
+          fit: BoxFit.cover,
+        ),
+       centerTitle: true,
+       title: Text(UseString.detail,
+          style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color: Colors.white), 
+       ),
+       leading: IconButton(
+          icon: Icon(Icons.keyboard_arrow_left,
+          color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      drawer: Drawer(),
       body: Container(
         width: data.size.width,
         height: data.size.height,
         child: Stack(
           children: <Widget>[
-             GoogleMap(
+            GoogleMap(
               mapType: MapType.normal,
               zoomGesturesEnabled: true,
               initialCameraPosition: CameraPosition(
-                target: LatLng(13.7650836, 100.5379664),
+                target: LatLng(widget.latitude, widget.logtitude),
                 zoom: widget.zoom,
               ),
               onMapCreated: (GoogleMapController controller) {
                 _controller.complete(controller);
               },
               markers: Set.from(allMarkers),
+              onTap: (latlang) {
+                UseString.pin = "Add Here";
+                markertap(latlang); //we will call this function when pressed on the map
+              },
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 120,top: 520),
+              width: 170,
+              height: 60,
+              // color: Colors.black,
+              child: FlatButton(
+                color: PickCarColor.colormain,
+                onPressed: (){
+                  UseString.pin = "Add Here";
+                  marker();
+                },
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(18.0),
+                  // side: BorderSide(color: Colors.red)
+                ),
+                child: Text(UseString.pin,
+                  style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*25,color: Colors.white),
+                ),
+              ),
             ),
           ],
         ),
-      )
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: getlocationnow,
+        child: Icon(Icons.near_me),
+      ),
     );
   }
 }

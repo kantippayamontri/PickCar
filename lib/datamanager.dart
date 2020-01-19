@@ -201,6 +201,8 @@ class UseString {
   static String time = "Time";
   static String date = "Date";
   static String delete = "Delete";
+
+  static String pin = "Pin Here";
 }
 class Currency{
   static String thb = "THB";
@@ -286,6 +288,9 @@ class DataFetch{
   static int fetchmotor = 0; 
   static int fetchpiority = 0; 
   static int checkhavedata = 0; 
+  static int checknotsamenoresult = 0;
+  static int checknothaveslottime = 0;
+  static int search = 0;  
 }
 
 class TimeSlot {

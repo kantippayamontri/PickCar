@@ -22,7 +22,7 @@ class SearchPage extends StatelessWidget {
                 Navigator.of(context).pushNamed(Datamanager.mappage);
                 // Navigator.of(context).pushNamed(Datamanager.detailsearch);
               },
-              child: Text("goto map"),
+              child: Text("goto box"),
             ),
             SizedBox(height: 20,),
             RaisedButton(
