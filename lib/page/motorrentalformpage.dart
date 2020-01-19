@@ -23,6 +23,7 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
   void initState() {
     _motorRentalFormBloc = MotorRentalFormBloc(
         context: this.context, motorcycle: widget.motorcycle);
+    _motorRentalFormBloc.add(MotorRentalFormLoadDataEvent());
     super.initState();
   }
 
@@ -50,8 +51,8 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
                       height: 20,
                     ),
 
-                    _container(
-                        constraint.maxHeight * 0.3, constraint.maxWidth * 0.9, [
+                    _container(constraint.maxHeight * 0.35,
+                        constraint.maxWidth * 0.9, [
                       Text(
                         UseString.profile,
                         style: _textstyle(),
@@ -91,8 +92,8 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
                       height: constraint.maxHeight * 0.05,
                     ),
                     //todo price
-                    _container(
-                        constraint.maxHeight * 0.2, constraint.maxWidth * 0.9, [
+                    _container(constraint.maxHeight * 0.275,
+                        constraint.maxWidth * 0.9, [
                       Text(
                         UseString.price,
                         style: _textstyle(),
@@ -116,8 +117,8 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
                     SizedBox(
                       height: 20,
                     ),
-                    _container(
-                        constraint.maxHeight * 0.2, constraint.maxWidth * 0.9, [
+                    _container(constraint.maxHeight * 0.25,
+                        constraint.maxWidth * 0.9, [
                       Text(
                         UseString.pleasechoosedate,
                         style: _textstyle(),
@@ -141,15 +142,17 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
                     SizedBox(
                       height: 20,
                     ),
-                    _container(
-                        constraint.maxHeight * 0.2, constraint.maxWidth * 0.9, [
+                    _container(constraint.maxHeight * 0.25,
+                        constraint.maxWidth * 0.9, [
                       Text(
                         UseString.choosetime,
                         style: _textstyle(),
                       ),
                       Tags(
                         key: UniqueKey(),
-                        itemCount: TimeSlot.toList(_motorRentalFormBloc.dateTime).length,
+                        itemCount:
+                            TimeSlot.toList(_motorRentalFormBloc.dateTime)
+                                .length,
                         itemBuilder: (int index) {
                           final String timeslot = TimeSlot.toList(
                               _motorRentalFormBloc.dateTime)[index];

@@ -11,6 +11,9 @@ class MotorForRent {
   String motorcycledocid; //
   double price; //
   String motorforrentdocid;
+  String ownerdocid;
+  String university;
+  
 
   MotorForRent({
     @required this.status,
@@ -18,6 +21,9 @@ class MotorForRent {
     @required this.dateTime,
     @required this.motorcycledocid,
     @required this.timeslotlist,
+    @required this.ownerdocid,
+    @required this.university
+    
   }) {
     this.day = dateTime.day;
     this.month = dateTime.month;
@@ -92,6 +98,8 @@ class MotorForRent {
       'year' : this.year,
       'timeslotlist' : this.timeslotlist.toList(),
       'motorcycledocid' : this.motorcycledocid,
+      'ownerdocid' : this.ownerdocid,
+      'university' : this.university
     };
   }
 }

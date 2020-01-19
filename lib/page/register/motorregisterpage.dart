@@ -59,10 +59,12 @@ class _MotorRegisterPageState extends State<MotorRegisterPage> {
     });
   }
 
+
   @override
   void initState() {
     // TODO: implement initState
     _motorregisterbloc = MotorRegisterBloc(context);
+    
     super.initState();
   }
 

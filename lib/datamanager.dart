@@ -27,6 +27,7 @@ class Datamanager {
   static String changepassword = "/ChangePassword";
   static String newpassword = "/Newpassword";
   static String emailsend = "/Emailsend";
+  static String motorbooklistpage = "/motorbooklistpage";
 
   static String listcar = "/Listcar";
   static String detailsearch = "/Detailsearch";
@@ -197,9 +198,13 @@ class UseString {
   static String next = "NEXT";
   static String searching = "Searching...";
   static String notfound = "Result not found.";
+  static String time = "Time";
+  static String date = "Date";
+  static String delete = "Delete";
 }
 class Currency{
   static String thb = "THB";
+
 }
 class ImageProfiles {
   static Uint8List profileUrl;
@@ -333,4 +338,6 @@ class TimeSlot {
     return loadlist(date);
   }
 
+  
 }
+

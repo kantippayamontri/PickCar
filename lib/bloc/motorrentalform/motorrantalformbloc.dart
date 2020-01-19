@@ -5,6 +5,7 @@ import 'package:pickcar/bloc/motorrentalform/motorrentalformevent.dart';
 import 'package:pickcar/bloc/motorrentalform/motorrentalformstate.dart';
 import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/datamanager.dart';
+import 'package:pickcar/models/motorcycletimeslot.dart';
 import 'package:pickcar/models/motorforrent.dart';
 
 class MotorRentalFormBloc
@@ -16,6 +17,7 @@ class MotorRentalFormBloc
   DateTime dateTime;
   DateTime datenow;
   List<String> timeslotlist = List<String>();
+  List<Map<String , dynamic>> realts = List<Map<String , dynamic>>();
 
   MotorRentalFormBloc({@required this.context, @required this.motorcycle}) {
     pricecontroller.text = CarPrice.motorminprice.toString();
@@ -43,6 +45,12 @@ class MotorRentalFormBloc
         ModalRoute.withName('/'),
       );
     }
+
+    if(event is MotorRentalFormLoadDataEvent){
+
+    }
+
+
   }
 
   Future<Null> submitform() async {
@@ -59,7 +67,9 @@ class MotorRentalFormBloc
         motorcycledocid: this.motorcycle.firestoredocid,
         price: double.parse(this.pricecontroller.text),
         status: CarStatus.waiting,
-        timeslotlist: timeslotlist);
+        timeslotlist: timeslotlist,
+        ownerdocid: Datamanager.user.documentid,
+        university: Datamanager.user.university);
     final docref = await Datamanager.firestore
         .collection("Motorcycleforrent")
         .add(motorForRent.toJson());
@@ -73,6 +83,33 @@ class MotorRentalFormBloc
         .collection("Motorcycle")
         .document(this.motorcycle.firestoredocid)
         .updateData({'motorforrentdocid': docid});
+
+    //todo add motorforrentslot
+    List<MotorcycleTimeSlot> motortimeslotlist = List<MotorcycleTimeSlot>();
+    for (String timeslot in timeslotlist) {
+      MotorcycleTimeSlot motorslot = MotorcycleTimeSlot(
+          dateTime: this.dateTime,
+          day: this.dateTime.day,
+          month: this.dateTime.month,
+          year: this.dateTime.year,
+          motorcycledocid: this.motorcycle.firestoredocid,
+          motorforrentdocid: docid,
+          ownerdocid: Datamanager.user.documentid,
+          prize: double.parse(this.pricecontroller.text),
+          timeslot: timeslot,
+          university: Datamanager.user.university,
+          docid: null
+          );
+
+      final docref = await Datamanager.firestore
+          .collection("MotorcycleforrentSlot")
+          .add(motorslot.toJson());
+
+      Datamanager.firestore.collection("MotorcycleforrentSlot").document(docref.documentID).updateData({
+        'docid' : docref.documentID
+      });
+
+    }
   }
 
   Future<Null> resetstatusmotor() async {
