@@ -203,6 +203,8 @@ class UseString {
   static String delete = "Delete";
 
   static String pin = "Pin Here";
+  static String addlocation = "Add location";
+  static String loading = "Loading...";
 }
 class Currency{
   static String thb = "THB";
@@ -290,7 +292,8 @@ class DataFetch{
   static int checkhavedata = 0; 
   static int checknotsamenoresult = 0;
   static int checknothaveslottime = 0;
-  static int search = 0;  
+  static int search = 0;
+  static int checkhavepin = 0;    
 }
 
 class TimeSlot {
