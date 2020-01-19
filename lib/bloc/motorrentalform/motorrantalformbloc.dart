@@ -45,6 +45,12 @@ class MotorRentalFormBloc
         ModalRoute.withName('/'),
       );
     }
+
+    if(event is MotorRentalFormLoadDataEvent){
+      
+    }
+
+
   }
 
   Future<Null> submitform() async {
