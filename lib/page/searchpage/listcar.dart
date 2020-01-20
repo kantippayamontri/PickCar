@@ -6,6 +6,7 @@ import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/widget/profile/profileImage.dart';
 class Listcar extends StatefulWidget {
+  int day = 25;
   @override
   _ListcarState createState() => _ListcarState();
 }
@@ -15,6 +16,8 @@ class _ListcarState extends State<Listcar> {
   void initState() {
     DataFetch.fetchpiority = 0;
     DataFetch.checkhavedata = 0;
+    DataFetch.checknotsamenoresult = 0;
+    DataFetch.checknothaveslottime = 0;
     super.initState();
   }
    int checkmatch(Listcarslot timeslot){
@@ -58,18 +61,19 @@ class _ListcarState extends State<Listcar> {
   Widget loaddata(BuildContext context){
     var datasize = MediaQuery.of(context);
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: 25).snapshots(),
+      stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: widget.day).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) { 
           print("wait");
-          return Container(
-          height: datasize.size.height/1.4,
-          child: Center(
-            child: Text(UseString.notfound,
-              style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*36,color: Colors.white),
-            ),
-          ),
-        );
+          return Container();
+        //   Container(
+        //   height: datasize.size.height/1.4,
+        //   child: Center(
+        //     child: Text(UseString.notfound,
+        //       style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*36,color: Colors.white),
+        //     ),
+        //   ),
+        // );
       }else{
         return loaddata2(context, snapshot.data.documents);
       }
@@ -173,10 +177,11 @@ class _ListcarState extends State<Listcar> {
       );
     }else{
       return StreamBuilder<QuerySnapshot>(
-        stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: 25).orderBy('priority', descending: true).snapshots(),
+        stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: widget.day).orderBy('priority', descending: true).snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-             return Container(
+             return 
+             Container(
               height: datasize.size.height/1.4,
               child: Center(
                 child: Text(UseString.notfound,
@@ -223,7 +228,7 @@ class _ListcarState extends State<Listcar> {
                             .document(Datamanager.user.documentchat)
                             .collection('groupchat').document(usershow.documentid);
     }
-    if( timeslot.ownerdocid != Datamanager.user.documentid &&timeslot.university == 'Chaing Mai University'){
+    if( timeslot.ownerdocid != Datamanager.user.documentid && timeslot.university == 'Chaing Mai University'){
       if(checkmatch(timeslot) != 0){
           return GestureDetector(
             onTap: (){
@@ -539,24 +544,34 @@ class _ListcarState extends State<Listcar> {
           ),
         );
       }else{
+        if(DataFetch.checknothaveslottime == 0){
+          DataFetch.checknothaveslottime =1;
+          return Container(
+            height: datasize.size.height/1.4,
+            child: Center(
+              child: Text(UseString.notfound,
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*36,color: PickCarColor.colorFont2),
+              ),
+            ),
+          );
+        }else{
+          return Container();
+        }
+      }
+    }else{
+      if(DataFetch.checknotsamenoresult == 0){
+        DataFetch.checknotsamenoresult =1;
         return Container(
           height: datasize.size.height/1.4,
           child: Center(
             child: Text(UseString.notfound,
-              style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*36,color: PickCarColor.colorFont2),
+              style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*36,color: Colors.white),
             ),
           ),
         );
+      }else{
+        return Container();
       }
-    }else{
-      return Container(
-        height: datasize.size.height/1.4,
-        child: Center(
-          child: Text(UseString.notfound,
-            style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*36,color: Colors.white),
-          ),
-        ),
-      );
     }
   }
 }

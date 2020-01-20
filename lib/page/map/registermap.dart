@@ -11,19 +11,20 @@ import 'dart:ui' as ui;
 
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/box.dart';
+import 'package:pickcar/models/pincar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class MapPage extends StatefulWidget {
+class RegisterMap extends StatefulWidget {
   double zoom = 14;
   double latitude = 18.802587;
   double logtitude = 98.951556;
   double latitudemark;
   double logtitudemark;
   @override
-  _MappageState createState() => _MappageState();
+  _RegisterMapState createState() => _RegisterMapState();
 }
 
-class _MappageState extends State<MapPage> {
+class _RegisterMapState extends State<RegisterMap> {
   BitmapDescriptor _markerIcon;
   var textController = TextEditingController();
   List<Marker> allMarkers = [];
@@ -33,12 +34,31 @@ class _MappageState extends State<MapPage> {
     DataFetch.checkhavedata =0;
     DataFetch.checkhavepin =0;
     //bankok
-    widget.latitude = 13.736717;
-    widget.logtitude = 100.523186;
+    // widget.latitude = 13.736717;
+    // widget.logtitude = 100.523186;
     //chiangmai university
     widget.latitude = 18.802587;
     widget.logtitude = 98.951556;
-    super.initState();
+  super.initState();
+  }
+  startmarker(){
+    if(Datamanager.pincar != null){
+      allMarkers.add(
+        Marker(
+          icon: _markerIcon,
+          markerId: MarkerId('myMarker'),
+          draggable: true,
+          // onTap: (){
+          //   print('tapnow');
+          // },
+          position: LatLng(
+            Datamanager.pincar.latitude,
+            Datamanager.pincar.longitude),
+        ),
+      );
+      DataFetch.checkhavepin =1;
+      UseString.pin = "Add Here";
+    }
   }
   // addmarker(){
   //   allMarkers.add(
@@ -55,51 +75,6 @@ class _MappageState extends State<MapPage> {
   //   print('wait');
   //   print(allMarkers.length);
   // }
-  startmarker(DocumentSnapshot data){
-    BoxShow boxshow = BoxShow.fromSnapshot(data);
-    var latitude = boxshow.latitude;
-    var logitude = boxshow.longitude;
-    int i = 0;
-     String googleUrl =
-        'https://www.google.com/maps/search/?api=1&query=$latitude,$logitude';
-    allMarkers.add(
-      Marker(
-        icon: _markerIcon,
-        markerId: MarkerId((i++).toString()),
-        draggable: false,
-        // onTap: (){
-        //   print('tapnow');
-        // },
-        infoWindow: InfoWindow(
-          title: boxshow.placename,
-          snippet: 'Tap here to open in google map.',
-          onTap: () async {
-            if (await canLaunch(googleUrl)) {
-              await launch(googleUrl);
-            } else {
-            }
-          },
-        ),
-        position: LatLng(
-          boxshow.latitude,
-          boxshow.longitude
-        ),
-      ),
-    );
-    // print(i);
-  }
-  fetchData(BuildContext context) async {
-    if(DataFetch.checkhavedata == 0){
-      await Firestore.instance.collection('box').getDocuments().then((data){
-        data.documents.map((data){
-            startmarker(data);
-        }).toList();
-      });
-    }else{
-      return Container();
-    }
-    
-  }
   Completer<GoogleMapController> _controller = Completer();
   Future<LocationData> getCurrentLocation() async {
     Location location = Location();
@@ -111,6 +86,7 @@ class _MappageState extends State<MapPage> {
     }
   }
   marker() async {
+    // allMarkers =[];
     LocationData currentLocation;
     currentLocation = await getCurrentLocation();
     setState(() {
@@ -135,6 +111,7 @@ class _MappageState extends State<MapPage> {
     controller.animateCamera(CameraUpdate.newLatLngZoom(LatLng(currentLocation.latitude,currentLocation.longitude), 17.0));
   }
   markertap(LatLng location) async {
+    // allMarkers =[];
     setState(() {
       allMarkers.add(
         Marker(
@@ -193,86 +170,43 @@ class _MappageState extends State<MapPage> {
         shape: new RoundedRectangleBorder(
           borderRadius: new BorderRadius.circular(20),
         ),
-        title: Text('Pin name'),
-        content: TextField(
-          controller: textController,
-          decoration: InputDecoration(
-            hintText: "Put pin name.",
-          ),
+        title: Text('Are you sure?'),
+        content: Row(
+          children: <Widget>[
+            RaisedButton(
+              child: Text('Confirm'),
+              onPressed: (){
+                addboxdatabase();
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            ),
+            SizedBox(width: 10,),
+            RaisedButton(
+              child: Text('Cancel'),
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            ),
+          ],
         ),
-        actions: <Widget>[
-          Row(
-            children: <Widget>[
-              FlatButton(
-                child: new Text('CONFIRM'),
-                onPressed: () {
-                  addboxdatabase();
-                },
-              ),
-              FlatButton(
-                child: new Text('CANCEL'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          )
-        ],
       );
     });
   }
-  addboxdatabase() async {
-    print(widget.latitudemark);
-    List<int> freeslot = [1,2,3,4,5,6,7,8,9,10];
-    Box box = Box(
+  addboxdatabase() {
+    Datamanager.pincar = Pincar(
       latitude: widget.latitudemark,
       longitude: widget.logtitudemark,
-      placename: textController.text,
-      maxslot: 10,
+      ownerid: Datamanager.user.documentid,
+      rentorbookid: null,
     );
-    print(box.toJson());
-    var refbox = await Datamanager.firestore.collection('box')
-                          .add(box.toJson());
-    var docboxid = refbox.documentID;
-    for(int i=1;i<box.maxslot+1;i++){
-      // print(i);
-      Datamanager.firestore.collection('box')
-                          .document(docboxid)
-                          .collection('boxslot')
-                          .document(i.toString())
-                          .setData({'slot': i});
-    }
-    // Future.delayed(const Duration(milliseconds: 1000), () {
-    // print('a');
-    Datamanager.firestore.collection('box')
-                          .document(docboxid)
-                          .updateData({'docboxid':docboxid,"freeslot": FieldValue.arrayUnion(freeslot)}).whenComplete((){
-                            setState(() {
-                              DataFetch.checkhavedata =0;
-                              DataFetch.checkhavepin =0;
-                              textController = TextEditingController();
-                              _controller = Completer();
-                              Navigator.pop(context);
-                            });
-                          });
-    // });
+  }
 
-  }
-  wait(){
-    Future.delayed(const Duration(milliseconds: 1000), () {
-      // print('wait');
-      setState(() {
-        DataFetch.checkhavedata =1;
-        allMarkers = allMarkers;
-      });
-    });
-  }
   @override
   Widget build(BuildContext context) {
     var data = MediaQuery.of(context);
     _createMarkerImageFromAsset(context);
-    fetchData(context);
-    if(DataFetch.checkhavedata == 1){
+    startmarker();
       return  Scaffold(
         appBar: AppBar(
         backgroundColor: Colors.white,
@@ -350,33 +284,6 @@ class _MappageState extends State<MapPage> {
           child: Icon(Icons.near_me),
         ),
       );
-    }else{
-      wait();
-      // return Container();
-      return Center(
-        child: Container(
-          width: data.size.width,
-          height: data.size.height,
-          color: PickCarColor.colormain,
-          child: Row(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(left: 100),
-                child: SpinKitCircle(
-                  color: Colors.white,
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 10),
-                child:  Text(UseString.loading,
-                  style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*25,color: Colors.white),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
   }
   @override
   void dispose() {

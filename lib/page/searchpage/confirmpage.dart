@@ -67,6 +67,7 @@ class ConfirmPage extends StatelessWidget {
                   Navigator.pop(context);
                 }else{
                   Navigator.pop(context);
+                  Navigator.pop(context);
                 }
                 // Navigator.of(context).pushNamed(Datamanager.detailsearch);
               },

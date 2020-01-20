@@ -11,6 +11,8 @@ import 'package:pickcar/page/searchpage/search.dart';
 import 'package:pickcar/page/setting/settingpage.dart';
 import 'dart:typed_data';
 
+import 'models/box.dart';
+import 'models/pincar.dart';
 import 'models/user.dart';
 
 class Datamanager {
@@ -35,6 +37,9 @@ class Datamanager {
   static String confirmpage = "/ConfirmPage";
   static String mappage = "/Mappage";
   static String mapaddmark = "/Mapaddmark";
+
+  static String registerMap = "/RegisterMap";
+  static String mapboxselect = "/Mapboxselect";
   
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
@@ -45,6 +50,8 @@ class Datamanager {
   static Usershow usershow;
   static Listcarslot listcarslot;
   static Slottime slottime;
+  static Pincar pincar;
+  static BoxShow boxselect;
 
   static FirebaseStorage firebasestorage = FirebaseStorage.instance;
 
@@ -201,6 +208,11 @@ class UseString {
   static String time = "Time";
   static String date = "Date";
   static String delete = "Delete";
+
+  static String pin = "Pin Here";
+  static String addlocation = "Add location";
+  static String loading = "Loading...";
+  static String selectbox = "Select box";
 }
 class Currency{
   static String thb = "THB";
@@ -286,6 +298,10 @@ class DataFetch{
   static int fetchmotor = 0; 
   static int fetchpiority = 0; 
   static int checkhavedata = 0; 
+  static int checknotsamenoresult = 0;
+  static int checknothaveslottime = 0;
+  static int search = 0;
+  static int checkhavepin = 0;    
 }
 
 class TimeSlot {

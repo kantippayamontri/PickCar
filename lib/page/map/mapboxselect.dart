@@ -13,25 +13,23 @@ import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/box.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class MapPage extends StatefulWidget {
+class Mapboxselect extends StatefulWidget {
   double zoom = 14;
   double latitude = 18.802587;
   double logtitude = 98.951556;
   double latitudemark;
   double logtitudemark;
   @override
-  _MappageState createState() => _MappageState();
+  _MapboxselectState createState() => _MapboxselectState();
 }
 
-class _MappageState extends State<MapPage> {
+class _MapboxselectState extends State<Mapboxselect> {
   BitmapDescriptor _markerIcon;
   var textController = TextEditingController();
   List<Marker> allMarkers = [];
   @override
   void initState(){
-    UseString.pin = "Pin Here";
     DataFetch.checkhavedata =0;
-    DataFetch.checkhavepin =0;
     //bankok
     widget.latitude = 13.736717;
     widget.logtitude = 100.523186;
@@ -40,21 +38,6 @@ class _MappageState extends State<MapPage> {
     widget.logtitude = 98.951556;
     super.initState();
   }
-  // addmarker(){
-  //   allMarkers.add(
-  //     Marker(
-  //       icon: _markerIcon,
-  //       markerId: MarkerId('wait'),
-  //       draggable: false,
-  //       visible: true,
-  //       // onTap: (){
-  //       //   print('tapnow');
-  //       // },
-  //     ),
-  //   );
-  //   print('wait');
-  //   print(allMarkers.length);
-  // }
   startmarker(DocumentSnapshot data){
     BoxShow boxshow = BoxShow.fromSnapshot(data);
     var latitude = boxshow.latitude;
@@ -67,9 +50,9 @@ class _MappageState extends State<MapPage> {
         icon: _markerIcon,
         markerId: MarkerId((i++).toString()),
         draggable: false,
-        // onTap: (){
-        //   print('tapnow');
-        // },
+        onTap: (){
+          Datamanager.boxselect = boxshow;
+        },
         infoWindow: InfoWindow(
           title: boxshow.placename,
           snippet: 'Tap here to open in google map.',
@@ -110,53 +93,6 @@ class _MappageState extends State<MapPage> {
         location = null;
     }
   }
-  marker() async {
-    LocationData currentLocation;
-    currentLocation = await getCurrentLocation();
-    setState(() {
-      allMarkers.add(
-        Marker(
-          icon: _markerIcon,
-          markerId: MarkerId('myMarker'),
-          draggable: true,
-          // onTap: (){
-          //   print('tapnow');
-          // },
-          position: LatLng(
-            currentLocation.latitude,
-            currentLocation.longitude),
-        ),
-      );
-      widget.latitudemark = currentLocation.latitude;
-      widget.logtitudemark = currentLocation.longitude;
-      DataFetch.checkhavepin =1;
-    });
-    GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newLatLngZoom(LatLng(currentLocation.latitude,currentLocation.longitude), 17.0));
-  }
-  markertap(LatLng location) async {
-    setState(() {
-      allMarkers.add(
-        Marker(
-          icon: _markerIcon,
-          markerId: MarkerId('myMarker'),
-          draggable: true,
-          // onTap: (){
-          //   print('tapnow');
-          // },
-          position: LatLng(
-            location.latitude,
-            location.longitude),
-        ),
-      );
-      widget.latitudemark = location.latitude;
-      widget.logtitudemark = location.longitude;
-      DataFetch.checkhavepin =1;
-      UseString.pin = "Add Here";
-    });
-    // GoogleMapController controller = await _controller.future;
-    // controller.animateCamera(CameraUpdate.newLatLngZoom(location, 17.0));
-  }
   Future getlocationnow() async {
     LocationData currentLocation;
     final GoogleMapController controller = await _controller.future;
@@ -193,70 +129,28 @@ class _MappageState extends State<MapPage> {
         shape: new RoundedRectangleBorder(
           borderRadius: new BorderRadius.circular(20),
         ),
-        title: Text('Pin name'),
-        content: TextField(
-          controller: textController,
-          decoration: InputDecoration(
-            hintText: "Put pin name.",
-          ),
+        title: Text(Datamanager.boxselect.placename),
+        content: Row(
+          children: <Widget>[
+            RaisedButton(
+              child: Text('Confirm'),
+              onPressed: (){
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            ),
+            SizedBox(width: 10,),
+            RaisedButton(
+              child: Text('Cancel'),
+              onPressed: (){
+                Datamanager.boxselect = null;
+                Navigator.pop(context);
+              },
+            ),
+          ],
         ),
-        actions: <Widget>[
-          Row(
-            children: <Widget>[
-              FlatButton(
-                child: new Text('CONFIRM'),
-                onPressed: () {
-                  addboxdatabase();
-                },
-              ),
-              FlatButton(
-                child: new Text('CANCEL'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          )
-        ],
       );
     });
-  }
-  addboxdatabase() async {
-    print(widget.latitudemark);
-    List<int> freeslot = [1,2,3,4,5,6,7,8,9,10];
-    Box box = Box(
-      latitude: widget.latitudemark,
-      longitude: widget.logtitudemark,
-      placename: textController.text,
-      maxslot: 10,
-    );
-    print(box.toJson());
-    var refbox = await Datamanager.firestore.collection('box')
-                          .add(box.toJson());
-    var docboxid = refbox.documentID;
-    for(int i=1;i<box.maxslot+1;i++){
-      // print(i);
-      Datamanager.firestore.collection('box')
-                          .document(docboxid)
-                          .collection('boxslot')
-                          .document(i.toString())
-                          .setData({'slot': i});
-    }
-    // Future.delayed(const Duration(milliseconds: 1000), () {
-    // print('a');
-    Datamanager.firestore.collection('box')
-                          .document(docboxid)
-                          .updateData({'docboxid':docboxid,"freeslot": FieldValue.arrayUnion(freeslot)}).whenComplete((){
-                            setState(() {
-                              DataFetch.checkhavedata =0;
-                              DataFetch.checkhavepin =0;
-                              textController = TextEditingController();
-                              _controller = Completer();
-                              Navigator.pop(context);
-                            });
-                          });
-    // });
-
   }
   wait(){
     Future.delayed(const Duration(milliseconds: 1000), () {
@@ -311,9 +205,8 @@ class _MappageState extends State<MapPage> {
                   _controller.complete(controller);
                 },
                 markers: Set.from(allMarkers),
-                onTap: (latlang) {
-                  UseString.pin = "Add Here";
-                  markertap(latlang); //we will call this function when pressed on the map
+                onTap: (latLng){
+                  Datamanager.boxselect =null;
                 },
               ),
               Container(
@@ -324,12 +217,7 @@ class _MappageState extends State<MapPage> {
                 child: FlatButton(
                   color: PickCarColor.colormain,
                   onPressed: (){
-                    // print(DataFetch.checkhavepin);
-                    if(DataFetch.checkhavepin ==0){
-                      UseString.pin = "Add Here";
-                      marker();
-                    }else{
-                      // addboxdatabase();
+                    if(Datamanager.boxselect != null){
                       addname(context);
                     }
                   },
@@ -337,7 +225,7 @@ class _MappageState extends State<MapPage> {
                     borderRadius: new BorderRadius.circular(18.0),
                     // side: BorderSide(color: Colors.red)
                   ),
-                  child: Text(UseString.pin,
+                  child: Text(UseString.selectbox,
                     style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*25,color: Colors.white),
                   ),
                 ),

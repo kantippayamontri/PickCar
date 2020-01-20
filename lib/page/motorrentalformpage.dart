@@ -21,6 +21,8 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
 
   @override
   void initState() {
+    Datamanager.pincar = null;
+    Datamanager.boxselect = null;
     _motorRentalFormBloc = MotorRentalFormBloc(
         context: this.context, motorcycle: widget.motorcycle);
     _motorRentalFormBloc.add(MotorRentalFormLoadDataEvent());
@@ -174,6 +176,18 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
                     ]),
                     SizedBox(
                       height: 20,
+                    ),
+                    RaisedButton(
+                      onPressed: (){
+                        Navigator.of(context).pushNamed(Datamanager.registerMap);
+                      },
+                      child: Text('location'),
+                    ),
+                    RaisedButton(
+                      onPressed: (){
+                        Navigator.of(context).pushNamed(Datamanager.mapboxselect);
+                      },
+                      child: Text('select box'),
                     ),
                     _submitbutton(this.context, () {
                       _motorRentalFormBloc

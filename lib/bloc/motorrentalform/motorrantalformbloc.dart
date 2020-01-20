@@ -7,6 +7,7 @@ import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/motorcycletimeslot.dart';
 import 'package:pickcar/models/motorforrent.dart';
+import 'package:pickcar/models/slotbox.dart';
 
 class MotorRentalFormBloc
     extends Bloc<MotorRentalFormEvent, MotorRentalFormState> {
@@ -108,8 +109,30 @@ class MotorRentalFormBloc
       Datamanager.firestore.collection("MotorcycleforrentSlot").document(docref.documentID).updateData({
         'docid' : docref.documentID
       });
-
+      Datamanager.pincar.rentorbookid = docref.documentID;
+      Datamanager.pincar.docboxid = Datamanager.boxselect.docboxid;
+      final docpinref = await Datamanager.firestore
+        .collection("pincar")
+        .add(Datamanager.pincar.toJson());
+      Datamanager.pincar.docpinid = docpinref.documentID;
+      Datamanager.firestore.collection("pincar").document(Datamanager.pincar.docpinid).updateData({
+        'docpinid' : docpinref.documentID
+      });
+      Datamanager.firestore.collection("MotorcycleforrentSlot").document(docref.documentID).updateData({
+        'pindocid' : docpinref.documentID
+      });
+      
     }
+    // Boxslot boxslot = Boxslot(
+    //     isopen: false,
+    //     rentorbook: docref.documentID,
+    //     slotnumber: ,
+    //   );
+    //   final docboxslotref = await Datamanager.firestore
+    //     .collection("box")
+    //     .document(Datamanager.boxselect.docboxid)
+    //     .collection('boxslot')
+    //     .add(boxslot.toJson());
   }
 
   Future<Null> resetstatusmotor() async {
