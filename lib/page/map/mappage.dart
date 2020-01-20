@@ -11,8 +11,10 @@ import 'dart:ui' as ui;
 
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/box.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 class MapPage extends StatefulWidget {
-  double zoom = 16;
+  double zoom = 14;
   double latitude = 18.802587;
   double logtitude = 98.951556;
   double latitudemark;
@@ -23,11 +25,13 @@ class MapPage extends StatefulWidget {
 
 class _MappageState extends State<MapPage> {
   BitmapDescriptor _markerIcon;
+  var textController = TextEditingController();
   List<Marker> allMarkers = [];
   @override
   void initState(){
     UseString.pin = "Pin Here";
     DataFetch.checkhavedata =0;
+    DataFetch.checkhavepin =0;
     //bankok
     widget.latitude = 13.736717;
     widget.logtitude = 100.523186;
@@ -53,7 +57,11 @@ class _MappageState extends State<MapPage> {
   // }
   startmarker(DocumentSnapshot data){
     BoxShow boxshow = BoxShow.fromSnapshot(data);
+    var latitude = boxshow.latitude;
+    var logitude = boxshow.longitude;
     int i = 0;
+     String googleUrl =
+        'https://www.google.com/maps/search/?api=1&query=$latitude,$logitude';
     allMarkers.add(
       Marker(
         icon: _markerIcon,
@@ -62,6 +70,16 @@ class _MappageState extends State<MapPage> {
         // onTap: (){
         //   print('tapnow');
         // },
+        infoWindow: InfoWindow(
+          title: boxshow.placename,
+          snippet: 'Tap here to open in google map.',
+          onTap: () async {
+            if (await canLaunch(googleUrl)) {
+              await launch(googleUrl);
+            } else {
+            }
+          },
+        ),
         position: LatLng(
           boxshow.latitude,
           boxshow.longitude
@@ -77,28 +95,6 @@ class _MappageState extends State<MapPage> {
             startmarker(data);
         }).toList();
       });
-      // addmarker();
-      // StreamBuilder<QuerySnapshot>(
-      //   // stream: Firestore.instance.collection('box').snapshots(),
-      //   stream: Firestore.instance.collection('Motorcycleforrent').snapshots(),
-      //   builder: (context, snapshot) {
-      //   print("aaas");
-      //   if (snapshot.connectionState == ConnectionState.waiting) { 
-      //       print("wait");
-      //       return Container();
-      //   }else if (snapshot.hasData){
-      //     print('ass');
-      //     var document = [];
-      //     snapshot.data.documents.map((data){
-      //       startmarker(data);
-      //     }).toList();
-      //     print("-----");
-      //     return Container();
-      //   }else{
-      //     return Container();
-      //   }
-      //   },
-      // );
     }else{
       return Container();
     }
@@ -135,8 +131,8 @@ class _MappageState extends State<MapPage> {
       widget.logtitudemark = currentLocation.longitude;
       DataFetch.checkhavepin =1;
     });
-    // GoogleMapController controller = await _controller.future;
-    // controller.animateCamera(CameraUpdate.newLatLngZoom(LatLng(currentLocation.latitude,currentLocation.longitude), 17.0));
+    GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newLatLngZoom(LatLng(currentLocation.latitude,currentLocation.longitude), 17.0));
   }
   markertap(LatLng location) async {
     setState(() {
@@ -189,12 +185,48 @@ class _MappageState extends State<MapPage> {
       });
     }
   }
+  addname(BuildContext context){
+    return showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        shape: new RoundedRectangleBorder(
+          borderRadius: new BorderRadius.circular(20),
+        ),
+        title: Text('Pin name'),
+        content: TextField(
+          controller: textController,
+          decoration: InputDecoration(
+            hintText: "Put pin name.",
+          ),
+        ),
+        actions: <Widget>[
+          Row(
+            children: <Widget>[
+              FlatButton(
+                child: new Text('CONFIRM'),
+                onPressed: () {
+                  addboxdatabase();
+                },
+              ),
+              FlatButton(
+                child: new Text('CANCEL'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          )
+        ],
+      );
+    });
+  }
   addboxdatabase() async {
     print(widget.latitudemark);
     Box box = Box(
       latitude: widget.latitudemark,
       longitude: widget.logtitudemark,
-      placename: 'test',
+      placename: textController.text,
       maxslot: 999,
     );
     print(box.toJson());
@@ -203,7 +235,14 @@ class _MappageState extends State<MapPage> {
     var docboxid = refbox.documentID;
     Datamanager.firestore.collection('box')
                           .document(docboxid)
-                          .updateData({'docboxid':docboxid});
+                          .updateData({'docboxid':docboxid}).whenComplete((){
+                            setState(() {
+                              DataFetch.checkhavedata =0;
+                              DataFetch.checkhavepin =0;
+                              textController.text = null;
+                            });
+                          });
+
   }
   wait(){
     Future.delayed(const Duration(milliseconds: 1000), () {
@@ -272,12 +311,12 @@ class _MappageState extends State<MapPage> {
                   color: PickCarColor.colormain,
                   onPressed: (){
                     // print(DataFetch.checkhavepin);
-                    UseString.pin = "Add Here";
                     if(DataFetch.checkhavepin ==0){
+                      UseString.pin = "Add Here";
                       marker();
                     }else{
-                      addboxdatabase();
-                      Navigator.pop(context);
+                      // addboxdatabase();
+                      addname(context);
                     }
                   },
                   shape: RoundedRectangleBorder(
@@ -327,6 +366,7 @@ class _MappageState extends State<MapPage> {
   }
   @override
   void dispose() {
+    textController.dispose();
     super.dispose();
   }
 }
