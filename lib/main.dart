@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/page/listcarpage.dart';
 import 'package:pickcar/page/loginpage.dart';
+import 'package:pickcar/page/map/mappage.dart';
+import 'package:pickcar/page/map/mapaddmark.dart';
 import 'package:pickcar/page/motorbooklistpage.dart';
 import 'package:pickcar/page/profile/editprofile/NewPassword.dart';
 import 'package:pickcar/page/profile/editprofile/changepassword.dart';
@@ -12,6 +14,10 @@ import 'package:pickcar/page/register/carregisterpage.dart';
 import 'package:pickcar/page/register/motorregisterpage.dart';
 import 'package:pickcar/page/register/registerpage.dart';
 import 'package:pickcar/page/rental/rentalpage.dart';
+import 'package:pickcar/page/searchpage/confirmpage.dart';
+import 'package:pickcar/page/searchpage/detailsearch.dart';
+import 'package:pickcar/page/searchpage/listcar.dart';
+import 'package:pickcar/page/searchpage/slottimeselect.dart';
 import 'package:pickcar/page/signuppage.dart';
 import 'package:pickcar/page/tabscreen.dart';
 
@@ -44,6 +50,12 @@ class MyApp extends StatelessWidget {
         Datamanager.newpassword : (ctx) => NewPassword(),
         Datamanager.emailsend : (ctx) => EmailSend(),
         Datamanager.listcarpage : (ctx) => ListCarPage(),
+        Datamanager.listcar : (ctx) => Listcar(),
+        Datamanager.detailsearch : (ctx) => Detailsearch(),
+        Datamanager.slottiempage : (ctx) => SlotTimePage(),
+        Datamanager.confirmpage : (ctx) => ConfirmPage(),
+        Datamanager.mappage : (ctx) => MapPage(),
+        Datamanager.mapaddmark : (ctx) => Mapaddmark(),
         Datamanager.motorbooklistpage : (ctx) => MotorBookListPage(),
         //'loginpickcarpage': (ctx) => LoginPickCarPage()
       },

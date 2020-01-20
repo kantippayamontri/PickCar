@@ -2,11 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/models/motorcycle.dart';
-import 'package:pickcar/page/chatpage.dart';
 import 'package:pickcar/page/homepage.dart';
 import 'package:pickcar/page/listcarpage.dart';
 import 'package:pickcar/page/profile/profilepage.dart';
+import 'package:pickcar/page/searchpage/search.dart';
 import 'package:pickcar/page/setting/settingpage.dart';
 import 'dart:typed_data';
 
@@ -28,15 +29,28 @@ class Datamanager {
   static String emailsend = "/Emailsend";
   static String motorbooklistpage = "/motorbooklistpage";
 
+  static String listcar = "/Listcar";
+  static String detailsearch = "/Detailsearch";
+  static String slottiempage = "/SlotTiemPage";
+  static String confirmpage = "/ConfirmPage";
+  static String mappage = "/Mappage";
+  static String mapaddmark = "/Mapaddmark";
+  
+
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
   static FirebaseUser firebaseuser = null;
   static Firestore firestore = Firestore.instance;
   static User user = null;
+  static MotorcycleShow motorcycleShow;
+  static Usershow usershow;
+  static Listcarslot listcarslot;
+  static Slottime slottime;
+
   static FirebaseStorage firebasestorage = FirebaseStorage.instance;
 
   static List<Map<String, Object>> pages = [
     {'page': HomePage(), 'title': 'Home'},
-    {'page': ChatPage(), 'title': 'Chat'},
+    {'page': SearchPage(), 'title': 'Chat'},
     {'page': ListCarPage(), 'title': 'ListCar'},
     {'page': ProfilePage(), 'title': 'Profile'},
     {'page': SettingPage(), 'title': 'setting'},
@@ -170,12 +184,28 @@ class UseString {
   static String choosetime = "Choose Time";
   static String information = "Information";
   static String aroundmotorcycle = "Around the motorcycle";
+  static String forrent = "For rent by";
+  static String included = "Included in the price";
+  static String freecancle = "Free cancellation before 30 minute.";
+  static String insurancemotorcycle = "Free motorcycle insurance.";
+  static String precautions = "Precautions";
+  static String precautionsdetail = "\t\t\tYou have to return the motorcycle before time out. \n\t\t\tyou can always cancel for free until 30 minutes before you receive the motorcycle.";
+  static String warnning = "If you do not do as described above you will pay fee.";
+  static String location = "Location";
+  static String locationdetail = "\t\t\tThe location of vehicle and key box.";
+  static String booking = "BOOKING";
+  static String selecttiem = "Select Time";
+  static String next = "NEXT";
+  static String searching = "Searching...";
+  static String notfound = "Result not found.";
   static String time = "Time";
   static String date = "Date";
   static String delete = "Delete";
+}
+class Currency{
+  static String thb = "THB";
 
 }
-
 class ImageProfiles {
   static Uint8List profileUrl;
   static Uint8List drimotorcard;
@@ -190,6 +220,7 @@ class PickCarColor {
   static var colormain = Color.fromARGB(255, 60, 179, 113);
   static var colorcmu = Color.fromARGB(255, 66, 26, 94);
   static var colorFont1 = Color.fromARGB(255, 69, 79, 99);
+  static var colorFont2 = Color.fromARGB(255, 148, 145, 145);
 }
 
 class GearMotor {
@@ -248,9 +279,13 @@ class CarStatus {
     return CarStatus.nothing;
   }
 }
-
 class CarPrice {
   static const double motorminprice = 50.0;
+}
+class DataFetch{
+  static int fetchmotor = 0; 
+  static int fetchpiority = 0; 
+  static int checkhavedata = 0; 
 }
 
 class TimeSlot {
@@ -302,6 +337,7 @@ class TimeSlot {
   static List<String> toList(DateTime date) {
     return loadlist(date);
   }
+
   
 }
 

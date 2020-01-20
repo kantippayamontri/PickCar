@@ -117,6 +117,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                       drivemotorimgtype: doc['driveliscensemotorpictype'],
                       drivecarimg: dricarimg,
                       drivecarimgtype: doc['driveliscensecarpictype'],
+                      documentchat: doc['documentchat'],
                       money:  double.parse(doc['money'].toString()),
                     );
                     print("run");

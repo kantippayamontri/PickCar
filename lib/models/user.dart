@@ -25,6 +25,7 @@ class User{
   String drivecarimgtype; 
   double money;
   String documentid;
+  String documentchat;
 
   User({
   @required this.uid,  
@@ -46,6 +47,7 @@ class User{
   @required this.drivemotorimgtype,
   @required this.drivecarimgtype,
   @required this.money,
+  @required this.documentchat,
   });
 
   Map<String , dynamic> toJson(){

@@ -7,9 +7,9 @@ import 'package:pickcar/bloc/motorwaitinglist/motorwaitingliststate.dart';
 import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/models/motorcycletimeslot.dart';
 import 'package:pickcar/widget/motorwaitingitem/motorwaitingedit.dart';
-
+ 
 import '../../datamanager.dart';
-
+ 
 class MotorWaitingListBloc
     extends Bloc<MotorWaitingListEvent, MotorWaitingListState> {
   BuildContext context;
@@ -22,11 +22,11 @@ class MotorWaitingListBloc
       @required this.setstate}) {
     motorcycletimeslotlist = List<MotorcycleTimeSlot>();
   }
-
+ 
   @override
   // TODO: implement initialState
   MotorWaitingListState get initialState => MotorWaitingListStartState();
-
+ 
   @override
   Stream<MotorWaitingListState> mapEventToState(
       MotorWaitingListEvent event) async* {
@@ -37,7 +37,7 @@ class MotorWaitingListBloc
       yield MotorWaitingShowDataState();
     }
   }
-
+ 
   void showbottomsheet(MotorcycleTimeSlot motorslot){
     showModalBottomSheet(
         context: context,
@@ -45,7 +45,7 @@ class MotorWaitingListBloc
           return MotorWaitingEdit(editslot: editslot,motorslot: motorslot,);
         });
   }
-
+ 
   Future<Null> editslot(String docid , String pricestring) async{
     if(pricestring == ""){
       Navigator.pop(context);
@@ -67,16 +67,16 @@ class MotorWaitingListBloc
       }
     }
   }
-
+ 
   Future<Null> deleteslot(MotorcycleTimeSlot motorslot) async {
     print("delete slot : " + motorslot.timeslot);
     print("delete docid : " + motorslot.docid);
-
+ 
     await Datamanager.firestore
         .collection("MotorcycleforrentSlot")
         .document(motorslot.docid)
         .delete(); //delete in motorslot
-
+ 
     var doc = await Datamanager.firestore
         .collection("Motorcycleforrent")
         .document(motorslot.motorforrentdocid)
@@ -92,7 +92,7 @@ class MotorWaitingListBloc
           .collection("Motorcycle")
           .document(motorcycle.firestoredocid)
           .updateData({'iswaiting': false});
-      
+     
       Navigator.pop(context , 'reset');
     } else {
       slot.remove(motorslot.timeslot);
@@ -103,23 +103,23 @@ class MotorWaitingListBloc
         'timeslotlist': slot,
       });
     }
-
+ 
     print("before deletr : ${motorcycletimeslotlist.length}");
     motorcycletimeslotlist
         .removeWhere((slot) => motorslot.timeslot == slot.timeslot);
     print("after delete : ${motorcycletimeslotlist.length}");
-
+ 
     setstate();
   }
-
-  
-
+ 
+ 
+ 
   Future<Null> loaddata() async {
     QuerySnapshot querySnapshot = await Datamanager.firestore
         .collection("MotorcycleforrentSlot")
         .orderBy('dateTime')
         .getDocuments();
-
+ 
     var list = querySnapshot.documents;
     list = list
         .where((motorforrentslot) =>
@@ -127,7 +127,7 @@ class MotorWaitingListBloc
             (this.motorcycle.firestoredocid ==
                 motorforrentslot['motorcycledocid']))
         .toList();
-
+ 
     for (var doc in list) {
       // print("//Timeslot//");
       // print(doc['timeslot']);
@@ -143,10 +143,10 @@ class MotorWaitingListBloc
           timeslot: doc['timeslot'],
           university: doc['university'],
           docid: doc['docid']);
-
+ 
       motorcycletimeslotlist.add(motorcycleTimeSlot);
     }
-
+ 
     // QuerySnapshot querySnapshot = await Datamanager.firestore
     //     .collection("Motorcycleforrent")
     //     .orderBy('dateTime')
@@ -156,7 +156,7 @@ class MotorWaitingListBloc
     //     .where((motorforrent) =>
     //         motorforrent['motorcycledocid'] == motorcycle.firestoredocid)
     //     .toList();
-
+ 
     // for (var doc in list) {
     //   List<String> slotlist = List<String>();
     //   slotlist = List.from(doc['timeslotlist']);
@@ -170,10 +170,10 @@ class MotorWaitingListBloc
     //         motorforrentdocid: doc['motorforrentdocid'],
     //         prize:  double.parse(doc['price'].toString()) ,
     //         timeslot: timeslot);
-
+ 
     //         //print("Prize is ${doc['prize']}");
     //         //print("Timeslot is ${timeslot}");
-
+ 
     //     motorcycletimeslotlist.add(motorcycleTimeSlot);
     //   }
     // }

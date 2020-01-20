@@ -304,6 +304,11 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       print("user uid : ${user.user.uid}");
       Datamanager.firebaseuser = user.user;
 
+      final chatref = await Datamanager.firestore
+            .collection("chat")
+            .document();
+      String chatid = chatref.documentID;
+
       if (await putdatatostorage(Datamanager.firebaseuser.uid)) {
         Datamanager.user = User(
             uid: Datamanager.firebaseuser.uid,
@@ -324,7 +329,9 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
             drivemotorimgtype: drivemotorimgtype,
             drivecarimg: driverliscensecarimage,
             drivecarimgtype: drivecarimgtype,
-            money: 500.00);
+            money: 500.00, 
+            documentchat: chatid,
+            );
 
         final docref = await Datamanager.firestore
             .collection("User")

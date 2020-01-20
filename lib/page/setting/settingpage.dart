@@ -375,7 +375,7 @@ class _SettingPage extends State<SettingPage> {
                   ),
                   child: FlatButton(
                     onPressed: (){
-                      Navigator.of(context).pushNamed(Datamanager.loginpage);
+                      Navigator.popUntil(context, ModalRoute.withName('/'));
                     },
                     child: Padding(
                       padding: EdgeInsets.only(left: 15),
