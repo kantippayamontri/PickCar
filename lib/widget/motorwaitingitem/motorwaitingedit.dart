@@ -58,7 +58,7 @@ class _MotorWaitingEditState extends State<MotorWaitingEdit> {
                     },
                   )
                 ],
-              )
+              ),
             ],
           ),
         ),

@@ -11,6 +11,7 @@ import 'package:pickcar/page/searchpage/search.dart';
 import 'package:pickcar/page/setting/settingpage.dart';
 import 'dart:typed_data';
 
+import 'models/pincar.dart';
 import 'models/user.dart';
 
 class Datamanager {
@@ -35,6 +36,8 @@ class Datamanager {
   static String confirmpage = "/ConfirmPage";
   static String mappage = "/Mappage";
   static String mapaddmark = "/Mapaddmark";
+
+  static String registerMap = "/RegisterMap";
   
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
@@ -45,6 +48,7 @@ class Datamanager {
   static Usershow usershow;
   static Listcarslot listcarslot;
   static Slottime slottime;
+  static Pincar pincar;
 
   static FirebaseStorage firebasestorage = FirebaseStorage.instance;
 

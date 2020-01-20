@@ -108,6 +108,17 @@ class MotorRentalFormBloc
       Datamanager.firestore.collection("MotorcycleforrentSlot").document(docref.documentID).updateData({
         'docid' : docref.documentID
       });
+      Datamanager.pincar.rentorbookid = docref.documentID;
+      final docpinref = await Datamanager.firestore
+        .collection("pincar")
+        .add(Datamanager.pincar.toJson());
+      Datamanager.pincar.docpinid = docpinref.documentID;
+      Datamanager.firestore.collection("pincar").document(Datamanager.pincar.docpinid).updateData({
+        'docpinid' : docpinref.documentID
+      });
+      Datamanager.firestore.collection("MotorcycleforrentSlot").document(docref.documentID).updateData({
+        'picdocid' : docpinref.documentID
+      });
 
     }
   }
