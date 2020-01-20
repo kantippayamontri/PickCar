@@ -6,6 +6,7 @@ class Pincar {
   double longitude;
   String ownerid;
   String docpinid;
+  String docboxid;
   String rentorbookid;
 
   Pincar({
@@ -21,7 +22,8 @@ class Pincar {
       'longitude' : this.longitude,
       'ownerid' : this.ownerid,
       'rentorbookid' : this.rentorbookid,
-      'docboxid' : this.docpinid,
+      'docpinid' : this.docpinid,
+      'docboxid' : this.docboxid,
     };
   }
 }

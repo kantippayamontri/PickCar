@@ -11,6 +11,7 @@ import 'package:pickcar/page/searchpage/search.dart';
 import 'package:pickcar/page/setting/settingpage.dart';
 import 'dart:typed_data';
 
+import 'models/box.dart';
 import 'models/pincar.dart';
 import 'models/user.dart';
 
@@ -38,6 +39,7 @@ class Datamanager {
   static String mapaddmark = "/Mapaddmark";
 
   static String registerMap = "/RegisterMap";
+  static String mapboxselect = "/Mapboxselect";
   
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
@@ -49,6 +51,7 @@ class Datamanager {
   static Listcarslot listcarslot;
   static Slottime slottime;
   static Pincar pincar;
+  static BoxShow boxselect;
 
   static FirebaseStorage firebasestorage = FirebaseStorage.instance;
 
@@ -209,6 +212,7 @@ class UseString {
   static String pin = "Pin Here";
   static String addlocation = "Add location";
   static String loading = "Loading...";
+  static String selectbox = "Select box";
 }
 class Currency{
   static String thb = "THB";

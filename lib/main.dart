@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/page/listcarpage.dart';
 import 'package:pickcar/page/loginpage.dart';
+import 'package:pickcar/page/map/mapboxselect.dart';
 import 'package:pickcar/page/map/mappage.dart';
 import 'package:pickcar/page/map/mapaddmark.dart';
 import 'package:pickcar/page/map/registermap.dart';
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
         Datamanager.mapaddmark : (ctx) => Mapaddmark(),
         Datamanager.motorbooklistpage : (ctx) => MotorBookListPage(),
         Datamanager.registerMap : (ctx) => RegisterMap(),
+        Datamanager.mapboxselect : (ctx) => Mapboxselect(),
         //'loginpickcarpage': (ctx) => LoginPickCarPage()
       },
       onGenerateRoute: (setting) {},
