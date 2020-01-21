@@ -15,6 +15,7 @@ class MotorcycleTimeSlot {
   String university;
   String docid;
 
+  
  
   MotorcycleTimeSlot({
     @required this.timeslot,
