@@ -212,6 +212,7 @@ class UseString {
   static String time = "Time";
   static String date = "Date";
   static String delete = "Delete";
+  static String cancle = "Cancle";
 
   static String pin = "Pin Here";
   static String addlocation = "Add location";

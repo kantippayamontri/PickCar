@@ -54,8 +54,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     loginbloc.context = context;
     //todo test user
-    loginbloc.emailcontroller.text = "g@g.com";
-    loginbloc.passcontroller.text = "1234567";
+    loginbloc.emailcontroller.text = "f@f.com";
+    loginbloc.passcontroller.text = "1111111";
 
 
     List<Widget> _titlewidget() {
