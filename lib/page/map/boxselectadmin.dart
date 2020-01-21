@@ -11,19 +11,20 @@ import 'dart:ui' as ui;
 
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/box.dart';
+import 'package:pickcar/models/boxlocation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class MapPage extends StatefulWidget {
+class Boxselectadmin extends StatefulWidget {
   double zoom = 14;
   double latitude = 18.802587;
   double logtitude = 98.951556;
   double latitudemark;
   double logtitudemark;
   @override
-  _MappageState createState() => _MappageState();
+  _BoxselectadminState createState() => _BoxselectadminState();
 }
 
-class _MappageState extends State<MapPage> {
+class _BoxselectadminState extends State<Boxselectadmin> {
   BitmapDescriptor _markerIcon;
   var textController = TextEditingController();
   List<Marker> allMarkers = [];
@@ -56,7 +57,7 @@ class _MappageState extends State<MapPage> {
   //   print(allMarkers.length);
   // }
   startmarker(DocumentSnapshot data){
-    BoxShow boxshow = BoxShow.fromSnapshot(data);
+    BoxlocationShow boxshow = BoxlocationShow.fromSnapshot(data);
     var latitude = boxshow.latitude;
     var logitude = boxshow.longitude;
     int i = 0;
@@ -71,7 +72,7 @@ class _MappageState extends State<MapPage> {
         //   print('tapnow');
         // },
         infoWindow: InfoWindow(
-          title: boxshow.placename,
+          title: boxshow.name,
           snippet: 'Tap here to open in google map.',
           onTap: () async {
             if (await canLaunch(googleUrl)) {
@@ -90,7 +91,7 @@ class _MappageState extends State<MapPage> {
   }
   fetchData(BuildContext context) async {
     if(DataFetch.checkhavedata == 0){
-      await Firestore.instance.collection('box').getDocuments().then((data){
+      await Firestore.instance.collection('boxlocation').getDocuments().then((data){
         data.documents.map((data){
             startmarker(data);
         }).toList();
@@ -223,30 +224,45 @@ class _MappageState extends State<MapPage> {
   }
   addboxdatabase() async {
     print(widget.latitudemark);
-    List<int> freeslot = [1,2,3,4,5,6,7,8,9,10];
+    Boxlocation boxlocation = Boxlocation(
+      latitude: widget.latitudemark,
+      longitude: widget.logtitudemark,
+      name: textController.text,
+    );
+    var refboxlocation = await Datamanager.firestore.collection('boxlocation')
+                          .add(boxlocation.toJson());
+    var docboxlocationid = refboxlocation.documentID;
+    Datamanager.firestore.collection('boxlocation')
+                          .document(docboxlocationid)
+                          .updateData({'docboxid':docboxlocationid});
     Box box = Box(
       latitude: widget.latitudemark,
       longitude: widget.logtitudemark,
-      placename: textController.text,
+      boxlocationid: docboxlocationid,
       maxslot: 10,
     );
-    print(box.toJson());
     var refbox = await Datamanager.firestore.collection('box')
                           .add(box.toJson());
     var docboxid = refbox.documentID;
+    Datamanager.firestore.collection('box').document(docboxid).updateData({'docid': docboxid});
     for(int i=1;i<box.maxslot+1;i++){
       // print(i);
+      var ref =Datamanager.firestore.collection('box')
+                          .document(docboxid)
+                          .collection('boxslot')
+                          .document();
+      var docslot = ref.documentID;
       Datamanager.firestore.collection('box')
                           .document(docboxid)
                           .collection('boxslot')
-                          .document(i.toString())
-                          .setData({'slot': i});
+                          .document(docslot)
+                          .setData({'name': i,'docid':docslot,'boxid':docboxid});
     }
     // Future.delayed(const Duration(milliseconds: 1000), () {
     // print('a');
     Datamanager.firestore.collection('box')
                           .document(docboxid)
-                          .updateData({'docboxid':docboxid,"freeslot": FieldValue.arrayUnion(freeslot)}).whenComplete((){
+                          .updateData({'docboxid':docboxid}).whenComplete((){
                             setState(() {
                               DataFetch.checkhavedata =0;
                               DataFetch.checkhavepin =0;

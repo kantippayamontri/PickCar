@@ -19,10 +19,18 @@ class SearchPage extends StatelessWidget {
             SizedBox(height: 20,),
             RaisedButton(
               onPressed: (){
-                Navigator.of(context).pushNamed(Datamanager.mappage);
+                Navigator.of(context).pushNamed(Datamanager.boxselectadmin);
                 // Navigator.of(context).pushNamed(Datamanager.detailsearch);
               },
               child: Text("goto box"),
+            ),
+            SizedBox(height: 20,),
+            RaisedButton(
+              onPressed: (){
+                Navigator.of(context).pushNamed(Datamanager.placeselectadmin);
+                // Navigator.of(context).pushNamed(Datamanager.detailsearch);
+              },
+              child: Text("goto place"),
             ),
             SizedBox(height: 20,),
             RaisedButton(
@@ -39,6 +47,14 @@ class SearchPage extends StatelessWidget {
                 // Navigator.of(context).pushNamed(Datamanager.detailsearch);
               },
               child: Text("register map"),
+            ),
+            SizedBox(height: 20,),
+            RaisedButton(
+              onPressed: (){
+                Navigator.of(context).pushNamed(Datamanager.mapplaceselect);
+                // Navigator.of(context).pushNamed(Datamanager.detailsearch);
+              },
+              child: Text("mapplaceselect"),
             ),
           ],
         ),

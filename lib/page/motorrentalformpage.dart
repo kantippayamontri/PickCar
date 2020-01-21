@@ -21,8 +21,8 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
 
   @override
   void initState() {
-    Datamanager.pincar = null;
-    Datamanager.boxselect = null;
+    Datamanager.placelocationshow = null;
+    Datamanager.boxlocationshow = null;
     _motorRentalFormBloc = MotorRentalFormBloc(
         context: this.context, motorcycle: widget.motorcycle);
     _motorRentalFormBloc.add(MotorRentalFormLoadDataEvent());
@@ -31,6 +31,20 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
 
   void setstate() {
     setState(() {});
+  }
+  Widget locationcheck(BuildContext context){
+    if(Datamanager.placelocationshow != null){
+      return Text('already select place');
+    }else{
+      return Container();
+    }
+  }
+  Widget boxcheck(BuildContext context){
+    if(Datamanager.boxlocationshow != null){
+      return Text('already select box');
+    }else{
+      return Container();
+    }
   }
 
   @override
@@ -179,16 +193,18 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
                     ),
                     RaisedButton(
                       onPressed: (){
-                        Navigator.of(context).pushNamed(Datamanager.registerMap);
+                        Navigator.of(context).pushNamed(Datamanager.mapplaceselect);
                       },
                       child: Text('location'),
                     ),
+                    locationcheck(context),
                     RaisedButton(
                       onPressed: (){
                         Navigator.of(context).pushNamed(Datamanager.mapboxselect);
                       },
                       child: Text('select box'),
                     ),
+                    boxcheck(context),
                     _submitbutton(this.context, () {
                       _motorRentalFormBloc
                           .add(MotorRentalFormSubmitFormEvent());

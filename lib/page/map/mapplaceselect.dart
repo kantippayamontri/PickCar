@@ -11,28 +11,28 @@ import 'dart:ui' as ui;
 
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/boxlocation.dart';
+import 'package:pickcar/models/placelocation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Mapboxselect extends StatefulWidget {
+class Mapplaceselect extends StatefulWidget {
   double zoom = 14;
   double latitude = 18.802587;
   double logtitude = 98.951556;
   double latitudemark;
   double logtitudemark;
-  List box = [];
-  int i=0;
+  int i = 0;
   @override
-  _MapboxselectState createState() => _MapboxselectState();
+  _MapplaceselectState createState() => _MapplaceselectState();
 }
 
-class _MapboxselectState extends State<Mapboxselect> {
+class _MapplaceselectState extends State<Mapplaceselect> {
   BitmapDescriptor _markerIcon;
   var textController = TextEditingController();
   List<Marker> allMarkers = [];
   @override
   void initState(){
+    Datamanager.placelocationshow =null;
     DataFetch.checkhavedata =0;
-    Datamanager.boxlocationshow = null;
     //bankok
     widget.latitude = 13.736717;
     widget.logtitude = 100.523186;
@@ -42,10 +42,9 @@ class _MapboxselectState extends State<Mapboxselect> {
     super.initState();
   }
   startmarker(DocumentSnapshot data){
-    BoxlocationShow boxshow = BoxlocationShow.fromSnapshot(data);
-    widget.box.add(boxshow);
-    var latitude = boxshow.latitude;
-    var logitude = boxshow.longitude;
+    PlacelocationShow placeshow = PlacelocationShow.fromSnapshot(data);
+    var latitude = placeshow.latitude;
+    var logitude = placeshow.longitude;
      String googleUrl =
         'https://www.google.com/maps/search/?api=1&query=$latitude,$logitude';
     allMarkers.add(
@@ -54,10 +53,10 @@ class _MapboxselectState extends State<Mapboxselect> {
         markerId: MarkerId((widget.i++).toString()),
         draggable: false,
         onTap: (){
-          Datamanager.boxlocationshow = boxshow;
+          Datamanager.placelocationshow = placeshow;
         },
         infoWindow: InfoWindow(
-          title: boxshow.name,
+          title: placeshow.name,
           snippet: 'Tap here to open in google map.',
           onTap: () async {
             if (await canLaunch(googleUrl)) {
@@ -67,8 +66,8 @@ class _MapboxselectState extends State<Mapboxselect> {
           },
         ),
         position: LatLng(
-          boxshow.latitude,
-          boxshow.longitude
+          placeshow.latitude,
+          placeshow.longitude
         ),
       ),
     );
@@ -76,7 +75,7 @@ class _MapboxselectState extends State<Mapboxselect> {
   }
   fetchData(BuildContext context) async {
     if(DataFetch.checkhavedata == 0){
-      await Firestore.instance.collection('boxlocation').getDocuments().then((data){
+      await Firestore.instance.collection('placelocation').getDocuments().then((data){
         data.documents.map((data){
             startmarker(data);
         }).toList();
@@ -117,7 +116,7 @@ class _MapboxselectState extends State<Mapboxselect> {
   }
   Future _createMarkerImageFromAsset(BuildContext context) async {
     if (_markerIcon == null) {
-     final Uint8List markerIcon = await getBytesFromAsset('assets/images/imagemap/key.png', 200);
+     final Uint8List markerIcon = await getBytesFromAsset('assets/images/imagemap/place.png', 200);
       BitmapDescriptor bmpd = BitmapDescriptor.fromBytes(markerIcon);
       setState(() {
         _markerIcon = bmpd;
@@ -132,12 +131,13 @@ class _MapboxselectState extends State<Mapboxselect> {
         shape: new RoundedRectangleBorder(
           borderRadius: new BorderRadius.circular(20),
         ),
-        title: Text(Datamanager.boxlocationshow.name),
+        title: Text(Datamanager.placelocationshow.name),
         content: Row(
           children: <Widget>[
             RaisedButton(
               child: Text('Confirm'),
               onPressed: (){
+                print(Datamanager.placelocationshow.name);
                 Navigator.pop(context);
                 Navigator.pop(context);
               },
@@ -146,7 +146,7 @@ class _MapboxselectState extends State<Mapboxselect> {
             RaisedButton(
               child: Text('Cancel'),
               onPressed: (){
-                Datamanager.boxlocationshow = null;
+                Datamanager.placelocationshow = null;
                 Navigator.pop(context);
               },
             ),
@@ -220,7 +220,7 @@ class _MapboxselectState extends State<Mapboxselect> {
                 child: FlatButton(
                   color: PickCarColor.colormain,
                   onPressed: (){
-                    if(Datamanager.boxlocationshow != null){
+                    if(Datamanager.placelocationshow != null){
                       addname(context);
                     }
                   },
