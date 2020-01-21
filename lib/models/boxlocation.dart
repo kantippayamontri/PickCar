@@ -1,52 +1,47 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
-class Box {
+class Boxlocation {
   double latitude;
   double longitude;
-  String boxlocationid;
+  String name;
   String docboxid;
-  int maxslot;
 
-  Box({
+  Boxlocation({
     @required this.latitude,
     @required this.longitude,
-    @required this.boxlocationid,
-    @required this.maxslot,
+    @required this.name,
   }) {}
 
    Map<String , Object> toJson(){
     return {
       'latitude' : this.latitude,
       'longitude' : this.longitude,
-      'boxlocationid' : this.boxlocationid,
-      'docid' : this.docboxid,
-      'maxslot' : this.maxslot,
+      'name' : this.name,
+      'docboxid' : this.docboxid,
     };
   }
 }
 
-class BoxShow {
+class BoxlocationShow {
   double latitude;
   double longitude;
-  String boxlocationid;
-  String docboxid;
   int maxslot;
+  String name;
+  String docboxid;
   final DocumentReference reference;
 
-  BoxShow.fromMap(Map<String, dynamic> map, {this.reference})
+  BoxlocationShow.fromMap(Map<String, dynamic> map, {this.reference})
      : assert(map['latitude'] != null),
        assert(map['longitude'] != null),
-       assert(map['boxlocationid'] != null),
+       assert(map['name'] != null),
        assert(map['docboxid'] != null),
-       assert(map['maxslot'] != null),
        latitude = map['latitude'],
        longitude = map['longitude'],
-       docboxid = map['docboxid'],
-       maxslot = map['maxslot'],
-       boxlocationid = map['boxlocationid'];
+       name = map['name'],
+       docboxid = map['docboxid'];
 
-  BoxShow.fromSnapshot(DocumentSnapshot snapshot)
+  BoxlocationShow.fromSnapshot(DocumentSnapshot snapshot)
      : this.fromMap(snapshot.data, reference: snapshot.reference);
   
 }

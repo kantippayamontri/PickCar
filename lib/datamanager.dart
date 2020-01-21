@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/models/motorcycle.dart';
+import 'package:pickcar/models/placelocation.dart';
 import 'package:pickcar/page/homepage.dart';
 import 'package:pickcar/page/listcarpage.dart';
 import 'package:pickcar/page/profile/profilepage.dart';
@@ -11,7 +12,7 @@ import 'package:pickcar/page/searchpage/search.dart';
 import 'package:pickcar/page/setting/settingpage.dart';
 import 'dart:typed_data';
 
-import 'models/box.dart';
+import 'models/boxlocation.dart';
 import 'models/pincar.dart';
 import 'models/user.dart';
 
@@ -35,11 +36,13 @@ class Datamanager {
   static String detailsearch = "/Detailsearch";
   static String slottiempage = "/SlotTiemPage";
   static String confirmpage = "/ConfirmPage";
-  static String mappage = "/Mappage";
+  static String boxselectadmin = "/Boxselectadmin";
+  static String placeselectadmin = "/Placeselectadmin";
   static String mapaddmark = "/Mapaddmark";
 
   static String registerMap = "/RegisterMap";
   static String mapboxselect = "/Mapboxselect";
+  static String mapplaceselect = "/Mapplaceselect";
   
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
@@ -51,7 +54,8 @@ class Datamanager {
   static Listcarslot listcarslot;
   static Slottime slottime;
   static Pincar pincar;
-  static BoxShow boxselect;
+  static BoxlocationShow boxlocationshow;
+  static PlacelocationShow placelocationshow;
 
   static FirebaseStorage firebasestorage = FirebaseStorage.instance;
 
@@ -214,6 +218,13 @@ class UseString {
   static String addlocation = "Add location";
   static String loading = "Loading...";
   static String selectbox = "Select box";
+  static String confirmrent = "Confirm Rental";
+  static String rentaldetail = "Rentail Detail";
+  static String selectedcar = "Selected Car";
+  static String getkey = "Get the key";
+  static String receivecar = "Receive Car";
+  static String returncar = "Return Car";
+  static String day = "Datetime";
 }
 class Currency{
   static String thb = "THB";

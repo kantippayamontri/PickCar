@@ -112,6 +112,8 @@ class MotorRentalFormBloc
 
       // Datamanager.pincar.rentorbookid = docref.documentID;
       // Datamanager.pincar.docboxid = Datamanager.boxselect.docboxid;
+      // Datamanager.pincar.rentorbookid = docref.documentID;
+      // Datamanager.pincar.docboxid = Datamanager.boxlocationshow.docboxid;
       // final docpinref = await Datamanager.firestore
       //   .collection("pincar")
       //   .add(Datamanager.pincar.toJson());

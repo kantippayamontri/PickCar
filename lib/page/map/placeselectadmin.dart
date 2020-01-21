@@ -10,29 +10,30 @@ import 'package:flutter/services.dart';
 import 'dart:ui' as ui;
 
 import 'package:pickcar/datamanager.dart';
+import 'package:pickcar/models/box.dart';
 import 'package:pickcar/models/boxlocation.dart';
+import 'package:pickcar/models/placelocation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Mapboxselect extends StatefulWidget {
+class Placeselectadmin extends StatefulWidget {
   double zoom = 14;
   double latitude = 18.802587;
   double logtitude = 98.951556;
   double latitudemark;
   double logtitudemark;
-  List box = [];
-  int i=0;
   @override
-  _MapboxselectState createState() => _MapboxselectState();
+  _PlaceselectadminState createState() => _PlaceselectadminState();
 }
 
-class _MapboxselectState extends State<Mapboxselect> {
+class _PlaceselectadminState extends State<Placeselectadmin> {
   BitmapDescriptor _markerIcon;
   var textController = TextEditingController();
   List<Marker> allMarkers = [];
   @override
   void initState(){
+    UseString.pin = "Pin Here";
     DataFetch.checkhavedata =0;
-    Datamanager.boxlocationshow = null;
+    DataFetch.checkhavepin =0;
     //bankok
     widget.latitude = 13.736717;
     widget.logtitude = 100.523186;
@@ -41,23 +42,38 @@ class _MapboxselectState extends State<Mapboxselect> {
     widget.logtitude = 98.951556;
     super.initState();
   }
+  // addmarker(){
+  //   allMarkers.add(
+  //     Marker(
+  //       icon: _markerIcon,
+  //       markerId: MarkerId('wait'),
+  //       draggable: false,
+  //       visible: true,
+  //       // onTap: (){
+  //       //   print('tapnow');
+  //       // },
+  //     ),
+  //   );
+  //   print('wait');
+  //   print(allMarkers.length);
+  // }
   startmarker(DocumentSnapshot data){
-    BoxlocationShow boxshow = BoxlocationShow.fromSnapshot(data);
-    widget.box.add(boxshow);
-    var latitude = boxshow.latitude;
-    var logitude = boxshow.longitude;
+    PlacelocationShow placeshow = PlacelocationShow.fromSnapshot(data);
+    var latitude = placeshow.latitude;
+    var logitude = placeshow.longitude;
+    int i = 0;
      String googleUrl =
         'https://www.google.com/maps/search/?api=1&query=$latitude,$logitude';
     allMarkers.add(
       Marker(
         icon: _markerIcon,
-        markerId: MarkerId((widget.i++).toString()),
+        markerId: MarkerId((i++).toString()),
         draggable: false,
-        onTap: (){
-          Datamanager.boxlocationshow = boxshow;
-        },
+        // onTap: (){
+        //   print('tapnow');
+        // },
         infoWindow: InfoWindow(
-          title: boxshow.name,
+          title: placeshow.name,
           snippet: 'Tap here to open in google map.',
           onTap: () async {
             if (await canLaunch(googleUrl)) {
@@ -67,8 +83,8 @@ class _MapboxselectState extends State<Mapboxselect> {
           },
         ),
         position: LatLng(
-          boxshow.latitude,
-          boxshow.longitude
+          placeshow.latitude,
+          placeshow.longitude
         ),
       ),
     );
@@ -76,7 +92,7 @@ class _MapboxselectState extends State<Mapboxselect> {
   }
   fetchData(BuildContext context) async {
     if(DataFetch.checkhavedata == 0){
-      await Firestore.instance.collection('boxlocation').getDocuments().then((data){
+      await Firestore.instance.collection('placelocation').getDocuments().then((data){
         data.documents.map((data){
             startmarker(data);
         }).toList();
@@ -95,6 +111,53 @@ class _MapboxselectState extends State<Mapboxselect> {
         print(e.message);
         location = null;
     }
+  }
+  marker() async {
+    LocationData currentLocation;
+    currentLocation = await getCurrentLocation();
+    setState(() {
+      allMarkers.add(
+        Marker(
+          icon: _markerIcon,
+          markerId: MarkerId('myMarker'),
+          draggable: true,
+          // onTap: (){
+          //   print('tapnow');
+          // },
+          position: LatLng(
+            currentLocation.latitude,
+            currentLocation.longitude),
+        ),
+      );
+      widget.latitudemark = currentLocation.latitude;
+      widget.logtitudemark = currentLocation.longitude;
+      DataFetch.checkhavepin =1;
+    });
+    GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newLatLngZoom(LatLng(currentLocation.latitude,currentLocation.longitude), 17.0));
+  }
+  markertap(LatLng location) async {
+    setState(() {
+      allMarkers.add(
+        Marker(
+          icon: _markerIcon,
+          markerId: MarkerId('myMarker'),
+          draggable: true,
+          // onTap: (){
+          //   print('tapnow');
+          // },
+          position: LatLng(
+            location.latitude,
+            location.longitude),
+        ),
+      );
+      widget.latitudemark = location.latitude;
+      widget.logtitudemark = location.longitude;
+      DataFetch.checkhavepin =1;
+      UseString.pin = "Add Here";
+    });
+    // GoogleMapController controller = await _controller.future;
+    // controller.animateCamera(CameraUpdate.newLatLngZoom(location, 17.0));
   }
   Future getlocationnow() async {
     LocationData currentLocation;
@@ -117,7 +180,7 @@ class _MapboxselectState extends State<Mapboxselect> {
   }
   Future _createMarkerImageFromAsset(BuildContext context) async {
     if (_markerIcon == null) {
-     final Uint8List markerIcon = await getBytesFromAsset('assets/images/imagemap/key.png', 200);
+     final Uint8List markerIcon = await getBytesFromAsset('assets/images/imagemap/place.png', 200);
       BitmapDescriptor bmpd = BitmapDescriptor.fromBytes(markerIcon);
       setState(() {
         _markerIcon = bmpd;
@@ -132,28 +195,57 @@ class _MapboxselectState extends State<Mapboxselect> {
         shape: new RoundedRectangleBorder(
           borderRadius: new BorderRadius.circular(20),
         ),
-        title: Text(Datamanager.boxlocationshow.name),
-        content: Row(
-          children: <Widget>[
-            RaisedButton(
-              child: Text('Confirm'),
-              onPressed: (){
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
-            ),
-            SizedBox(width: 10,),
-            RaisedButton(
-              child: Text('Cancel'),
-              onPressed: (){
-                Datamanager.boxlocationshow = null;
-                Navigator.pop(context);
-              },
-            ),
-          ],
+        title: Text('Pin name'),
+        content: TextField(
+          controller: textController,
+          decoration: InputDecoration(
+            hintText: "Put pin name.",
+          ),
         ),
+        actions: <Widget>[
+          Row(
+            children: <Widget>[
+              FlatButton(
+                child: new Text('CONFIRM'),
+                onPressed: () {
+                  addboxdatabase();
+                },
+              ),
+              FlatButton(
+                child: new Text('CANCEL'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          )
+        ],
       );
     });
+  }
+  addboxdatabase() async {
+    print(widget.latitudemark);
+    Placelocation boxlocation = Placelocation(
+      latitude: widget.latitudemark,
+      longitude: widget.logtitudemark,
+      name: textController.text,
+    );
+    var refplacelocation = await Datamanager.firestore.collection('placelocation')
+                          .add(boxlocation.toJson());
+    var docplacelocationid = refplacelocation.documentID;
+    Datamanager.firestore.collection('placelocation')
+                          .document(docplacelocationid)
+                          .updateData({'docplaceid':docplacelocationid}).whenComplete((){
+                            setState(() {
+                              DataFetch.checkhavedata =0;
+                              DataFetch.checkhavepin =0;
+                              textController = TextEditingController();
+                              _controller = Completer();
+                              Navigator.pop(context);
+                            });
+                          });
+    // });
+
   }
   wait(){
     Future.delayed(const Duration(milliseconds: 1000), () {
@@ -208,8 +300,9 @@ class _MapboxselectState extends State<Mapboxselect> {
                   _controller.complete(controller);
                 },
                 markers: Set.from(allMarkers),
-                onTap: (latLng){
-                  Datamanager.boxlocationshow =null;
+                onTap: (latlang) {
+                  UseString.pin = "Add Here";
+                  markertap(latlang); //we will call this function when pressed on the map
                 },
               ),
               Container(
@@ -220,7 +313,12 @@ class _MapboxselectState extends State<Mapboxselect> {
                 child: FlatButton(
                   color: PickCarColor.colormain,
                   onPressed: (){
-                    if(Datamanager.boxlocationshow != null){
+                    // print(DataFetch.checkhavepin);
+                    if(DataFetch.checkhavepin ==0){
+                      UseString.pin = "Add Here";
+                      marker();
+                    }else{
+                      // addboxdatabase();
                       addname(context);
                     }
                   },
@@ -228,7 +326,7 @@ class _MapboxselectState extends State<Mapboxselect> {
                     borderRadius: new BorderRadius.circular(18.0),
                     // side: BorderSide(color: Colors.red)
                   ),
-                  child: Text(UseString.selectbox,
+                  child: Text(UseString.pin,
                     style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*25,color: Colors.white),
                   ),
                 ),

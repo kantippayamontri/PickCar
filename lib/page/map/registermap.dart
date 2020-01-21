@@ -10,7 +10,7 @@ import 'package:flutter/services.dart';
 import 'dart:ui' as ui;
 
 import 'package:pickcar/datamanager.dart';
-import 'package:pickcar/models/box.dart';
+import 'package:pickcar/models/boxlocation.dart';
 import 'package:pickcar/models/pincar.dart';
 import 'package:url_launcher/url_launcher.dart';
 

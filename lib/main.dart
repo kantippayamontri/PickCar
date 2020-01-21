@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/page/listcarpage.dart';
 import 'package:pickcar/page/loginpage.dart';
+import 'package:pickcar/page/map/boxselectadmin.dart';
 import 'package:pickcar/page/map/mapboxselect.dart';
-import 'package:pickcar/page/map/mappage.dart';
 import 'package:pickcar/page/map/mapaddmark.dart';
+import 'package:pickcar/page/map/mapplaceselect.dart';
+import 'package:pickcar/page/map/placeselectadmin.dart';
 import 'package:pickcar/page/map/registermap.dart';
 import 'package:pickcar/page/motorbooklistpage.dart';
 import 'package:pickcar/page/profile/editprofile/NewPassword.dart';
@@ -56,11 +58,13 @@ class MyApp extends StatelessWidget {
         Datamanager.detailsearch : (ctx) => Detailsearch(),
         Datamanager.slottiempage : (ctx) => SlotTimePage(),
         Datamanager.confirmpage : (ctx) => ConfirmPage(),
-        Datamanager.mappage : (ctx) => MapPage(),
+        Datamanager.boxselectadmin : (ctx) => Boxselectadmin(),
         Datamanager.mapaddmark : (ctx) => Mapaddmark(),
         Datamanager.motorbooklistpage : (ctx) => MotorBookListPage(),
         Datamanager.registerMap : (ctx) => RegisterMap(),
         Datamanager.mapboxselect : (ctx) => Mapboxselect(),
+        Datamanager.placeselectadmin : (ctx) => Placeselectadmin(),
+        Datamanager.mapplaceselect : (ctx) => Mapplaceselect(),
         //'loginpickcarpage': (ctx) => LoginPickCarPage()
       },
       onGenerateRoute: (setting) {},
