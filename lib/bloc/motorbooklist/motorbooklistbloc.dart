@@ -35,12 +35,15 @@ class MotorBookListBloc extends Bloc<MotorBookListEvent, MotorBookListState> {
     QuerySnapshot queysnapshot =
         await Datamanager.firestore.collection("Booking").getDocuments();
     var list = queysnapshot.documents;
+    //print('number of booking doc : ${list.length}');
+    //print('motor doc : ${this.motorcycle.firestoredocid}');
+    //todo waiting for right book
     list = list
         .where(
             (doc) => (doc['motorcycledocid'] == this.motorcycle.firestoredocid))
         .toList();
-
-    for (var doc in list) {
+print("rrrrrrrrrrrrrrrrrrrrr : ${list.length}");
+    for (var doc in list) {print("yyyyyyyyyyyyyyyyyyyyy");
       MotorcycleBook motorbook = MotorcycleBook(
         bookingdocid: doc['bookingdocid'],
         day: doc['day'],
@@ -53,14 +56,27 @@ class MotorBookListBloc extends Bloc<MotorBookListEvent, MotorBookListState> {
         time: doc['time'],
         year: doc['year'],
       );
-      
 
-      DocumentSnapshot ownerdoc = await Datamanager.firestore.collection("User").document(doc['myid']).get();
+      DocumentSnapshot renterdoc = await Datamanager.firestore
+          .collection("User")
+          .document(doc['myid'])
+          .get();
       //motorbook.rentername = ownerdoc['name'];
-      String renterprofilepaht = ownerdoc['profilepicpath'].toString();
-      String renterprofiletype = ownerdoc['profilepictype'].toString();
-      //motorbook.renterprofilelink = await FirebaseStorage.instance.ref().child("").getDownloadURL();
+      String renterprofilepaht = renterdoc['profilepicpath'].toString();
+      String renterprofiletype = renterdoc['profilepictype'].toString();
+      motorbook.rentername = renterdoc['name'];
+      
+      // print("name pic : ${renterprofilepaht + renterprofiletype}");
+
+      motorbook.renterprofilelink = (await FirebaseStorage.instance
+              .ref()
+              .child("User")
+              .child(renterdoc['uid'])
+              .child(renterprofilepaht +'.' +  renterprofiletype)
+              .getDownloadURL())
+          .toString();
       motorcyclebooklist.add(motorbook);
+      
     }
   }
 }

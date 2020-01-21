@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:pickcar/arguments.dart';
 import 'package:pickcar/bloc/motorbooklist/motorbooklistbloc.dart';
 import 'package:pickcar/bloc/motorbooklist/motorbooklistevent.dart';
 import 'package:pickcar/bloc/motorbooklist/motorbookliststate.dart';
 import 'package:pickcar/models/motorcycle.dart';
+import 'package:pickcar/widget/motorbookingitem/motorbookingitem.dart';
+import 'package:transparent_image/transparent_image.dart';
+
+import '../datamanager.dart';
 
 class MotorBookListPage extends StatefulWidget {
   @override
@@ -49,8 +54,21 @@ class _MotorBookListPageState extends State<MotorBookListPage> {
             }
 
             if (state is MotorBookLisShowDatatState) {
-              return Center(
-                child: Text("Load Data"),
+              return ListView(
+                children: _motorBookListBloc.motorcyclebooklist
+                    .map((motorbook) => Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        MotorBookItem(
+                              key: Key(motorbook.bookingdocid),
+                              mediaQueryData: MediaQuery.of(context),
+                              motorcycle: _motorBookListBloc.motorcycle,
+                              motorbook: motorbook,
+                            ),
+                      ],
+                    ))
+                    .toList(),
               );
             }
           },

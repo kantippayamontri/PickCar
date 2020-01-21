@@ -12,6 +12,9 @@ class MotorcycleBook {
   int year;
   double price;
 
+  String rentername;
+  String  renterprofilelink;
+
   MotorcycleBook(
       {@required this.year,
       @required this.month,
