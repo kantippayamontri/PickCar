@@ -6,7 +6,7 @@ import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/widget/profile/profileImage.dart';
 class Listcar extends StatefulWidget {
-  int day = 25;
+  int day = 26;
   @override
   _ListcarState createState() => _ListcarState();
 }
@@ -98,7 +98,9 @@ class _ListcarState extends State<Listcar> {
   Widget loaddata3(BuildContext context, DocumentSnapshot data) {
     var datasize = MediaQuery.of(context);
     var timesshow = Listcarslot.fromSnapshot(data);
-    if(timesshow.ownerdocid != Datamanager.user.documentid){
+    if(timesshow.university =='Chaing Mai University' && timesshow.ownerdocid != Datamanager.user.documentid){
+      DataFetch.checknothaveslottime =1;
+      DataFetch.checknotsamenoresult =1;
       int priority = checkmatch(timesshow);
       uploadpiority(timesshow,priority);
     }
@@ -228,6 +230,7 @@ class _ListcarState extends State<Listcar> {
                             .document(Datamanager.user.documentchat)
                             .collection('groupchat').document(usershow.documentid);
     }
+    
     if( timeslot.ownerdocid != Datamanager.user.documentid && timeslot.university == 'Chaing Mai University'){
       if(checkmatch(timeslot) != 0){
           return GestureDetector(

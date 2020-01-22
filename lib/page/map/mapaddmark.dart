@@ -133,6 +133,7 @@ class _MapaddmarkState extends State<Mapaddmark> {
           color: Colors.white,
           ),
           onPressed: () {
+            _controller = Completer();
             showSearch(context: context,delegate:Searchmap());
           },
         ),
@@ -239,6 +240,8 @@ class Searchmap extends SearchDelegate<String> {
         return ListTile(
           onTap: (){
             showResults(context);
+            Navigator.pop(context);
+            print('aaa');
           },
           leading: Icon(Icons.location_city),
           title: RichText(

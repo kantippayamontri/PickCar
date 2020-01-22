@@ -218,6 +218,7 @@ class UseString {
   static String addlocation = "Add location";
   static String loading = "Loading...";
   static String selectbox = "Select box";
+  static String selectplace = "Select place";
   static String confirmrent = "Confirm Rental";
   static String rentaldetail = "Rentail Detail";
   static String selectedcar = "Selected Car";
@@ -225,10 +226,21 @@ class UseString {
   static String receivecar = "Receive Car";
   static String returncar = "Return Car";
   static String day = "Datetime";
+  static String totalprice = "Total price";
+  static String pricedetail = "Price details";
+  static String userdetail = "User details";
+  static String readandagree = "I have read and agree to the ";
+  static String policy = "policy and terms";
+  static String forpolicy = "for rent.";
+  static String confirm = "Confirm";
+  static String notaccept = "You have not accepted the policy and terms.";
 }
 class Currency{
   static String thb = "THB";
 
+}
+class Checkpolicy{
+  static bool checkpolicy;
 }
 class ImageProfiles {
   static Uint8List profileUrl;
@@ -245,6 +257,16 @@ class PickCarColor {
   static var colorcmu = Color.fromARGB(255, 66, 26, 94);
   static var colorFont1 = Color.fromARGB(255, 69, 79, 99);
   static var colorFont2 = Color.fromARGB(255, 148, 145, 145);
+}
+class Datasearch {
+  static List<String> boxlocationname = [];
+  static List<double> boxlocationlatitude = [];
+  static List<double> boxlocationlogtitude = [];
+  static int boxlocationindex;
+  static List<String> placelocationname = [];
+  static List<double> placelocationlatitude = [];
+  static List<double> placelocationlogtitude = [];
+  static int placelocationindex;
 }
 
 class GearMotor {

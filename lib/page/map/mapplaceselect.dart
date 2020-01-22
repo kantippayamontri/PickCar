@@ -8,7 +8,6 @@ import 'package:location/location.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'dart:ui' as ui;
-
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/boxlocation.dart';
 import 'package:pickcar/models/placelocation.dart';
@@ -33,6 +32,11 @@ class _MapplaceselectState extends State<Mapplaceselect> {
   void initState(){
     Datamanager.placelocationshow =null;
     DataFetch.checkhavedata =0;
+    Datamanager.placelocationshow = null;
+    Datasearch.placelocationname = [];
+    Datasearch.placelocationlatitude = [];
+    Datasearch.placelocationlogtitude = [];
+    Datasearch.placelocationindex = null;
     //bankok
     widget.latitude = 13.736717;
     widget.logtitude = 100.523186;
@@ -43,6 +47,11 @@ class _MapplaceselectState extends State<Mapplaceselect> {
   }
   startmarker(DocumentSnapshot data){
     PlacelocationShow placeshow = PlacelocationShow.fromSnapshot(data);
+    if(Datasearch.placelocationname.indexOf(placeshow.name) == -1){
+      Datasearch.placelocationname.add(placeshow.name);
+      Datasearch.placelocationlatitude.add(placeshow.latitude);
+      Datasearch.placelocationlogtitude.add(placeshow.longitude);
+    }
     var latitude = placeshow.latitude;
     var logitude = placeshow.longitude;
      String googleUrl =
@@ -190,6 +199,23 @@ class _MapplaceselectState extends State<Mapplaceselect> {
               Navigator.pop(context);
             },
           ),
+        actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.search,
+              color: Colors.white,
+              ),
+              onPressed: () async {
+                // _controller = Completer();
+                Datasearch.placelocationindex =null;
+                showSearch(context: context,delegate:Searchmap()).then((onValue) async {
+                  GoogleMapController controller = await _controller.future;
+                  controller.animateCamera(CameraUpdate.newLatLngZoom(
+                    LatLng(Datasearch.placelocationlatitude[Datasearch.placelocationindex]
+                    ,Datasearch.placelocationlogtitude[Datasearch.placelocationindex]), 17.0));
+                });
+              },
+            ),
+          ],
         ),
         drawer: Drawer(),
         body: Container(
@@ -228,7 +254,7 @@ class _MapplaceselectState extends State<Mapplaceselect> {
                     borderRadius: new BorderRadius.circular(18.0),
                     // side: BorderSide(color: Colors.red)
                   ),
-                  child: Text(UseString.selectbox,
+                  child: Text(UseString.selectplace,
                     style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*25,color: Colors.white),
                   ),
                 ),
@@ -274,4 +300,84 @@ class _MapplaceselectState extends State<Mapplaceselect> {
     textController.dispose();
     super.dispose();
   }
+}
+
+class Searchmap extends SearchDelegate<String> {
+  // final data = ["asssssd","b"];
+  // final suggest = ["cadad","d"];
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [IconButton(
+        icon: Icon(Icons.clear),
+        onPressed:(){
+          query ='';
+        },
+      )];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: AnimatedIcon(
+        icon: AnimatedIcons.menu_arrow,
+        progress: transitionAnimation,
+      ),
+      onPressed: (){
+        close(context,null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    var data = MediaQuery.of(context);
+    var index = Datasearch.placelocationname.indexOf(query);
+    if(index != -1){
+      Datasearch.placelocationindex = index;
+      close(context,null);
+      return Container();
+    }else{
+      return Center(
+        child: Text(UseString.notfound,
+            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*30,color: PickCarColor.colorFont1), 
+         ),
+      );
+    }
+    
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    final suggestionList = query.isEmpty ? Datasearch.placelocationname
+        :Datasearch.placelocationname.where((p) => p.startsWith(query)).toList();
+    return ListView.builder(
+      itemBuilder: (context,index){
+        return ListTile(
+          onTap: (){
+            // showResults(context);
+            Datasearch.placelocationindex = index;
+            close(context,null);
+            // print(index);
+            
+          },
+          leading: Icon(Icons.location_city),
+          title: RichText(
+            text: TextSpan(
+              text: suggestionList[index].substring(0,query.length),
+              style: TextStyle(
+                color: Colors.black,fontWeight: FontWeight.bold),
+              children: [
+                TextSpan(
+                  text: suggestionList[index].substring(query.length),
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+      itemCount: suggestionList.length,
+    );
+  }
+
 }

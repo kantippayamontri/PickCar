@@ -3,8 +3,17 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/booking.dart';
+class ConfirmPage extends StatefulWidget {
+  bool alertpolicy = false;
+  @override
+  _ConfirmPageState createState() => _ConfirmPageState();
+}
 
-class ConfirmPage extends StatelessWidget {
+class _ConfirmPageState extends State<ConfirmPage> {
+  void initState(){
+    Checkpolicy.checkpolicy = false;
+    super.initState();
+  }
   String monthy(int month){
     switch(month){
       case 1:return 'January';break;
@@ -19,6 +28,19 @@ class ConfirmPage extends StatelessWidget {
       case 10:return 'October';break;
       case 11:return 'November';break;
       default:return 'December';break;
+    }
+  }
+  Widget alertpolicy(BuildContext context){
+    var data = MediaQuery.of(context);
+    if(widget.alertpolicy == true){
+      return Container(
+        margin: EdgeInsets.only(top: 5),
+        child: Text(UseString.notaccept,
+            style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*19,color: Colors.red[600]), 
+          ),
+      );
+    }else{
+      return Container();
     }
   }
   @override
@@ -214,6 +236,197 @@ class ConfirmPage extends StatelessWidget {
               ],
             ),
           ),
+          Container(
+            margin: EdgeInsets.only(top:10),
+            width: data.size.width -40,
+            height: 40,
+            color: Colors.grey[200],
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(left: 10),
+                  alignment: Alignment.centerLeft,
+                  child: Text(UseString.pricedetail,
+                      style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*20,color: PickCarColor.colormain), 
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(right: 10),
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    child: Icon(Icons.add,color: PickCarColor.colormain,),
+                    onTap: (){
+                      print('aaa');
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top:5),
+            width: data.size.width,
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(left: 25),
+                  width: double.infinity,
+                  alignment: Alignment.centerLeft,
+                  child: Text(UseString.totalprice,
+                      style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*22,color: PickCarColor.colorcmu), 
+                  ),
+                ),
+                 Container(
+                   margin: EdgeInsets.only(right: 25),
+                  alignment: Alignment.centerRight,
+                  width: double.infinity,
+                  child: Text(Datamanager.slottime.price.toString()+' '+Currency.thb,
+                      style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*22,color: PickCarColor.colorcmu), 
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top:5),
+            width: data.size.width-40,
+            height: 2,
+            color: Colors.grey[300],
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: EdgeInsets.only(top: 30,left: 30),
+            child: Text(UseString.userdetail,
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color: PickCarColor.colormain), 
+            ),
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: EdgeInsets.only(top: 5,left: 30),
+            child: Row(
+              children: <Widget>[
+                Icon(Icons.person,color: Colors.grey[500],),
+                SizedBox(width: 5,),
+                Text(Datamanager.user.name,
+                    style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*22,color: PickCarColor.colorcmu), 
+                ),
+              ],
+            ),
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: EdgeInsets.only(top: 5,left: 30),
+            child: Row(
+              children: <Widget>[
+                Icon(Icons.email,color: Colors.grey[500],),
+                SizedBox(width: 5,),
+                Text(Datamanager.user.email,
+                    style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*22,color: PickCarColor.colorcmu), 
+                ),
+              ],
+            ),
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: EdgeInsets.only(top: 5,left: 30),
+            child: Row(
+              children: <Widget>[
+                Icon(Icons.phone,color: Colors.grey[500],),
+                SizedBox(width: 5,),
+                Text(Datamanager.user.tel,
+                    style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*22,color: PickCarColor.colorcmu), 
+                ),
+              ],
+            ),
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: EdgeInsets.only(top: 15,left: 30),
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 24.0,
+                      width: 24.0,
+                      child: Checkbox(
+                      value: Checkpolicy.checkpolicy,
+                        onChanged: (bool value) {
+                          setState(() {
+                            Checkpolicy.checkpolicy = value;
+                            widget.alertpolicy =false;
+                          });
+                        },
+                      ),
+                    ),
+                    Text(UseString.readandagree,
+                        style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*17,color: PickCarColor.colorcmu), 
+                    ),
+                    GestureDetector(
+                      onTap: (){},
+                      child: Row(
+                        children: <Widget>[
+                          Text(UseString.policy,
+                            style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*17,color: Colors.blue[600],decoration: TextDecoration.underline,), 
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 23),
+                  alignment: Alignment.centerLeft,
+                  child: Text(UseString.forpolicy,
+                    style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*17,color: PickCarColor.colorcmu), 
+                  ),
+                ),
+                alertpolicy(context),
+                 Row(
+                   children: <Widget>[
+                     RaisedButton(
+                      color: Colors.grey[600],
+                      onPressed: (){
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                      },
+                      child: Text(UseString.cancle,
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*18,color: Colors.white), 
+                        ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 5),
+                      width: 280,
+                      child: RaisedButton(
+                        color: PickCarColor.colormain,
+                        onPressed: (){
+                          if(Checkpolicy.checkpolicy == true){
+                            booking(context);
+                            if(Datamanager.listcarslot.timeslotlist.length ==0){
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            }else{
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            }
+                          }else{
+                            setState(() {
+                              widget.alertpolicy = true;
+                            });
+                          }
+                          // Navigator.of(context).pushNamed(Datamanager.detailsearch);
+                        },
+                        child: Text(UseString.confirm,
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*18,color: Colors.white), 
+                        ),
+                      ),
+                    ),
+                   ],
+                 ),
+              ],
+            ),
+          ),
           ],
         ),
       ),
@@ -224,18 +437,18 @@ class ConfirmPage extends StatelessWidget {
 
 
 // Text("Slotpage"),
-//             RaisedButton(
-//               onPressed: (){
-//                 booking(context);
-//                 if(Datamanager.listcarslot.timeslotlist.length ==0){
-//                   Navigator.pop(context);
-//                   Navigator.pop(context);
-//                   Navigator.pop(context);
-//                 }else{
-//                   Navigator.pop(context);
-//                   Navigator.pop(context);
-//                 }
-//                 // Navigator.of(context).pushNamed(Datamanager.detailsearch);
-//               },
-//               child: Text("Confirm"),
-//             ),
+            // RaisedButton(
+            //   onPressed: (){
+            //     booking(context);
+            //     if(Datamanager.listcarslot.timeslotlist.length ==0){
+            //       Navigator.pop(context);
+            //       Navigator.pop(context);
+            //       Navigator.pop(context);
+            //     }else{
+            //       Navigator.pop(context);
+            //       Navigator.pop(context);
+            //     }
+            //     // Navigator.of(context).pushNamed(Datamanager.detailsearch);
+            //   },
+            //   child: Text("Confirm"),
+            // ),
