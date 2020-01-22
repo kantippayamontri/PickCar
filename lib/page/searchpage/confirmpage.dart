@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/booking.dart';
 class ConfirmPage extends StatefulWidget {
+  bool isExpand = false;
   bool alertpolicy = false;
+  var pricefree;
+  var pricetotal;
+  double pricevat;
+  var iconchange = Icon(Icons.add,size: 32,color: PickCarColor.colormain,);
   @override
   _ConfirmPageState createState() => _ConfirmPageState();
 }
@@ -42,6 +47,27 @@ class _ConfirmPageState extends State<ConfirmPage> {
     }else{
       return Container();
     }
+  }
+  calculateprice(){
+    var price = Datamanager.slottime.price;
+    widget.pricefree = price + 5;
+    widget.pricevat = widget.pricefree+(widget.pricefree * 7)/100;
+    String string = widget.pricevat.toString();
+    var dot = string.split('.');
+    print(dot);
+    double numberdot = double.parse(dot[1]);
+    double number = double.parse(dot[0]);
+    if(numberdot>0 && numberdot<25){
+      number += 0.25;
+    }else if(numberdot>25 && numberdot<50){
+      number += 0.50;
+    }else if(numberdot>50 && numberdot<75){
+      number += 0.75;
+    }else{
+      number += 1;
+    }
+    widget.pricetotal = number;
+    print(widget.pricetotal);
   }
   @override
   Widget build(BuildContext context) {
@@ -93,6 +119,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
       Datamanager.firestore.collection('MotorcycleforrentSlot').document(Datamanager.slottime.docid).delete();
     }
     var time = Datamanager.slottime.timeslot.split('-');
+    calculateprice();
     return Scaffold(
       appBar: AppBar(
        backgroundColor: Colors.white,
@@ -237,30 +264,110 @@ class _ConfirmPageState extends State<ConfirmPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top:10),
-            width: data.size.width -40,
-            height: 40,
+            margin: EdgeInsets.only(top:5,left: 20,right: 20),
             color: Colors.grey[200],
-            child: Stack(
-              children: <Widget>[
+            child: ExpansionTile(
+              initiallyExpanded: widget.isExpand,
+              backgroundColor: Colors.white,
+              // key: PageStorageKey(this.widget.headerTitle),
+              trailing: widget.iconchange,
+              children: [
                 Container(
-                  margin: EdgeInsets.only(left: 10),
+                  margin: EdgeInsets.only(top: 5),
+                  width: double.infinity,
+                  height: 1,
+                  color: Colors.grey[200],
+                ),
+                Container(
                   alignment: Alignment.centerLeft,
-                  child: Text(UseString.pricedetail,
-                      style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*20,color: PickCarColor.colormain), 
+                  width: double.infinity,
+                  margin: EdgeInsets.only(left:15,top: 5),
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        width: double.infinity,
+                        child: Text(UseString.pricebegin,
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorcmu), 
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(right: 15),
+                        alignment: Alignment.centerRight,
+                        width: double.infinity,
+                        child: Text(Datamanager.slottime.price.toString(),
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorcmu), 
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(right: 10),
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                    child: Icon(Icons.add,color: PickCarColor.colormain,),
-                    onTap: (){
-                      print('aaa');
-                    },
+                  alignment: Alignment.centerLeft,
+                  width: double.infinity,
+                  margin: EdgeInsets.only(left:15,top: 5,bottom: 5),
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        width: double.infinity,
+                        child: Text(UseString.pricefee,
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorcmu), 
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(right: 15),
+                        alignment: Alignment.centerRight,
+                        width: double.infinity,
+                        child: Text(widget.pricefree.toString(),
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorcmu), 
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  width: double.infinity,
+                  margin: EdgeInsets.only(left:15,top: 5,bottom: 5),
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        width: double.infinity,
+                        child: Text(UseString.pricevat,
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorcmu), 
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(right: 15),
+                        alignment: Alignment.centerRight,
+                        width: double.infinity,
+                        child: Text(widget.pricevat.toString(),
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorcmu), 
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
+              onExpansionChanged: (value){
+                setState(() {
+                  if(value){
+                    widget.iconchange = Icon(Icons.arrow_drop_down,size: 32,color: PickCarColor.colormain,);
+                  }else{
+                    widget.iconchange = Icon(Icons.add,size: 32,color: PickCarColor.colormain,);
+                  }
+                  widget.isExpand = value;
+                });
+              },
+              title: Container(
+                // color: Colors.grey[200],
+                width: double.infinity,
+                child: Text(UseString.pricedetail,
+                  style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*20,color: PickCarColor.colormain), 
+                ),
+              )
             ),
           ),
           Container(
@@ -280,7 +387,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
                    margin: EdgeInsets.only(right: 25),
                   alignment: Alignment.centerRight,
                   width: double.infinity,
-                  child: Text(Datamanager.slottime.price.toString()+' '+Currency.thb,
+                  child: Text(widget.pricetotal.toString()+' '+Currency.thb,
                       style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*22,color: PickCarColor.colorcmu), 
                   ),
                 ),

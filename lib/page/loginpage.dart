@@ -1,16 +1,8 @@
-import 'dart:io';
-
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gradient_widgets/gradient_widgets.dart';
 import 'package:pickcar/bloc/login/loginevent.dart';
-import 'package:pickcar/bloc/login/loginstate.dart';
 import 'package:pickcar/datamanager.dart';
-import 'package:pickcar/widget/cmu_login_widget.dart';
 import 'package:pickcar/widget/login/signupbnt.dart';
 import 'package:pickcar/widget/pickcar_login_widget.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 import '../bloc/login/loginbloc.dart';
 
 class LoginPage extends StatefulWidget {

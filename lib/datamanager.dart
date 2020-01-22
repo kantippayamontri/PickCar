@@ -234,6 +234,9 @@ class UseString {
   static String forpolicy = "for rent.";
   static String confirm = "Confirm";
   static String notaccept = "You have not accepted the policy and terms.";
+  static String pricebegin = "Price";
+  static String pricefee = "Fee 5 THB";
+  static String pricevat = "VAT (7%)";
 }
 class Currency{
   static String thb = "THB";
