@@ -6,7 +6,8 @@ import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/widget/profile/profileImage.dart';
 class Listcar extends StatefulWidget {
-  int day = 26;
+  int day = 23;
+  String university = 'sdfasdfasd';
   @override
   _ListcarState createState() => _ListcarState();
 }
@@ -18,6 +19,11 @@ class _ListcarState extends State<Listcar> {
     DataFetch.checkhavedata = 0;
     DataFetch.checknotsamenoresult = 0;
     DataFetch.checknothaveslottime = 0;
+    Datamanager.motorcycleShow = null;
+    Datamanager.usershow= null;
+    Datamanager.listcarslot= null;
+    Datamanager.slottime= null;
+    // Datamanager.slottime =null;
     super.initState();
   }
    int checkmatch(Listcarslot timeslot){
@@ -98,7 +104,7 @@ class _ListcarState extends State<Listcar> {
   Widget loaddata3(BuildContext context, DocumentSnapshot data) {
     var datasize = MediaQuery.of(context);
     var timesshow = Listcarslot.fromSnapshot(data);
-    if(timesshow.university =='Chaing Mai University' && timesshow.ownerdocid != Datamanager.user.documentid){
+    if(timesshow.university ==widget.university && timesshow.ownerdocid != Datamanager.user.documentid){
       DataFetch.checknothaveslottime =1;
       DataFetch.checknotsamenoresult =1;
       int priority = checkmatch(timesshow);
@@ -230,8 +236,8 @@ class _ListcarState extends State<Listcar> {
                             .document(Datamanager.user.documentchat)
                             .collection('groupchat').document(usershow.documentid);
     }
-    
-    if( timeslot.ownerdocid != Datamanager.user.documentid && timeslot.university == 'Chaing Mai University'){
+    print(Datamanager.user.documentid + ' '+timeslot.university+' '+timeslot.ownerdocid);
+    if( timeslot.ownerdocid != Datamanager.user.documentid && timeslot.university == widget.university){
       if(checkmatch(timeslot) != 0){
           return GestureDetector(
             onTap: (){
@@ -547,6 +553,7 @@ class _ListcarState extends State<Listcar> {
           ),
         );
       }else{
+        print('aac');
         if(DataFetch.checknothaveslottime == 0){
           DataFetch.checknothaveslottime =1;
           return Container(
@@ -562,6 +569,7 @@ class _ListcarState extends State<Listcar> {
         }
       }
     }else{
+      print('aab');
       if(DataFetch.checknotsamenoresult == 0){
         DataFetch.checknotsamenoresult =1;
         return Container(
@@ -573,6 +581,7 @@ class _ListcarState extends State<Listcar> {
           ),
         );
       }else{
+        print('aaa');
         return Container();
       }
     }

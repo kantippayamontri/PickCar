@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/page/listcarpage.dart';
 import 'package:pickcar/page/loginpage.dart';
+import 'package:pickcar/page/mainloginpage.dart';
 import 'package:pickcar/page/map/boxselectadmin.dart';
 import 'package:pickcar/page/map/mapboxselect.dart';
 import 'package:pickcar/page/map/mapaddmark.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   color: PickCarColor.colormain))),
       routes: {
+        Datamanager.mainloginpage: (ctx) => Mainloginpage(),
         Datamanager.loginpage: (ctx) => LoginPage(),
         Datamanager.signuppage : (ctx) => SignUpPage(),
         Datamanager.tabpage : (ctx) => TabScreenPage(),

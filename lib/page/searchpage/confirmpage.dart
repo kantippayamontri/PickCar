@@ -513,6 +513,14 @@ class _ConfirmPageState extends State<ConfirmPage> {
                               Navigator.pop(context);
                               Navigator.pop(context);
                               Navigator.pop(context);
+                              DataFetch.fetchpiority = 0;
+                              DataFetch.checkhavedata = 0;
+                              DataFetch.checknotsamenoresult = 0;
+                              DataFetch.checknothaveslottime = 0;
+                              Datamanager.motorcycleShow = null;
+                              Datamanager.usershow= null;
+                              Datamanager.listcarslot= null;
+                              Datamanager.slottime= null;
                             }else{
                               Navigator.pop(context);
                               Navigator.pop(context);

@@ -30,6 +30,14 @@ class _SlotTimePageState extends State<SlotTimePage> {
           ),
           onPressed: () {
             Navigator.pop(context);
+            DataFetch.fetchpiority = 0;
+            DataFetch.checkhavedata = 0;
+            DataFetch.checknotsamenoresult = 0;
+            DataFetch.checknothaveslottime = 0;
+            Datamanager.motorcycleShow = null;
+            Datamanager.usershow= null;
+            Datamanager.listcarslot= null;
+            Datamanager.slottime= null;
           },
         ),
       ),

@@ -17,7 +17,8 @@ import 'models/pincar.dart';
 import 'models/user.dart';
 
 class Datamanager {
-  static String loginpage = "/";
+  static String loginpage = "/loginpage";
+  static String mainloginpage = "/";
   static String signuppage = "/signuppage";
   static String tabpage = "/tabpage";
   static String registerpage = "/registerpage";
@@ -112,6 +113,7 @@ class UseString {
   static String name = "Name";
   static String nameemptyval = "Please Enter Name.";
   static String signup = "Sign Up";
+  static String signin = "Sign In";
   static String university = "University";
   static String chooseuniversity = "Please choose your University";
   static String faculty = "Faculty";
@@ -237,6 +239,12 @@ class UseString {
   static String pricebegin = "Price";
   static String pricefee = "Fee 5 THB";
   static String pricevat = "VAT (7%)";
+  static String pickabike = "PicKaBike";
+  static String logo = "Logo";
+  static String username = "Username";
+  static String remember = "Remember Me";
+  static String emailhint = "email@example.com";
+  static String passwordhint = "********";
 }
 class Currency{
   static String thb = "THB";
@@ -260,6 +268,7 @@ class PickCarColor {
   static var colorcmu = Color.fromARGB(255, 66, 26, 94);
   static var colorFont1 = Color.fromARGB(255, 69, 79, 99);
   static var colorFont2 = Color.fromARGB(255, 148, 145, 145);
+  static var colorbuttom = Color.fromARGB(255, 33, 197, 155);
 }
 class Datasearch {
   static List<String> boxlocationname = [];
