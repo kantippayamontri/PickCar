@@ -6,11 +6,13 @@ class Placelocation {
   double longitude;
   String name;
   String docplaceid;
+  String universityname;
 
   Placelocation({
     @required this.latitude,
     @required this.longitude,
     @required this.name,
+    @required this.universityname,
   }) {}
 
    Map<String , Object> toJson(){
@@ -19,6 +21,7 @@ class Placelocation {
       'longitude' : this.longitude,
       'name' : this.name,
       'docplaceid' : this.docplaceid,
+      'Universityname' : this.universityname,
     };
   }
 }
@@ -28,6 +31,7 @@ class PlacelocationShow {
   double longitude;
   String name;
   String docplaceid;
+  String universityname;
   final DocumentReference reference;
 
   PlacelocationShow.fromMap(Map<String, dynamic> map, {this.reference})
@@ -35,9 +39,11 @@ class PlacelocationShow {
        assert(map['longitude'] != null),
        assert(map['name'] != null),
        assert(map['docplaceid'] != null),
+       assert(map['Universityname'] != null),
        latitude = map['latitude'],
        longitude = map['longitude'],
        name = map['name'],
+       universityname = map['universityname'],
        docplaceid = map['docplaceid'];
 
   PlacelocationShow.fromSnapshot(DocumentSnapshot snapshot)

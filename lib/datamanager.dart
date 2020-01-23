@@ -44,6 +44,8 @@ class Datamanager {
   static String registerMap = "/RegisterMap";
   static String mapboxselect = "/Mapboxselect";
   static String mapplaceselect = "/Mapplaceselect";
+
+  static String selectUniversity = "/SelectUniversity";
   
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
@@ -98,6 +100,20 @@ class Datamanager {
     "sdfasdfasd",
     "dfasdfsdfasdf",
   ];
+  static var universityforadmin = [
+    'Choose University',
+    "Chaing Mai University",
+    "sdfasdfasd",
+    "dfasdfsdfasdf",
+  ];
+  static Map<String , Object> universitydatabase = {
+      'Universityname' : 'Chaing Mai University',
+      'latitude':18.802587,
+      'longitude':98.951556,
+      'docid':'',
+      'listplacebox': null,
+      'listplacelocation': null,
+    };
 
   static var year = [
     {"year": "1"},
@@ -245,6 +261,12 @@ class UseString {
   static String remember = "Remember Me";
   static String emailhint = "email@example.com";
   static String passwordhint = "********";
+  static String nearby = "Nearby";
+  static String search = "Search";
+  static String selectuniversity = "Select University";
+  static String selectlocation = "Select Location";
+  static String universityhint = "University...";
+  static String locationhint = "Location...";
 }
 class Currency{
   static String thb = "THB";
@@ -258,6 +280,14 @@ class ImageProfiles {
   static Uint8List drimotorcard;
   static Uint8List idcard;
   static Uint8List universitycard;
+}
+class SearchString {
+  static String university;
+  static String location;
+}
+
+class SetUniversity {
+  static String university;
 }
 
 enum authProblems { UserNotFound, PasswordNotValid, NetworkError }

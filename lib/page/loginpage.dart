@@ -152,21 +152,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin{
                 SizedBox(
                   height: 20,
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: <Widget>[
-                //     _horizontalLine(),
-                //     Text("CMU Login",
-                //         style: TextStyle(
-                //             fontSize: 16.0, fontFamily: "Poppins-Medium")),
-                //     _horizontalLine()
-                //   ],
-                // ),
-                // SizedBox(
-                //   height: 20,
-                // ),
-                //CMULogin(),
-                // SignUpBtn(context , _signup)
               ],
             ),
           ),
@@ -211,12 +196,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin{
       ),
       key: _scaffoldkey,
       body:  body(context),
-      // TabBarView(
-      //   controller: _tabController,
-      //   children: myTabs.map((Tab tab) {
-      //       return body(context);
-      //   }).toList(),
-      // ),
     );
   }
 }

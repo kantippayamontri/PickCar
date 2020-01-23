@@ -6,11 +6,13 @@ class Boxlocation {
   double longitude;
   String name;
   String docboxid;
+  String universityname;
 
   Boxlocation({
     @required this.latitude,
     @required this.longitude,
     @required this.name,
+    @required this.universityname,
   }) {}
 
    Map<String , Object> toJson(){
@@ -19,6 +21,7 @@ class Boxlocation {
       'longitude' : this.longitude,
       'name' : this.name,
       'docboxid' : this.docboxid,
+      'Universityname' : this.universityname,
     };
   }
 }
@@ -29,6 +32,7 @@ class BoxlocationShow {
   int maxslot;
   String name;
   String docboxid;
+  String universityname;
   final DocumentReference reference;
 
   BoxlocationShow.fromMap(Map<String, dynamic> map, {this.reference})
@@ -36,9 +40,11 @@ class BoxlocationShow {
        assert(map['longitude'] != null),
        assert(map['name'] != null),
        assert(map['docboxid'] != null),
+       assert(map['Universityname'] != null),
        latitude = map['latitude'],
        longitude = map['longitude'],
        name = map['name'],
+       universityname = map['universityname'],
        docboxid = map['docboxid'];
 
   BoxlocationShow.fromSnapshot(DocumentSnapshot snapshot)
