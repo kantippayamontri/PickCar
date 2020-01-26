@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/listcarslot.dart';
+import 'package:pickcar/models/placelocation.dart';
 import 'package:pickcar/widget/profile/profileImage.dart';
 class Listcar extends StatefulWidget {
   int day = TimeSearch.today.day;
-  String university = 'sdfasdfasd';
+  String university = SearchString.university;
   @override
   _ListcarState createState() => _ListcarState();
 }
@@ -15,10 +16,12 @@ class Listcar extends StatefulWidget {
 class _ListcarState extends State<Listcar> {
   @override
   void initState() {
+    DataFetch.waitplace =0;
     DataFetch.fetchpiority = 0;
     DataFetch.checkhavedata = 0;
     DataFetch.checknotsamenoresult = 0;
     DataFetch.checknothaveslottime = 0;
+    Datamanager.placelocationshow = null;
     Datamanager.motorcycleShow = null;
     Datamanager.usershow= null;
     Datamanager.listcarslot= null;
@@ -66,25 +69,31 @@ class _ListcarState extends State<Listcar> {
   }
   Widget loaddata(BuildContext context){
     var datasize = MediaQuery.of(context);
-    return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: widget.day).snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) { 
-          print("wait");
-          return Container();
-        //   Container(
-        //   height: datasize.size.height/1.4,
-        //   child: Center(
-        //     child: Text(UseString.notfound,
-        //       style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*36,color: Colors.white),
-        //     ),
-        //   ),
-        // );
-      }else{
-        return loaddata2(context, snapshot.data.documents);
-      }
-      },
-    );
+    if(Datamanager.placelocationshow != null){
+      print(Datamanager.placelocationshow);
+      return StreamBuilder<QuerySnapshot>(
+        stream: Firestore.instance.collection('Motorcycleforrent').where("day", isEqualTo: widget.day).where("motorplacelocdocid", isEqualTo: Datamanager.placelocationshow.docplaceid).snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) { 
+            // print("wait");
+            return Container();
+          //   Container(
+          //   height: datasize.size.height/1.4,
+          //   child: Center(
+          //     child: Text(UseString.notfound,
+          //       style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*36,color: Colors.white),
+          //     ),
+          //   ),
+          // );
+        }else{
+          return loaddata2(context, snapshot.data.documents);
+        }
+        },
+      );
+    }else{
+      return Container();
+    }
+    
   }
    Widget loaddata2(BuildContext context, List<DocumentSnapshot> snapshot) {
     return ListView(
@@ -94,6 +103,7 @@ class _ListcarState extends State<Listcar> {
   }
 
   uploadpiority(Listcarslot timeshow,int priority){
+    // fetchbox(timeshow);
     Datamanager.firestore.collection('Motorcycleforrent')
                           .document(timeshow.motorforrentdocid)
                           .updateData({'priority' : priority})
@@ -119,16 +129,53 @@ class _ListcarState extends State<Listcar> {
       return Container();
     }
   }
+  fetchlocation(){
+    if(DataFetch.fetchpiority == 0){
+      Datamanager.firestore.collection('placelocation')
+                          .where("name", isEqualTo: SearchString.location)
+                          .getDocuments()
+                          .then((data){
+                            data.documents.map((datadoc){
+                              Datamanager.placelocationshow = PlacelocationShow.fromSnapshot(datadoc);
+                            }).toList();
+                          });
+      if(DataFetch.waitplace == 0){
+        Future.delayed(const Duration(milliseconds: 500), () {
+          DataFetch.waitplace =1;
+          setState(() {
+          });
+        });
+      }                  
+    }
+  }
+  // fetchbox(Listcarslot timeshow){
+  //   if(DataFetch.fetchpiority == 0){
+  //     Datamanager.firestore.collection('boxlocation')
+  //                         .document(timeshow.)
+  //                         .then((data){
+  //                           data.documents.map((datadoc){
+  //                             Datamanager.placelocationshow = PlacelocationShow.fromSnapshot(datadoc);
+  //                           }).toList();
+  //                         });
+  //     if(DataFetch.waitplace == 0){
+  //       Future.delayed(const Duration(milliseconds: 500), () {
+  //         DataFetch.waitplace =1;
+  //         setState(() {
+  //         });
+  //       });
+  //     }                  
+  //   }
+  // }
   wait(){
     Future.delayed(const Duration(milliseconds: 1000), () {
-      // print('wait');
+      print('wait');
       DataFetch.fetchpiority = 1;
       setState(() {
       });
     });
   }
   Widget build(BuildContext context) {
-   
+    fetchlocation();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

@@ -275,6 +275,8 @@ class UseString {
   static String chooseuniandlo = "Please select a university and location.";
   static String reset = "Reset";
   static String find = "FIND";
+  static String booked = "Booked list";
+  static String registercar = "Register list";
 }
 class Currency{
   static String thb = "THB";
@@ -387,7 +389,8 @@ class DataFetch{
   static int checknotsamenoresult = 0;
   static int checknothaveslottime = 0;
   static int search = 0;
-  static int checkhavepin = 0;    
+  static int checkhavepin = 0;
+  static int waitplace = 0;      
 }
 class TimeSearch{
   static bool time1 = false;
