@@ -6,7 +6,7 @@ import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/widget/profile/profileImage.dart';
 class Listcar extends StatefulWidget {
-  int day = 23;
+  int day = TimeSearch.today.day;
   String university = 'sdfasdfasd';
   @override
   _ListcarState createState() => _ListcarState();
@@ -29,12 +29,12 @@ class _ListcarState extends State<Listcar> {
    int checkmatch(Listcarslot timeslot){
     var slot =timeslot.timeslotlist;
       var indexs = [];
-      var slot1 = true;
-      var slot2 = true;
-      var slot3 = true;
-      var slot4 = true;
-      var slot5 = true;
-      var slot6 = true;
+      var slot1 = TimeSearch.time1;
+      var slot2 = TimeSearch.time2;
+      var slot3 = TimeSearch.time3;
+      var slot4 = TimeSearch.time4;
+      var slot5 = TimeSearch.time5;
+      var slot6 = TimeSearch.time6;
       int isintime = 0;
       print(slot);
       if(slot1){

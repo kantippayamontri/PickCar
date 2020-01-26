@@ -497,7 +497,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
                           Navigator.pop(context);
                           Navigator.pop(context);
                       },
-                      child: Text(UseString.cancle,
+                      child: Text(UseString.cancel,
                           style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*18,color: Colors.white), 
                         ),
                     ),

@@ -14,6 +14,7 @@ import 'dart:typed_data';
 
 import 'models/boxlocation.dart';
 import 'models/pincar.dart';
+import 'models/universityplace.dart';
 import 'models/user.dart';
 
 class Datamanager {
@@ -59,6 +60,8 @@ class Datamanager {
   static Pincar pincar;
   static BoxlocationShow boxlocationshow;
   static PlacelocationShow placelocationshow;
+  static List<Universityplaceshow> universityshow = [];
+  static List<String> listUniversity = [];
 
   static FirebaseStorage firebasestorage = FirebaseStorage.instance;
 
@@ -96,18 +99,18 @@ class Datamanager {
     "Humantility",
   ];
   static var univeresity2 = [
-    "Chaing Mai University",
+    "Chiang Mai University",
     "sdfasdfasd",
     "dfasdfsdfasdf",
   ];
   static var universityforadmin = [
     'Choose University',
-    "Chaing Mai University",
+    "Chiang Mai University",
     "sdfasdfasd",
     "dfasdfsdfasdf",
   ];
   static Map<String , Object> universitydatabase = {
-      'Universityname' : 'Chaing Mai University',
+      'Universityname' : 'Chiang Mai University',
       'latitude':18.802587,
       'longitude':98.951556,
       'docid':'',
@@ -223,14 +226,14 @@ class UseString {
   static String location = "Location";
   static String locationdetail = "\t\t\tThe location of vehicle and key box.";
   static String booking = "BOOKING";
-  static String selecttiem = "Select Time";
+  static String selecttime = "Select Time";
   static String next = "NEXT";
   static String searching = "Searching...";
   static String notfound = "Result not found.";
   static String time = "Time";
   static String date = "Date";
   static String delete = "Delete";
-  static String cancle = "Cancle";
+  static String cancel = "Cancel";
 
   static String pin = "Pin Here";
   static String addlocation = "Add location";
@@ -267,6 +270,11 @@ class UseString {
   static String selectlocation = "Select Location";
   static String universityhint = "University...";
   static String locationhint = "Location...";
+  static String chooselo = "Please select a location.";
+  static String chooseuni = "Please select a university.";
+  static String chooseuniandlo = "Please select a university and location.";
+  static String reset = "Reset";
+  static String find = "FIND";
 }
 class Currency{
   static String thb = "THB";
@@ -286,8 +294,10 @@ class SearchString {
   static String location;
 }
 
+
 class SetUniversity {
   static String university;
+  static String location;
 }
 
 enum authProblems { UserNotFound, PasswordNotValid, NetworkError }
@@ -379,7 +389,17 @@ class DataFetch{
   static int search = 0;
   static int checkhavepin = 0;    
 }
-
+class TimeSearch{
+  static bool time1 = false;
+  static bool time2 = false;
+  static bool time3 = false;
+  static bool time4 = false;
+  static bool time5 = false;
+  static bool time6 = false;
+  static DateTime today = DateTime.now();
+  static DateTime yesterday = today.add(new Duration(days: -1));
+  static DateTime nextmonth = today.add(new Duration(days: 30));
+}
 class TimeSlot {
   //TimeSlot();
 

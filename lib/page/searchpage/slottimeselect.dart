@@ -21,7 +21,7 @@ class _SlotTimePageState extends State<SlotTimePage> {
           fit: BoxFit.cover,
         ),
        centerTitle: true,
-       title: Text(UseString.selecttiem,
+       title: Text(UseString.selecttime,
           style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color: Colors.white), 
        ),
        leading: IconButton(

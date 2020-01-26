@@ -126,7 +126,7 @@ class _MotorBookItemState extends State<MotorBookItem> {
                   ),
                   RaisedButton(
                     child: Text(
-                      UseString.cancle,
+                      UseString.cancel,
                       style: TextStyle(color: Colors.white),
                     ),
                     color: Colors.red,

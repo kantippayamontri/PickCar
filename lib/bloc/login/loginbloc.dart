@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:pickcar/bloc/login/loginevent.dart';
 import 'package:pickcar/bloc/login/loginstate.dart';
 import 'package:pickcar/datamanager.dart';
+import 'package:pickcar/models/universityplace.dart';
 import 'package:pickcar/models/user.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
@@ -151,6 +152,48 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                       debugPrint(error.toString());
                     });
                     Datamanager.user.documentid = doc['documentid'];
+                    // await Firestore.instance.collection('universityplace')
+                    //                       .where('Universityname' , isEqualTo: SetUniversity.university)
+                    //                       .getDocuments()
+                    //                       .then((data){
+                    //                         data.documents.map((data){
+                    //                           Datamanager.universityshow = Universityplaceshow.fromSnapshot(data);
+                    //                         }).toList();
+                    //                       });
+                    Datamanager.listUniversity = [];
+                    Firestore.instance
+                      .collection("universityplace")
+                      .snapshots()
+                      .listen((data) => data.documents.forEach((doc) async {
+                        // print(doc);
+                        if(doc != null){
+                        var universityshow = Universityplaceshow.fromSnapshot(doc);
+                        print(universityshow.universityname);
+                        print(universityshow);
+                        Datamanager.listUniversity.add(universityshow.universityname);
+                        Datamanager.universityshow.add(universityshow);
+                        }else{
+                          print('aaa');
+                        }
+                    }));
+                    // print(datashow);
+                    // print("-------------------");
+                    // for (var data in datashow){
+                    //   for (var docdata in data.documents){
+                        // var universityshow = Universityplaceshow.fromSnapshot(docdata);
+                        // print(universityshow.universityname);
+                    //     if(universityshow != null){
+                    //       Datamanager.listUniversity.add(universityshow.universityname);
+                    //     }
+                    //   }
+                    // }
+                                          // ((data){
+                                          //   data.documents.map((data){
+                                          //     var universityshow = Universityplaceshow.fromSnapshot(data);
+                                          //     print(universityshow);
+                                          //     // Datamanager.listUniversity.add(universityshow.universityname);
+                                          //   }).toList();
+                                          // });
                     print(Datamanager.user);
                   }));
         });
