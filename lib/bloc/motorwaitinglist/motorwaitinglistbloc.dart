@@ -142,7 +142,11 @@ class MotorWaitingListBloc
           prize: double.parse(doc['prize'].toString()),
           timeslot: doc['timeslot'],
           university: doc['university'],
-          docid: doc['docid']);
+          docid: doc['docid'],
+          boxslotrentdocid: doc['boxslotrentdocid'],
+          keyboxplacelocdocid: doc['keyboxplacelocdocid'],
+          motorplacelocdocid: doc['motorplacelocdocid'],
+          );
  
       motorcycletimeslotlist.add(motorcycleTimeSlot);
     }

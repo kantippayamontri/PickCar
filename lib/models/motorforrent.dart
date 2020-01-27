@@ -13,6 +13,8 @@ class MotorForRent {
   String motorforrentdocid;
   String ownerdocid;
   String university;
+  String boxplacedocid;
+  String boxdocid;
   
 
   MotorForRent({
@@ -22,7 +24,9 @@ class MotorForRent {
     @required this.motorcycledocid,
     @required this.timeslotlist,
     @required this.ownerdocid,
-    @required this.university
+    @required this.university,
+    @required this.boxplacedocid,
+    @required this.boxdocid,
     
   }) {
     this.day = dateTime.day;
@@ -99,7 +103,9 @@ class MotorForRent {
       'timeslotlist' : this.timeslotlist.toList(),
       'motorcycledocid' : this.motorcycledocid,
       'ownerdocid' : this.ownerdocid,
-      'university' : this.university
+      'university' : this.university,
+      'boxplacedocid' : this.boxplacedocid,
+      'boxdocid' : this.boxdocid
     };
   }
 }

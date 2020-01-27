@@ -34,6 +34,7 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
   }
   Widget locationcheck(BuildContext context){
     if(Datamanager.placelocationshow != null){
+      print("place location : ${Datamanager.placelocationshow.name}");
       return Text('already select place');
     }else{
       return Container();
@@ -41,6 +42,7 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
   }
   Widget boxcheck(BuildContext context){
     if(Datamanager.boxlocationshow != null){
+      print("box location : ${Datamanager.boxlocationshow.name}");
       return Text('already select box');
     }else{
       return Container();

@@ -43,7 +43,6 @@ class Datamanager {
   static String registerMap = "/RegisterMap";
   static String mapboxselect = "/Mapboxselect";
   static String mapplaceselect = "/Mapplaceselect";
-  
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
   static FirebaseUser firebaseuser = null;
@@ -200,8 +199,10 @@ class UseString {
   static String freecancle = "Free cancellation before 30 minute.";
   static String insurancemotorcycle = "Free motorcycle insurance.";
   static String precautions = "Precautions";
-  static String precautionsdetail = "\t\t\tYou have to return the motorcycle before time out. \n\t\t\tyou can always cancel for free until 30 minutes before you receive the motorcycle.";
-  static String warnning = "If you do not do as described above you will pay fee.";
+  static String precautionsdetail =
+      "\t\t\tYou have to return the motorcycle before time out. \n\t\t\tyou can always cancel for free until 30 minutes before you receive the motorcycle.";
+  static String warnning =
+      "If you do not do as described above you will pay fee.";
   static String location = "Location";
   static String locationdetail = "\t\t\tThe location of vehicle and key box.";
   static String booking = "BOOKING";
@@ -226,10 +227,11 @@ class UseString {
   static String returncar = "Return Car";
   static String day = "Datetime";
 }
-class Currency{
-  static String thb = "THB";
 
+class Currency {
+  static String thb = "THB";
 }
+
 class ImageProfiles {
   static Uint8List profileUrl;
   static Uint8List drimotorcard;
@@ -303,17 +305,43 @@ class CarStatus {
     return CarStatus.nothing;
   }
 }
+
 class CarPrice {
   static const double motorminprice = 50.0;
 }
-class DataFetch{
-  static int fetchmotor = 0; 
-  static int fetchpiority = 0; 
-  static int checkhavedata = 0; 
+
+class DataFetch {
+  static int fetchmotor = 0;
+  static int fetchpiority = 0;
+  static int checkhavedata = 0;
   static int checknotsamenoresult = 0;
   static int checknothaveslottime = 0;
   static int search = 0;
-  static int checkhavepin = 0;    
+  static int checkhavepin = 0;
+}
+
+class TimeSlotSingle {
+  static const String sub1 = "8.00 - 9.30";
+  static const String sub2 = "9.30 - 11.00";
+  static const String sub3 = "11.00 - 12.30";
+  static const String sub4 = "13.00 - 14.30";
+  static const String sub5 = "14.30 - 16.00";
+  static const String sub6 = "16.00 - 17.30";
+
+  List<String> tolist() {
+    return [
+      "8.00 - 9.30",
+      "9.30 - 11.00",
+      "11.00 - 12.30",
+      "13.00 - 14.30",
+      "14.30 - 16.00",
+      "16.00 - 17.30"
+    ];
+  }
+}
+
+class TimeslotDouble{
+  
 }
 
 class TimeSlot {
@@ -365,7 +393,4 @@ class TimeSlot {
   static List<String> toList(DateTime date) {
     return loadlist(date);
   }
-
-  
 }
-

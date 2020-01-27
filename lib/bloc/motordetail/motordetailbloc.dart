@@ -11,6 +11,7 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
   String firestoredocid;
   Motorcycle motorcycle;
   List<String> listcorousel;
+  bool needdropkey = false;
   MotorDetailBloc({@required this.context, @required this.firestoredocid}){
     listcorousel = List<String>();
   }
@@ -26,8 +27,13 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
       print("MotorDetailLoadData");
       yield MotorDetailStartState();
       await loaddata();
+      await checkdropkey();
       yield MotorDetailShowdata(motorcycle: this.motorcycle);
     }
+  }
+
+  Future<Null> checkdropkey() async {
+    //var 
   }
 
   Future<void> loaddata() async {
