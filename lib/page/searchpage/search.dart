@@ -13,6 +13,7 @@ class SearchPage extends StatefulWidget {
   var colorselect4 = Colors.white;
   var colorselect5 = Colors.white;
   var colorselect6 = Colors.white;
+  String dropdown = UseString.rent1;
   @override
   _SearchPageState createState() => _SearchPageState();
 }
@@ -31,6 +32,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     widget.colorselect4 = Colors.white;
     widget.colorselect5 = Colors.white;
     widget.colorselect6 = Colors.white;
+    widget.dropdown = UseString.rent1;
+    SearchString.type = widget.dropdown;
     SearchString.university = UseString.universityhint;
     SearchString.location = UseString.locationhint;
     TimeSearch.today = DateTime.now();
@@ -106,6 +109,218 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         }
       );
     }
+    slottime1(BuildContext context){
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return Container(
+            width: 200,
+            child: RaisedButton(
+              color: widget.colorselect1,
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(18.0),
+                side: BorderSide(color: PickCarColor.colormain)
+              ),
+              onPressed: (){
+                print('aaa');
+                print(TimeSearch.time1);
+                setState(() {
+                  TimeSearch.time1 = !TimeSearch.time1;
+                  if(TimeSearch.time1){
+                    widget.colorselect1 = Colors.green[400];
+                  }else{
+                    widget.colorselect1 = Colors.white;
+                  }
+                });
+              },
+              child:  Row(
+                children: <Widget>[
+                  Icon(Icons.alarm),
+                  SizedBox(width: 10,),
+                  Text(widget.timeselect[0],
+                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*22,color: PickCarColor.colorFont1), 
+                  ),
+                ],
+              ),
+            ),
+          );
+            }
+      );
+    }
+    slottime2(BuildContext context){
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return Container(
+            width: 200,
+            child: RaisedButton(
+              color: widget.colorselect2,
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(18.0),
+                side: BorderSide(color: PickCarColor.colormain)
+              ),
+              onPressed: (){
+                setState(() {
+                  TimeSearch.time2 = !TimeSearch.time2;
+                  if(TimeSearch.time2){
+                    widget.colorselect2 = Colors.green[400];
+                  }else{
+                    widget.colorselect2 = Colors.white;
+                  }
+                });
+              },
+              child:  Row(
+                children: <Widget>[
+                  Icon(Icons.alarm),
+                  SizedBox(width: 10,),
+                  Text(widget.timeselect[1],
+                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*22,color: PickCarColor.colorFont1), 
+                  ),
+                ],
+              ),
+            ),
+          );
+          }
+      );
+    }
+    slottime3(BuildContext context){
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return Container(
+            width: 200,
+            child: RaisedButton(
+              color: widget.colorselect3,
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(18.0),
+                side: BorderSide(color: PickCarColor.colormain)
+              ),
+              onPressed: (){
+                setState(() {
+                  TimeSearch.time3 = !TimeSearch.time3;
+                  if(TimeSearch.time3){
+                    widget.colorselect3 = Colors.green[400];
+                  }else{
+                    widget.colorselect3 = Colors.white;
+                  }
+                });
+              },
+              child:  Row(
+                children: <Widget>[
+                  Icon(Icons.alarm),
+                  SizedBox(width: 10,),
+                  Text(widget.timeselect[2],
+                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*22,color: PickCarColor.colorFont1), 
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+      );
+    }
+    slottime4(BuildContext context){
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return Container(
+            width: 200,
+            child: RaisedButton(
+              color: widget.colorselect4,
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(18.0),
+                side: BorderSide(color: PickCarColor.colormain)
+              ),
+              onPressed: (){
+                setState(() {
+                  TimeSearch.time4 = !TimeSearch.time4;
+                  if(TimeSearch.time4){
+                    widget.colorselect4 = Colors.green[400];
+                  }else{
+                    widget.colorselect4 = Colors.white;
+                  }
+                });
+              },
+              child:  Row(
+                children: <Widget>[
+                  Icon(Icons.alarm),
+                  SizedBox(width: 10,),
+                  Text(widget.timeselect[3],
+                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*22,color: PickCarColor.colorFont1), 
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+      );
+    }
+    slottime5(BuildContext context){
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return Container(
+            width: 200,
+            child: RaisedButton(
+              color: widget.colorselect5,
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(18.0),
+                side: BorderSide(color: PickCarColor.colormain)
+              ),
+              onPressed: (){
+                setState(() {
+                  TimeSearch.time5 = !TimeSearch.time5;
+                  if(TimeSearch.time5){
+                    widget.colorselect5 = Colors.green[400];
+                  }else{
+                    widget.colorselect5 = Colors.white;
+                  }
+                });
+              },
+              child:  Row(
+                children: <Widget>[
+                  Icon(Icons.alarm),
+                  SizedBox(width: 10,),
+                  Text(widget.timeselect[4],
+                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*22,color: PickCarColor.colorFont1), 
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+      );
+    }
+    slottime6(BuildContext context){
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return Container(
+            width: 200,
+            child: RaisedButton(
+              color: widget.colorselect6,
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(18.0),
+                side: BorderSide(color: PickCarColor.colormain)
+              ),
+              onPressed: (){
+                setState(() {
+                  TimeSearch.time6 = !TimeSearch.time6;
+                  if(TimeSearch.time6){
+                    widget.colorselect6 = Colors.green[400];
+                  }else{
+                    widget.colorselect6 = Colors.white;
+                  }
+                });
+              },
+              child:  Row(
+                children: <Widget>[
+                  Icon(Icons.alarm),
+                  SizedBox(width: 10,),
+                  Text(widget.timeselect[5],
+                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*22,color: PickCarColor.colorFont1), 
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+      );
+    }
     selecttime(BuildContext context){
     var data = MediaQuery.of(context);
     // print(TimeSearch.time1);
@@ -131,180 +346,12 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   // ),
                   child: Column(
                     children: <Widget>[
-                      Container(
-                        width: 200,
-                        child: RaisedButton(
-                          color: widget.colorselect1,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(18.0),
-                            side: BorderSide(color: PickCarColor.colormain)
-                          ),
-                          onPressed: (){
-                            setState(() {
-                              TimeSearch.time1 = !TimeSearch.time1;
-                              if(TimeSearch.time1){
-                                widget.colorselect1 = Colors.green[400];
-                              }else{
-                                widget.colorselect1 = Colors.white;
-                              }
-                            });
-                          },
-                          child:  Row(
-                            children: <Widget>[
-                              Icon(Icons.alarm),
-                              SizedBox(width: 10,),
-                              Text(widget.timeselect[0],
-                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*22,color: PickCarColor.colorFont1), 
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 200,
-                        child: RaisedButton(
-                          color: widget.colorselect2,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(18.0),
-                            side: BorderSide(color: PickCarColor.colormain)
-                          ),
-                          onPressed: (){
-                            setState(() {
-                              TimeSearch.time2 = !TimeSearch.time2;
-                              if(TimeSearch.time2){
-                                widget.colorselect2 = Colors.green[400];
-                              }else{
-                                widget.colorselect2 = Colors.white;
-                              }
-                            });
-                          },
-                          child:  Row(
-                            children: <Widget>[
-                              Icon(Icons.alarm),
-                              SizedBox(width: 10,),
-                              Text(widget.timeselect[1],
-                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*22,color: PickCarColor.colorFont1), 
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 200,
-                        child: RaisedButton(
-                          color: widget.colorselect3,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(18.0),
-                            side: BorderSide(color: PickCarColor.colormain)
-                          ),
-                          onPressed: (){
-                            setState(() {
-                              TimeSearch.time3 = !TimeSearch.time3;
-                              if(TimeSearch.time3){
-                                widget.colorselect3 = Colors.green[400];
-                              }else{
-                                widget.colorselect3 = Colors.white;
-                              }
-                            });
-                          },
-                          child:  Row(
-                            children: <Widget>[
-                              Icon(Icons.alarm),
-                              SizedBox(width: 10,),
-                              Text(widget.timeselect[2],
-                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*22,color: PickCarColor.colorFont1), 
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 200,
-                        child: RaisedButton(
-                          color: widget.colorselect4,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(18.0),
-                            side: BorderSide(color: PickCarColor.colormain)
-                          ),
-                          onPressed: (){
-                            setState(() {
-                              TimeSearch.time4 = !TimeSearch.time4;
-                              if(TimeSearch.time4){
-                                widget.colorselect4 = Colors.green[400];
-                              }else{
-                                widget.colorselect4 = Colors.white;
-                              }
-                            });
-                          },
-                          child:  Row(
-                            children: <Widget>[
-                              Icon(Icons.alarm),
-                              SizedBox(width: 10,),
-                              Text(widget.timeselect[3],
-                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*22,color: PickCarColor.colorFont1), 
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 200,
-                        child: RaisedButton(
-                          color: widget.colorselect5,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(18.0),
-                            side: BorderSide(color: PickCarColor.colormain)
-                          ),
-                          onPressed: (){
-                            setState(() {
-                              TimeSearch.time5 = !TimeSearch.time5;
-                              if(TimeSearch.time5){
-                                widget.colorselect5 = Colors.green[400];
-                              }else{
-                                widget.colorselect5 = Colors.white;
-                              }
-                            });
-                          },
-                          child:  Row(
-                            children: <Widget>[
-                              Icon(Icons.alarm),
-                              SizedBox(width: 10,),
-                              Text(widget.timeselect[4],
-                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*22,color: PickCarColor.colorFont1), 
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 200,
-                        child: RaisedButton(
-                          color: widget.colorselect6,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(18.0),
-                            side: BorderSide(color: PickCarColor.colormain)
-                          ),
-                          onPressed: (){
-                            setState(() {
-                              TimeSearch.time6 = !TimeSearch.time6;
-                              if(TimeSearch.time6){
-                                widget.colorselect6 = Colors.green[400];
-                              }else{
-                                widget.colorselect6 = Colors.white;
-                              }
-                            });
-                          },
-                          child:  Row(
-                            children: <Widget>[
-                              Icon(Icons.alarm),
-                              SizedBox(width: 10,),
-                              Text(widget.timeselect[5],
-                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*22,color: PickCarColor.colorFont1), 
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      slottime1(context),
+                      slottime2(context),
+                      slottime3(context),
+                      slottime4(context),
+                      slottime5(context),
+                      slottime6(context),
                       Container(
                         width: 120,
                         alignment:Alignment.center,
@@ -482,6 +529,62 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
               Container(
                 margin: EdgeInsets.only(top:5,left: 10,right: 10),
                 width: data.size.width,
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      width: double.infinity,
+                      child: Image.asset("assets/images/imagesearch/cardselect.png",fit: BoxFit.fill,)
+                    ),
+                    GestureDetector(
+                      onTap: (){
+                        if(SearchString.university != UseString.universityhint){
+                          showSearch(context: context,delegate:SearcLocation());
+                        }else{
+                          showalertuni(context);
+                        }
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(top: 40,left: 40,right: 40),
+                        width: double.infinity,
+                        child: Stack(
+                          children: <Widget>[
+                            DropdownButton<String>(
+                              focusColor: Colors.grey,
+                              hint: Text(widget.dropdown,
+                                style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*22,color: PickCarColor.colorFont1), 
+                              ),
+                              isExpanded: true,
+                              style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*22,color: PickCarColor.colorFont1),
+                              items: <String>[UseString.rent1, UseString.rent2, UseString.rent3].map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value,),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  widget.dropdown = value;
+                                  SearchString.type = value;
+                                });
+                              },
+                            )
+                          ],
+                        )
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 15,left: 20),
+                      width: double.infinity,
+                      child: Text(UseString.typeforrent,
+                          style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*22,color: PickCarColor.colorFont1), 
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top:5,left: 10,right: 10),
+                width: data.size.width,
                 height: 265,
                 child: Stack(
                   children: <Widget>[
@@ -492,7 +595,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                     ),
                     GestureDetector(
                       onTap: (){
-                        print('aaa');
                         // selectday(context);
                         showDatePicker(
                           context: context,
@@ -666,10 +768,10 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         ),
         leading: IconButton(
           icon: Icon(Icons.keyboard_arrow_left,
-          color: Colors.white,
+          color: Colors.transparent,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            // Navigator.pop(context);
           },
         ),
       ),

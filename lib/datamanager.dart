@@ -290,6 +290,12 @@ class UseString {
   static String openmap = "Open Map location";
   static String maploacation = "Map Location";
   static String slotnumber = "Box Slot Number";
+  static String openlocker = "Open Locker";
+  static String contactowner = "Contact Owner";
+  static String typeforrent = "Type For Rent";
+  static String rent1 = "rent 1 slot";
+  static String rent2 = "rent 2 slot";
+  static String rent3 = "rent 3 slot";
 }
 class Currency{
   static String thb = "THB";
@@ -307,6 +313,7 @@ class ImageProfiles {
 class SearchString {
   static String university;
   static String location;
+  static String type;
 }
 
 

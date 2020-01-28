@@ -39,6 +39,10 @@ class _ReceivecarState extends State<Receivecar> {
   @override
   void initState() {
     widget.showtext = UseString.notavailable;
+    widget.statebutton = false;
+    widget.statebutton2 = false;
+    widget._visible1 = true;
+    widget._visible2 = true;
     super.initState();
   }
 
@@ -51,6 +55,7 @@ class _ReceivecarState extends State<Receivecar> {
           if(widget.statebutton){
             widget.colorchange = Colors.white;
             widget.statebutton = false;
+            Navigator.of(context).pushNamed(Datamanager.openkey);
             widget._visible1 = !widget._visible1;
           }else{
             widget.colorchange = PickCarColor.colormain;
@@ -101,6 +106,36 @@ class _ReceivecarState extends State<Receivecar> {
                 ),
               ),
             ),
+            //--------------
+            AnimatedOpacity(
+              opacity: widget._visible1 ? 0.0 : 1.0,
+              duration: Duration(milliseconds: 500),
+              child: Center(
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 60),
+                  width: 80,
+                  height: 80,
+                  child: Image.asset('assets/images/imagereceivecar/lockicon.png',fit: BoxFit.fill),
+                ),
+              ),
+            ),
+            AnimatedOpacity(
+              opacity: widget._visible1 ? 0.0 : 1.0,
+              duration: Duration(milliseconds: 500),
+              child: Container(
+                // alignment: Alignment.centerLeft,
+                margin: EdgeInsets.only(top: 100,left: 10),
+                width: double.infinity,
+                height: 80,
+                child: Column(
+                  children: <Widget>[
+                    Text(UseString.openlocker,
+                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: Colors.white), 
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -116,6 +151,7 @@ class _ReceivecarState extends State<Receivecar> {
             widget.colorchange2 = Colors.white;
             widget.statebutton2 = false;
             widget._visible2 = !widget._visible2;
+            Navigator.of(context).pushNamed(Datamanager.bookedmap);
           }else{
             widget.colorchange2 = PickCarColor.colormain;
             widget.statebutton2 = true;
@@ -164,19 +200,39 @@ class _ReceivecarState extends State<Receivecar> {
                 ),
               ),
             ),
+            //==============
+            AnimatedOpacity(
+              opacity: widget._visible2 ? 0.0 : 1.0,
+              duration: Duration(milliseconds: 500),
+              child: Center(
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 60),
+                  width: 80,
+                  height: 80,
+                  child: Image.asset('assets/images/imagereceivecar/mapicon.png',fit: BoxFit.fill),
+                ),
+              ),
+            ),
+            AnimatedOpacity(
+              opacity: widget._visible2 ? 0.0 : 1.0,
+              duration: Duration(milliseconds: 500),
+              child: Container(
+                // alignment: Alignment.centerLeft,
+                margin: EdgeInsets.only(top: 100,left: 10),
+                width: double.infinity,
+                height: 80,
+                child: Column(
+                  children: <Widget>[
+                    Text(UseString.maploacation,
+                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: Colors.white), 
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
-    );
-  }
-  animationbuttom(BuildContext context){
-    return AnimatedContainer(
-      width: double.infinity,
-      height: widget.height,
-      margin: EdgeInsets.only(top: widget.top),
-      color: Colors.blueAccent,
-      curve: Curves.fastOutSlowIn,
-      duration: Duration(seconds: 1),
     );
   }
 
@@ -370,10 +426,10 @@ class _ReceivecarState extends State<Receivecar> {
               margin: EdgeInsets.only(top: 564),
               width: double.infinity,
               height: 40,
-              color: PickCarColor.colormain,
+              color: Colors.white,
               child: Center(
-                child: Text(UseString.openmap,
-                  style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*22,color: Colors.white), 
+                child: Text(UseString.contactowner,
+                  style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*22,color: PickCarColor.colorFont1), 
                 ),
               ),
             ),
