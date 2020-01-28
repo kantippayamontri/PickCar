@@ -47,6 +47,7 @@ class _HomePageState extends State<HomePage> {
                       title: UseString.rentaltitle,
                       buttontext: UseString.rentalbutton,
                       tap: _gotorental,
+                      imageurl: 'assets/images/imagemain/forrent.png',
                     ),
                     SizedBox(
                       height: constraints.maxHeight * 0.1,
@@ -57,6 +58,7 @@ class _HomePageState extends State<HomePage> {
                       title: UseString.registertitle,
                       buttontext: UseString.registerbutton,
                       tap: _gotoregister,
+                      imageurl: 'assets/images/imagemain/forregister.png',
                     ),
                   ],
                 ),

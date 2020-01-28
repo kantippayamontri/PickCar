@@ -76,6 +76,8 @@ flutter:
     - assets/images/imagesearch/
     - assets/images/imagemap/
     - assets/images/imagelogin/
+    - assets/images/imagereceivecar/
+    - assets/images/imagemain/
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

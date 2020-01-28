@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
+import 'package:pickcar/page/example.dart';
 import 'package:pickcar/page/listcarpage.dart';
 import 'package:pickcar/page/loginpage.dart';
 import 'package:pickcar/page/mainloginpage.dart';
+import 'package:pickcar/page/map/bookedmap.dart';
 import 'package:pickcar/page/map/boxselectadmin.dart';
 import 'package:pickcar/page/map/mapboxselect.dart';
 import 'package:pickcar/page/map/mapaddmark.dart';
@@ -11,11 +13,13 @@ import 'package:pickcar/page/map/placeselectadmin.dart';
 import 'package:pickcar/page/map/registermap.dart';
 import 'package:pickcar/page/map/selectUniversity.dart';
 import 'package:pickcar/page/motorbooklistpage.dart';
+import 'package:pickcar/page/openkey.dart';
 import 'package:pickcar/page/profile/editprofile/NewPassword.dart';
 import 'package:pickcar/page/profile/editprofile/changepassword.dart';
 import 'package:pickcar/page/profile/editprofile/editdetail.dart';
 import 'package:pickcar/page/profile/editprofile/editprofile.dart';
 import 'package:pickcar/page/profile/editprofile/emailsend.dart';
+import 'package:pickcar/page/receivecar.dart';
 import 'package:pickcar/page/register/carregisterpage.dart';
 import 'package:pickcar/page/register/motorregisterpage.dart';
 import 'package:pickcar/page/register/registerpage.dart';
@@ -69,6 +73,10 @@ class MyApp extends StatelessWidget {
         Datamanager.placeselectadmin : (ctx) => Placeselectadmin(),
         Datamanager.mapplaceselect : (ctx) => Mapplaceselect(),
         Datamanager.selectUniversity : (ctx) => SelectUniversity(),
+        Datamanager.receivecar : (ctx) => Receivecar(),
+        Datamanager.bookedmap : (ctx) => Bookedmap(),
+        Datamanager.openkey : (ctx) => Openkey(),
+        Datamanager.animatedContainerApp : (ctx) => AnimatedContainerApp(),
         //'loginpickcarpage': (ctx) => LoginPickCarPage()
       },
       onGenerateRoute: (setting) {},

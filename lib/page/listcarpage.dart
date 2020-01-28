@@ -52,7 +52,12 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
     _tabController = new TabController(vsync: this, length: myTabs.length,initialIndex: widget.indicatorpage);
     body(BuildContext context){
       if(widget.indicatorpage == 0){
-        return Container();
+        return RaisedButton(
+          onPressed: (){
+            Navigator.of(context).pushNamed(Datamanager.receivecar);
+          },
+          child: Text('goto receive booked'),
+        );
       }else{
         return Registercarlist();
       }

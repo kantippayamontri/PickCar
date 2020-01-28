@@ -21,7 +21,7 @@ class _DetailsearchState extends State<Detailsearch> {
   File _image;
   Uint8List imagefile;
   var _changepassword;
-CarouselSlider carouselSlider;
+  CarouselSlider carouselSlider;
   int _current = 0;
   List imgList = [
     Datamanager.motorcycleShow.motorfrontlink,

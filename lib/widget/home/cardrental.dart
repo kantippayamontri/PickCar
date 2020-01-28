@@ -6,6 +6,7 @@ class CardRental extends StatelessWidget {
   double height;
   double width;
   String title;
+  String imageurl;
   String buttontext;
   Function tap;
 
@@ -14,6 +15,7 @@ class CardRental extends StatelessWidget {
       @required this.width,
       @required this.title,
       @required this.buttontext,
+      @required this.imageurl,
       @required this.tap});
 
   @override
@@ -25,8 +27,13 @@ class CardRental extends StatelessWidget {
         height: height * 0.3,
         width: width * 0.9,
         decoration: BoxDecoration(
-            color: Colors.yellow,
-            borderRadius: BorderRadius.all(Radius.circular(25))),
+            // color: Colors.yellow,
+            // borderRadius: BorderRadius.all(Radius.circular(25))
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: AssetImage(imageurl),
+            ), 
+          ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[

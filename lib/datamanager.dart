@@ -47,6 +47,10 @@ class Datamanager {
   static String mapplaceselect = "/Mapplaceselect";
 
   static String selectUniversity = "/SelectUniversity";
+  static String receivecar = "/Receivecar";
+  static String bookedmap = "/Bookedmap";
+  static String openkey = "/Openkey";
+  static String animatedContainerApp = "/AnimatedContainerApp";
   
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
@@ -277,6 +281,15 @@ class UseString {
   static String find = "FIND";
   static String booked = "Booked list";
   static String registercar = "Register list";
+  static String locationplace = "Location";
+  static String key = "Key";
+  static String motor = "Motorcycle";
+  static String notavailable = "Not Available";
+  static String available = "Available";
+  static String wait = "wait";
+  static String openmap = "Open Map location";
+  static String maploacation = "Map Location";
+  static String slotnumber = "Box Slot Number";
 }
 class Currency{
   static String thb = "THB";
