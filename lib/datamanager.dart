@@ -51,6 +51,7 @@ class Datamanager {
   static String bookedmap = "/Bookedmap";
   static String openkey = "/Openkey";
   static String animatedContainerApp = "/AnimatedContainerApp";
+  static String search = "/SearchPage";
   
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
@@ -276,6 +277,7 @@ class UseString {
   static String locationhint = "Location...";
   static String chooselo = "Please select a location.";
   static String chooseuni = "Please select a university.";
+  static String choosetimeslot = "Please select time.";
   static String chooseuniandlo = "Please select a university and location.";
   static String reset = "Reset";
   static String find = "FIND";
@@ -296,6 +298,7 @@ class UseString {
   static String rent1 = "rent 1 slot";
   static String rent2 = "rent 2 slot";
   static String rent3 = "rent 3 slot";
+  static String notimeforrent = "No Time For Rent.";
 }
 class Currency{
   static String thb = "THB";
@@ -304,6 +307,7 @@ class Currency{
 class Checkpolicy{
   static bool checkpolicy;
 }
+
 class ImageProfiles {
   static Uint8List profileUrl;
   static Uint8List drimotorcard;

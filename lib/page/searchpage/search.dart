@@ -27,6 +27,7 @@ class SearchPage extends StatefulWidget {
     '13.00 - 17.30',
   ];
   int i = 0;
+  DateTime now = DateTime.now();
   var colorselect1 = Colors.white;
   var colorselect2 = Colors.white;
   var colorselect3 = Colors.white;
@@ -40,6 +41,13 @@ class SearchPage extends StatefulWidget {
   bool slottime4 = true;
   bool slottime5 = true;
   bool slottime6 = true;
+  bool late1 = true;
+  bool late2 = true;
+  bool late3 = true;
+  bool late4 = true;
+  bool late5 = true;
+  bool late6 = true;
+  bool notimetoselect = true;
   bool noselect = true;
   double heightofalert = 340;
   @override
@@ -72,6 +80,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     widget.slottime5 = true;
     widget.slottime6 = true;
     widget.noselect = true;
+    widget.notimetoselect = true;
     widget.heightofalert = 340;
     super.initState();
   }
@@ -182,6 +191,26 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
             );
           });
     }
+    showalerttimeselect(BuildContext context) {
+      var data = MediaQuery.of(context);
+      return showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: new RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(20),
+              ),
+              // title: Text('place have same name.'),
+              content: Text(
+                UseString.choosetimeslot,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: data.textScaleFactor * 25,
+                    color: PickCarColor.colorFont1),
+              ),
+            );
+          });
+    }
 
     // slottime1(BuildContext context) {
     //   return StatefulBuilder(builder: (context, setState) {
@@ -223,337 +252,355 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   child: Column(
                     children: <Widget>[
                       Visibility(
-                        visible: widget.slottime1,
-                        child: Container(
-                          width: 200,
-                          child: RaisedButton(
-                            color: widget.colorselect1,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(18.0),
-                                side: BorderSide(color: PickCarColor.colormain)),
-                            onPressed: () {
-                              print(TimeSearch.time1);
-                              setState(() {
-                                TimeSearch.time1 = !TimeSearch.time1;
-                                if(SearchString.type == UseString.rent1){
-                                  if(TimeSearch.time1){
-                                    widget.slottime2 = false;
-                                    widget.slottime3 = false;
-                                    widget.slottime4 = false;
-                                    widget.slottime5 = false;
-                                    widget.slottime6 = false;
-                                    widget.heightofalert = 110;
-                                  }else{
-                                    widget.slottime2 = true;
-                                    widget.slottime3 = true;
-                                    widget.slottime4 = true;
-                                    widget.slottime5 = true;
-                                    widget.slottime6 = true;
-                                    widget.heightofalert = 340;
+                        visible: widget.late1,
+                        child: Visibility(
+                          visible: widget.slottime1,
+                          child: Container(
+                            width: 200,
+                            child: RaisedButton(
+                              color: widget.colorselect1,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                  side: BorderSide(color: PickCarColor.colormain)),
+                              onPressed: () {
+                                print(TimeSearch.time1);
+                                setState(() {
+                                  TimeSearch.time1 = !TimeSearch.time1;
+                                  if(SearchString.type == UseString.rent1){
+                                    if(TimeSearch.time1){
+                                      widget.slottime2 = false;
+                                      widget.slottime3 = false;
+                                      widget.slottime4 = false;
+                                      widget.slottime5 = false;
+                                      widget.slottime6 = false;
+                                      widget.heightofalert = 110;
+                                    }else{
+                                      widget.slottime2 = true;
+                                      widget.slottime3 = true;
+                                      widget.slottime4 = true;
+                                      widget.slottime5 = true;
+                                      widget.slottime6 = true;
+                                      widget.heightofalert = 340;
+                                    }
+                                    widget.noselect = !widget.noselect;
                                   }
-                                  widget.noselect = !widget.noselect;
-                                }
-                                if (TimeSearch.time1) {
-                                  widget.colorselect1 = Colors.green[400];
-                                } else {
-                                  widget.colorselect1 = Colors.white;
-                                }
-                              });
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.alarm),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  widget.timeselect[0],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: data.textScaleFactor * 22,
-                                      color: PickCarColor.colorFont1),
-                                ),
-                              ],
+                                  if (TimeSearch.time1) {
+                                    widget.colorselect1 = Colors.green[400];
+                                  } else {
+                                    widget.colorselect1 = Colors.white;
+                                  }
+                                });
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.alarm),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    widget.timeselect[0],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: data.textScaleFactor * 22,
+                                        color: PickCarColor.colorFont1),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                       Visibility(
-                        visible: widget.slottime2,
-                        child: Container(
-                          width: 200,
-                          child: RaisedButton(
-                            color: widget.colorselect2,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(18.0),
-                                side: BorderSide(color: PickCarColor.colormain)),
-                            onPressed: () {
-                              setState(() {
-                                TimeSearch.time2 = !TimeSearch.time2;
-                                if(SearchString.type == UseString.rent1){
-                                  if(TimeSearch.time2){
-                                    widget.slottime1 = false;
-                                    widget.slottime3 = false;
-                                    widget.slottime4 = false;
-                                    widget.slottime5 = false;
-                                    widget.slottime6 = false;
-                                    widget.heightofalert = 110;
-                                    widget.noselect = !widget.noselect;
-                                  }else{
-                                    widget.slottime1 = true;
-                                    widget.slottime3 = true;
-                                    widget.slottime4 = true;
-                                    widget.slottime5 = true;
-                                    widget.slottime6 = true;
-                                    widget.heightofalert = 340;
-                                    widget.noselect = !widget.noselect;
+                        visible: widget.late2,
+                        child: Visibility(
+                          visible: widget.slottime2,
+                          child: Container(
+                            width: 200,
+                            child: RaisedButton(
+                              color: widget.colorselect2,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                  side: BorderSide(color: PickCarColor.colormain)),
+                              onPressed: () {
+                                setState(() {
+                                  TimeSearch.time2 = !TimeSearch.time2;
+                                  if(SearchString.type == UseString.rent1){
+                                    if(TimeSearch.time2){
+                                      widget.slottime1 = false;
+                                      widget.slottime3 = false;
+                                      widget.slottime4 = false;
+                                      widget.slottime5 = false;
+                                      widget.slottime6 = false;
+                                      widget.heightofalert = 110;
+                                      widget.noselect = !widget.noselect;
+                                    }else{
+                                      widget.slottime1 = true;
+                                      widget.slottime3 = true;
+                                      widget.slottime4 = true;
+                                      widget.slottime5 = true;
+                                      widget.slottime6 = true;
+                                      widget.heightofalert = 340;
+                                      widget.noselect = !widget.noselect;
+                                    }
                                   }
-                                }
-                                if (TimeSearch.time2) {
-                                  widget.colorselect2 = Colors.green[400];
-                                } else {
-                                  widget.colorselect2 = Colors.white;
-                                }
-                              });
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.alarm),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  widget.timeselect[1],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: data.textScaleFactor * 22,
-                                      color: PickCarColor.colorFont1),
-                                ),
-                              ],
+                                  if (TimeSearch.time2) {
+                                    widget.colorselect2 = Colors.green[400];
+                                  } else {
+                                    widget.colorselect2 = Colors.white;
+                                  }
+                                });
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.alarm),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    widget.timeselect[1],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: data.textScaleFactor * 22,
+                                        color: PickCarColor.colorFont1),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                       Visibility(
-                        visible: widget.slottime3,
-                        child: Container(
-                          width: 200,
-                          child: RaisedButton(
-                            color: widget.colorselect3,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(18.0),
-                                side: BorderSide(color: PickCarColor.colormain)),
-                            onPressed: () {
-                              setState(() {
-                                TimeSearch.time3 = !TimeSearch.time3;
-                                if(SearchString.type == UseString.rent1){
-                                  if(TimeSearch.time3){
-                                    widget.slottime2 = false;
-                                    widget.slottime1 = false;
-                                    widget.slottime4 = false;
-                                    widget.slottime5 = false;
-                                    widget.slottime6 = false;
-                                    widget.heightofalert = 110;
-                                    widget.noselect = !widget.noselect;
-                                  }else{
-                                    widget.slottime2 = true;
-                                    widget.slottime1 = true;
-                                    widget.slottime4 = true;
-                                    widget.slottime5 = true;
-                                    widget.slottime6 = true;
-                                    widget.heightofalert = 340;
-                                    widget.noselect = !widget.noselect;
+                        visible: widget.late3,
+                        child: Visibility(
+                          visible: widget.slottime3,
+                          child: Container(
+                            width: 200,
+                            child: RaisedButton(
+                              color: widget.colorselect3,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                  side: BorderSide(color: PickCarColor.colormain)),
+                              onPressed: () {
+                                setState(() {
+                                  TimeSearch.time3 = !TimeSearch.time3;
+                                  if(SearchString.type == UseString.rent1){
+                                    if(TimeSearch.time3){
+                                      widget.slottime2 = false;
+                                      widget.slottime1 = false;
+                                      widget.slottime4 = false;
+                                      widget.slottime5 = false;
+                                      widget.slottime6 = false;
+                                      widget.heightofalert = 110;
+                                      widget.noselect = !widget.noselect;
+                                    }else{
+                                      widget.slottime2 = true;
+                                      widget.slottime1 = true;
+                                      widget.slottime4 = true;
+                                      widget.slottime5 = true;
+                                      widget.slottime6 = true;
+                                      widget.heightofalert = 340;
+                                      widget.noselect = !widget.noselect;
+                                    }
                                   }
-                                }
-                                if (TimeSearch.time3) {
-                                  widget.colorselect3 = Colors.green[400];
-                                } else {
-                                  widget.colorselect3 = Colors.white;
-                                }
-                              });
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.alarm),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  widget.timeselect[2],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: data.textScaleFactor * 22,
-                                      color: PickCarColor.colorFont1),
-                                ),
-                              ],
+                                  if (TimeSearch.time3) {
+                                    widget.colorselect3 = Colors.green[400];
+                                  } else {
+                                    widget.colorselect3 = Colors.white;
+                                  }
+                                });
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.alarm),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    widget.timeselect[2],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: data.textScaleFactor * 22,
+                                        color: PickCarColor.colorFont1),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                       Visibility(
-                        visible: widget.slottime4,
-                        child: Container(
-                          width: 200,
-                          child: RaisedButton(
-                            color: widget.colorselect4,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(18.0),
-                                side: BorderSide(color: PickCarColor.colormain)),
-                            onPressed: () {
-                              setState(() {
-                                TimeSearch.time4 = !TimeSearch.time4;
-                                if(SearchString.type == UseString.rent1){
-                                  if(TimeSearch.time4){
-                                    widget.slottime2 = false;
-                                    widget.slottime3 = false;
-                                    widget.slottime1 = false;
-                                    widget.slottime5 = false;
-                                    widget.slottime6 = false;
-                                    widget.heightofalert = 110;
-                                    widget.noselect = !widget.noselect;
-                                  }else{
-                                    widget.slottime2 = true;
-                                    widget.slottime3 = true;
-                                    widget.slottime1 = true;
-                                    widget.slottime5 = true;
-                                    widget.slottime6 = true;
-                                    widget.heightofalert = 340;
-                                    widget.noselect = !widget.noselect;
+                        visible: widget.late4,
+                        child: Visibility(
+                          visible: widget.slottime4,
+                          child: Container(
+                            width: 200,
+                            child: RaisedButton(
+                              color: widget.colorselect4,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                  side: BorderSide(color: PickCarColor.colormain)),
+                              onPressed: () {
+                                setState(() {
+                                  TimeSearch.time4 = !TimeSearch.time4;
+                                  if(SearchString.type == UseString.rent1){
+                                    if(TimeSearch.time4){
+                                      widget.slottime2 = false;
+                                      widget.slottime3 = false;
+                                      widget.slottime1 = false;
+                                      widget.slottime5 = false;
+                                      widget.slottime6 = false;
+                                      widget.heightofalert = 110;
+                                      widget.noselect = !widget.noselect;
+                                    }else{
+                                      widget.slottime2 = true;
+                                      widget.slottime3 = true;
+                                      widget.slottime1 = true;
+                                      widget.slottime5 = true;
+                                      widget.slottime6 = true;
+                                      widget.heightofalert = 340;
+                                      widget.noselect = !widget.noselect;
+                                    }
                                   }
-                                }
-                                if (TimeSearch.time4) {
-                                  widget.colorselect4 = Colors.green[400];
-                                } else {
-                                  widget.colorselect4 = Colors.white;
-                                }
-                              });
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.alarm),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  widget.timeselect[3],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: data.textScaleFactor * 22,
-                                      color: PickCarColor.colorFont1),
-                                ),
-                              ],
+                                  if (TimeSearch.time4) {
+                                    widget.colorselect4 = Colors.green[400];
+                                  } else {
+                                    widget.colorselect4 = Colors.white;
+                                  }
+                                });
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.alarm),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    widget.timeselect[3],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: data.textScaleFactor * 22,
+                                        color: PickCarColor.colorFont1),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                       Visibility(
-                        visible: widget.slottime5,
-                        child: Container(
-                          width: 200,
-                          child: RaisedButton(
-                            color: widget.colorselect5,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(18.0),
-                                side: BorderSide(color: PickCarColor.colormain)),
-                            onPressed: () {
-                              setState(() {
-                                TimeSearch.time5 = !TimeSearch.time5;
-                                if(SearchString.type == UseString.rent1){
-                                  if(TimeSearch.time5){
-                                    widget.slottime2 = false;
-                                    widget.slottime3 = false;
-                                    widget.slottime4 = false;
-                                    widget.slottime1 = false;
-                                    widget.slottime6 = false;
-                                    widget.heightofalert = 110;
-                                    widget.noselect = !widget.noselect;
-                                  }else{
-                                    widget.slottime2 = true;
-                                    widget.slottime3 = true;
-                                    widget.slottime4 = true;
-                                    widget.slottime1 = true;
-                                    widget.slottime6 = true;
-                                    widget.heightofalert = 340;
-                                    widget.noselect = !widget.noselect;
+                        visible: widget.late5,
+                        child: Visibility(
+                          visible: widget.slottime5,
+                          child: Container(
+                            width: 200,
+                            child: RaisedButton(
+                              color: widget.colorselect5,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                  side: BorderSide(color: PickCarColor.colormain)),
+                              onPressed: () {
+                                setState(() {
+                                  TimeSearch.time5 = !TimeSearch.time5;
+                                  if(SearchString.type == UseString.rent1){
+                                    if(TimeSearch.time5){
+                                      widget.slottime2 = false;
+                                      widget.slottime3 = false;
+                                      widget.slottime4 = false;
+                                      widget.slottime1 = false;
+                                      widget.slottime6 = false;
+                                      widget.heightofalert = 110;
+                                      widget.noselect = !widget.noselect;
+                                    }else{
+                                      widget.slottime2 = true;
+                                      widget.slottime3 = true;
+                                      widget.slottime4 = true;
+                                      widget.slottime1 = true;
+                                      widget.slottime6 = true;
+                                      widget.heightofalert = 340;
+                                      widget.noselect = !widget.noselect;
+                                    }
                                   }
-                                }
-                                if (TimeSearch.time5) {
-                                  widget.colorselect5 = Colors.green[400];
-                                } else {
-                                  widget.colorselect5 = Colors.white;
-                                }
-                              });
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.alarm),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  widget.timeselect[4],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: data.textScaleFactor * 22,
-                                      color: PickCarColor.colorFont1),
-                                ),
-                              ],
+                                  if (TimeSearch.time5) {
+                                    widget.colorselect5 = Colors.green[400];
+                                  } else {
+                                    widget.colorselect5 = Colors.white;
+                                  }
+                                });
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.alarm),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    widget.timeselect[4],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: data.textScaleFactor * 22,
+                                        color: PickCarColor.colorFont1),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                       Visibility(
-                        visible: widget.slottime6,
-                        child: Container(
-                          width: 200,
-                          child: RaisedButton(
-                            color: widget.colorselect6,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(18.0),
-                                side: BorderSide(color: PickCarColor.colormain)),
-                            onPressed: () {
-                              setState(() {
-                                TimeSearch.time6 = !TimeSearch.time6;
-                                if(SearchString.type == UseString.rent1){
-                                  if(TimeSearch.time6){
-                                    widget.slottime2 = false;
-                                    widget.slottime3 = false;
-                                    widget.slottime4 = false;
-                                    widget.slottime5 = false;
-                                    widget.slottime1 = false;
-                                    widget.heightofalert = 110;
-                                    widget.noselect = !widget.noselect;
-                                  }else{
-                                    widget.slottime2 = true;
-                                    widget.slottime3 = true;
-                                    widget.slottime4 = true;
-                                    widget.slottime5 = true;
-                                    widget.slottime1 = true;
-                                    widget.heightofalert = 340;
-                                    widget.noselect = !widget.noselect;
+                        visible: widget.late6,
+                        child: Visibility(
+                          visible: widget.slottime6,
+                          child: Container(
+                            width: 200,
+                            child: RaisedButton(
+                              color: widget.colorselect6,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                  side: BorderSide(color: PickCarColor.colormain)),
+                              onPressed: () {
+                                setState(() {
+                                  TimeSearch.time6 = !TimeSearch.time6;
+                                  if(SearchString.type == UseString.rent1){
+                                    if(TimeSearch.time6){
+                                      widget.slottime2 = false;
+                                      widget.slottime3 = false;
+                                      widget.slottime4 = false;
+                                      widget.slottime5 = false;
+                                      widget.slottime1 = false;
+                                      widget.heightofalert = 110;
+                                      widget.noselect = !widget.noselect;
+                                    }else{
+                                      widget.slottime2 = true;
+                                      widget.slottime3 = true;
+                                      widget.slottime4 = true;
+                                      widget.slottime5 = true;
+                                      widget.slottime1 = true;
+                                      widget.heightofalert = 340;
+                                      widget.noselect = !widget.noselect;
+                                    }
                                   }
-                                }
-                                if (TimeSearch.time6) {
-                                  widget.colorselect6 = Colors.green[400];
-                                } else {
-                                  widget.colorselect6 = Colors.white;
-                                }
-                              });
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.alarm),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  widget.timeselect[5],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: data.textScaleFactor * 22,
-                                      color: PickCarColor.colorFont1),
-                                ),
-                              ],
+                                  if (TimeSearch.time6) {
+                                    widget.colorselect6 = Colors.green[400];
+                                  } else {
+                                    widget.colorselect6 = Colors.white;
+                                  }
+                                });
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.alarm),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    widget.timeselect[5],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: data.textScaleFactor * 22,
+                                        color: PickCarColor.colorFont1),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -563,44 +610,59 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                       //   child: Text("Gone"),
                         
                       // ),
-                      Container(
-                        width: 120,
-                        alignment: Alignment.center,
-                        child: RaisedButton(
-                          color: PickCarColor.colorbuttom,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(18.0),
-                              side: BorderSide(color: PickCarColor.colormain)),
-                          onPressed: () {
-                            setState(() {
-                              widget.colorselect1 = Colors.white;
-                              widget.colorselect2 = Colors.white;
-                              widget.colorselect3 = Colors.white;
-                              widget.colorselect4 = Colors.white;
-                              widget.colorselect5 = Colors.white;
-                              widget.colorselect6 = Colors.white;
-                              TimeSearch.time1 = false;
-                              TimeSearch.time2 = false;
-                              TimeSearch.time3 = false;
-                              TimeSearch.time4 = false;
-                              TimeSearch.time5 = false;
-                              TimeSearch.time6 = false;
-                              widget.slottime1 = true;
-                              widget.slottime2 = true;
-                              widget.slottime3 = true;
-                              widget.slottime4 = true;
-                              widget.slottime5 = true;
-                              widget.slottime6 = true;
-                              widget.noselect = true;
-                              widget.heightofalert = 340;
-                            });
-                          },
+                      Visibility(
+                        visible: !widget.notimetoselect,
+                        child: Container(
                           child: Text(
-                            UseString.reset,
+                            UseString.notimeforrent,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: data.textScaleFactor * 22,
-                                color: Colors.white),
+                                fontSize: data.textScaleFactor * 25,
+                                color: PickCarColor.colorFont1),
+                          ),
+                        ),
+                      ),
+                      Visibility(
+                        visible: widget.notimetoselect,
+                        child: Container(
+                          width: 120,
+                          alignment: Alignment.center,
+                          child: RaisedButton(
+                            color: PickCarColor.colorbuttom,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(18.0),
+                                side: BorderSide(color: PickCarColor.colormain)),
+                            onPressed: () {
+                              setState(() {
+                                widget.colorselect1 = Colors.white;
+                                widget.colorselect2 = Colors.white;
+                                widget.colorselect3 = Colors.white;
+                                widget.colorselect4 = Colors.white;
+                                widget.colorselect5 = Colors.white;
+                                widget.colorselect6 = Colors.white;
+                                TimeSearch.time1 = false;
+                                TimeSearch.time2 = false;
+                                TimeSearch.time3 = false;
+                                TimeSearch.time4 = false;
+                                TimeSearch.time5 = false;
+                                TimeSearch.time6 = false;
+                                widget.slottime1 = true;
+                                widget.slottime2 = true;
+                                widget.slottime3 = true;
+                                widget.slottime4 = true;
+                                widget.slottime5 = true;
+                                widget.slottime6 = true;
+                                widget.noselect = true;
+                                widget.heightofalert = 340;
+                              });
+                            },
+                            child: Text(
+                              UseString.reset,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: data.textScaleFactor * 22,
+                                  color: Colors.white),
+                            ),
                           ),
                         ),
                       ),
@@ -653,261 +715,276 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   child: Column(
                     children: <Widget>[
                       Visibility(
-                        visible: widget.slottime1,
-                        child: Container(
-                          width: 200,
-                          child: RaisedButton(
-                            color: widget.colorselect1,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(18.0),
-                                side: BorderSide(color: PickCarColor.colormain)),
-                            onPressed: () {
-                              print(TimeSearch.time1);
-                              setState(() {
-                                TimeSearch.time1 = !TimeSearch.time1;
-                                  if(TimeSearch.time1){
-                                    widget.slottime2 = false;
-                                    widget.slottime3 = false;
-                                    widget.slottime4 = false;
-                                    widget.slottime5 = false;
-                                    widget.heightofalert = 110;
-                                  }else{
-                                    widget.slottime2 = true;
-                                    widget.slottime3 = true;
-                                    widget.slottime4 = true;
-                                    widget.slottime5 = true;
-                                    widget.heightofalert = 340;
+                        visible: widget.late1,
+                        child: Visibility(
+                          visible: widget.slottime1,
+                          child: Container(
+                            width: 200,
+                            child: RaisedButton(
+                              color: widget.colorselect1,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                  side: BorderSide(color: PickCarColor.colormain)),
+                              onPressed: () {
+                                print(TimeSearch.time1);
+                                setState(() {
+                                  TimeSearch.time1 = !TimeSearch.time1;
+                                    if(TimeSearch.time1){
+                                      widget.slottime2 = false;
+                                      widget.slottime3 = false;
+                                      widget.slottime4 = false;
+                                      widget.slottime5 = false;
+                                      widget.heightofalert = 110;
+                                    }else{
+                                      widget.slottime2 = true;
+                                      widget.slottime3 = true;
+                                      widget.slottime4 = true;
+                                      widget.slottime5 = true;
+                                      widget.heightofalert = 340;
+                                    }
+                                    widget.noselect = !widget.noselect;
+                                  if (TimeSearch.time1) {
+                                    widget.colorselect1 = Colors.green[400];
+                                  } else {
+                                    widget.colorselect1 = Colors.white;
                                   }
-                                  widget.noselect = !widget.noselect;
-                                if (TimeSearch.time1) {
-                                  widget.colorselect1 = Colors.green[400];
-                                } else {
-                                  widget.colorselect1 = Colors.white;
-                                }
-                              });
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.alarm),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  widget.timeselect2[0],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: data.textScaleFactor * 22,
-                                      color: PickCarColor.colorFont1),
-                                ),
-                              ],
+                                });
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.alarm),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    widget.timeselect2[0],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: data.textScaleFactor * 22,
+                                        color: PickCarColor.colorFont1),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                       Visibility(
-                        visible: widget.slottime2,
-                        child: Container(
-                          width: 200,
-                          child: RaisedButton(
-                            color: widget.colorselect2,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(18.0),
-                                side: BorderSide(color: PickCarColor.colormain)),
-                            onPressed: () {
-                              setState(() {
-                                TimeSearch.time2 = !TimeSearch.time2;
-                                  if(TimeSearch.time2){
-                                    widget.slottime1 = false;
-                                    widget.slottime3 = false;
-                                    widget.slottime4 = false;
-                                    widget.slottime5 = false;
-                                    widget.heightofalert = 110;
-                                    widget.noselect = !widget.noselect;
-                                  }else{
-                                    widget.slottime1 = true;
-                                    widget.slottime3 = true;
-                                    widget.slottime4 = true;
-                                    widget.slottime5 = true;
-                                    widget.heightofalert = 340;
-                                    widget.noselect = !widget.noselect;
-                                }
-                                if (TimeSearch.time2) {
-                                  widget.colorselect2 = Colors.green[400];
-                                } else {
-                                  widget.colorselect2 = Colors.white;
-                                }
-                              });
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.alarm),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  widget.timeselect2[1],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: data.textScaleFactor * 22,
-                                      color: PickCarColor.colorFont1),
-                                ),
-                              ],
+                        visible: widget.late2,
+                        child: Visibility(
+                          visible: widget.slottime2,
+                          child: Container(
+                            width: 200,
+                            child: RaisedButton(
+                              color: widget.colorselect2,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                  side: BorderSide(color: PickCarColor.colormain)),
+                              onPressed: () {
+                                setState(() {
+                                  TimeSearch.time2 = !TimeSearch.time2;
+                                    if(TimeSearch.time2){
+                                      widget.slottime1 = false;
+                                      widget.slottime3 = false;
+                                      widget.slottime4 = false;
+                                      widget.slottime5 = false;
+                                      widget.heightofalert = 110;
+                                      widget.noselect = !widget.noselect;
+                                    }else{
+                                      widget.slottime1 = true;
+                                      widget.slottime3 = true;
+                                      widget.slottime4 = true;
+                                      widget.slottime5 = true;
+                                      widget.heightofalert = 340;
+                                      widget.noselect = !widget.noselect;
+                                  }
+                                  if (TimeSearch.time2) {
+                                    widget.colorselect2 = Colors.green[400];
+                                  } else {
+                                    widget.colorselect2 = Colors.white;
+                                  }
+                                });
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.alarm),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    widget.timeselect2[1],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: data.textScaleFactor * 22,
+                                        color: PickCarColor.colorFont1),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                       Visibility(
-                        visible: widget.slottime3,
-                        child: Container(
-                          width: 200,
-                          child: RaisedButton(
-                            color: widget.colorselect3,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(18.0),
-                                side: BorderSide(color: PickCarColor.colormain)),
-                            onPressed: () {
-                              setState(() {
-                                TimeSearch.time3 = !TimeSearch.time3;
-                                  if(TimeSearch.time3){
-                                    widget.slottime2 = false;
-                                    widget.slottime1 = false;
-                                    widget.slottime4 = false;
-                                    widget.slottime5 = false;
-                                    widget.heightofalert = 110;
-                                    widget.noselect = !widget.noselect;
-                                  }else{
-                                    widget.slottime2 = true;
-                                    widget.slottime1 = true;
-                                    widget.slottime4 = true;
-                                    widget.slottime5 = true;
-                                    widget.heightofalert = 340;
-                                    widget.noselect = !widget.noselect;
+                        visible: widget.late3,
+                        child: Visibility(
+                          visible: widget.slottime3,
+                          child: Container(
+                            width: 200,
+                            child: RaisedButton(
+                              color: widget.colorselect3,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                  side: BorderSide(color: PickCarColor.colormain)),
+                              onPressed: () {
+                                setState(() {
+                                  TimeSearch.time3 = !TimeSearch.time3;
+                                    if(TimeSearch.time3){
+                                      widget.slottime2 = false;
+                                      widget.slottime1 = false;
+                                      widget.slottime4 = false;
+                                      widget.slottime5 = false;
+                                      widget.heightofalert = 110;
+                                      widget.noselect = !widget.noselect;
+                                    }else{
+                                      widget.slottime2 = true;
+                                      widget.slottime1 = true;
+                                      widget.slottime4 = true;
+                                      widget.slottime5 = true;
+                                      widget.heightofalert = 340;
+                                      widget.noselect = !widget.noselect;
+                                    }
+                                  if (TimeSearch.time3) {
+                                    widget.colorselect3 = Colors.green[400];
+                                  } else {
+                                    widget.colorselect3 = Colors.white;
                                   }
-                                if (TimeSearch.time3) {
-                                  widget.colorselect3 = Colors.green[400];
-                                } else {
-                                  widget.colorselect3 = Colors.white;
-                                }
-                              });
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.alarm),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  widget.timeselect2[2],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: data.textScaleFactor * 22,
-                                      color: PickCarColor.colorFont1),
-                                ),
-                              ],
+                                });
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.alarm),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    widget.timeselect2[2],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: data.textScaleFactor * 22,
+                                        color: PickCarColor.colorFont1),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                       Visibility(
-                        visible: widget.slottime4,
-                        child: Container(
-                          width: 200,
-                          child: RaisedButton(
-                            color: widget.colorselect4,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(18.0),
-                                side: BorderSide(color: PickCarColor.colormain)),
-                            onPressed: () {
-                              setState(() {
-                                TimeSearch.time4 = !TimeSearch.time4;
-                                  if(TimeSearch.time4){
-                                    widget.slottime2 = false;
-                                    widget.slottime3 = false;
-                                    widget.slottime1 = false;
-                                    widget.slottime5 = false;
-                                    widget.heightofalert = 110;
-                                    widget.noselect = !widget.noselect;
-                                  }else{
-                                    widget.slottime2 = true;
-                                    widget.slottime3 = true;
-                                    widget.slottime1 = true;
-                                    widget.slottime5 = true;
-                                    widget.heightofalert = 340;
-                                    widget.noselect = !widget.noselect;
+                        visible: widget.late4,
+                        child: Visibility(
+                          visible: widget.slottime4,
+                          child: Container(
+                            width: 200,
+                            child: RaisedButton(
+                              color: widget.colorselect4,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                  side: BorderSide(color: PickCarColor.colormain)),
+                              onPressed: () {
+                                setState(() {
+                                  TimeSearch.time4 = !TimeSearch.time4;
+                                    if(TimeSearch.time4){
+                                      widget.slottime2 = false;
+                                      widget.slottime3 = false;
+                                      widget.slottime1 = false;
+                                      widget.slottime5 = false;
+                                      widget.heightofalert = 110;
+                                      widget.noselect = !widget.noselect;
+                                    }else{
+                                      widget.slottime2 = true;
+                                      widget.slottime3 = true;
+                                      widget.slottime1 = true;
+                                      widget.slottime5 = true;
+                                      widget.heightofalert = 340;
+                                      widget.noselect = !widget.noselect;
+                                    }
+                                  if (TimeSearch.time4) {
+                                    widget.colorselect4 = Colors.green[400];
+                                  } else {
+                                    widget.colorselect4 = Colors.white;
                                   }
-                                if (TimeSearch.time4) {
-                                  widget.colorselect4 = Colors.green[400];
-                                } else {
-                                  widget.colorselect4 = Colors.white;
-                                }
-                              });
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.alarm),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  widget.timeselect2[3],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: data.textScaleFactor * 22,
-                                      color: PickCarColor.colorFont1),
-                                ),
-                              ],
+                                });
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.alarm),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    widget.timeselect2[3],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: data.textScaleFactor * 22,
+                                        color: PickCarColor.colorFont1),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                       Visibility(
-                        visible: widget.slottime5,
-                        child: Container(
-                          width: 200,
-                          child: RaisedButton(
-                            color: widget.colorselect5,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(18.0),
-                                side: BorderSide(color: PickCarColor.colormain)),
-                            onPressed: () {
-                              setState(() {
-                                TimeSearch.time5 = !TimeSearch.time5;
-                                  if(TimeSearch.time5){
-                                    widget.slottime2 = false;
-                                    widget.slottime3 = false;
-                                    widget.slottime4 = false;
-                                    widget.slottime1 = false;
-                                    widget.heightofalert = 110;
-                                    widget.noselect = !widget.noselect;
-                                  }else{
-                                    widget.slottime2 = true;
-                                    widget.slottime3 = true;
-                                    widget.slottime4 = true;
-                                    widget.slottime1 = true;
-                                    widget.heightofalert = 340;
-                                    widget.noselect = !widget.noselect;
+                        visible: widget.late5,
+                        child: Visibility(
+                          visible: widget.slottime5,
+                          child: Container(
+                            width: 200,
+                            child: RaisedButton(
+                              color: widget.colorselect5,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                  side: BorderSide(color: PickCarColor.colormain)),
+                              onPressed: () {
+                                setState(() {
+                                  TimeSearch.time5 = !TimeSearch.time5;
+                                    if(TimeSearch.time5){
+                                      widget.slottime2 = false;
+                                      widget.slottime3 = false;
+                                      widget.slottime4 = false;
+                                      widget.slottime1 = false;
+                                      widget.heightofalert = 110;
+                                      widget.noselect = !widget.noselect;
+                                    }else{
+                                      widget.slottime2 = true;
+                                      widget.slottime3 = true;
+                                      widget.slottime4 = true;
+                                      widget.slottime1 = true;
+                                      widget.heightofalert = 340;
+                                      widget.noselect = !widget.noselect;
+                                    }
+                                  if (TimeSearch.time5) {
+                                    widget.colorselect5 = Colors.green[400];
+                                  } else {
+                                    widget.colorselect5 = Colors.white;
                                   }
-                                if (TimeSearch.time5) {
-                                  widget.colorselect5 = Colors.green[400];
-                                } else {
-                                  widget.colorselect5 = Colors.white;
-                                }
-                              });
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.alarm),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  widget.timeselect2[4],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: data.textScaleFactor * 22,
-                                      color: PickCarColor.colorFont1),
-                                ),
-                              ],
+                                });
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.alarm),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    widget.timeselect2[4],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: data.textScaleFactor * 22,
+                                        color: PickCarColor.colorFont1),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -917,44 +994,59 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                       //   child: Text("Gone"),
                         
                       // ),
-                      Container(
-                        width: 120,
-                        alignment: Alignment.center,
-                        child: RaisedButton(
-                          color: PickCarColor.colorbuttom,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(18.0),
-                              side: BorderSide(color: PickCarColor.colormain)),
-                          onPressed: () {
-                            setState(() {
-                              widget.colorselect1 = Colors.white;
-                              widget.colorselect2 = Colors.white;
-                              widget.colorselect3 = Colors.white;
-                              widget.colorselect4 = Colors.white;
-                              widget.colorselect5 = Colors.white;
-                              widget.colorselect6 = Colors.white;
-                              TimeSearch.time1 = false;
-                              TimeSearch.time2 = false;
-                              TimeSearch.time3 = false;
-                              TimeSearch.time4 = false;
-                              TimeSearch.time5 = false;
-                              TimeSearch.time6 = false;
-                              widget.slottime1 = true;
-                              widget.slottime2 = true;
-                              widget.slottime3 = true;
-                              widget.slottime4 = true;
-                              widget.slottime5 = true;
-                              widget.slottime6 = true;
-                              widget.noselect = true;
-                              widget.heightofalert = 340;
-                            });
-                          },
+                      Visibility(
+                        visible: !widget.notimetoselect,
+                        child: Container(
                           child: Text(
-                            UseString.reset,
+                            UseString.notimeforrent,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: data.textScaleFactor * 22,
-                                color: Colors.white),
+                                fontSize: data.textScaleFactor * 25,
+                                color: PickCarColor.colorFont1),
+                          ),
+                        ),
+                      ),
+                      Visibility(
+                        visible: widget.notimetoselect,
+                        child: Container(
+                          width: 120,
+                          alignment: Alignment.center,
+                          child: RaisedButton(
+                            color: PickCarColor.colorbuttom,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(18.0),
+                                side: BorderSide(color: PickCarColor.colormain)),
+                            onPressed: () {
+                              setState(() {
+                                widget.colorselect1 = Colors.white;
+                                widget.colorselect2 = Colors.white;
+                                widget.colorselect3 = Colors.white;
+                                widget.colorselect4 = Colors.white;
+                                widget.colorselect5 = Colors.white;
+                                widget.colorselect6 = Colors.white;
+                                TimeSearch.time1 = false;
+                                TimeSearch.time2 = false;
+                                TimeSearch.time3 = false;
+                                TimeSearch.time4 = false;
+                                TimeSearch.time5 = false;
+                                TimeSearch.time6 = false;
+                                widget.slottime1 = true;
+                                widget.slottime2 = true;
+                                widget.slottime3 = true;
+                                widget.slottime4 = true;
+                                widget.slottime5 = true;
+                                widget.slottime6 = true;
+                                widget.noselect = true;
+                                widget.heightofalert = 340;
+                              });
+                            },
+                            child: Text(
+                              UseString.reset,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: data.textScaleFactor * 22,
+                                  color: Colors.white),
+                            ),
                           ),
                         ),
                       ),
@@ -1007,243 +1099,270 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   child: Column(
                     children: <Widget>[
                       Visibility(
-                        visible: widget.slottime1,
-                        child: Container(
-                          width: 200,
-                          child: RaisedButton(
-                            color: widget.colorselect1,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(18.0),
-                                side: BorderSide(color: PickCarColor.colormain)),
-                            onPressed: () {
-                              print(TimeSearch.time1);
-                              setState(() {
-                                TimeSearch.time1 = !TimeSearch.time1;
-                                  if(TimeSearch.time1){
-                                    widget.slottime2 = false;
-                                    widget.slottime3 = false;
-                                    widget.slottime4 = false;
-                                    widget.heightofalert = 110;
-                                  }else{
-                                    widget.slottime2 = true;
-                                    widget.slottime3 = true;
-                                    widget.slottime4 = true;
-                                    widget.heightofalert = 340;
+                        visible: widget.late1,
+                        child: Visibility(
+                          visible: widget.slottime1,
+                          child: Container(
+                            width: 200,
+                            child: RaisedButton(
+                              color: widget.colorselect1,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                  side: BorderSide(color: PickCarColor.colormain)),
+                              onPressed: () {
+                                print(TimeSearch.time1);
+                                setState(() {
+                                  TimeSearch.time1 = !TimeSearch.time1;
+                                    if(TimeSearch.time1){
+                                      widget.slottime2 = false;
+                                      widget.slottime3 = false;
+                                      widget.slottime4 = false;
+                                      widget.heightofalert = 110;
+                                    }else{
+                                      widget.slottime2 = true;
+                                      widget.slottime3 = true;
+                                      widget.slottime4 = true;
+                                      widget.heightofalert = 340;
+                                    }
+                                    widget.noselect = !widget.noselect;
+                                  if (TimeSearch.time1) {
+                                    widget.colorselect1 = Colors.green[400];
+                                  } else {
+                                    widget.colorselect1 = Colors.white;
                                   }
-                                  widget.noselect = !widget.noselect;
-                                if (TimeSearch.time1) {
-                                  widget.colorselect1 = Colors.green[400];
-                                } else {
-                                  widget.colorselect1 = Colors.white;
-                                }
-                              });
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.alarm),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  widget.timeselect3[0],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: data.textScaleFactor * 22,
-                                      color: PickCarColor.colorFont1),
-                                ),
-                              ],
+                                });
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.alarm),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    widget.timeselect3[0],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: data.textScaleFactor * 22,
+                                        color: PickCarColor.colorFont1),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                       Visibility(
-                        visible: widget.slottime2,
-                        child: Container(
-                          width: 200,
-                          child: RaisedButton(
-                            color: widget.colorselect2,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(18.0),
-                                side: BorderSide(color: PickCarColor.colormain)),
-                            onPressed: () {
-                              setState(() {
-                                TimeSearch.time2 = !TimeSearch.time2;
-                                  if(TimeSearch.time2){
-                                    widget.slottime1 = false;
-                                    widget.slottime3 = false;
-                                    widget.slottime4 = false;
-                                    widget.heightofalert = 110;
-                                    widget.noselect = !widget.noselect;
-                                  }else{
-                                    widget.slottime1 = true;
-                                    widget.slottime3 = true;
-                                    widget.slottime4 = true;
-                                    widget.heightofalert = 340;
-                                    widget.noselect = !widget.noselect;
-                                }
-                                if (TimeSearch.time2) {
-                                  widget.colorselect2 = Colors.green[400];
-                                } else {
-                                  widget.colorselect2 = Colors.white;
-                                }
-                              });
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.alarm),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  widget.timeselect3[1],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: data.textScaleFactor * 22,
-                                      color: PickCarColor.colorFont1),
-                                ),
-                              ],
+                        visible: widget.late2,
+                        child: Visibility(
+                          visible: widget.slottime2,
+                          child: Container(
+                            width: 200,
+                            child: RaisedButton(
+                              color: widget.colorselect2,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                  side: BorderSide(color: PickCarColor.colormain)),
+                              onPressed: () {
+                                setState(() {
+                                  TimeSearch.time2 = !TimeSearch.time2;
+                                    if(TimeSearch.time2){
+                                      widget.slottime1 = false;
+                                      widget.slottime3 = false;
+                                      widget.slottime4 = false;
+                                      widget.heightofalert = 110;
+                                      widget.noselect = !widget.noselect;
+                                    }else{
+                                      widget.slottime1 = true;
+                                      widget.slottime3 = true;
+                                      widget.slottime4 = true;
+                                      widget.heightofalert = 340;
+                                      widget.noselect = !widget.noselect;
+                                  }
+                                  if (TimeSearch.time2) {
+                                    widget.colorselect2 = Colors.green[400];
+                                  } else {
+                                    widget.colorselect2 = Colors.white;
+                                  }
+                                });
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.alarm),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    widget.timeselect3[1],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: data.textScaleFactor * 22,
+                                        color: PickCarColor.colorFont1),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                       Visibility(
-                        visible: widget.slottime3,
-                        child: Container(
-                          width: 200,
-                          child: RaisedButton(
-                            color: widget.colorselect3,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(18.0),
-                                side: BorderSide(color: PickCarColor.colormain)),
-                            onPressed: () {
-                              setState(() {
-                                TimeSearch.time3 = !TimeSearch.time3;
-                                  if(TimeSearch.time3){
-                                    widget.slottime2 = false;
-                                    widget.slottime1 = false;
-                                    widget.slottime4 = false;
-                                    widget.heightofalert = 110;
-                                    widget.noselect = !widget.noselect;
-                                  }else{
-                                    widget.slottime2 = true;
-                                    widget.slottime1 = true;
-                                    widget.slottime4 = true;
-                                    widget.heightofalert = 340;
-                                    widget.noselect = !widget.noselect;
+                        visible: widget.late3,
+                        child: Visibility(
+                          visible: widget.slottime3,
+                          child: Container(
+                            width: 200,
+                            child: RaisedButton(
+                              color: widget.colorselect3,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                  side: BorderSide(color: PickCarColor.colormain)),
+                              onPressed: () {
+                                setState(() {
+                                  TimeSearch.time3 = !TimeSearch.time3;
+                                    if(TimeSearch.time3){
+                                      widget.slottime2 = false;
+                                      widget.slottime1 = false;
+                                      widget.slottime4 = false;
+                                      widget.heightofalert = 110;
+                                      widget.noselect = !widget.noselect;
+                                    }else{
+                                      widget.slottime2 = true;
+                                      widget.slottime1 = true;
+                                      widget.slottime4 = true;
+                                      widget.heightofalert = 340;
+                                      widget.noselect = !widget.noselect;
+                                    }
+                                  if (TimeSearch.time3) {
+                                    widget.colorselect3 = Colors.green[400];
+                                  } else {
+                                    widget.colorselect3 = Colors.white;
                                   }
-                                if (TimeSearch.time3) {
-                                  widget.colorselect3 = Colors.green[400];
-                                } else {
-                                  widget.colorselect3 = Colors.white;
-                                }
-                              });
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.alarm),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  widget.timeselect3[2],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: data.textScaleFactor * 22,
-                                      color: PickCarColor.colorFont1),
-                                ),
-                              ],
+                                });
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.alarm),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    widget.timeselect3[2],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: data.textScaleFactor * 22,
+                                        color: PickCarColor.colorFont1),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                       Visibility(
-                        visible: widget.slottime4,
-                        child: Container(
-                          width: 200,
-                          child: RaisedButton(
-                            color: widget.colorselect4,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(18.0),
-                                side: BorderSide(color: PickCarColor.colormain)),
-                            onPressed: () {
-                              setState(() {
-                                TimeSearch.time4 = !TimeSearch.time4;
-                                  if(TimeSearch.time4){
-                                    widget.slottime2 = false;
-                                    widget.slottime3 = false;
-                                    widget.slottime1 = false;
-                                    widget.heightofalert = 110;
-                                    widget.noselect = !widget.noselect;
-                                  }else{
-                                    widget.slottime2 = true;
-                                    widget.slottime3 = true;
-                                    widget.slottime1 = true;
-                                    widget.heightofalert = 340;
-                                    widget.noselect = !widget.noselect;
+                        visible: widget.late4,
+                        child: Visibility(
+                          visible: widget.slottime4,
+                          child: Container(
+                            width: 200,
+                            child: RaisedButton(
+                              color: widget.colorselect4,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                  side: BorderSide(color: PickCarColor.colormain)),
+                              onPressed: () {
+                                setState(() {
+                                  TimeSearch.time4 = !TimeSearch.time4;
+                                    if(TimeSearch.time4){
+                                      widget.slottime2 = false;
+                                      widget.slottime3 = false;
+                                      widget.slottime1 = false;
+                                      widget.heightofalert = 110;
+                                      widget.noselect = !widget.noselect;
+                                    }else{
+                                      widget.slottime2 = true;
+                                      widget.slottime3 = true;
+                                      widget.slottime1 = true;
+                                      widget.heightofalert = 340;
+                                      widget.noselect = !widget.noselect;
+                                    }
+                                  if (TimeSearch.time4) {
+                                    widget.colorselect4 = Colors.green[400];
+                                  } else {
+                                    widget.colorselect4 = Colors.white;
                                   }
-                                if (TimeSearch.time4) {
-                                  widget.colorselect4 = Colors.green[400];
-                                } else {
-                                  widget.colorselect4 = Colors.white;
-                                }
-                              });
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.alarm),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  widget.timeselect3[3],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: data.textScaleFactor * 22,
-                                      color: PickCarColor.colorFont1),
-                                ),
-                              ],
+                                });
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.alarm),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    widget.timeselect3[3],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: data.textScaleFactor * 22,
+                                        color: PickCarColor.colorFont1),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
-                      Container(
-                        width: 120,
-                        alignment: Alignment.center,
-                        child: RaisedButton(
-                          color: PickCarColor.colorbuttom,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(18.0),
-                              side: BorderSide(color: PickCarColor.colormain)),
-                          onPressed: () {
-                            setState(() {
-                              widget.colorselect1 = Colors.white;
-                              widget.colorselect2 = Colors.white;
-                              widget.colorselect3 = Colors.white;
-                              widget.colorselect4 = Colors.white;
-                              widget.colorselect5 = Colors.white;
-                              widget.colorselect6 = Colors.white;
-                              TimeSearch.time1 = false;
-                              TimeSearch.time2 = false;
-                              TimeSearch.time3 = false;
-                              TimeSearch.time4 = false;
-                              TimeSearch.time5 = false;
-                              TimeSearch.time6 = false;
-                              widget.slottime1 = true;
-                              widget.slottime2 = true;
-                              widget.slottime3 = true;
-                              widget.slottime4 = true;
-                              widget.slottime5 = true;
-                              widget.slottime6 = true;
-                              widget.noselect = true;
-                              widget.heightofalert = 340;
-                            });
-                          },
+                      Visibility(
+                        visible: !widget.notimetoselect,
+                        child: Container(
                           child: Text(
-                            UseString.reset,
+                            UseString.notimeforrent,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: data.textScaleFactor * 22,
-                                color: Colors.white),
+                                fontSize: data.textScaleFactor * 25,
+                                color: PickCarColor.colorFont1),
+                          ),
+                        ),
+                      ),
+                      Visibility(
+                        visible: widget.notimetoselect,
+                        child: Container(
+                          width: 120,
+                          alignment: Alignment.center,
+                          child: RaisedButton(
+                            color: PickCarColor.colorbuttom,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(18.0),
+                                side: BorderSide(color: PickCarColor.colormain)),
+                            onPressed: () {
+                              setState(() {
+                                widget.colorselect1 = Colors.white;
+                                widget.colorselect2 = Colors.white;
+                                widget.colorselect3 = Colors.white;
+                                widget.colorselect4 = Colors.white;
+                                widget.colorselect5 = Colors.white;
+                                widget.colorselect6 = Colors.white;
+                                TimeSearch.time1 = false;
+                                TimeSearch.time2 = false;
+                                TimeSearch.time3 = false;
+                                TimeSearch.time4 = false;
+                                TimeSearch.time5 = false;
+                                TimeSearch.time6 = false;
+                                widget.slottime1 = true;
+                                widget.slottime2 = true;
+                                widget.slottime3 = true;
+                                widget.slottime4 = true;
+                                widget.slottime5 = true;
+                                widget.slottime6 = true;
+                                widget.noselect = true;
+                                widget.heightofalert = 340;
+                              });
+                            },
+                            child: Text(
+                              UseString.reset,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: data.textScaleFactor * 22,
+                                  color: Colors.white),
+                            ),
                           ),
                         ),
                       ),
@@ -1563,6 +1682,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                           setState(() {
                             if (data != null) {
                               TimeSearch.today = data;
+                              
                             }
                           });
                         });
@@ -1653,6 +1773,69 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                             // borderRadius: new BorderRadius.circular(12.0),
                             side: BorderSide(color: Colors.black)),
                         onPressed: () {
+                          var count =0;
+                          widget.now = DateTime.now();
+                          print(TimeSearch.today.day);
+                          print(widget.now.day);
+                          if(TimeSearch.today.day == widget.now.day){
+                            print((widget.now.hour+(widget.now.minute/100)));
+                            if(widget.now.hour>8 ){
+                              widget.late1 = false;
+                              widget.heightofalert = 300;
+                              count++;
+                            }else{
+                              widget.late1 = true;
+                            }
+                            if((widget.now.hour+(widget.now.minute/100))>9.30){
+                              widget.late2 = false;
+                              widget.heightofalert = 260;
+                              count++;
+                            }else{
+                              widget.late2 = true;
+                            }
+                            if(widget.now.hour>11 ){
+                              widget.late3 = false;
+                              widget.heightofalert = 220;
+                              count++;
+                            }else{
+                              widget.late3 = true;
+                            }
+                            if(widget.now.hour>13 ){
+                              widget.late4 = false;
+                              widget.heightofalert = 180;
+                              count++;
+                            }else{
+                              widget.late4 = true;
+                            }
+                            if((widget.now.hour+(widget.now.minute/100))>14.30){
+                              widget.late5 = false;
+                              widget.heightofalert = 140;
+                              count++;
+                            }else{
+                              widget.late5 = true;
+                            }
+                            if(widget.now.hour>16 ){
+                              widget.late6 = false;
+                              widget.heightofalert = 100;
+                              count++;
+                            }else{
+                              widget.late6 = true;
+                            }
+                          }else{
+                            widget.late1 = true;
+                            widget.late2 = true;
+                            widget.late3 = true;
+                            widget.late4 = true;
+                            widget.late5 = true;
+                            widget.late6 = true;
+                            widget.heightofalert = 340;
+                          }
+                          if(count == 6){
+                            widget.notimetoselect = false;
+                            widget.heightofalert = 50;
+                          }else{
+                            widget.notimetoselect = true; 
+                          }
                           if(SearchString.type == UseString.rent1){
                             selecttime(context);
                           }else if(SearchString.type == UseString.rent2){
@@ -1692,14 +1875,18 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   // side: BorderSide(color: PickCarColor.colormain)
                 ),
                 onPressed: () {
-                  if (SearchString.location != UseString.locationhint &&
+                  if(TimeSearch.time1 || TimeSearch.time2 ||TimeSearch.time3 ||TimeSearch.time4 ||TimeSearch.time5 || TimeSearch.time6){
+                    if (SearchString.location != UseString.locationhint &&
                       SearchString.university != UseString.universityhint) {
-                    Navigator.of(context).pushNamed(Datamanager.listcar);
-                  } else if (SearchString.location == UseString.locationhint &&
+                      Navigator.of(context).pushNamed(Datamanager.listcar);
+                    } else if (SearchString.location == UseString.locationhint &&
                       SearchString.university != UseString.universityhint) {
-                    showalertlo(context);
-                  } else {
-                    showalertall(context);
+                      showalertlo(context);
+                    } else {
+                      showalertall(context);
+                    }
+                  }else{
+                    showalerttimeselect(context);
                   }
                 },
                 child: Container(

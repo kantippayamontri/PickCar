@@ -24,8 +24,8 @@ class CardRental extends StatelessWidget {
       onTap: tap,
       child: Container(
         padding: EdgeInsets.all(15),
-        height: height * 0.3,
-        width: width * 0.9,
+        height: height * 0.4,
+        width: width * 0.95,
         decoration: BoxDecoration(
             // color: Colors.yellow,
             // borderRadius: BorderRadius.all(Radius.circular(25))
@@ -39,7 +39,7 @@ class CardRental extends StatelessWidget {
           children: <Widget>[
             Text(
               title,
-              style: TextStyle(fontSize: 15, color: Colors.white),
+              style: TextStyle(fontSize: 20, color: PickCarColor.colorFont1),
             ),
             Container(
               height: height * 0.1,
@@ -56,7 +56,7 @@ class CardRental extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     buttontext,
-                    style: TextStyle(fontSize: 30, color: Colors.white),
+                    style: TextStyle(fontSize: 23, color: Colors.white),
                   )
                 ],
               ),

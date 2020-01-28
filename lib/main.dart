@@ -27,6 +27,7 @@ import 'package:pickcar/page/rental/rentalpage.dart';
 import 'package:pickcar/page/searchpage/confirmpage.dart';
 import 'package:pickcar/page/searchpage/detailsearch.dart';
 import 'package:pickcar/page/searchpage/listcar.dart';
+import 'package:pickcar/page/searchpage/search.dart';
 import 'package:pickcar/page/searchpage/slottimeselect.dart';
 import 'package:pickcar/page/signuppage.dart';
 import 'package:pickcar/page/tabscreen.dart';
@@ -77,6 +78,7 @@ class MyApp extends StatelessWidget {
         Datamanager.bookedmap : (ctx) => Bookedmap(),
         Datamanager.openkey : (ctx) => Openkey(),
         Datamanager.animatedContainerApp : (ctx) => AnimatedContainerApp(),
+        Datamanager.search : (ctx) => SearchPage(),
         //'loginpickcarpage': (ctx) => LoginPickCarPage()
       },
       onGenerateRoute: (setting) {},
