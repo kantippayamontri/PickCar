@@ -52,6 +52,7 @@ class Datamanager {
   static String openkey = "/Openkey";
   static String animatedContainerApp = "/AnimatedContainerApp";
   static String search = "/SearchPage";
+  static String maplocation = "/Maplocation";
   
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
@@ -299,6 +300,8 @@ class UseString {
   static String rent2 = "rent 2 slot";
   static String rent3 = "rent 3 slot";
   static String notimeforrent = "No Time For Rent.";
+  static String areyousure = "Are yor sure?";
+  static String rentthis = "Are you confident that you will rent this car?";
 }
 class Currency{
   static String thb = "THB";

@@ -46,10 +46,10 @@ class _SlotTimePageState extends State<SlotTimePage> {
     );
   }
   Widget _buildBody(BuildContext context) {
-    print(Datamanager.listcarslot.motorforrentdocid);
+    print(Datamanager.listcarslot.docid);
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('MotorcycleforrentSlot')
-                                .where("motorforrentdocid", isEqualTo: Datamanager.listcarslot.motorforrentdocid)
+                                .where("motorforrentdocid", isEqualTo: Datamanager.listcarslot.docid)
                                 .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();

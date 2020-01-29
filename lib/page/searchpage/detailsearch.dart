@@ -179,7 +179,7 @@ class _DetailsearchState extends State<Detailsearch> {
             ),
             Container(
               margin: EdgeInsets.only(top: 290,left: 10),
-              child: Text(Currency.thb+' '+Datamanager.slottime.price.toString(),
+              child: Text(Currency.thb+' '+Datamanager.listcarslot.price.toString(),
                   style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*30,color: PickCarColor.colorFont1), 
               ),
             ),
@@ -403,7 +403,7 @@ class _DetailsearchState extends State<Detailsearch> {
                   ),
                   GestureDetector(
                     onTap: (){
-                      print('aaa');
+                      Navigator.of(context).pushNamed(Datamanager.maplocation);
                     },
                     child: Stack(
                       children: <Widget>[

@@ -5,12 +5,15 @@ import 'package:pickcar/models/universityplace.dart';
 
 class SearchPage extends StatefulWidget {
   int indicatorpage = 0;
+  int havebuttom = 0;
+  int havebuttom2 = 0;
+  int havebuttom3 = 0;
   var timeselect = [
-    '08.00 - 09.30',
-    '09.30 - 11.00',
-    '11.00 - 12.30',
-    '13.00 - 14.30',
-    '14.30 - 16.00',
+    '08.00 - 09.15',
+    '09.30 - 10.45',
+    '11.00 - 12.15',
+    '13.00 - 14.15',
+    '14.30 - 15.45',
     '16.00 - 17.30'
   ];
   var timeselect2 = [
@@ -80,6 +83,12 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     widget.slottime5 = true;
     widget.slottime6 = true;
     widget.noselect = true;
+    widget.late1 = true;
+    widget.late2 = true;
+    widget.late3 = true;
+    widget.late4 = true;
+    widget.late5 = true;
+    widget.late6 = true;
     widget.notimetoselect = true;
     widget.heightofalert = 340;
     super.initState();
@@ -653,7 +662,21 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                 widget.slottime5 = true;
                                 widget.slottime6 = true;
                                 widget.noselect = true;
-                                widget.heightofalert = 340;
+                                if(widget.havebuttom ==6){
+                                  widget.heightofalert = 100;
+                                }else if(widget.havebuttom ==5){
+                                  widget.heightofalert = 140;
+                                }else if(widget.havebuttom ==4){
+                                  widget.heightofalert = 180;
+                                }else if(widget.havebuttom ==3){
+                                  widget.heightofalert = 220;
+                                }else if(widget.havebuttom ==2){
+                                  widget.heightofalert = 260;
+                                }else if(widget.havebuttom ==1){
+                                  widget.heightofalert = 300;
+                                }else if(widget.havebuttom ==0){
+                                  widget.heightofalert = 340;
+                                }
                               });
                             },
                             child: Text(
@@ -1037,7 +1060,19 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                 widget.slottime5 = true;
                                 widget.slottime6 = true;
                                 widget.noselect = true;
-                                widget.heightofalert = 340;
+                                if(widget.havebuttom2 ==5){
+                                  widget.heightofalert = 100;
+                                }else if(widget.havebuttom2 ==4){
+                                  widget.heightofalert = 140;
+                                }else if(widget.havebuttom2 ==3){
+                                  widget.heightofalert = 180;
+                                }else if(widget.havebuttom2 ==2){
+                                  widget.heightofalert = 220;
+                                }else if(widget.havebuttom2 ==1){
+                                  widget.heightofalert = 260;
+                                }else if(widget.havebuttom2 ==0){
+                                  widget.heightofalert = 300;
+                                }
                               });
                             },
                             child: Text(
@@ -1175,7 +1210,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                       widget.slottime1 = true;
                                       widget.slottime3 = true;
                                       widget.slottime4 = true;
-                                      widget.heightofalert = 340;
+                                      widget.heightofalert = 280;
                                       widget.noselect = !widget.noselect;
                                   }
                                   if (TimeSearch.time2) {
@@ -1228,7 +1263,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                       widget.slottime2 = true;
                                       widget.slottime1 = true;
                                       widget.slottime4 = true;
-                                      widget.heightofalert = 340;
+                                      widget.heightofalert = 280;
                                       widget.noselect = !widget.noselect;
                                     }
                                   if (TimeSearch.time3) {
@@ -1281,7 +1316,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                       widget.slottime2 = true;
                                       widget.slottime3 = true;
                                       widget.slottime1 = true;
-                                      widget.heightofalert = 340;
+                                      widget.heightofalert = 280;
                                       widget.noselect = !widget.noselect;
                                     }
                                   if (TimeSearch.time4) {
@@ -1333,6 +1368,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                 borderRadius: new BorderRadius.circular(18.0),
                                 side: BorderSide(color: PickCarColor.colormain)),
                             onPressed: () {
+                              print(widget.havebuttom3);
                               setState(() {
                                 widget.colorselect1 = Colors.white;
                                 widget.colorselect2 = Colors.white;
@@ -1353,7 +1389,17 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                 widget.slottime5 = true;
                                 widget.slottime6 = true;
                                 widget.noselect = true;
-                                widget.heightofalert = 340;
+                                if(widget.havebuttom3 ==4){
+                                  widget.heightofalert = 100;
+                                }else if(widget.havebuttom3 ==3){
+                                  widget.heightofalert = 140;
+                                }else if(widget.havebuttom3 ==2){
+                                  widget.heightofalert = 180;
+                                }else if(widget.havebuttom3 ==1){
+                                  widget.heightofalert = 220;
+                                }else if(widget.havebuttom3 ==0){
+                                  widget.heightofalert = 260;
+                                }
                               });
                             },
                             child: Text(
@@ -1619,6 +1665,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                     widget.colorselect4 = Colors.white;
                                     widget.colorselect5 = Colors.white;
                                     widget.colorselect6 = Colors.white;
+                                    widget.dropdown = UseString.rent1;
                                     widget.slottime1 = true;
                                     widget.slottime2 = true;
                                     widget.slottime3 = true;
@@ -1626,17 +1673,16 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                     widget.slottime5 = true;
                                     widget.slottime6 = true;
                                     widget.noselect = true;
-                                    widget.noselect = true;
+                                    widget.late1 = true;
+                                    widget.late2 = true;
+                                    widget.late3 = true;
+                                    widget.late4 = true;
+                                    widget.late5 = true;
+                                    widget.late6 = true;
+                                    widget.notimetoselect = true;
 
                                     widget.dropdown = value;
                                     SearchString.type = value;
-                                    if(value == UseString.rent1){
-                                      widget.heightofalert = 340;
-                                    }else if(value == UseString.rent2){
-                                      widget.heightofalert = 290;
-                                    }else{
-                                      widget.heightofalert = 240;
-                                    }
                                   });
                                 },
                               )
@@ -1682,6 +1728,33 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                           setState(() {
                             if (data != null) {
                               TimeSearch.today = data;
+                              TimeSearch.time1 = false;
+                                    TimeSearch.time2 = false;
+                                    TimeSearch.time3 = false;
+                                    TimeSearch.time4 = false;
+                                    TimeSearch.time5 = false;
+                                    TimeSearch.time6 = false;
+                                    widget.colorselect1 = Colors.white;
+                                    widget.colorselect2 = Colors.white;
+                                    widget.colorselect3 = Colors.white;
+                                    widget.colorselect4 = Colors.white;
+                                    widget.colorselect5 = Colors.white;
+                                    widget.colorselect6 = Colors.white;
+                                    widget.dropdown = UseString.rent1;
+                                    widget.slottime1 = true;
+                                    widget.slottime2 = true;
+                                    widget.slottime3 = true;
+                                    widget.slottime4 = true;
+                                    widget.slottime5 = true;
+                                    widget.slottime6 = true;
+                                    widget.noselect = true;
+                                    widget.late1 = true;
+                                    widget.late2 = true;
+                                    widget.late3 = true;
+                                    widget.late4 = true;
+                                    widget.late5 = true;
+                                    widget.late6 = true;
+                                    widget.notimetoselect = true;
                               
                             }
                           });
@@ -1775,42 +1848,72 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                         onPressed: () {
                           var count =0;
                           widget.now = DateTime.now();
-                          print(TimeSearch.today.day);
-                          print(widget.now.day);
+                          widget.havebuttom = count;
+                          widget.havebuttom2 = count;
+                          widget.havebuttom3 = count;
                           if(TimeSearch.today.day == widget.now.day){
                             print((widget.now.hour+(widget.now.minute/100)));
                             if(widget.now.hour>8 ){
                               widget.late1 = false;
-                              widget.heightofalert = 300;
+                              if(SearchString.type == UseString.rent3){
+                                widget.heightofalert = 220;
+                              }else if(SearchString.type == UseString.rent2){
+                                widget.heightofalert = 260;
+                              }else{
+                                widget.heightofalert = 300;
+                              }
                               count++;
                             }else{
                               widget.late1 = true;
                             }
                             if((widget.now.hour+(widget.now.minute/100))>9.30){
                               widget.late2 = false;
-                              widget.heightofalert = 260;
+                              if(SearchString.type == UseString.rent3){
+                                widget.heightofalert = 180;
+                              }else if(SearchString.type == UseString.rent2){
+                                widget.heightofalert = 220;
+                              }else{
+                                widget.heightofalert = 260;
+                              }
                               count++;
                             }else{
                               widget.late2 = true;
                             }
                             if(widget.now.hour>11 ){
                               widget.late3 = false;
-                              widget.heightofalert = 220;
+                              if(SearchString.type == UseString.rent3){
+                                widget.heightofalert = 140;
+                              }else if(SearchString.type == UseString.rent2){
+                                widget.heightofalert = 180;
+                              }else{
+                                widget.heightofalert = 220;
+                              }
                               count++;
                             }else{
                               widget.late3 = true;
                             }
                             if(widget.now.hour>13 ){
                               widget.late4 = false;
-                              widget.heightofalert = 180;
+                              if(SearchString.type == UseString.rent3){
+                                widget.heightofalert = 100;
+                              }else if(SearchString.type == UseString.rent2){
+                                widget.heightofalert = 140;
+                              }else{
+                                widget.heightofalert = 180;
+                              }
                               count++;
                             }else{
                               widget.late4 = true;
                             }
                             if((widget.now.hour+(widget.now.minute/100))>14.30){
                               widget.late5 = false;
-                              widget.heightofalert = 140;
+                              if(SearchString.type == UseString.rent2){
+                                widget.heightofalert = 100;
+                              }else{
+                                widget.heightofalert = 140;
+                              }
                               count++;
+                              widget.havebuttom3--;
                             }else{
                               widget.late5 = true;
                             }
@@ -1818,6 +1921,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                               widget.late6 = false;
                               widget.heightofalert = 100;
                               count++;
+                              widget.havebuttom2--;
+                              widget.havebuttom3--;
                             }else{
                               widget.late6 = true;
                             }
@@ -1828,13 +1933,40 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                             widget.late4 = true;
                             widget.late5 = true;
                             widget.late6 = true;
-                            widget.heightofalert = 340;
+                             if(SearchString.type == UseString.rent3){
+                                widget.heightofalert = 260;
+                              }else if(SearchString.type == UseString.rent2){
+                                widget.heightofalert = 300;
+                              }else{
+                                widget.heightofalert = 340;
+                              }
+                          }
+                          if(TimeSearch.today.day == widget.now.day){
+                            widget.havebuttom = count;
+                            widget.havebuttom2 = widget.havebuttom2 + count;
+                            widget.havebuttom3 = widget.havebuttom3 + count;
+                          }else{
+                            widget.havebuttom = 0;
+                            widget.havebuttom2 = 0;
+                            widget.havebuttom3 = 0;
+                          }
+                          // print(widget.havebuttom);
+                          // print(widget.havebuttom2);
+                          // print(widget.havebuttom3);
+                          if(widget.havebuttom2<0){
+                            widget.havebuttom2 =0;
+                          }
+                          if(widget.havebuttom3<0){
+                            widget.havebuttom3 =0;
                           }
                           if(count == 6){
                             widget.notimetoselect = false;
                             widget.heightofalert = 50;
                           }else{
                             widget.notimetoselect = true; 
+                          }
+                          if(TimeSearch.time1|| TimeSearch.time2 || TimeSearch.time3|| TimeSearch.time4||TimeSearch.time5||TimeSearch.time6){
+                            widget.heightofalert = 100;
                           }
                           if(SearchString.type == UseString.rent1){
                             selecttime(context);

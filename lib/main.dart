@@ -31,6 +31,8 @@ import 'package:pickcar/page/searchpage/search.dart';
 import 'package:pickcar/page/searchpage/slottimeselect.dart';
 import 'package:pickcar/page/signuppage.dart';
 import 'package:pickcar/page/tabscreen.dart';
+import 'package:pickcar/page/map/maplocation.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -79,6 +81,7 @@ class MyApp extends StatelessWidget {
         Datamanager.openkey : (ctx) => Openkey(),
         Datamanager.animatedContainerApp : (ctx) => AnimatedContainerApp(),
         Datamanager.search : (ctx) => SearchPage(),
+        Datamanager.maplocation : (ctx) => Maplocation(),
         //'loginpickcarpage': (ctx) => LoginPickCarPage()
       },
       onGenerateRoute: (setting) {},
