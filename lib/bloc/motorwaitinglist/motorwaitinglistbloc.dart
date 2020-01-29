@@ -6,47 +6,66 @@ import 'package:pickcar/bloc/motorwaitinglist/motorwaitinglistevent.dart';
 import 'package:pickcar/bloc/motorwaitinglist/motorwaitingliststate.dart';
 import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/models/motorcycletimeslot.dart';
+import 'package:pickcar/models/singleforrent.dart';
 import 'package:pickcar/widget/motorwaitingitem/motorwaitingedit.dart';
- 
+
 import '../../datamanager.dart';
- 
+
 class MotorWaitingListBloc
     extends Bloc<MotorWaitingListEvent, MotorWaitingListState> {
   BuildContext context;
   Motorcycle motorcycle;
   Function setstate;
-  List<MotorcycleTimeSlot> motorcycletimeslotlist;
+  //List<MotorcycleTimeSlot> motorcycletimeslotlist;
+  List<SingleForrent> singleforrentlist;
+
   MotorWaitingListBloc(
       {@required this.context,
       @required this.motorcycle,
       @required this.setstate}) {
-    motorcycletimeslotlist = List<MotorcycleTimeSlot>();
+    //motorcycletimeslotlist = List<MotorcycleTimeSlot>();
+    singleforrentlist = List<SingleForrent>();
   }
- 
+
   @override
   // TODO: implement initialState
   MotorWaitingListState get initialState => MotorWaitingListStartState();
- 
+
   @override
   Stream<MotorWaitingListState> mapEventToState(
       MotorWaitingListEvent event) async* {
     // TODO: implement mapEventToState
     if (event is MotorWaitingListLoadDataEvent) {
       yield MotorWaitingLoadingState();
-      await loaddata();
+      //await loaddata();
+      await loadalldata();
       yield MotorWaitingShowDataState();
     }
   }
- 
-  void showbottomsheet(MotorcycleTimeSlot motorslot){
+
+  Future<Null> loadalldata() async {
+    QuerySnapshot querySnapshot = await Datamanager.firestore
+        .collection("Singleforrent")
+        //.where('motorcycledocid' , isEqualTo: this.motorcycle.firestoredocid)
+        .orderBy('startdate')
+        .getDocuments();
+    var singlelist = querySnapshot.documents; //querySnapshot.documents.where((doc) => doc['motorcycledocid'] == this.motorcycle);
+    print("in load all data function " + singlelist.length.toString());
+    print("motor docid :" + this.motorcycle.firestoredocid);
+    for(var doc in singlelist){
+      print(doc['day'].toString() + " " + doc['time']);
+    }
+  }
+
+  /*void showbottomsheet(MotorcycleTimeSlot motorslot){
     showModalBottomSheet(
         context: context,
         builder: (_) {
           return MotorWaitingEdit(editslot: editslot,motorslot: motorslot,);
         });
-  }
- 
-  Future<Null> editslot(String docid , String pricestring) async{
+  }*/
+
+  /*Future<Null> editslot(String docid , String pricestring) async{
     if(pricestring == ""){
       Navigator.pop(context);
     }else{
@@ -66,9 +85,9 @@ class MotorWaitingListBloc
         }
       }
     }
-  }
- 
-  Future<Null> deleteslot(MotorcycleTimeSlot motorslot) async {
+  }*/
+
+  /*Future<Null> deleteslot(MotorcycleTimeSlot motorslot) async {
     print("delete slot : " + motorslot.timeslot);
     print("delete docid : " + motorslot.docid);
  
@@ -110,11 +129,9 @@ class MotorWaitingListBloc
     print("after delete : ${motorcycletimeslotlist.length}");
  
     setstate();
-  }
- 
- 
- 
-  Future<Null> loaddata() async {
+  }*/
+
+  /*Future<Null> loaddata() async {
     QuerySnapshot querySnapshot = await Datamanager.firestore
         .collection("MotorcycleforrentSlot")
         .orderBy('dateTime')
@@ -151,35 +168,5 @@ class MotorWaitingListBloc
       motorcycletimeslotlist.add(motorcycleTimeSlot);
     }
  
-    // QuerySnapshot querySnapshot = await Datamanager.firestore
-    //     .collection("Motorcycleforrent")
-    //     .orderBy('dateTime')
-    //     .getDocuments();
-    // var list = querySnapshot.documents;
-    // list = list
-    //     .where((motorforrent) =>
-    //         motorforrent['motorcycledocid'] == motorcycle.firestoredocid)
-    //     .toList();
- 
-    // for (var doc in list) {
-    //   List<String> slotlist = List<String>();
-    //   slotlist = List.from(doc['timeslotlist']);
-    //   for (var timeslot in slotlist) {
-    //     MotorcycleTimeSlot motorcycleTimeSlot = MotorcycleTimeSlot(
-    //         dateTime: (doc['dateTime'] as Timestamp).toDate(),
-    //         day: doc['day'],
-    //         month: doc['month'],
-    //         year: doc['year'],
-    //         motorcycledocid: doc['motorcycledocid'],
-    //         motorforrentdocid: doc['motorforrentdocid'],
-    //         prize:  double.parse(doc['price'].toString()) ,
-    //         timeslot: timeslot);
- 
-    //         //print("Prize is ${doc['prize']}");
-    //         //print("Timeslot is ${timeslot}");
- 
-    //     motorcycletimeslotlist.add(motorcycleTimeSlot);
-    //   }
-    // }
-  }
+  }*/
 }

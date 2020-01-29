@@ -10,6 +10,7 @@ import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/motorcycletimeslot.dart';
 import 'package:pickcar/models/motorforrent.dart';
+import 'package:pickcar/models/singleforrent.dart';
 import 'package:pickcar/models/slotbox.dart';
 
 class MotorRentalFormBloc
@@ -19,17 +20,24 @@ class MotorRentalFormBloc
   Motorcycle motorcycle;
   TextEditingController pricecontroller = TextEditingController();
   DateTime dateTime;
-  DateTime datenow;
-  List<String> timeslotlist = List<String>();
-  List<Map<String, dynamic>> realts = List<Map<String, dynamic>>();
-  List<Boxslotrent> boxslotrentreal = List<Boxslotrent>();
-  List<String> errortimeslot = List<String>();
-  List<String> boxslotrentrealdocid = List<String>();
+
+  //todo type
+  String type;
+  List<String> timeslot;
+  String choosetimeslot;
+  List<Map<String, String>> datasourcefordrop;
 
   MotorRentalFormBloc({@required this.context, @required this.motorcycle}) {
     pricecontroller.text = CarPrice.motorminprice.toString();
-    datenow = DateTime.now();
+    //datenow = DateTime.now();
+    DateTime now = DateTime.now();
+    //dateTime = DateTime(now.year , now.month , now.day);
     dateTime = DateTime.now();
+    if (dateTime.isAfter(DateTime(now.year, now.month, now.day, 16, 0))) {
+      dateTime = now.add(Duration(days: 1));
+    }
+
+    datasourcefordrop = List<Map<String, String>>();
   }
 
   @override
@@ -43,7 +51,7 @@ class MotorRentalFormBloc
     if (event is MotorRentalFormSubmitFormEvent) {
       print("in MotorRentalFormSubmitFormEvent");
       await submitform();
-      await adddatamotorforrent();
+      //await adddatamotorforrent();
       await resetstatusmotor();
       print("rental success");
 
@@ -61,20 +69,16 @@ class MotorRentalFormBloc
     if (form.validate()) {
       print("form validate naja");
       //await changstatusmotorFirsestore();
+      if (this.type == TypeRental.singleslot) {
+        await rentalsingle();
+      } else {}
+    } else {
+      print("form is not validate");
     }
   }
 
-  Future<Null> adddatamotorforrent() async {
-    //todo check box avaiable
-    String boxdocidforrent;
-
-    print("before timeslotlist : ${timeslotlist.length}");
-    //this.errortimeslot = this.timeslotlist;
-
-    for (var slot in timeslotlist) {
-      this.errortimeslot.add(slot);
-    }
-
+  Future<Null> rentalsingle() async {
+    print("in rentalsingle function");
     QuerySnapshot boxlist = await Datamanager.firestore
         .collection("box")
         .where("boxlocationid", isEqualTo: Datamanager.boxlocationshow.docboxid)
@@ -82,181 +86,178 @@ class MotorRentalFormBloc
 
     OUTERLOOP:
     for (var box in boxlist.documents) {
-      //print("box docid : " + box['docid']);
-      boxdocidforrent = box.documentID;
-
       QuerySnapshot boxslotlist = await Datamanager.firestore
           .collection('box')
           .document(box['docboxid'])
           .collection('boxslot') //todo add where boxlocation
           .getDocuments();
       for (var boxslot in boxslotlist.documents) {
-        //print('boxslot doc id : ${boxslot['docid']}');
-
         QuerySnapshot boxslotrentlist = await Datamanager.firestore
             .collection('BoxslotRent')
             .where('boxdocid', isEqualTo: box['docid'])
             .where('boxslotdocid', isEqualTo: boxslot['docid'])
             .getDocuments();
 
-        // print("BoxslotRent : ${boxslotrentlist.documents.length}");
-
-        if (this.errortimeslot.length == this.boxslotrentreal.length) {
-          print("errortimeselot is empty");
-          break OUTERLOOP;
-        }
-
-        bool chekcboxslotavilabel = true;
-        for (String timeslot in this.errortimeslot) {
-          var alreadyhaveslotrent = boxslotrentlist.documents.where(
-              (boxslotrent) => ((boxslotrent['day'] == this.dateTime.day) &&
-                  (boxslotrent['month'] == this.dateTime.month) &&
-                  (boxslotrent['year'] == this.dateTime.year) &&
-                  (boxslotrent['time'] == timeslot)));
-
-          if (alreadyhaveslotrent.isNotEmpty) {
-            chekcboxslotavilabel = false;
-            break;
-          } else {
-            Boxslotrent bslr = Boxslotrent(
-                boxdocid: box['docid'],
-                boxslotdocid: boxslot['docid'],
-                boxplacedocid: box['boxlocationid'],
-                day: this.dateTime.day,
-                month: this.dateTime.month,
-                year: this.dateTime.year,
-                ownerdocid: Datamanager.user.documentid,
-                renterdocid: null,
-                iskey: false,
-                isopen: false,
-                time: timeslot,
-                ownerdropkey: false
-                );
-            this.boxslotrentreal.add(bslr);
-          }
-
-          /*var alreadyhaveslotrent = boxslotrentlist.documents.where((boxslotrent) => (
-            (boxslotrent['day'] == this.dateTime.day) &&
-            (boxslotrent['month'] == this.dateTime.month) &&
-            (boxslotrent['year'] == this.dateTime.year) &&
-            (boxslotrent['time'] == timeslot)
-          ));
-
-          if(alreadyhaveslotrent.isEmpty){
-            print("slot is avaliable");
-            //this.errortimeslot.removeWhere((errortime) => errortime == timeslot);
-            Boxslotrent bslr = Boxslotrent(
-              boxdocid: box['docid'],
-              boxslotdocid: boxslot['docid'],
-              boxplacedocid: box['boxlocationid'],
-              day: this.dateTime.day,
-              month: this.dateTime.month,
-              year: this.dateTime.year,
-              ownerdocid: Datamanager.user.documentid,
-              renterdocid: null,
-              iskey: false,
-              isopen: false,
-              time: timeslot
-            );
-            this.boxslotrentreal.add(bslr);
-          }else{
-            print("this slot is full");
-          }
-        }*/
-
-        }
-
-        if (chekcboxslotavilabel) {
+        if (boxslotrentlist.documents.isEmpty) {
+          print('this slot is empty');
+          addsingleforrent(
+              box.documentID, boxslot.documentID, box['boxlocationid']);
           break OUTERLOOP;
         } else {
-          this.boxslotrentreal.clear();
+          print("this slot is not empty");
+          var alreadyslot = boxslotrentlist.documents
+              .where((doc) => doc['time'] == this.choosetimeslot);
+          if (alreadyslot.isNotEmpty) {
+            print("this slot is already have!!");
+            continue;
+          } else {
+            addsingleforrent(
+                box.documentID, boxslot.documentID, box['boxlocationid']);
+          }
+          break OUTERLOOP;
         }
       }
     }
+  }
 
-      //todo add boxslotrentrel to firebase
-      for (Boxslotrent bslr in boxslotrentreal) {
-        this.errortimeslot.remove(bslr.time);
-        var docref = await Datamanager.firestore
-            .collection("BoxslotRent")
-            .add(bslr.toJson());
-        await Datamanager.firestore
-            .collection('BoxslotRent')
-            .document(docref.documentID)
-            .updateData({
-          'docid': docref.documentID,
-        });
+  DateTime makestartdatetimesingle(DateTime date , String timeslot){
+    DateTime startdate;
+    if(timeslot == TimeSlotSingle.sub1){
+      startdate = DateTime(date.year,date.month,date.day,8,0);
+    }
+    if(timeslot == TimeSlotSingle.sub2){
+      startdate = DateTime(date.year,date.month,date.day,9,30);
+    }
+    if(timeslot == TimeSlotSingle.sub3){
+      startdate = DateTime(date.year,date.month,date.day,11,0);
+    }
+    if(timeslot == TimeSlotSingle.sub4){
+      startdate = DateTime(date.year,date.month,date.day,13,0);
+    }
+    if(timeslot == TimeSlotSingle.sub5){
+      startdate = DateTime(date.year,date.month,date.day,14,30);
+    }
+    if(timeslot == TimeSlotSingle.sub6){
+      startdate = DateTime(date.year,date.month,date.day,16,0);
+    }
 
-        boxslotrentrealdocid.add(docref.documentID);
-        //print("88888888888888888888888 : ${docref.documentID}");
+    return startdate;
+  }
+
+  Future<Null> addsingleforrent(
+      String boxdocid, String boxslotdocid, String boxlocid) async {
+    print("in function addsingleforrent");
+    print("boxdocid " + boxdocid);
+    print("boxslotdocid " + boxslotdocid);
+
+    Boxslotrent bslr = Boxslotrent(
+        boxdocid: boxdocid,
+        boxplacedocid: boxlocid,
+        boxslotdocid: boxslotdocid,
+        day: this.dateTime.day,
+        month: this.dateTime.month,
+        year: this.dateTime.year,
+        iskey: false,
+        isopen: false,
+        ownerdocid: Datamanager.user.documentid,
+        ownerdropkey: false,
+        renterdocid: null,
+        time: this.choosetimeslot);
+
+    var bslrdocref = await Datamanager.firestore
+        .collection("BoxslotRent")
+        .add(bslr.toJson());
+    await Datamanager.firestore
+        .collection('BoxslotRent')
+        .document(bslrdocref.documentID)
+        .updateData({
+      'docid': bslrdocref.documentID,
+    });
+
+    SingleForrent _singleforrent = SingleForrent(
+      boxdocid: boxdocid,
+      boxslotdocid: boxslotdocid,
+      boxplacedocid: boxlocid,
+      day: dateTime.day,
+      month: dateTime.month,
+      year: dateTime.year,
+      motorcycledocid: this.motorcycle.firestoredocid,
+      ownerdocid: Datamanager.user.documentid,
+      price: double.parse(this.pricecontroller.text),
+      time: this.choosetimeslot,
+      university: Datamanager.user.university,
+      motorplacelocdocid: Datamanager.placelocationshow.docplaceid,
+      startdate: makestartdatetimesingle(this.dateTime,this.choosetimeslot),
+    );
+
+    var sgfrdocref = await Datamanager.firestore
+        .collection("Singleforrent")
+        .add(_singleforrent.toJson());
+
+    await Datamanager.firestore
+        .collection("Singleforrent")
+        .document(sgfrdocref.documentID)
+        .updateData({
+      'boxslotrentdocid': bslrdocref.documentID,
+      'docid': sgfrdocref.documentID,
+    });
+  }
+
+  Future<List<String>> makeslottimelist(DateTime date) async {
+    print("in function");
+    List<String> timeslotlist = TimeSlotSingle.tolist();
+    DateTime now = DateTime.now();
+
+    if ((date.year == now.year) &&
+        (date.month == now.month) &&
+        (date.day == now.day)) {
+      print("in function in if date is today");
+      if (date.isAfter(DateTime(now.year, now.month, now.day, 8, 0))) {
+        timeslotlist.remove(TimeSlotSingle.sub1);
+        print("remove " + TimeSlotSingle.sub1);
       }
-      // print("middle timeslotlist is ${timeslotlist.length}");
-
-      //print("9999999999999999999 : ${boxslotrentrealdocid.length}");
-      //todo------------------------
-
-      MotorForRent motorForRent = MotorForRent(
-          dateTime: this.dateTime,
-          motorcycledocid: this.motorcycle.firestoredocid,
-          price: double.parse(this.pricecontroller.text),
-          status: CarStatus.waiting,
-          timeslotlist: timeslotlist,
-          ownerdocid: Datamanager.user.documentid,
-          university: Datamanager.user.university,
-          boxdocid: boxdocidforrent,
-          boxplacedocid: Datamanager.boxlocationshow.docboxid
-          );
-      final docref = await Datamanager.firestore
-          .collection("Motorcycleforrent")
-          .add(motorForRent.toJson());
-      String docid = docref.documentID;
-      await Datamanager.firestore
-          .collection("Motorcycleforrent")
-          .document(docid)
-          .updateData({'motorforrentdocid': docid});
-      //todo update motorforrent in motorcycle
-      await Datamanager.firestore
-          .collection("Motorcycle")
-          .document(this.motorcycle.firestoredocid)
-          .updateData({'motorforrentdocid': docid});
-
-      //todo add motorforrentslot
-      //List<MotorcycleTimeSlot> motortimeslotlist = List<MotorcycleTimeSlot>();
-      //print("out loop timesoltlist 555555555");
-      //print("size of  timesoltlist ${timeslotlist.length}");
-      int count = 0;
-      for (String timeslot in timeslotlist) {
-        print("in loop timesoltlist 555555555");
-        //todo add box carplace boxslotrent
-        MotorcycleTimeSlot motorslot = MotorcycleTimeSlot(
-          dateTime: this.dateTime,
-          day: this.dateTime.day,
-          month: this.dateTime.month,
-          year: this.dateTime.year,
-          motorcycledocid: this.motorcycle.firestoredocid,
-          motorforrentdocid: docid,
-          ownerdocid: Datamanager.user.documentid,
-          prize: double.parse(this.pricecontroller.text),
-          timeslot: timeslot,
-          university: Datamanager.user.university,
-          docid: null,
-          boxslotrentdocid: boxslotrentrealdocid[count],
-          keyboxplacelocdocid: Datamanager.boxlocationshow.docboxid,
-          motorplacelocdocid: Datamanager.placelocationshow.docplaceid,
-        );
-
-        final docref = await Datamanager.firestore
-            .collection("MotorcycleforrentSlot")
-            .add(motorslot.toJson());
-
-        Datamanager.firestore
-            .collection("MotorcycleforrentSlot")
-            .document(docref.documentID)
-            .updateData({'docid': docref.documentID});
-        //todo ------------------------------------------------------------------------------
-        count++;
+      if (date.isAfter(DateTime(now.year, now.month, now.day, 9, 30))) {
+        timeslotlist.remove(TimeSlotSingle.sub2);
+        print("remove " + TimeSlotSingle.sub2);
       }
+      if (date.isAfter(DateTime(now.year, now.month, now.day, 11, 0))) {
+        timeslotlist.remove(TimeSlotSingle.sub3);
+        print("remove " + TimeSlotSingle.sub3);
+      }
+      if (date.isAfter(DateTime(now.year, now.month, now.day, 13, 0))) {
+        timeslotlist.remove(TimeSlotSingle.sub4);
+        print("remove " + TimeSlotSingle.sub4);
+      }
+      if (date.isAfter(DateTime(now.year, now.month, now.day, 14, 30))) {
+        timeslotlist.remove(TimeSlotSingle.sub5);
+        print("remove " + TimeSlotSingle.sub5);
+      }
+      if (date.isAfter(DateTime(now.year, now.month, now.day, 16, 0))) {
+        timeslotlist.remove(TimeSlotSingle.sub6);
+        print("remove " + TimeSlotSingle.sub6);
+      }
+    } else {
+      print("date is not today");
+    }
+
+    QuerySnapshot _singleforrentlist =
+        await Datamanager.firestore.collection("Singleforrent").getDocuments();
     
+     List<DocumentSnapshot> sgfr = _singleforrentlist.documents.where((doc) => (doc['motorcycledocid'] == this.motorcycle.firestoredocid) && (doc['year'] == this.dateTime.year) && (doc['month'] == this.dateTime.month) && (doc['day'] == this.dateTime.day)).toList();
+      for(var doc in sgfr){
+        //print(doc['time']);
+        timeslotlist.remove(doc['time']);
+      }
+    return timeslotlist;
+  }
+
+  Future<Null> settimeslot() async {
+    if (this.type == TypeRental.singleslot) {
+      this.timeslot = await makeslottimelist(dateTime);
+      this.datasourcefordrop = datasourcefordropdown();
+    } else if (this.type == TypeRental.doubleslot) {
+      print("settimeslot double");
+    }
   }
 
   Future<Null> resetstatusmotor() async {
@@ -278,29 +279,50 @@ class MotorRentalFormBloc
         .updateData({'carstatus': CarStatus.waiting});
   }
 
-  void checkitemtimeslot(Item ts) {
-    if (ts.active) {
-      timeslotlist.add(ts.title);
-    } else {
-      if (timeslotlist.contains(ts.title)) {
-        timeslotlist.remove(ts.title);
-      }
-    }
-  }
-
   //todo re tr picture1inches idcardcopy
 
   Future<Null> datepicker(Function changetime) async {
+    DateTime now = DateTime.now();
+
+    DateTime firstdate = DateTime(now.year, now.month, now.day);
+    /*if (now.isAfter(DateTime(now.year, now.month, now.day, 16, 0))) {
+      firstdate = now.add(Duration(days: 1));
+    }*/
+    DateTime lastdate = firstdate.add(Duration(days: 30));
+
     DateTime picked = await showDatePicker(
         context: this.context,
-        firstDate: this.datenow,
-        lastDate: this.datenow.add(Duration(days: 30)),
-        initialDate: dateTime);
+        firstDate: firstdate,
+        lastDate: lastdate,
+        initialDate: this.dateTime);
 
-    if (picked != null && picked != dateTime) {
+    if (picked != null /*&& picked != firstdate*/) {
+      if (!((picked.year == dateTime.year) &&
+          (picked.month == dateTime.month) &&
+          (picked.day == dateTime.day))) {
+        print("change day");
+        this.choosetimeslot = null;
+      }
+
       dateTime = picked;
-      print("date picked : ${dateTime.toString()}");
+      if ((dateTime.year == now.year) &&
+          (dateTime.month == now.month) &&
+          (dateTime.day == now.day)) {
+        dateTime = now;
+      }
+      print("date picked : ${firstdate.toString()}");
+      this.timeslot = await makeslottimelist(dateTime);
+      this.datasourcefordrop = datasourcefordropdown();
       changetime();
     }
+  }
+
+  List<Map<String, String>> datasourcefordropdown() {
+    List<Map<String, String>> datasource = List<Map<String, String>>();
+    for (String slot in this.timeslot) {
+      datasource.add({"display": slot, "value": slot});
+    }
+
+    return datasource;
   }
 }

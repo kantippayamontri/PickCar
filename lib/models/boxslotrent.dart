@@ -28,7 +28,7 @@ class Boxslotrent {
       @required this.renterdocid,
       @required this.boxdocid,
       @required this.boxplacedocid,
-      @required this.ownerdropkey
+      @required this.ownerdropkey,
       
       }) {}
 

@@ -1,3 +1,4 @@
+import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/tag.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
@@ -32,19 +33,21 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
   void setstate() {
     setState(() {});
   }
-  Widget locationcheck(BuildContext context){
-    if(Datamanager.placelocationshow != null){
+
+  Widget locationcheck(BuildContext context) {
+    if (Datamanager.placelocationshow != null) {
       print("place location : ${Datamanager.placelocationshow.name}");
       return Text('already select place');
-    }else{
+    } else {
       return Container();
     }
   }
-  Widget boxcheck(BuildContext context){
-    if(Datamanager.boxlocationshow != null){
+
+  Widget boxcheck(BuildContext context) {
+    if (Datamanager.boxlocationshow != null) {
       print("box location : ${Datamanager.boxlocationshow.name}");
       return Text('already select box');
-    }else{
+    } else {
       return Container();
     }
   }
@@ -109,6 +112,54 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
                     SizedBox(
                       height: constraint.maxHeight * 0.05,
                     ),
+
+                    //todo choose type
+
+                    _container(
+                        constraint.maxHeight * 0.2, constraint.maxWidth * 0.9, [
+                      Text(
+                        "Type Rental",
+                        style: _textstyle(),
+                      ),
+                      DropDownFormField(
+                        titleText: 'Please choose type',
+                        value: _motorRentalFormBloc.type,
+                        onSaved: (value) {
+                          setState(() async {
+                            _motorRentalFormBloc.type = value;
+                            print("type : " + _motorRentalFormBloc.type);
+                            await _motorRentalFormBloc.settimeslot();
+                          });
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            _motorRentalFormBloc.type = value;
+                            print("type : " + _motorRentalFormBloc.type);
+                            _motorRentalFormBloc.settimeslot();
+                          });
+                        },
+                        dataSource: [
+                          {
+                            "display": TypeRental.singleslot,
+                            "value": TypeRental.singleslot,
+                          },
+                          {
+                            "display": TypeRental.doubleslot,
+                            "value": TypeRental.doubleslot,
+                          }
+                        ],
+                        textField: "display",
+                        valueField: "value",
+                        validator: (val) {
+                          if (val == null) {
+                            return 'Please choose time slot';
+                          }
+                        },
+                      )
+                    ]),
+                    SizedBox(
+                      height: constraint.maxHeight * 0.05,
+                    ),
                     //todo price
                     _container(constraint.maxHeight * 0.275,
                         constraint.maxWidth * 0.9, [
@@ -135,74 +186,101 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
                     SizedBox(
                       height: 20,
                     ),
-                    _container(constraint.maxHeight * 0.25,
-                        constraint.maxWidth * 0.9, [
-                      Text(
-                        UseString.pleasechoosedate,
-                        style: _textstyle(),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(Jiffy([
-                            _motorRentalFormBloc.dateTime.year,
-                            _motorRentalFormBloc.dateTime.month,
-                            _motorRentalFormBloc.dateTime.day
-                          ]).yMMMMd)
-                        ],
-                      ),
-                      _button(UseString.choosedate, () {
-                        setState(() {
-                          _motorRentalFormBloc.datepicker(setstate);
-                        });
-                      })
-                    ]),
+                    _motorRentalFormBloc.type != null
+                        ? _container(constraint.maxHeight * 0.25,
+                            constraint.maxWidth * 0.9, [
+                            Text(
+                              UseString.pleasechoosedate,
+                              style: _textstyle(),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(Jiffy([
+                                  _motorRentalFormBloc.dateTime.year,
+                                  _motorRentalFormBloc.dateTime.month,
+                                  _motorRentalFormBloc.dateTime.day
+                                ]).yMMMMd)
+                              ],
+                            ),
+                            _button(UseString.choosedate, () {
+                              setState(() {
+                                _motorRentalFormBloc.datepicker(setstate);
+                              });
+                            })
+                          ])
+                        : SizedBox(),
                     SizedBox(
                       height: 20,
                     ),
-                    _container(constraint.maxHeight * 0.25,
-                        constraint.maxWidth * 0.9, [
-                      Text(
-                        UseString.choosetime,
-                        style: _textstyle(),
-                      ),
-                      Tags(
+                    _motorRentalFormBloc.type != null
+                        ? _container(constraint.maxHeight * 0.25,
+                            constraint.maxWidth * 0.9, [
+                            Text(
+                              UseString.choosetime,
+                              style: _textstyle(),
+                            ),
+                            DropDownFormField(
+                              titleText: "Please Choose Time Slot",
+                              value: _motorRentalFormBloc.choosetimeslot,
+                              onSaved: (value) {
+                                setState(() {
+                                  _motorRentalFormBloc.choosetimeslot = value;
+                                  print("choose time slot : " + _motorRentalFormBloc.choosetimeslot);
+                                });
+                              },
+                              onChanged: (value) {
+                                setState(() {
+                                  _motorRentalFormBloc.choosetimeslot = value;
+                                  print("choose time slot : " + _motorRentalFormBloc.choosetimeslot);
+                                });
+                              },
+                              dataSource:
+                                  _motorRentalFormBloc.datasourcefordrop,
+                              textField: "display",
+                              valueField: "value",
+                            )
+                            /*Tags(
                         key: UniqueKey(),
                         itemCount:
-                            TimeSlot.toList(_motorRentalFormBloc.dateTime)
-                                .length,
+                            _motorRentalFormBloc.timeslot.length,
                         itemBuilder: (int index) {
-                          final String timeslot = TimeSlot.toList(
-                              _motorRentalFormBloc.dateTime)[index];
+                          final String timeslot = _motorRentalFormBloc.timeslot[index];
                           return ItemTags(
                             key: Key(timeslot),
                             index: index,
                             title: timeslot,
-                            active: false,
+                            active: _motorRentalFormBloc.checkclickslot[index],
                             removeButton: null,
                             onPressed: (ts) {
+                              setState(() {
+                                
+                              });
                               print("click is ${ts.title}");
-                              _motorRentalFormBloc.checkitemtimeslot(ts);
+                              //_motorRentalFormBloc.checkitemtimeslot(ts);
                             },
                             color: Colors.white,
                             activeColor: PickCarColor.colormain,
                           );
                         },
-                      ),
-                    ]),
+                      ),*/
+                          ])
+                        : SizedBox(),
                     SizedBox(
                       height: 20,
                     ),
                     RaisedButton(
-                      onPressed: (){
-                        Navigator.of(context).pushNamed(Datamanager.mapplaceselect);
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(Datamanager.mapplaceselect);
                       },
                       child: Text('location'),
                     ),
                     locationcheck(context),
                     RaisedButton(
-                      onPressed: (){
-                        Navigator.of(context).pushNamed(Datamanager.mapboxselect);
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(Datamanager.mapboxselect);
                       },
                       child: Text('select box'),
                     ),

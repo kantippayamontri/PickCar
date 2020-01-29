@@ -92,7 +92,7 @@ class Datamanager {
     "Humantility",
   ];
   static var univeresity2 = [
-    "Chaing Mai University",
+    "Chiang Mai University",
     "sdfasdfasd",
     "dfasdfsdfasdf",
   ];
@@ -321,27 +321,33 @@ class DataFetch {
 }
 
 class TimeSlotSingle {
-  static const String sub1 = "8.00 - 9.30";
-  static const String sub2 = "9.30 - 11.00";
-  static const String sub3 = "11.00 - 12.30";
-  static const String sub4 = "13.00 - 14.30";
-  static const String sub5 = "14.30 - 16.00";
+  static const String sub1 = "8.00 - 9.15";
+  static const String sub2 = "9.30 - 10.45";
+  static const String sub3 = "11.00 - 12.15";
+  static const String sub4 = "13.00 - 14.15";
+  static const String sub5 = "14.30 - 15.45";
   static const String sub6 = "16.00 - 17.30";
 
-  List<String> tolist() {
+  static List<String> tolist() {
     return [
-      "8.00 - 9.30",
-      "9.30 - 11.00",
-      "11.00 - 12.30",
-      "13.00 - 14.30",
-      "14.30 - 16.00",
-      "16.00 - 17.30"
+      sub1,
+      sub2,
+      sub3,
+      sub4,
+      sub5,
+      sub6
     ];
   }
 }
 
 class TimeslotDouble{
-  
+
+}
+
+class TypeRental{
+  static String singleslot = "Single Slot";
+  static String doubleslot = "Double Slot";
+
 }
 
 class TimeSlot {
