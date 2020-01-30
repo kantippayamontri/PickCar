@@ -33,6 +33,10 @@ class _MapboxselectState extends State<Mapboxselect> {
   void initState(){
     DataFetch.checkhavedata =0;
     Datamanager.boxlocationshow = null;
+    Datasearch.boxlocationname = [];
+    Datasearch.boxlocationlatitude = [];
+    Datasearch.boxlocationlogtitude = [];
+    Datasearch.boxlocationindex = null;
     //bankok
     widget.latitude = 13.736717;
     widget.logtitude = 100.523186;
@@ -43,7 +47,13 @@ class _MapboxselectState extends State<Mapboxselect> {
   }
   startmarker(DocumentSnapshot data){
     BoxlocationShow boxshow = BoxlocationShow.fromSnapshot(data);
-    widget.box.add(boxshow);
+    // print(boxshow.name);
+    if(Datasearch.boxlocationname.indexOf(boxshow.name) == -1){
+      Datasearch.boxlocationname.add(boxshow.name);
+      Datasearch.boxlocationlatitude.add(boxshow.latitude);
+      Datasearch.boxlocationlogtitude.add(boxshow.longitude);
+    }
+    
     var latitude = boxshow.latitude;
     var logitude = boxshow.longitude;
      String googleUrl =
@@ -190,6 +200,23 @@ class _MapboxselectState extends State<Mapboxselect> {
               Navigator.pop(context);
             },
           ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.search,
+              color: Colors.white,
+              ),
+              onPressed: () async {
+                // _controller = Completer();
+                Datasearch.boxlocationindex =null;
+                showSearch(context: context,delegate:Searchmap()).then((onValue) async {
+                  GoogleMapController controller = await _controller.future;
+                  controller.animateCamera(CameraUpdate.newLatLngZoom(
+                    LatLng(Datasearch.boxlocationlatitude[Datasearch.boxlocationindex]
+                    ,Datasearch.boxlocationlogtitude[Datasearch.boxlocationindex]), 17.0));
+                });
+              },
+            ),
+          ],
         ),
         drawer: Drawer(),
         body: Container(
@@ -274,4 +301,82 @@ class _MapboxselectState extends State<Mapboxselect> {
     textController.dispose();
     super.dispose();
   }
+}
+
+class Searchmap extends SearchDelegate<String> {
+  // final data = ["asssssd","b"];
+  // final suggest = ["cadad","d"];
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [IconButton(
+        icon: Icon(Icons.clear),
+        onPressed:(){
+          query ='';
+        },
+      )];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: AnimatedIcon(
+        icon: AnimatedIcons.menu_arrow,
+        progress: transitionAnimation,
+      ),
+      onPressed: (){
+        close(context,null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    var data = MediaQuery.of(context);
+    var index = Datasearch.boxlocationname.indexOf(query);
+    if(index != -1){
+      Datasearch.boxlocationindex = index;
+      close(context,null);
+      return Container();
+    }else{
+      return Center(
+        child: Text(UseString.notfound,
+            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*30,color: PickCarColor.colorFont1), 
+         ),
+      );
+    }
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    final suggestionList = query.isEmpty ? Datasearch.boxlocationname
+        :Datasearch.boxlocationname.where((p) => p.startsWith(query)).toList();
+    return ListView.builder(
+      itemBuilder: (context,index){
+        return ListTile(
+          onTap: (){
+            // showResults(context);
+            print(index);
+            Datasearch.boxlocationindex = index;
+            close(context,null);
+          },
+          leading: Icon(Icons.location_city),
+          title: RichText(
+            text: TextSpan(
+              text: suggestionList[index].substring(0,query.length),
+              style: TextStyle(
+                color: Colors.black,fontWeight: FontWeight.bold),
+              children: [
+                TextSpan(
+                  text: suggestionList[index].substring(query.length),
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+      itemCount: suggestionList.length,
+    );
+  }
+
 }

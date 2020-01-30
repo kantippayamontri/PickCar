@@ -13,6 +13,7 @@ import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/box.dart';
 import 'package:pickcar/models/boxlocation.dart';
 import 'package:pickcar/models/placelocation.dart';
+import 'package:pickcar/models/universityplace.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Placeselectadmin extends StatefulWidget {
@@ -21,12 +22,14 @@ class Placeselectadmin extends StatefulWidget {
   double logtitude = 98.951556;
   double latitudemark;
   double logtitudemark;
+  var dataDocument;
   @override
   _PlaceselectadminState createState() => _PlaceselectadminState();
 }
 
 class _PlaceselectadminState extends State<Placeselectadmin> {
   BitmapDescriptor _markerIcon;
+  Universityplaceshow university;
   var textController = TextEditingController();
   List<Marker> allMarkers = [];
   @override
@@ -92,11 +95,28 @@ class _PlaceselectadminState extends State<Placeselectadmin> {
   }
   fetchData(BuildContext context) async {
     if(DataFetch.checkhavedata == 0){
-      await Firestore.instance.collection('placelocation').getDocuments().then((data){
+      await Firestore.instance.collection('placelocation')
+      .where('Universityname' , isEqualTo: SetUniversity.university)
+      .getDocuments()
+      .then((data){
         data.documents.map((data){
             startmarker(data);
         }).toList();
       });
+      await Datamanager.firestore.collection('universityplace')
+                      .where('Universityname' , isEqualTo: SetUniversity.university)
+                      .getDocuments()
+                      .then((data){
+                        data.documents.map((data){
+                          print(data);
+                          widget.dataDocument = data;
+                        }).toList();
+                      });
+                      university = Universityplaceshow.fromSnapshot(widget.dataDocument);
+                      widget.latitude = university.latitude;
+                      widget.logtitude = university.longitude;
+                      // print(university.docid);
+                      // print(university.listplace);
     }else{
       return Container();
     }
@@ -187,6 +207,51 @@ class _PlaceselectadminState extends State<Placeselectadmin> {
       });
     }
   }
+   showalert(BuildContext context){
+    var data = MediaQuery.of(context);
+        return showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: new RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(20),
+              ),
+              // title: Text('place have same name.'),
+              content: Text('place have same name.',
+                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color:PickCarColor.colorFont1), 
+                ),
+              // TextField(
+              //   controller: textController,
+              //   decoration: InputDecoration(
+              //     hintText: "Put pin name.",
+              //   ),
+              // ),
+              // actions: <Widget>[
+              //   Row(
+              //     children: <Widget>[
+              //       FlatButton(
+              //         child: new Text('CONFIRM'),
+              //         onPressed: () {
+              //           addboxdatabase();
+              //         },
+              //       ),
+              //       FlatButton(
+              //         child: new Text('CANCEL'),
+              //         onPressed: () {
+              //           textController = TextEditingController();
+              //           Navigator.of(context).pop();
+              //         },
+              //       ),
+              //     ],
+              //   )
+              // ],
+            );
+          });
+      // }
+      // else{
+      //   return Container();
+      // }
+    }
   addname(BuildContext context){
     return showDialog(
     context: context,
@@ -225,11 +290,25 @@ class _PlaceselectadminState extends State<Placeselectadmin> {
   }
   addboxdatabase() async {
     print(widget.latitudemark);
+     var listnull = [];
+    listnull.add(textController.text);
+    List<dynamic> list = university.listplacelocation;
+    int samename;
+    if(list !=null){
+      samename = list.indexOf(textController.text);
+    }else{
+      samename = -1;
+    }
+    if(samename == -1){
     Placelocation boxlocation = Placelocation(
       latitude: widget.latitudemark,
       longitude: widget.logtitudemark,
       name: textController.text,
+      universityname: SetUniversity.university,
     );
+    Datamanager.firestore.collection('universityplace')
+                        .document(university.docid)
+                        .updateData({'listplacelocation': FieldValue.arrayUnion(listnull)});
     var refplacelocation = await Datamanager.firestore.collection('placelocation')
                           .add(boxlocation.toJson());
     var docplacelocationid = refplacelocation.documentID;
@@ -239,13 +318,18 @@ class _PlaceselectadminState extends State<Placeselectadmin> {
                             setState(() {
                               DataFetch.checkhavedata =0;
                               DataFetch.checkhavepin =0;
+                              allMarkers = [];
                               textController = TextEditingController();
                               _controller = Completer();
                               Navigator.pop(context);
                             });
                           });
     // });
-
+    }else{
+      Navigator.pop(context);
+      textController = TextEditingController();
+      showalert(context);
+    }
   }
   wait(){
     Future.delayed(const Duration(milliseconds: 1000), () {

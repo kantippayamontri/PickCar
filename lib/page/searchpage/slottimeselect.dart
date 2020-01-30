@@ -21,7 +21,7 @@ class _SlotTimePageState extends State<SlotTimePage> {
           fit: BoxFit.cover,
         ),
        centerTitle: true,
-       title: Text(UseString.selecttiem,
+       title: Text(UseString.selecttime,
           style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color: Colors.white), 
        ),
        leading: IconButton(
@@ -30,6 +30,14 @@ class _SlotTimePageState extends State<SlotTimePage> {
           ),
           onPressed: () {
             Navigator.pop(context);
+            DataFetch.fetchpiority = 0;
+            DataFetch.checkhavedata = 0;
+            DataFetch.checknotsamenoresult = 0;
+            DataFetch.checknothaveslottime = 0;
+            Datamanager.motorcycleShow = null;
+            Datamanager.usershow= null;
+            Datamanager.listcarslot= null;
+            Datamanager.slottime= null;
           },
         ),
       ),
@@ -38,10 +46,10 @@ class _SlotTimePageState extends State<SlotTimePage> {
     );
   }
   Widget _buildBody(BuildContext context) {
-    print(Datamanager.listcarslot.motorforrentdocid);
+    print(Datamanager.listcarslot.docid);
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('MotorcycleforrentSlot')
-                                .where("motorforrentdocid", isEqualTo: Datamanager.listcarslot.motorforrentdocid)
+                                .where("motorforrentdocid", isEqualTo: Datamanager.listcarslot.docid)
                                 .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();

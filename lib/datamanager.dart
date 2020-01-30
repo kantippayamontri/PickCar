@@ -12,12 +12,15 @@ import 'package:pickcar/page/searchpage/search.dart';
 import 'package:pickcar/page/setting/settingpage.dart';
 import 'dart:typed_data';
 
+import 'models/booking.dart';
 import 'models/boxlocation.dart';
 import 'models/pincar.dart';
+import 'models/universityplace.dart';
 import 'models/user.dart';
 
 class Datamanager {
-  static String loginpage = "/";
+  static String loginpage = "/loginpage";
+  static String mainloginpage = "/";
   static String signuppage = "/signuppage";
   static String tabpage = "/tabpage";
   static String registerpage = "/registerpage";
@@ -44,6 +47,15 @@ class Datamanager {
   static String mapboxselect = "/Mapboxselect";
   static String mapplaceselect = "/Mapplaceselect";
 
+  static String selectUniversity = "/SelectUniversity";
+  static String receivecar = "/Receivecar";
+  static String bookedmap = "/Bookedmap";
+  static String openkey = "/Openkey";
+  static String animatedContainerApp = "/AnimatedContainerApp";
+  static String search = "/SearchPage";
+  static String maplocation = "/Maplocation";
+  
+
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
   static FirebaseUser firebaseuser = null;
   static Firestore firestore = Firestore.instance;
@@ -53,8 +65,11 @@ class Datamanager {
   static Listcarslot listcarslot;
   static Slottime slottime;
   static Pincar pincar;
+  static Bookingshow booking;
   static BoxlocationShow boxlocationshow;
   static PlacelocationShow placelocationshow;
+  static List<Universityplaceshow> universityshow = [];
+  static List<String> listUniversity = [];
 
   static FirebaseStorage firebasestorage = FirebaseStorage.instance;
 
@@ -96,6 +111,20 @@ class Datamanager {
     "sdfasdfasd",
     "dfasdfsdfasdf",
   ];
+  static var universityforadmin = [
+    'Choose University',
+    "Chiang Mai University",
+    "sdfasdfasd",
+    "dfasdfsdfasdf",
+  ];
+  static Map<String , Object> universitydatabase = {
+      'Universityname' : 'Chiang Mai University',
+      'latitude':18.802587,
+      'longitude':98.951556,
+      'docid':'',
+      'listplacebox': null,
+      'listplacelocation': null,
+    };
 
   static var year = [
     {"year": "1"},
@@ -111,6 +140,7 @@ class UseString {
   static String name = "Name";
   static String nameemptyval = "Please Enter Name.";
   static String signup = "Sign Up";
+  static String signin = "Sign In";
   static String university = "University";
   static String chooseuniversity = "Please choose your University";
   static String faculty = "Faculty";
@@ -206,19 +236,20 @@ class UseString {
   static String location = "Location";
   static String locationdetail = "\t\t\tThe location of vehicle and key box.";
   static String booking = "BOOKING";
-  static String selecttiem = "Select Time";
+  static String selecttime = "Select Time";
   static String next = "NEXT";
   static String searching = "Searching...";
   static String notfound = "Result not found.";
   static String time = "Time";
   static String date = "Date";
   static String delete = "Delete";
-  static String cancle = "Cancle";
+  static String cancel = "Cancel";
 
   static String pin = "Pin Here";
   static String addlocation = "Add location";
   static String loading = "Loading...";
   static String selectbox = "Select box";
+  static String selectplace = "Select place";
   static String confirmrent = "Confirm Rental";
   static String rentaldetail = "Rentail Detail";
   static String selectedcar = "Selected Car";
@@ -226,10 +257,62 @@ class UseString {
   static String receivecar = "Receive Car";
   static String returncar = "Return Car";
   static String day = "Datetime";
+  static String totalprice = "Total price";
+  static String pricedetail = "Price details";
+  static String userdetail = "User details";
+  static String readandagree = "I have read and agree to the ";
+  static String policy = "policy and terms";
+  static String forpolicy = "for rent.";
+  static String confirm = "Confirm";
+  static String notaccept = "You have not accepted the policy and terms.";
+  static String pricebegin = "Price";
+  static String pricefee = "Fee 5 THB";
+  static String pricevat = "VAT (7%)";
+  static String pickabike = "PicKaBike";
+  static String logo = "Logo";
+  static String username = "Username";
+  static String remember = "Remember Me";
+  static String emailhint = "email@example.com";
+  static String passwordhint = "********";
+  static String nearby = "Nearby";
+  static String search = "Search";
+  static String selectuniversity = "Select University";
+  static String selectlocation = "Select Location";
+  static String universityhint = "University...";
+  static String locationhint = "Location...";
+  static String chooselo = "Please select a location.";
+  static String chooseuni = "Please select a university.";
+  static String choosetimeslot = "Please select time.";
+  static String chooseuniandlo = "Please select a university and location.";
+  static String reset = "Reset";
+  static String find = "FIND";
+  static String booked = "Booked list";
+  static String registercar = "Register list";
+  static String locationplace = "Location";
+  static String key = "Key";
+  static String motor = "Motorcycle";
+  static String notavailable = "Not Available";
+  static String available = "Available";
+  static String wait = "wait";
+  static String openmap = "Open Map location";
+  static String maploacation = "Map Location";
+  static String slotnumber = "Box Slot Number";
+  static String openlocker = "Open Locker";
+  static String contactowner = "Contact Owner";
+  static String typeforrent = "Type For Rent";
+  static String rent1 = "rent 1 slot";
+  static String rent2 = "rent 2 slot";
+  static String rent3 = "rent 3 slot";
+  static String notimeforrent = "No Time For Rent.";
+  static String areyousure = "Are yor sure?";
+  static String rentthis = "Are you confident that you will rent this car?";
 }
 
 class Currency {
   static String thb = "THB";
+}
+class Checkpolicy{
+  static bool checkpolicy;
 }
 
 class ImageProfiles {
@@ -237,6 +320,17 @@ class ImageProfiles {
   static Uint8List drimotorcard;
   static Uint8List idcard;
   static Uint8List universitycard;
+}
+class SearchString {
+  static String university;
+  static String location;
+  static String type;
+}
+
+
+class SetUniversity {
+  static String university;
+  static String location;
 }
 
 enum authProblems { UserNotFound, PasswordNotValid, NetworkError }
@@ -247,6 +341,17 @@ class PickCarColor {
   static var colorcmu = Color.fromARGB(255, 66, 26, 94);
   static var colorFont1 = Color.fromARGB(255, 69, 79, 99);
   static var colorFont2 = Color.fromARGB(255, 148, 145, 145);
+  static var colorbuttom = Color.fromARGB(255, 33, 197, 155);
+}
+class Datasearch {
+  static List<String> boxlocationname = [];
+  static List<double> boxlocationlatitude = [];
+  static List<double> boxlocationlogtitude = [];
+  static int boxlocationindex;
+  static List<String> placelocationname = [];
+  static List<double> placelocationlatitude = [];
+  static List<double> placelocationlogtitude = [];
+  static int placelocationindex;
 }
 
 class GearMotor {
@@ -317,6 +422,7 @@ class DataFetch {
   static int checknotsamenoresult = 0;
   static int checknothaveslottime = 0;
   static int search = 0;
+  static int waitplace = 0;
   static int checkhavepin = 0;
 }
 
@@ -348,8 +454,19 @@ class TypeRental{
   static String singleslot = "Single Slot";
   static String doubleslot = "Double Slot";
 
+  static int waitplace = 0;      
 }
-
+class TimeSearch{
+  static bool time1 = false;
+  static bool time2 = false;
+  static bool time3 = false;
+  static bool time4 = false;
+  static bool time5 = false;
+  static bool time6 = false;
+  static DateTime today = DateTime.now();
+  static DateTime yesterday = today.add(new Duration(days: -1));
+  static DateTime nextmonth = today.add(new Duration(days: 30));
+}
 class TimeSlot {
   //TimeSlot();
 

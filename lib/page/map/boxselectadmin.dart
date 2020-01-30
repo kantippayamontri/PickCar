@@ -12,6 +12,7 @@ import 'dart:ui' as ui;
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/box.dart';
 import 'package:pickcar/models/boxlocation.dart';
+import 'package:pickcar/models/universityplace.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Boxselectadmin extends StatefulWidget {
@@ -20,11 +21,13 @@ class Boxselectadmin extends StatefulWidget {
   double logtitude = 98.951556;
   double latitudemark;
   double logtitudemark;
+  var dataDocument;
   @override
   _BoxselectadminState createState() => _BoxselectadminState();
 }
 
 class _BoxselectadminState extends State<Boxselectadmin> {
+  Universityplaceshow university;
   BitmapDescriptor _markerIcon;
   var textController = TextEditingController();
   List<Marker> allMarkers = [];
@@ -91,11 +94,30 @@ class _BoxselectadminState extends State<Boxselectadmin> {
   }
   fetchData(BuildContext context) async {
     if(DataFetch.checkhavedata == 0){
-      await Firestore.instance.collection('boxlocation').getDocuments().then((data){
-        data.documents.map((data){
-            startmarker(data);
-        }).toList();
-      });
+      await Firestore.instance.collection('boxlocation')
+                              .where('Universityname' , isEqualTo: SetUniversity.university)
+                              .getDocuments()
+                              .then((data){
+                                data.documents.map((data){
+                                    print('asds');
+                                    startmarker(data);
+                                }).toList();
+                              });
+      // print(SetUniversity.university);
+      await Datamanager.firestore.collection('universityplace')
+                      .where('Universityname' , isEqualTo: SetUniversity.university)
+                      .getDocuments()
+                      .then((data){
+                        data.documents.map((data){
+                          print(data);
+                          widget.dataDocument = data;
+                        }).toList();
+                      });
+                      university = Universityplaceshow.fromSnapshot(widget.dataDocument);
+                      widget.latitude = university.latitude;
+                      widget.logtitude = university.longitude;
+                      // print(university.docid);
+                      // print(university.listplace);
     }else{
       return Container();
     }
@@ -186,6 +208,51 @@ class _BoxselectadminState extends State<Boxselectadmin> {
       });
     }
   }
+  showalert(BuildContext context){
+    var data = MediaQuery.of(context);
+        return showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              shape: new RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(20),
+              ),
+              // title: Text('place have same name.'),
+              content: Text('place have same name.',
+                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color:PickCarColor.colorFont1), 
+                ),
+              // TextField(
+              //   controller: textController,
+              //   decoration: InputDecoration(
+              //     hintText: "Put pin name.",
+              //   ),
+              // ),
+              // actions: <Widget>[
+              //   Row(
+              //     children: <Widget>[
+              //       FlatButton(
+              //         child: new Text('CONFIRM'),
+              //         onPressed: () {
+              //           addboxdatabase();
+              //         },
+              //       ),
+              //       FlatButton(
+              //         child: new Text('CANCEL'),
+              //         onPressed: () {
+              //           textController = TextEditingController();
+              //           Navigator.of(context).pop();
+              //         },
+              //       ),
+              //     ],
+              //   )
+              // ],
+            );
+          });
+      // }
+      // else{
+      //   return Container();
+      // }
+    }
   addname(BuildContext context){
     return showDialog(
     context: context,
@@ -213,6 +280,7 @@ class _BoxselectadminState extends State<Boxselectadmin> {
               FlatButton(
                 child: new Text('CANCEL'),
                 onPressed: () {
+                  textController = TextEditingController();
                   Navigator.of(context).pop();
                 },
               ),
@@ -224,10 +292,22 @@ class _BoxselectadminState extends State<Boxselectadmin> {
   }
   addboxdatabase() async {
     print(widget.latitudemark);
-    Boxlocation boxlocation = Boxlocation(
+    var listnull = [];
+    listnull.add(textController.text);
+    List<dynamic> list = university.listplacebox;
+    int samename;
+    if(list !=null){
+      samename = list.indexOf(textController.text);
+    }else{
+      samename = -1;
+    }
+    
+    if(samename == -1){
+     Boxlocation boxlocation = Boxlocation(
       latitude: widget.latitudemark,
       longitude: widget.logtitudemark,
       name: textController.text,
+      universityname: SetUniversity.university,
     );
     var refboxlocation = await Datamanager.firestore.collection('boxlocation')
                           .add(boxlocation.toJson());
@@ -241,6 +321,10 @@ class _BoxselectadminState extends State<Boxselectadmin> {
       boxlocationid: docboxlocationid,
       maxslot: 10,
     );
+    Datamanager.firestore.collection('universityplace')
+                        .document(university.docid)
+                        .updateData({'listplacebox': FieldValue.arrayUnion(listnull)});
+
     var refbox = await Datamanager.firestore.collection('box')
                           .add(box.toJson());
     var docboxid = refbox.documentID;
@@ -266,11 +350,17 @@ class _BoxselectadminState extends State<Boxselectadmin> {
                             setState(() {
                               DataFetch.checkhavedata =0;
                               DataFetch.checkhavepin =0;
+                              allMarkers = [];
                               textController = TextEditingController();
                               _controller = Completer();
                               Navigator.pop(context);
                             });
                           });
+    }else{
+      Navigator.pop(context);
+      textController = TextEditingController();
+      showalert(context);
+    }
     // });
 
   }
@@ -299,7 +389,7 @@ class _BoxselectadminState extends State<Boxselectadmin> {
         centerTitle: true,
         title: Text(UseString.addlocation,
             style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color: Colors.white), 
-        ),
+          ),
         leading: IconButton(
             icon: Icon(Icons.keyboard_arrow_left,
             color: Colors.white,

@@ -4,31 +4,39 @@ import 'package:flutter/cupertino.dart';
 import '../datamanager.dart';
 
 class Listcarslot {
-  List<String> timeslotlist;
-  DateTime dateTime;
+  String time;
+  DateTime startdate;
   int day;
   int month;
   int year;
   double price;
   String motorcycledocid;
   String ownerdocid;
-  String motorforrentdocid;
+  String docid;
   String university;
+  String boxdocid;
+  String boxplacedocid;
+  String boxslotrentdocid;
+  String motorplacelocdocid;
   final DocumentReference reference;
 
   Listcarslot.fromMap(Map<String, dynamic> map, {this.reference})
-     : assert(map['timeslotlist'] != null),
-       assert(map['dateTime'] != null),
+     : assert(map['time'] != null),
+       assert(map['startdate'] != null),
        assert(map['day'] != null),
        assert(map['month'] != null),
        assert(map['year'] != null),
        assert(map['price'] != null),
        assert(map['motorcycledocid'] != null),
        assert(map['ownerdocid'] != null),
-       assert(map['motorforrentdocid'] != null),
+       assert(map['docid'] != null),
        assert(map['university'] != null),
-       timeslotlist = List.from(map['timeslotlist']),
-       dateTime = (map['dateTime'] as Timestamp).toDate(),
+       assert(map['boxdocid'] != null),
+       assert(map['boxplacedocid'] != null),
+       assert(map['boxslotrentdocid'] != null),
+       assert(map['motorplacelocdocid'] != null),
+       time = map['time'],
+       startdate = (map['startdate'] as Timestamp).toDate(),
        day = map['day'],
        month = map['month'],
        year = map['year'],
@@ -36,8 +44,11 @@ class Listcarslot {
        motorcycledocid = map['motorcycledocid'],
        ownerdocid = map['ownerdocid'],
        university = map['university'],
-       
-       motorforrentdocid = map['motorforrentdocid'];
+       docid = map['docid'],
+       boxdocid = map['boxdocid'],
+       boxplacedocid = map['boxplacedocid'],
+       motorplacelocdocid = map['motorplacelocdocid'],
+       boxslotrentdocid = map['boxslotrentdocid'];
 
   Listcarslot.fromSnapshot(DocumentSnapshot snapshot)
      : this.fromMap(snapshot.data, reference: snapshot.reference);

@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
+import 'package:pickcar/page/example.dart';
 import 'package:pickcar/page/listcarpage.dart';
 import 'package:pickcar/page/loginpage.dart';
+import 'package:pickcar/page/mainloginpage.dart';
+import 'package:pickcar/page/map/bookedmap.dart';
 import 'package:pickcar/page/map/boxselectadmin.dart';
 import 'package:pickcar/page/map/mapboxselect.dart';
 import 'package:pickcar/page/map/mapaddmark.dart';
 import 'package:pickcar/page/map/mapplaceselect.dart';
 import 'package:pickcar/page/map/placeselectadmin.dart';
 import 'package:pickcar/page/map/registermap.dart';
+import 'package:pickcar/page/map/selectUniversity.dart';
 import 'package:pickcar/page/motorbooklistpage.dart';
+import 'package:pickcar/page/openkey.dart';
 import 'package:pickcar/page/profile/editprofile/NewPassword.dart';
 import 'package:pickcar/page/profile/editprofile/changepassword.dart';
 import 'package:pickcar/page/profile/editprofile/editdetail.dart';
 import 'package:pickcar/page/profile/editprofile/editprofile.dart';
 import 'package:pickcar/page/profile/editprofile/emailsend.dart';
+import 'package:pickcar/page/receivecar.dart';
 import 'package:pickcar/page/register/carregisterpage.dart';
 import 'package:pickcar/page/register/motorregisterpage.dart';
 import 'package:pickcar/page/register/registerpage.dart';
@@ -21,9 +27,12 @@ import 'package:pickcar/page/rental/rentalpage.dart';
 import 'package:pickcar/page/searchpage/confirmpage.dart';
 import 'package:pickcar/page/searchpage/detailsearch.dart';
 import 'package:pickcar/page/searchpage/listcar.dart';
+import 'package:pickcar/page/searchpage/search.dart';
 import 'package:pickcar/page/searchpage/slottimeselect.dart';
 import 'package:pickcar/page/signuppage.dart';
 import 'package:pickcar/page/tabscreen.dart';
+import 'package:pickcar/page/map/maplocation.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -41,6 +50,7 @@ class MyApp extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   color: PickCarColor.colormain))),
       routes: {
+        Datamanager.mainloginpage: (ctx) => Mainloginpage(),
         Datamanager.loginpage: (ctx) => LoginPage(),
         Datamanager.signuppage : (ctx) => SignUpPage(),
         Datamanager.tabpage : (ctx) => TabScreenPage(),
@@ -65,6 +75,13 @@ class MyApp extends StatelessWidget {
         Datamanager.mapboxselect : (ctx) => Mapboxselect(),
         Datamanager.placeselectadmin : (ctx) => Placeselectadmin(),
         Datamanager.mapplaceselect : (ctx) => Mapplaceselect(),
+        Datamanager.selectUniversity : (ctx) => SelectUniversity(),
+        Datamanager.receivecar : (ctx) => Receivecar(),
+        Datamanager.bookedmap : (ctx) => Bookedmap(),
+        Datamanager.openkey : (ctx) => Openkey(),
+        Datamanager.animatedContainerApp : (ctx) => AnimatedContainerApp(),
+        Datamanager.search : (ctx) => SearchPage(),
+        Datamanager.maplocation : (ctx) => Maplocation(),
         //'loginpickcarpage': (ctx) => LoginPickCarPage()
       },
       onGenerateRoute: (setting) {},

@@ -2,34 +2,39 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
 class Booking {
-  String tiems;
+  String times;
   int day;
   int month;
   int year;
   double price;
   String motorcycledocid;
-  String motorforrentdocid;
   String ownerid;
   String myid;
   String bookingdocid;
+  String boxdocid;
+  String boxplacedocid;
+  String boxslotrentdocid;
+  String motorplacelocdocid;
 
  
   Booking({
-    @required this.tiems,
+    @required this.times,
     @required this.day,
     @required this.month,
     @required this.year,
     @required this.price,
     @required this.motorcycledocid,
-    @required this.motorforrentdocid,
     @required this.ownerid,
     @required this.myid,
     @required this.bookingdocid,
+    @required this.boxdocid,
+    @required this.boxplacedocid,
+    @required this.boxslotrentdocid,
+    @required this.motorplacelocdocid,
   }) {}
 
    Map<String , Object> toJson(){
     return {
-      'motorforrentdocid' : this.motorforrentdocid,
       'motorcycledocid' : this.motorcycledocid,
       'bookingdocid' : this.bookingdocid,
       'price' : this.price,
@@ -38,7 +43,58 @@ class Booking {
       'day' : this.day,
       'month' : this.month,
       'year' : this.year,
-      'time' : this.tiems,
+      'time' : this.times,
+      'boxdocid' : this.boxdocid,
+      'boxplacedocid' : this.boxplacedocid,
+      'boxslotrentdocid' : this.boxslotrentdocid,
+      'motorplacelocdocid' : this.motorplacelocdocid,
     };
   }
+}
+class Bookingshow {
+  String time;
+  int day;
+  int month;
+  int year;
+  double price;
+  String motorcycledocid;
+  String ownerid;
+  String myid;
+  String bookingdocid;
+  String boxdocid;
+  String boxplacedocid;
+  String boxslotrentdocid;
+  String motorplacelocdocid;
+  final DocumentReference reference;
+
+  Bookingshow.fromMap(Map<String, dynamic> map, {this.reference})
+     : assert(map['time'] != null),
+       assert(map['day'] != null),
+       assert(map['month'] != null),
+       assert(map['year'] != null),
+       assert(map['price'] != null),
+       assert(map['motorcycledocid'] != null),
+       assert(map['ownerid'] != null),
+       assert(map['myid'] != null),
+       assert(map['bookingdocid'] != null),
+       assert(map['boxdocid'] != null),
+       assert(map['boxplacedocid'] != null),
+       assert(map['boxslotrentdocid'] != null),
+       assert(map['motorplacelocdocid'] != null),
+       time = map['time'],
+       day = map['day'],
+       month = map['month'],
+       year = map['year'],
+       price = map['price'],
+       motorcycledocid = map['motorcycledocid'],
+       ownerid = map['ownerid'],
+       myid = map['myid'],
+       bookingdocid = map['bookingdocid'],
+       boxdocid = map['boxdocid'],
+       boxplacedocid = map['ownerid'],
+       boxslotrentdocid = map['myid'],
+       motorplacelocdocid = map['bookingdocid'];
+
+  Bookingshow.fromSnapshot(DocumentSnapshot snapshot)
+     : this.fromMap(snapshot.data, reference: snapshot.reference);
 }

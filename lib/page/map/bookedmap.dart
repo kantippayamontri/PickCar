@@ -8,35 +8,35 @@ import 'package:location/location.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'dart:ui' as ui;
+
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/boxlocation.dart';
-import 'package:pickcar/models/placelocation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Mapplaceselect extends StatefulWidget {
+class Bookedmap extends StatefulWidget {
   double zoom = 14;
   double latitude = 18.802587;
   double logtitude = 98.951556;
   double latitudemark;
   double logtitudemark;
-  int i = 0;
+  List box = [];
+  int i=0;
   @override
-  _MapplaceselectState createState() => _MapplaceselectState();
+  _BookedmapState createState() => _BookedmapState();
 }
 
-class _MapplaceselectState extends State<Mapplaceselect> {
+class _BookedmapState extends State<Bookedmap> {
   BitmapDescriptor _markerIcon;
   var textController = TextEditingController();
   List<Marker> allMarkers = [];
   @override
   void initState(){
-    Datamanager.placelocationshow =null;
     DataFetch.checkhavedata =0;
-    Datamanager.placelocationshow = null;
-    Datasearch.placelocationname = [];
-    Datasearch.placelocationlatitude = [];
-    Datasearch.placelocationlogtitude = [];
-    Datasearch.placelocationindex = null;
+    Datamanager.boxlocationshow = null;
+    Datasearch.boxlocationname = [];
+    Datasearch.boxlocationlatitude = [];
+    Datasearch.boxlocationlogtitude = [];
+    Datasearch.boxlocationindex = null;
     //bankok
     widget.latitude = 13.736717;
     widget.logtitude = 100.523186;
@@ -46,14 +46,16 @@ class _MapplaceselectState extends State<Mapplaceselect> {
     super.initState();
   }
   startmarker(DocumentSnapshot data){
-    PlacelocationShow placeshow = PlacelocationShow.fromSnapshot(data);
-    if(Datasearch.placelocationname.indexOf(placeshow.name) == -1){
-      Datasearch.placelocationname.add(placeshow.name);
-      Datasearch.placelocationlatitude.add(placeshow.latitude);
-      Datasearch.placelocationlogtitude.add(placeshow.longitude);
+    BoxlocationShow boxshow = BoxlocationShow.fromSnapshot(data);
+    // print(boxshow.name);
+    if(Datasearch.boxlocationname.indexOf(boxshow.name) == -1){
+      Datasearch.boxlocationname.add(boxshow.name);
+      Datasearch.boxlocationlatitude.add(boxshow.latitude);
+      Datasearch.boxlocationlogtitude.add(boxshow.longitude);
     }
-    var latitude = placeshow.latitude;
-    var logitude = placeshow.longitude;
+    
+    var latitude = boxshow.latitude;
+    var logitude = boxshow.longitude;
      String googleUrl =
         'https://www.google.com/maps/search/?api=1&query=$latitude,$logitude';
     allMarkers.add(
@@ -62,10 +64,10 @@ class _MapplaceselectState extends State<Mapplaceselect> {
         markerId: MarkerId((widget.i++).toString()),
         draggable: false,
         onTap: (){
-          Datamanager.placelocationshow = placeshow;
+          Datamanager.boxlocationshow = boxshow;
         },
         infoWindow: InfoWindow(
-          title: placeshow.name,
+          title: boxshow.name,
           snippet: 'Tap here to open in google map.',
           onTap: () async {
             if (await canLaunch(googleUrl)) {
@@ -75,8 +77,8 @@ class _MapplaceselectState extends State<Mapplaceselect> {
           },
         ),
         position: LatLng(
-          placeshow.latitude,
-          placeshow.longitude
+          boxshow.latitude,
+          boxshow.longitude
         ),
       ),
     );
@@ -84,7 +86,7 @@ class _MapplaceselectState extends State<Mapplaceselect> {
   }
   fetchData(BuildContext context) async {
     if(DataFetch.checkhavedata == 0){
-      await Firestore.instance.collection('placelocation').getDocuments().then((data){
+      await Firestore.instance.collection('boxlocation').getDocuments().then((data){
         data.documents.map((data){
             startmarker(data);
         }).toList();
@@ -125,7 +127,7 @@ class _MapplaceselectState extends State<Mapplaceselect> {
   }
   Future _createMarkerImageFromAsset(BuildContext context) async {
     if (_markerIcon == null) {
-     final Uint8List markerIcon = await getBytesFromAsset('assets/images/imagemap/place.png', 200);
+     final Uint8List markerIcon = await getBytesFromAsset('assets/images/imagemap/key.png', 200);
       BitmapDescriptor bmpd = BitmapDescriptor.fromBytes(markerIcon);
       setState(() {
         _markerIcon = bmpd;
@@ -140,13 +142,12 @@ class _MapplaceselectState extends State<Mapplaceselect> {
         shape: new RoundedRectangleBorder(
           borderRadius: new BorderRadius.circular(20),
         ),
-        title: Text(Datamanager.placelocationshow.name),
+        title: Text(Datamanager.boxlocationshow.name),
         content: Row(
           children: <Widget>[
             RaisedButton(
               child: Text('Confirm'),
               onPressed: (){
-                print(Datamanager.placelocationshow.name);
                 Navigator.pop(context);
                 Navigator.pop(context);
               },
@@ -155,7 +156,7 @@ class _MapplaceselectState extends State<Mapplaceselect> {
             RaisedButton(
               child: Text('Cancel'),
               onPressed: (){
-                Datamanager.placelocationshow = null;
+                Datamanager.boxlocationshow = null;
                 Navigator.pop(context);
               },
             ),
@@ -187,7 +188,7 @@ class _MapplaceselectState extends State<Mapplaceselect> {
             fit: BoxFit.cover,
           ),
         centerTitle: true,
-        title: Text(UseString.addlocation,
+        title: Text(UseString.maploacation,
             style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color: Colors.white), 
         ),
         leading: IconButton(
@@ -199,23 +200,6 @@ class _MapplaceselectState extends State<Mapplaceselect> {
               Navigator.pop(context);
             },
           ),
-        actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.search,
-              color: Colors.white,
-              ),
-              onPressed: () async {
-                // _controller = Completer();
-                Datasearch.placelocationindex =null;
-                showSearch(context: context,delegate:Searchmap()).then((onValue) async {
-                  GoogleMapController controller = await _controller.future;
-                  controller.animateCamera(CameraUpdate.newLatLngZoom(
-                    LatLng(Datasearch.placelocationlatitude[Datasearch.placelocationindex]
-                    ,Datasearch.placelocationlogtitude[Datasearch.placelocationindex]), 17.0));
-                });
-              },
-            ),
-          ],
         ),
         drawer: Drawer(),
         body: Container(
@@ -238,33 +222,8 @@ class _MapplaceselectState extends State<Mapplaceselect> {
                   Datamanager.boxlocationshow =null;
                 },
               ),
-              Container(
-                margin: EdgeInsets.only(left: 120,top: 520),
-                width: 170,
-                height: 60,
-                // color: Colors.black,
-                child: FlatButton(
-                  color: PickCarColor.colormain,
-                  onPressed: (){
-                    if(Datamanager.placelocationshow != null){
-                      addname(context);
-                    }
-                  },
-                  shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(18.0),
-                    // side: BorderSide(color: Colors.red)
-                  ),
-                  child: Text(UseString.selectplace,
-                    style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*25,color: Colors.white),
-                  ),
-                ),
-              ),
             ],
           ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: getlocationnow,
-          child: Icon(Icons.near_me),
         ),
       );
     }else{
@@ -300,84 +259,4 @@ class _MapplaceselectState extends State<Mapplaceselect> {
     textController.dispose();
     super.dispose();
   }
-}
-
-class Searchmap extends SearchDelegate<String> {
-  // final data = ["asssssd","b"];
-  // final suggest = ["cadad","d"];
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [IconButton(
-        icon: Icon(Icons.clear),
-        onPressed:(){
-          query ='';
-        },
-      )];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: AnimatedIcon(
-        icon: AnimatedIcons.menu_arrow,
-        progress: transitionAnimation,
-      ),
-      onPressed: (){
-        close(context,null);
-      },
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    var data = MediaQuery.of(context);
-    var index = Datasearch.placelocationname.indexOf(query);
-    if(index != -1){
-      Datasearch.placelocationindex = index;
-      close(context,null);
-      return Container();
-    }else{
-      return Center(
-        child: Text(UseString.notfound,
-            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*30,color: PickCarColor.colorFont1), 
-         ),
-      );
-    }
-    
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    final suggestionList = query.isEmpty ? Datasearch.placelocationname
-        :Datasearch.placelocationname.where((p) => p.startsWith(query)).toList();
-    return ListView.builder(
-      itemBuilder: (context,index){
-        return ListTile(
-          onTap: (){
-            // showResults(context);
-            Datasearch.placelocationindex = index;
-            close(context,null);
-            // print(index);
-            
-          },
-          leading: Icon(Icons.location_city),
-          title: RichText(
-            text: TextSpan(
-              text: suggestionList[index].substring(0,query.length),
-              style: TextStyle(
-                color: Colors.black,fontWeight: FontWeight.bold),
-              children: [
-                TextSpan(
-                  text: suggestionList[index].substring(query.length),
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-      itemCount: suggestionList.length,
-    );
-  }
-
 }
