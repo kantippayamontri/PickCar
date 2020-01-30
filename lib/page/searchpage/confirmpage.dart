@@ -778,8 +778,10 @@ class _ConfirmPageState extends State<ConfirmPage> {
                     width: 130,
                     height: 65,
                     // color: Colors.black,
-                    child: Text(UseString.getkey,
-                        style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*22,color: PickCarColor.colorcmu), 
+                    child: Center(
+                      child: Text(Datamanager.boxlocationshow.name,
+                          style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*22,color: PickCarColor.colorcmu), 
+                      ),
                     ),
                   ),
                 ],

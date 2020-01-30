@@ -130,9 +130,16 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
                     children: <Widget>[
                       Container(
                         margin: EdgeInsets.only(top: 20,left: 30),
-                        width: 100,
+                        width: 150,
                         height: 100,
-                        child: Image.network(widget.motorshow.motorfrontlink,fit: BoxFit.fill,),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          image: DecorationImage(
+                            image: NetworkImage(widget.motorshow.motorfrontlink),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                        // child: Image.network(widget.motorshow.motorfrontlink,fit: BoxFit.fill,),
                       ),
                       Column(
                         children: <Widget>[

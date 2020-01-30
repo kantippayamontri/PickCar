@@ -23,10 +23,10 @@ class _ReceivecarState extends State<Receivecar> {
   CarouselSlider carouselSlider;
   int _current = 0;
   List imgList = [
-    'https://i.ytimg.com/vi/I1a_UBrfdII/maxresdefault.jpg',
-    'https://livitaly-666b.kxcdn.com/wp-content/uploads/2018/10/85382-cinque-terre-tour-from-La-Spezia-hike-boat-train-and-sightsee-4-750x510.jpg',
-    'https://thumbs.dreamstime.com/b/rome-italy-august-people-sightsee-vatican-museums-163445616.jpg',
-    'https://admin.freetour.com/images/tours/6989/runsightsee-04.jpg',
+    'https://www.toyota.co.th/news/getimage/6d5qbKdA',
+    'https://www.thairath.co.th/media/B6FtNKtgSqRqbnNsU1dGNakSC6FY0Bv3IJ5ZVKDe1kjr9tv264EkJPeNRW5tAaFzc86GY.jpg',
+    'https://www.autodeft.com/_files/images/full/2019-11-11/JN5WUDE0.jpg',
+    'https://www.thairath.co.th/media/B6FtNKtgSqRqbnNsU1dGNakSC6FY0Bv3IJ5ZVKDe1kjr9tv264EkJPeNRW5tAaFzc86GY.jpg',
   ];
  
   List<T> map<T>(List list, Function handler) {
@@ -292,7 +292,7 @@ class _ReceivecarState extends State<Receivecar> {
                   children: <Widget>[
                     Container(
                       margin: EdgeInsets.only(top: 10,left: 10),
-                      child: Text(UseString.name,
+                      child: Text('toyota yaris',
                           style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*30,color: PickCarColor.colorFont1), 
                       ),
                     ),
@@ -329,7 +329,7 @@ class _ReceivecarState extends State<Receivecar> {
                                       width: MediaQuery.of(context).size.width,
                                       margin: EdgeInsets.symmetric(horizontal: 10.0),
                                       decoration: BoxDecoration(
-                                        color: Colors.green,
+                                        color: Colors.white,
                                       ),
                                       child: Image.network(
                                         imgUrl,
@@ -367,14 +367,14 @@ class _ReceivecarState extends State<Receivecar> {
                     Container(
                       alignment: Alignment.centerLeft,
                       margin: EdgeInsets.only(top: 10,left: 10),
-                      child: Text(UseString.date+" : "+'25 January 2020',
+                      child: Text(UseString.date+" : "+'31 January 2020',
                           style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorFont1), 
                       ),
                     ),
                     Container(
                       alignment: Alignment.centerLeft,
                       margin: EdgeInsets.only(top: 10,left: 10),
-                      child: Text(UseString.time+" : "+'9:30 - 11.00',
+                      child: Text(UseString.time+" : "+'8:00 - 9.15',
                           style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorFont1), 
                       ),
                     ),

@@ -306,6 +306,7 @@ class UseString {
   static String notimeforrent = "No Time For Rent.";
   static String areyousure = "Are yor sure?";
   static String rentthis = "Are you confident that you will rent this car?";
+  static String pickcar = "PickCar";
 }
 
 class Currency {
