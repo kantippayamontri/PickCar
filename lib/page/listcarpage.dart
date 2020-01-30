@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:pickcar/bloc/listcar/listcarbloc.dart';
 import 'package:pickcar/bloc/listcar/listcarevent.dart';
 import 'package:pickcar/bloc/listcar/listcarstate.dart';
 import 'package:pickcar/datamanager.dart';
+import 'package:pickcar/models/booking.dart';
+import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/page/registercarlist.dart';
 import 'package:pickcar/widget/listcar/listcatitem.dart';
@@ -26,7 +30,46 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
     _listCarBloc.add(ListCarLoadingDataEvent());
     super.initState();
   }
-
+  String monthy(int month) {
+    switch (month) {
+      case 1:
+        return 'Jan';
+        break;
+      case 2:
+        return 'Feb';
+        break;
+      case 3:
+        return 'Mar';
+        break;
+      case 4:
+        return 'Apr';
+        break;
+      case 5:
+        return 'May';
+        break;
+      case 6:
+        return 'Jun';
+        break;
+      case 7:
+        return 'Jul';
+        break;
+      case 8:
+        return 'Aug';
+        break;
+      case 9:
+        return 'Sep';
+        break;
+      case 10:
+        return 'Oct';
+        break;
+      case 11:
+        return 'Nov';
+        break;
+      default:
+        return 'Dec';
+        break;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     var data = MediaQuery.of(context);
@@ -50,14 +93,116 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
     ];
     TabController _tabController;
     _tabController = new TabController(vsync: this, length: myTabs.length,initialIndex: widget.indicatorpage);
+     Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
+      var datasize = MediaQuery.of(context);
+      Bookingshow bookingshow = Bookingshow.fromSnapshot(data);
+      return GestureDetector(
+        onTap: (){
+          print(bookingshow.time);
+        },
+        child: Stack(
+          children: <Widget>[
+            Container(
+              width: datasize.size.width,
+              height: 150,
+              child: Image.asset('assets/images/imagesearch/card.png',fit: BoxFit.fill,),
+            ),
+            FutureBuilder<DocumentSnapshot>(
+              future: Firestore.instance.collection('Motorcycle').document(bookingshow.motorcycledocid).get(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: Container(
+                      margin: EdgeInsets.only(top: 50),
+                      child: SpinKitCircle(
+                        color: PickCarColor.colormain,
+                      ),
+                    ),
+                  );
+                }else if(snapshot.hasData){
+                  var motorshow = MotorcycleShow.fromSnapshot(snapshot.data);
+                  // print(snapshot.data.documents);
+                  // return Container();
+                  return Row(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(top: 20,left: 30),
+                        width: 100,
+                        height: 100,
+                        child: Image.network(motorshow.motorfrontlink,fit: BoxFit.fill,),
+                      ),
+                      Column(
+                        children: <Widget>[
+                          SizedBox(height: 15,),
+                          Container(
+                            margin: EdgeInsets.only(left: 10),
+                            child: Text(motorshow.brand +" "+ motorshow.generation,
+                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*25,color: PickCarColor.colormain), 
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            // margin: EdgeInsets.only(left: 10),
+                            child: Text(UseString.date +" : "+ bookingshow.day.toString()+" "+monthy(bookingshow.month)+" "+bookingshow.year.toString(),
+                              style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*20,color: PickCarColor.colorFont1), 
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            margin: EdgeInsets.only(left: 10),
+                            child: Text(UseString.time +" : "+ bookingshow.time,
+                              style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*20,color: PickCarColor.colorFont1), 
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            margin: EdgeInsets.only(left: 10),
+                            child: Text(UseString.price +" : "+ bookingshow.price.toString()+'฿',
+                              style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*20,color: PickCarColor.colorFont1), 
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                }else{
+                  return Container();
+                }
+              },
+            ),
+          ],
+        ),
+      );
+    }
+    Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
+      return ListView(
+        padding: const EdgeInsets.only(top: 20.0),
+        children: snapshot.map((data) => _buildListItem(context, data)).toList(),
+      );
+    }
     body(BuildContext context){
       if(widget.indicatorpage == 0){
-        return RaisedButton(
-          onPressed: (){
-            Navigator.of(context).pushNamed(Datamanager.receivecar);
+        // return RaisedButton(
+        //   onPressed: (){
+        //     Navigator.of(context).pushNamed(Datamanager.receivecar);
+        //   },
+        //   child: Text('goto receive booked'),
+        // );
+        return StreamBuilder<QuerySnapshot>(
+          stream: Firestore.instance.collection('Booking')
+                      .where("myid", isEqualTo: Datamanager.user.documentid)
+                      .orderBy("day")
+                      .snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Container();
+            }else{
+              // print(snapshot.data.documents);
+              // return Container();
+              return _buildList(context, snapshot.data.documents);
+            }
           },
-          child: Text('goto receive booked'),
-        );
+        ); 
       }else{
         return Registercarlist();
       }
@@ -88,10 +233,10 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
         ),
         leading: IconButton(
           icon: Icon(Icons.keyboard_arrow_left,
-          color: Colors.white,
+          color: Colors.transparent,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            // Navigator.pop(context);
           },
         ),
       ),

@@ -51,3 +51,50 @@ class Booking {
     };
   }
 }
+class Bookingshow {
+  String time;
+  int day;
+  int month;
+  int year;
+  double price;
+  String motorcycledocid;
+  String ownerid;
+  String myid;
+  String bookingdocid;
+  String boxdocid;
+  String boxplacedocid;
+  String boxslotrentdocid;
+  String motorplacelocdocid;
+  final DocumentReference reference;
+
+  Bookingshow.fromMap(Map<String, dynamic> map, {this.reference})
+     : assert(map['time'] != null),
+       assert(map['day'] != null),
+       assert(map['month'] != null),
+       assert(map['year'] != null),
+       assert(map['price'] != null),
+       assert(map['motorcycledocid'] != null),
+       assert(map['ownerid'] != null),
+       assert(map['myid'] != null),
+       assert(map['bookingdocid'] != null),
+       assert(map['boxdocid'] != null),
+       assert(map['boxplacedocid'] != null),
+       assert(map['boxslotrentdocid'] != null),
+       assert(map['motorplacelocdocid'] != null),
+       time = map['time'],
+       day = map['day'],
+       month = map['month'],
+       year = map['year'],
+       price = map['price'],
+       motorcycledocid = map['motorcycledocid'],
+       ownerid = map['ownerid'],
+       myid = map['myid'],
+       bookingdocid = map['bookingdocid'],
+       boxdocid = map['boxdocid'],
+       boxplacedocid = map['ownerid'],
+       boxslotrentdocid = map['myid'],
+       motorplacelocdocid = map['bookingdocid'];
+
+  Bookingshow.fromSnapshot(DocumentSnapshot snapshot)
+     : this.fromMap(snapshot.data, reference: snapshot.reference);
+}
