@@ -20,12 +20,9 @@ class MotorWaitingListPage extends StatefulWidget {
 
 class _MotorWaitingListPageState extends State<MotorWaitingListPage> {
   MotorWaitingListBloc _motorWaitingListBloc;
-  
 
   void setstate() {
-    setState(() {
-      
-    });
+    setState(() {});
   }
 
   @override
@@ -37,7 +34,6 @@ class _MotorWaitingListPageState extends State<MotorWaitingListPage> {
         setstate: setstate);
 
     _motorWaitingListBloc.add(MotorWaitingListLoadDataEvent());
-   
   }
 
   @override
@@ -59,32 +55,37 @@ class _MotorWaitingListPageState extends State<MotorWaitingListPage> {
               }
 
               if (state is MotorWaitingShowDataState) {
-                return SizedBox();
-                
-                /*LayoutBuilder(
+                return 
+
+                LayoutBuilder(
                   builder: (ctx, constraint) {
                     return ListView(
-                      children: _motorWaitingListBloc.motorcycletimeslotlist
-                          .map((motorslot) => Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  MotorWaitingListItem(
-                                    key: UniqueKey(),
-                                    constraints: constraint,
-                                    motorcycle:
-                                        _motorWaitingListBloc.motorcycle,
-                                    motorWaitingListItem: motorslot,
-                                    deleteslot:
-                                        _motorWaitingListBloc.deleteslot,
-                                    editslot: _motorWaitingListBloc.editslot,
-                                    showbottomsheet: _motorWaitingListBloc.showbottomsheet,
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  )
-                                ],
-                              ))
-                          .toList(),
+                      children: //_motorWaitingListBloc.motorcycletimeslotlist
+                          _motorWaitingListBloc.singleforrentlist
+                              .map((sgfr) => Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      MotorWaitingListItem(
+                                          key: UniqueKey(),
+                                          constraints: constraint,
+                                          motorcycle:
+                                              _motorWaitingListBloc.motorcycle,
+                                          //motorWaitingListItem: motorslot,
+                                          singleForrent: sgfr,
+                                          deleteslot:
+                                              //_motorWaitingListBloc.deleteslot,
+                                              () {},
+                                          editslot: //_motorWaitingListBloc.editslot,
+                                              () {},
+                                          showbottomsheet: //_motorWaitingListBloc.showbottomsheet,
+                                              () {}),
+                                      SizedBox(
+                                        height: 10,
+                                      )
+                                    ],
+                                  ))
+                              .toList(),
                     );
 
                     /*Center(
@@ -182,7 +183,7 @@ class _MotorWaitingListPageState extends State<MotorWaitingListPage> {
                       ),
                     );*/
                   },
-                );*/
+                );
               }
 
               return SizedBox();

@@ -32,7 +32,7 @@ class SingleForrent{
     @required this.year,
     @required this.boxslotdocid,
     @required this.motorplacelocdocid,
-    @required this.startdate
+    @required this.startdate,
     
   });
 

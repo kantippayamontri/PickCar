@@ -49,11 +49,33 @@ class MotorWaitingListBloc
         //.where('motorcycledocid' , isEqualTo: this.motorcycle.firestoredocid)
         .orderBy('startdate')
         .getDocuments();
-    var singlelist = querySnapshot.documents; //querySnapshot.documents.where((doc) => doc['motorcycledocid'] == this.motorcycle);
+    var singlelist = querySnapshot
+        .documents; //querySnapshot.documents.where((doc) => doc['motorcycledocid'] == this.motorcycle);
     print("in load all data function " + singlelist.length.toString());
     print("motor docid :" + this.motorcycle.firestoredocid);
-    for(var doc in singlelist){
+    for (var doc in singlelist) {
       print(doc['day'].toString() + " " + doc['time']);
+
+      SingleForrent sgfr = SingleForrent(
+        boxdocid: doc['boxdocid'],
+        boxplacedocid: doc['boxplacedocid'],
+        boxslotdocid: doc['boxslotdocid'],
+        day: doc['day'],
+        month: doc['month'],
+        motorcycledocid: doc['motorcycledocid'],
+        motorplacelocdocid: doc['motorplacelocdocid'],
+        ownerdocid: doc['ownerdocid'],
+        price: doc['price'],
+        startdate: (doc['startdate'] as Timestamp).toDate(),
+        time: doc['time'],
+        university: doc['university'],
+        year: doc['year'],
+      );
+
+      sgfr.boxslotrentdocid = doc['boxslotrentdocid'];
+      sgfr.docid = doc['docid'];
+
+      this.singleforrentlist.add(sgfr);
     }
   }
 
