@@ -14,6 +14,7 @@ import 'package:pickcar/widget/listcar/listcatitem.dart';
 
 class ListCarPage extends StatefulWidget {
   int indicatorpage = 0;
+  var motorshow;
   int i =0;
   @override
   _ListCarPageState createState() => _ListCarPageState();
@@ -98,7 +99,9 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
       Bookingshow bookingshow = Bookingshow.fromSnapshot(data);
       return GestureDetector(
         onTap: (){
-          print(bookingshow.time);
+          Datamanager.booking = bookingshow;
+          Datamanager.motorcycleShow = widget.motorshow;
+          Navigator.of(context).pushNamed(Datamanager.receivecar);
         },
         child: Stack(
           children: <Widget>[
@@ -120,7 +123,7 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
                     ),
                   );
                 }else if(snapshot.hasData){
-                  var motorshow = MotorcycleShow.fromSnapshot(snapshot.data);
+                  widget.motorshow = MotorcycleShow.fromSnapshot(snapshot.data);
                   // print(snapshot.data.documents);
                   // return Container();
                   return Row(
@@ -129,14 +132,14 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
                         margin: EdgeInsets.only(top: 20,left: 30),
                         width: 100,
                         height: 100,
-                        child: Image.network(motorshow.motorfrontlink,fit: BoxFit.fill,),
+                        child: Image.network(widget.motorshow.motorfrontlink,fit: BoxFit.fill,),
                       ),
                       Column(
                         children: <Widget>[
                           SizedBox(height: 15,),
                           Container(
                             margin: EdgeInsets.only(left: 10),
-                            child: Text(motorshow.brand +" "+ motorshow.generation,
+                            child: Text(widget.motorshow.brand +" "+ widget.motorshow.generation,
                                 style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*25,color: PickCarColor.colormain), 
                             ),
                           ),

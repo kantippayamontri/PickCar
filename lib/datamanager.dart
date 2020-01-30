@@ -12,6 +12,7 @@ import 'package:pickcar/page/searchpage/search.dart';
 import 'package:pickcar/page/setting/settingpage.dart';
 import 'dart:typed_data';
 
+import 'models/booking.dart';
 import 'models/boxlocation.dart';
 import 'models/pincar.dart';
 import 'models/universityplace.dart';
@@ -64,6 +65,7 @@ class Datamanager {
   static Listcarslot listcarslot;
   static Slottime slottime;
   static Pincar pincar;
+  static Bookingshow booking;
   static BoxlocationShow boxlocationshow;
   static PlacelocationShow placelocationshow;
   static List<Universityplaceshow> universityshow = [];
