@@ -27,7 +27,6 @@ class Bookedmap extends StatefulWidget {
 
 class _BookedmapState extends State<Bookedmap> {
   BitmapDescriptor _markerIcon;
-  var textController = TextEditingController();
   List<Marker> allMarkers = [];
   @override
   void initState(){
@@ -37,64 +36,45 @@ class _BookedmapState extends State<Bookedmap> {
     Datasearch.boxlocationlatitude = [];
     Datasearch.boxlocationlogtitude = [];
     Datasearch.boxlocationindex = null;
-    //bankok
-    widget.latitude = 13.736717;
-    widget.logtitude = 100.523186;
-    //chiangmai university
-    widget.latitude = 18.802587;
-    widget.logtitude = 98.951556;
+    widget.latitude = Datamanager.placelocationshow.latitude;
+    widget.logtitude = Datamanager.placelocationshow.longitude;
     super.initState();
   }
-  startmarker(DocumentSnapshot data){
-    BoxlocationShow boxshow = BoxlocationShow.fromSnapshot(data);
-    // print(boxshow.name);
-    if(Datasearch.boxlocationname.indexOf(boxshow.name) == -1){
-      Datasearch.boxlocationname.add(boxshow.name);
-      Datasearch.boxlocationlatitude.add(boxshow.latitude);
-      Datasearch.boxlocationlogtitude.add(boxshow.longitude);
-    }
-    
-    var latitude = boxshow.latitude;
-    var logitude = boxshow.longitude;
-     String googleUrl =
-        'https://www.google.com/maps/search/?api=1&query=$latitude,$logitude';
-    allMarkers.add(
-      Marker(
-        icon: _markerIcon,
-        markerId: MarkerId((widget.i++).toString()),
-        draggable: false,
-        onTap: (){
-          Datamanager.boxlocationshow = boxshow;
-        },
-        infoWindow: InfoWindow(
-          title: boxshow.name,
-          snippet: 'Tap here to open in google map.',
-          onTap: () async {
-            if (await canLaunch(googleUrl)) {
-              await launch(googleUrl);
-            } else {
-            }
+  startmarker(){
+    if(DataFetch.checkhavedata ==0){
+      var latitude = Datamanager.placelocationshow.latitude;
+      var longitude = Datamanager.placelocationshow.longitude;
+      String googleUrl =
+          'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
+      allMarkers.add(
+        Marker(
+          icon: _markerIcon,
+          markerId: MarkerId((widget.i++).toString()),
+          draggable: false,
+          onTap: (){
           },
+          infoWindow: InfoWindow(
+            title: Datamanager.placelocationshow.name,
+            snippet: 'Tap here to open in google map.',
+            onTap: () async {
+              if (await canLaunch(googleUrl)) {
+                await launch(googleUrl);
+              } else {
+              }
+            },
+          ),
+          position: LatLng(
+            latitude,
+            longitude
+          ),
         ),
-        position: LatLng(
-          boxshow.latitude,
-          boxshow.longitude
-        ),
-      ),
-    );
-    // print(i);
-  }
-  fetchData(BuildContext context) async {
-    if(DataFetch.checkhavedata == 0){
-      await Firestore.instance.collection('boxlocation').getDocuments().then((data){
-        data.documents.map((data){
-            startmarker(data);
-        }).toList();
+      );
+      DataFetch.checkhavedata =1;
+      setState(() {
       });
-    }else{
-      return Container();
     }
     
+    // print(i);
   }
   Completer<GoogleMapController> _controller = Completer();
   Future<LocationData> getCurrentLocation() async {
@@ -127,7 +107,7 @@ class _BookedmapState extends State<Bookedmap> {
   }
   Future _createMarkerImageFromAsset(BuildContext context) async {
     if (_markerIcon == null) {
-     final Uint8List markerIcon = await getBytesFromAsset('assets/images/imagemap/key.png', 200);
+     final Uint8List markerIcon = await getBytesFromAsset('assets/images/imagemap/car.png', 200);
       BitmapDescriptor bmpd = BitmapDescriptor.fromBytes(markerIcon);
       setState(() {
         _markerIcon = bmpd;
@@ -165,98 +145,62 @@ class _BookedmapState extends State<Bookedmap> {
       );
     });
   }
-  wait(){
-    Future.delayed(const Duration(milliseconds: 1000), () {
-      // print('wait');
-      setState(() {
-        DataFetch.checkhavedata =1;
-        allMarkers = allMarkers;
-      });
-    });
-  }
   @override
   Widget build(BuildContext context) {
     var data = MediaQuery.of(context);
     _createMarkerImageFromAsset(context);
-    fetchData(context);
-    if(DataFetch.checkhavedata == 1){
-      return  Scaffold(
-        appBar: AppBar(
-        backgroundColor: Colors.white,
-        flexibleSpace: Image(
-            image: AssetImage('assets/images/imagesprofile/appbar/background.png'),
-            fit: BoxFit.cover,
-          ),
-        centerTitle: true,
-        title: Text(UseString.maploacation,
-            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color: Colors.white), 
+    Future.delayed(const Duration(milliseconds: 200), () {
+      startmarker();
+    });
+    return  Scaffold(
+      appBar: AppBar(
+      backgroundColor: Colors.white,
+      flexibleSpace: Image(
+          image: AssetImage('assets/images/imagesprofile/appbar/background.png'),
+          fit: BoxFit.cover,
         ),
-        leading: IconButton(
-            icon: Icon(Icons.keyboard_arrow_left,
-            color: Colors.white,
+      centerTitle: true,
+      title: Text(UseString.maploacation,
+          style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color: Colors.white), 
+      ),
+      leading: IconButton(
+          icon: Icon(Icons.keyboard_arrow_left,
+          color: Colors.white,
+          ),
+          onPressed: () {
+            DataFetch.checkhavedata = 0;
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      drawer: Drawer(),
+      body: Container(
+        width: data.size.width,
+        height: data.size.height,
+        child: Stack(
+          children: <Widget>[
+            GoogleMap(
+              mapType: MapType.normal,
+              zoomGesturesEnabled: true,
+              initialCameraPosition: CameraPosition(
+                target: LatLng(widget.latitude, widget.logtitude),
+                zoom: widget.zoom,
+              ),
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
+              markers: Set.from(allMarkers),
+              onTap: (latLng){
+                Datamanager.boxlocationshow =null;
+              },
             ),
-            onPressed: () {
-              DataFetch.checkhavedata = 0;
-              Navigator.pop(context);
-            },
-          ),
+          ],
         ),
-        drawer: Drawer(),
-        body: Container(
-          width: data.size.width,
-          height: data.size.height,
-          child: Stack(
-            children: <Widget>[
-              GoogleMap(
-                mapType: MapType.normal,
-                zoomGesturesEnabled: true,
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(widget.latitude, widget.logtitude),
-                  zoom: widget.zoom,
-                ),
-                onMapCreated: (GoogleMapController controller) {
-                  _controller.complete(controller);
-                },
-                markers: Set.from(allMarkers),
-                onTap: (latLng){
-                  Datamanager.boxlocationshow =null;
-                },
-              ),
-            ],
-          ),
-        ),
-      );
-    }else{
-      wait();
-      // return Container();
-      return Center(
-        child: Container(
-          width: data.size.width,
-          height: data.size.height,
-          color: PickCarColor.colormain,
-          child: Row(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(left: 100),
-                child: SpinKitCircle(
-                  color: Colors.white,
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 10),
-                child:  Text(UseString.loading,
-                  style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*25,color: Colors.white),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
+      ),
+    );
   }
   @override
   void dispose() {
-    textController.dispose();
     super.dispose();
   }
 }

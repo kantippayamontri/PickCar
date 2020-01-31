@@ -307,6 +307,7 @@ class UseString {
   static String areyousure = "Are yor sure?";
   static String rentthis = "Are you confident that you will rent this car?";
   static String pickcar = "PickCar";
+  static String inuniversity = "in";
 }
 
 class Currency {
@@ -424,6 +425,7 @@ class DataFetch {
   static int checknothaveslottime = 0;
   static int search = 0;
   static int waitplace = 0;
+  static int waitlocation = 0;
   static int checkhavepin = 0;
 }
 

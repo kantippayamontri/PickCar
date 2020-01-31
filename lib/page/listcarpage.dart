@@ -7,6 +7,7 @@ import 'package:pickcar/bloc/listcar/listcarevent.dart';
 import 'package:pickcar/bloc/listcar/listcarstate.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/booking.dart';
+import 'package:pickcar/models/boxlocation.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/page/registercarlist.dart';
@@ -99,8 +100,11 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
       Bookingshow bookingshow = Bookingshow.fromSnapshot(data);
       return GestureDetector(
         onTap: (){
+          
           Datamanager.booking = bookingshow;
           Datamanager.motorcycleShow = widget.motorshow;
+          // Datamanager.placelocationshow = widget.locationshow;
+          // Datamanager.boxlocationshow= widget.boxshow;
           Navigator.of(context).pushNamed(Datamanager.receivecar);
         },
         child: Stack(

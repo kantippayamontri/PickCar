@@ -640,6 +640,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
   }
   booking(BuildContext context) async {
     Booking booking = Booking(
+      university: Datamanager.listcarslot.university,
       times: Datamanager.listcarslot.time,
       day: Datamanager.listcarslot.day,
       month: Datamanager.listcarslot.month,

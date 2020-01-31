@@ -12,6 +12,7 @@ class Booking {
   String myid;
   String bookingdocid;
   String boxdocid;
+  String university;
   String boxplacedocid;
   String boxslotrentdocid;
   String motorplacelocdocid;
@@ -31,6 +32,7 @@ class Booking {
     @required this.boxplacedocid,
     @required this.boxslotrentdocid,
     @required this.motorplacelocdocid,
+    @required this.university,
   }) {}
 
    Map<String , Object> toJson(){
@@ -48,6 +50,7 @@ class Booking {
       'boxplacedocid' : this.boxplacedocid,
       'boxslotrentdocid' : this.boxslotrentdocid,
       'motorplacelocdocid' : this.motorplacelocdocid,
+      'university' : this.university,
     };
   }
 }
@@ -65,6 +68,7 @@ class Bookingshow {
   String boxplacedocid;
   String boxslotrentdocid;
   String motorplacelocdocid;
+  String university;
   final DocumentReference reference;
 
   Bookingshow.fromMap(Map<String, dynamic> map, {this.reference})
@@ -81,6 +85,7 @@ class Bookingshow {
        assert(map['boxplacedocid'] != null),
        assert(map['boxslotrentdocid'] != null),
        assert(map['motorplacelocdocid'] != null),
+       assert(map['university'] != null),
        time = map['time'],
        day = map['day'],
        month = map['month'],
@@ -93,6 +98,7 @@ class Bookingshow {
        boxdocid = map['boxdocid'],
        boxplacedocid = map['ownerid'],
        boxslotrentdocid = map['myid'],
+       university = map['university'],
        motorplacelocdocid = map['bookingdocid'];
 
   Bookingshow.fromSnapshot(DocumentSnapshot snapshot)
