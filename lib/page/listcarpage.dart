@@ -74,6 +74,16 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
   }
   @override
   Widget build(BuildContext context) {
+    // var a = true;
+    // while(a){
+    //   try{
+    //     print(a);
+    //     Realtime.timecar.cancel();
+    //     Realtime.timekey.cancel();
+    //   }catch(e){
+    //     a =false;
+    //   } 
+    // }
     var data = MediaQuery.of(context);
     final List<Tab> myTabs = <Tab>[
       new Tab(

@@ -14,6 +14,7 @@ import 'dart:typed_data';
 
 import 'models/booking.dart';
 import 'models/boxlocation.dart';
+import 'models/boxslotrentshow.dart';
 import 'models/pincar.dart';
 import 'models/universityplace.dart';
 import 'models/user.dart';
@@ -69,6 +70,7 @@ class Datamanager {
   static Bookingshow booking;
   static BoxlocationShow boxlocationshow;
   static PlacelocationShow placelocationshow;
+  static Boxslotrentshow boxslotrentshow;
   static List<Universityplaceshow> universityshow = [];
   static List<String> listUniversity = [];
 
@@ -294,6 +296,8 @@ class UseString {
   static String motor = "Motorcycle";
   static String notavailable = "Not Available";
   static String available = "Available";
+  static String carnotavai = "Car Not Available";
+  static String keynotavai = "Key Not Available";
   static String wait = "wait";
   static String openmap = "Open Map location";
   static String maploacation = "Map Location";
@@ -310,6 +314,7 @@ class UseString {
   static String pickcar = "PickCar";
   static String inuniversity = "in";
   static String notbooked = "You not have booked car";
+  static String unlock = "Key Unlock";
 }
 
 class Currency {
@@ -317,6 +322,15 @@ class Currency {
 }
 class Checkpolicy{
   static bool checkpolicy;
+}
+class Realtime{
+  static var timekey;
+  static var timecar;
+}
+
+class Checkopenkey{
+  static bool checkkey = false;
+  static bool checkcar = false;
 }
 
 class ImageProfiles {
@@ -429,6 +443,8 @@ class DataFetch {
   static int waitplace = 0;
   static int waitlocation = 0;
   static int checkhavepin = 0;
+  static int checkkey=0;
+  static int fetchhavecar = 0;
 }
 
 class TimeSlotSingle {

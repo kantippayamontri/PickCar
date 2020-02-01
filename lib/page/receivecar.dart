@@ -1,14 +1,19 @@
+import 'dart:async';
+import 'package:quiver/async.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/boxlocation.dart';
+import 'package:pickcar/models/boxslotrentshow.dart';
 import 'package:pickcar/models/placelocation.dart';
 
 class Receivecar extends StatefulWidget {
-  String showtext = UseString.notavailable;
-  String status = "Not Available";
+  String showtextkey = UseString.notavailable;
+  String showtextcar = UseString.notavailable;
+  String status_key = "Not Available";
+  String status_car = "Not Available";
   // double width = 100;
   double height = 0;
   double top = 560;
@@ -20,7 +25,8 @@ class Receivecar extends StatefulWidget {
   bool _visible2 = true;
   var locationshow;
   var boxshow;
-  var color = Colors.red[600];
+  var colorkey = Colors.red[600];
+  var colorcar = Colors.red[600];
   @override
   _ReceivecarState createState() => _ReceivecarState();
 }
@@ -44,11 +50,18 @@ class _ReceivecarState extends State<Receivecar> {
   }
   @override
   void initState() {
-    widget.showtext = UseString.notavailable;
+    widget.showtextkey = UseString.notavailable;
+    widget.showtextcar = UseString.notavailable;
     widget.statebutton = false;
     widget.statebutton2 = false;
     widget._visible1 = true;
     widget._visible2 = true;
+    // Realtime.timecar = Timer.periodic(Duration(days: 1), (timer){});
+    // Realtime.timekey = Timer.periodic(Duration(days: 1), (timer){});
+    Checkopenkey.checkkey = false;
+    Checkopenkey.checkcar = false;
+    DataFetch.checkkey = 0;
+    DataFetch.fetchhavecar = 0;
     DataFetch.waitlocation = 0;
     super.initState();
   }
@@ -100,9 +113,12 @@ class _ReceivecarState extends State<Receivecar> {
       await Firestore.instance.collection('placelocation').document(Datamanager.booking.motorplacelocdocid).get().then((data){
         Datamanager.placelocationshow = PlacelocationShow.fromSnapshot(data);
       });
+      await Firestore.instance.collection('BoxslotRent').document(Datamanager.booking.boxslotrentdocid).get().then((data){
+        Datamanager.boxslotrentshow = Boxslotrentshow.fromSnapshot(data);
+      });
       Future.delayed(const Duration(milliseconds: 500), () {
         print('wait');
-        print(Datamanager.placelocationshow.name);
+        print(Datamanager.boxslotrentshow.iskey);
         DataFetch.waitlocation = 1;
         setState(() {
         });
@@ -113,6 +129,8 @@ class _ReceivecarState extends State<Receivecar> {
     var data = MediaQuery.of(context);
     return GestureDetector(
       onTap: (){
+        // Realtime.timekey.cancel();
+        // Realtime.timecar.cancel();
         // Navigator.of(context).pushNamed(Datamanager.openkey);
         setState(() {
           if(widget.statebutton){
@@ -162,8 +180,8 @@ class _ReceivecarState extends State<Receivecar> {
                     Text(UseString.key,
                         style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorFont1), 
                     ),
-                    Text(widget.showtext,
-                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: widget.color), 
+                    Text(widget.showtextkey,
+                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: widget.colorkey), 
                     ),
                   ],
                 ),
@@ -208,6 +226,8 @@ class _ReceivecarState extends State<Receivecar> {
     var data = MediaQuery.of(context);
     return GestureDetector(
       onTap: (){
+        // Realtime.timekey.cancel();
+        // Realtime.timecar.cancel();
         // Navigator.of(context).pushNamed(Datamanager.openkey);
         setState(() {
           if(widget.statebutton2){
@@ -256,8 +276,8 @@ class _ReceivecarState extends State<Receivecar> {
                     Text(UseString.motor,
                         style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorFont1), 
                     ),
-                    Text(widget.showtext,
-                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: widget.color), 
+                    Text(widget.showtextcar,
+                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: widget.colorcar), 
                     ),
                   ],
                 ),
@@ -298,22 +318,145 @@ class _ReceivecarState extends State<Receivecar> {
       ),
     );
   }
+  // int _start = 10;
+  // void startTimer() {
+  //   CountdownTimer countDownTimer = new CountdownTimer(
+  //   new Duration(seconds: _start),
+  //   new Duration(seconds: 1),
+  //   );
 
+  //   var sub = countDownTimer.listen(null);
+  //   sub.onData((duration) {
+  //     setState(() { _current = _start - duration.elapsed.inSeconds; });
+  //   });
+  //   sub.onDone(() {
+  //     print("Done");
+  //     sub.cancel();
+  //   });
+  // }
+
+  // @override
+  // void dispose() {
+  //   _timer.cancel();
+  //   super.dispose();
+  // }
+
+  void startTimer() {
+  // CountdownTimer countDownTimer = new CountdownTimer(
+  //   new Duration(seconds: _start),
+  //   new Duration(seconds: 1),
+  // );
+
+  // var sub = countDownTimer.listen(null);
+  // sub.onData((duration) async {
+  //   await Firestore.instance.collection('BoxslotRent').document(Datamanager.booking.boxslotrentdocid).get().then((data){
+  //     Datamanager.boxslotrentshow = Boxslotrentshow.fromSnapshot(data);
+  //     if(Datamanager.boxslotrentshow.iskey && DataFetch.checkkey ==0){
+  //       DataFetch.checkkey =1;
+  //       setState(() {
+  //         widget.status = "Available";
+  //       });
+  //       // setState(() {
+  //       //   widget.status= UseString.available;
+  //       // });
+  //     }else{
+  //       int i=1+duration.elapsed.inSeconds;
+  //       print(i);
+  //     }
+  //   });
+  // });
+
+  // sub.onDone(() {
+  //   print(DataFetch.checkkey);
+  //   if(DataFetch.checkkey ==1){
+  //     print("Done");
+  //   }else{
+  //     print('wait');
+  //     setState(() {
+  //     });
+  //   }
+  //   sub.cancel();
+  // });
+  if(DataFetch.checkkey == 0){
+    DataFetch.checkkey =1;
+    print('aaa');
+    Realtime.timekey = Timer.periodic(Duration(seconds: 5), (timer) async {
+      print(DateTime.now());
+      await Firestore.instance.collection('BoxslotRent').document(Datamanager.booking.boxslotrentdocid).get().then((data){
+        Datamanager.boxslotrentshow = Boxslotrentshow.fromSnapshot(data);
+        if(Datamanager.boxslotrentshow.iskey){
+          setState(() {
+            Realtime.timekey.cancel();
+            widget.status_key = "Available";
+          });
+        }
+      });
+    });
+  }
+  
+}
+@override
+void dispose() {
+  Realtime.timekey.cancel();
+  Realtime.timecar.cancel();
+  Realtime.timekey =null;
+  Realtime.timecar =null;
+  super.dispose();
+}
   @override
   Widget build(BuildContext context) {
-    if(widget.status == "Not Available"){
-      widget.showtext = UseString.notavailable;
-      widget.color = Colors.red[600];
-    }else if(widget.status == "Available"){
-      widget.showtext = UseString.available;
-      widget.color = Colors.green;
-    }else{
-      widget.showtext = UseString.wait;
-      widget.color = Colors.blueAccent;
-    }
     var data = MediaQuery.of(context);
 
     if(DataFetch.waitlocation ==1){
+      if(!Datamanager.boxslotrentshow.iskey){
+        startTimer();
+      }else{
+        DataFetch.checkkey =1;
+        widget.status_key = "Available";
+      }
+    
+    if(DataFetch.fetchhavecar==0){
+      String a =Datamanager.booking.time;
+      var result = a.split("-")[0].replaceAll(new RegExp(r' '), '').split(".");
+      var minute =int.parse(result[1]);
+      var hour =int.parse(result[0]);
+      if(minute == 0){
+        minute = 45;
+        hour = hour-1;
+      }
+      Realtime.timecar = Timer.periodic(Duration(seconds: 5), (timer) async {
+      // print(DateTime.now().hour.toString() +" " + hour.toString()+" "+DateTime.now().minute.toString()+" "+minute.toString());
+        if(DateTime.now().day == Datamanager.booking.day 
+        &&DateTime.now().month == Datamanager.booking.month 
+        &&DateTime.now().year == Datamanager.booking.year 
+        && DateTime.now().hour > hour
+        && DateTime.now().minute > minute ){
+          setState(() {
+            DataFetch.fetchhavecar = 1;
+            widget.status_car = "Available";
+          });
+        }
+      });
+    }
+    
+      if(widget.status_key == "Not Available"){
+        Checkopenkey.checkkey = false;
+        widget.showtextkey = UseString.notavailable;
+        widget.colorkey = Colors.red[600];
+      }else if(widget.status_key == "Available"){
+        Checkopenkey.checkkey = true;
+        widget.showtextkey = UseString.available;
+        widget.colorkey = Colors.green;
+      }
+      if(widget.status_car == "Not Available"){
+        widget.showtextcar = UseString.notavailable;
+        widget.colorcar = Colors.red[600];
+        Checkopenkey.checkcar = false;
+      }else if(widget.status_car == "Available"){
+        Checkopenkey.checkcar = true;
+        widget.showtextcar = UseString.available;
+        widget.colorcar = Colors.green;
+      }
       return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -330,6 +473,8 @@ class _ReceivecarState extends State<Receivecar> {
             color: Colors.white,
             ),
             onPressed: () {
+              // Realtime.timekey.cancel();
+              // Realtime.timecar.cancel();
               Navigator.pop(context);
             },
           ),
@@ -484,6 +629,8 @@ class _ReceivecarState extends State<Receivecar> {
             
             GestureDetector(
               onTap: (){
+                // Realtime.timekey.cancel();
+                // Realtime.timecar.cancel();
                 // Navigator.of(context).pushNamed(Datamanager.bookedmap);
                 // Navigator.of(context).pushNamed(Datamanager.animatedContainerApp);
               },

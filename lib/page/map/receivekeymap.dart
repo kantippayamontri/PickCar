@@ -26,7 +26,8 @@ class Receivekeymap extends StatefulWidget {
   _ReceivekeymapState createState() => _ReceivekeymapState();
 }
 
-class _ReceivekeymapState extends State<Receivekeymap> with SingleTickerProviderStateMixin  {
+class _ReceivekeymapState extends State<Receivekeymap>
+    with SingleTickerProviderStateMixin {
   AnimationController controller;
   Animation<Offset> offset;
   BitmapDescriptor _markerIcon;
@@ -127,7 +128,34 @@ class _ReceivekeymapState extends State<Receivekeymap> with SingleTickerProvider
       });
     }
   }
-
+  shownotavailable(BuildContext context) {
+    var data = MediaQuery.of(context);
+    var notavailable = '';
+    if(!Checkopenkey.checkcar && Checkopenkey.checkkey){
+      notavailable = UseString.carnotavai ;
+    }else if(!Checkopenkey.checkkey && Checkopenkey.checkcar){
+      notavailable = UseString.keynotavai;
+    }else{
+      notavailable = UseString.carnotavai +"\n"+ UseString.keynotavai;
+    }
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(20),
+          ),
+          // title: Text('place have same name.'),
+          content: Text(
+            notavailable,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: data.textScaleFactor * 25,
+                color: PickCarColor.colorFont1),
+          ),
+        );
+      });
+    }
   @override
   Widget build(BuildContext context) {
     var data = MediaQuery.of(context);
@@ -180,10 +208,10 @@ class _ReceivekeymapState extends State<Receivekeymap> with SingleTickerProvider
               },
               markers: Set.from(allMarkers),
               onTap: (latLng) {
-                Datamanager.boxlocationshow =null;
+                Datamanager.boxlocationshow = null;
                 setState(() {
-                controller.reverse();
-                widget.openbutton = false;
+                  controller.reverse();
+                  widget.openbutton = false;
                 });
               },
             ),
@@ -197,20 +225,31 @@ class _ReceivekeymapState extends State<Receivekeymap> with SingleTickerProvider
                   alignment: Alignment.bottomCenter,
                   // padding: EdgeInsets.only(bottom: data.size.height/15),
                   child: ButtonTheme(
-                    minWidth: data.size.width/2.5,
-                    height: data.size.height/9,
+                    minWidth: data.size.width / 2.5,
+                    height: data.size.height / 9,
                     child: SlideTransition(
                       position: offset,
                       child: RaisedButton(
                         color: PickCarColor.colorbuttom,
                         onPressed: () {
-                          Navigator.of(context).pushNamed(Datamanager.openkey);
+                          if(Checkopenkey.checkkey && Checkopenkey.checkcar){
+                            Navigator.of(context).pushNamed(Datamanager.openkey);
+                          }else{
+                            shownotavailable(context);
+                          }
                         },
                         shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(15.0),
-                        // side: BorderSide(color: Colors.red)
+                          // side: BorderSide(color: Colors.red)
                         ),
-                      ), 
+                        child: Text(
+                          UseString.unlock,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: data.textScaleFactor * 25,
+                              color: Colors.white),
+                        ),
+                      ),
                     ),
                   ),
                 ),
