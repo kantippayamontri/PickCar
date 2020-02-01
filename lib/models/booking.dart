@@ -96,10 +96,10 @@ class Bookingshow {
        myid = map['myid'],
        bookingdocid = map['bookingdocid'],
        boxdocid = map['boxdocid'],
-       boxplacedocid = map['ownerid'],
-       boxslotrentdocid = map['myid'],
+       boxplacedocid = map['boxplacedocid'],
+       boxslotrentdocid = map['boxslotrentdocid'],
        university = map['university'],
-       motorplacelocdocid = map['bookingdocid'];
+       motorplacelocdocid = map['motorplacelocdocid'];
 
   Bookingshow.fromSnapshot(DocumentSnapshot snapshot)
      : this.fromMap(snapshot.data, reference: snapshot.reference);

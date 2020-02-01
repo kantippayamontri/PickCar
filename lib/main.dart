@@ -10,6 +10,7 @@ import 'package:pickcar/page/map/mapboxselect.dart';
 import 'package:pickcar/page/map/mapaddmark.dart';
 import 'package:pickcar/page/map/mapplaceselect.dart';
 import 'package:pickcar/page/map/placeselectadmin.dart';
+import 'package:pickcar/page/map/receivekeymap.dart';
 import 'package:pickcar/page/map/registermap.dart';
 import 'package:pickcar/page/map/selectUniversity.dart';
 import 'package:pickcar/page/motorbooklistpage.dart';
@@ -83,6 +84,7 @@ class MyApp extends StatelessWidget {
         Datamanager.animatedContainerApp : (ctx) => AnimatedContainerApp(),
         Datamanager.search : (ctx) => SearchPage(),
         Datamanager.maplocation : (ctx) => Maplocation(),
+        Datamanager.receivekeymap : (ctx) => Receivekeymap(),
         //'loginpickcarpage': (ctx) => LoginPickCarPage()
       },
       onGenerateRoute: (setting) {},

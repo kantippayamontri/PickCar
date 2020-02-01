@@ -1087,7 +1087,6 @@ class _ConfirmPageState extends State<ConfirmPage> {
                       color: Colors.grey[600],
                       onPressed: (){
                           Navigator.pop(context);
-                          Navigator.pop(context);
                       },
                       child: Text(UseString.cancel,
                           style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*18,color: Colors.white), 

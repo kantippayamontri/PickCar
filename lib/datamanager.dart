@@ -54,6 +54,7 @@ class Datamanager {
   static String animatedContainerApp = "/AnimatedContainerApp";
   static String search = "/SearchPage";
   static String maplocation = "/Maplocation";
+  static String receivekeymap = "/Receivekeymap";
   
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
@@ -308,6 +309,7 @@ class UseString {
   static String rentthis = "Are you confident that you will rent this car?";
   static String pickcar = "PickCar";
   static String inuniversity = "in";
+  static String notbooked = "You not have booked car";
 }
 
 class Currency {

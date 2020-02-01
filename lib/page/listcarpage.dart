@@ -208,8 +208,18 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
                       .orderBy("day")
                       .snapshots(),
           builder: (context, snapshot) {
-            if (!snapshot.hasData) {
+            if(snapshot.connectionState == ConnectionState.waiting){
               return Container();
+            }
+            if (!snapshot.hasData) {
+              return Container(
+                height: data.size.height/1.4,
+                child: Center(
+                  child: Text(UseString.notbooked,
+                    style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*36,color: PickCarColor.colorFont1),
+                  ),
+                ),
+              );
             }else{
               // print(snapshot.data.documents);
               // return Container();

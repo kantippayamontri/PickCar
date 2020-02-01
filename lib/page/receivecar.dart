@@ -92,21 +92,21 @@ class _ReceivecarState extends State<Receivecar> {
         break;
     }
   }
-  fetchboxandlocation(){
+  fetchboxandlocation() async {
     if(DataFetch.waitlocation ==0){
-      Firestore.instance.collection('boxlocation').document(Datamanager.booking.boxplacedocid).get().then((data){
+      await Firestore.instance.collection('boxlocation').document(Datamanager.booking.boxplacedocid).get().then((data){
         Datamanager.boxlocationshow = BoxlocationShow.fromSnapshot(data);
       });
-      Firestore.instance.collection('placelocation').document(Datamanager.booking.motorplacelocdocid).get().then((data){
+      await Firestore.instance.collection('placelocation').document(Datamanager.booking.motorplacelocdocid).get().then((data){
         Datamanager.placelocationshow = PlacelocationShow.fromSnapshot(data);
       });
-      Future.delayed(const Duration(milliseconds: 1000), () {
+      Future.delayed(const Duration(milliseconds: 500), () {
         print('wait');
         print(Datamanager.placelocationshow.name);
         DataFetch.waitlocation = 1;
         setState(() {
         });
-    });
+      });
     }
   }
   Widget key(BuildContext context){
@@ -118,7 +118,7 @@ class _ReceivecarState extends State<Receivecar> {
           if(widget.statebutton){
             widget.colorchange = Colors.white;
             widget.statebutton = false;
-            Navigator.of(context).pushNamed(Datamanager.openkey);
+            Navigator.of(context).pushNamed(Datamanager.receivekeymap);
             widget._visible1 = !widget._visible1;
           }else{
             widget.colorchange = PickCarColor.colormain;
@@ -313,7 +313,6 @@ class _ReceivecarState extends State<Receivecar> {
     }
     var data = MediaQuery.of(context);
 
-    fetchboxandlocation();
     if(DataFetch.waitlocation ==1){
       return Scaffold(
         appBar: AppBar(
@@ -504,6 +503,7 @@ class _ReceivecarState extends State<Receivecar> {
         ),
       );
     }else{
+      fetchboxandlocation();
       return Container(
         width: double.infinity,
         // height:data.size.height,
