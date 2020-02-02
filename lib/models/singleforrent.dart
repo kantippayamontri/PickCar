@@ -18,6 +18,7 @@ class SingleForrent{
   String boxslotrentdocid;
   String motorplacelocdocid;
   DateTime startdate;
+  String status;
 
   SingleForrent({
     @required this.boxdocid,
@@ -33,6 +34,7 @@ class SingleForrent{
     @required this.boxslotdocid,
     @required this.motorplacelocdocid,
     @required this.startdate,
+    @required this.status
     
   });
 
@@ -51,7 +53,8 @@ class SingleForrent{
       'boxslotrentdocid' : this.boxslotrentdocid,
       'docid' : this.docid,
       'motorplacelocdocid' : this.motorplacelocdocid,
-      'startdate' : this.startdate
+      'startdate' : this.startdate,
+      'status' : this.status
       
     };
   }

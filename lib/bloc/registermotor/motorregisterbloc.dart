@@ -293,7 +293,9 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
         motorbacklink: motorbacklink,
         motorleftlink: motorleftlink,
         motorrightlink: motorrightlink,
-        carstatus: CarStatus.nothing
+        carstatus: CarStatus.nothing,
+        currentlatitude: null,
+        currentlongitude: null
       );
 
       final docref = await Datamanager.firestore

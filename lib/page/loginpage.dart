@@ -15,8 +15,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin{
-  var username = '';
-  var password = '';
+  var username = 'f@f.com';
+  var password = '1111111';
 
   //todo initusername and pass
   
@@ -51,8 +51,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin{
     var data = MediaQuery.of(context);
     loginbloc.context = context;
     //todo test user
-    loginbloc.emailcontroller.text = "g@g.com";
-    loginbloc.passcontroller.text = "1234567";
+    loginbloc.emailcontroller.text = this.username;//"g@g.com";
+    loginbloc.passcontroller.text = this.password; //"1234567";
 
     final List<Tab> myTabs = <Tab>[
       new Tab(

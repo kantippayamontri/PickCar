@@ -83,7 +83,7 @@ class Datamanager {
 
   static var univeresity = [
     {
-      "university": "Chaing Mai University",
+      "university": "Chiang Mai University",
       "faculty": ["Engineering", "Science", "Humantility"]
     },
     {

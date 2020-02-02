@@ -50,7 +50,7 @@ class MotorWaitingListBloc
         .orderBy('startdate')
         .getDocuments();
     var singlelist = querySnapshot
-        .documents; //querySnapshot.documents.where((doc) => doc['motorcycledocid'] == this.motorcycle);
+        .documents.where((doc) => doc['ownerdocid'] == Datamanager.user.documentid); //querySnapshot.documents.where((doc) => doc['motorcycledocid'] == this.motorcycle);
     print("in load all data function " + singlelist.length.toString());
     print("motor docid :" + this.motorcycle.firestoredocid);
     for (var doc in singlelist) {
@@ -70,12 +70,19 @@ class MotorWaitingListBloc
         time: doc['time'],
         university: doc['university'],
         year: doc['year'],
+        status: doc['status']
       );
 
       sgfr.boxslotrentdocid = doc['boxslotrentdocid'];
       sgfr.docid = doc['docid'];
 
-      this.singleforrentlist.add(sgfr);
+      if(sgfr.startdate.isAfter(DateTime.now())){
+        print("in add singleforrentlist naja");
+        print("startdate : " + sgfr.startdate.toString());
+        print("Time now : " + DateTime.now().toString());
+        this.singleforrentlist.add(sgfr);
+      }
+      
     }
   }
 

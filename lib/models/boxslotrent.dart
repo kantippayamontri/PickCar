@@ -14,6 +14,7 @@ class Boxslotrent {
   bool iskey;
   bool isopen;
   bool ownerdropkey;
+  DateTime startdate;
 
   Boxslotrent(
       {
@@ -29,6 +30,7 @@ class Boxslotrent {
       @required this.boxdocid,
       @required this.boxplacedocid,
       @required this.ownerdropkey,
+      @required this.startdate,
       
       }) {}
 
@@ -47,7 +49,8 @@ class Boxslotrent {
       'boxdocid' : boxdocid,
       'ownerdocid' : ownerdocid,
       'boxplacedocid' : boxplacedocid,
-      'ownerdropkey' : ownerdropkey
+      'ownerdropkey' : ownerdropkey,
+      'startdate' : startdate
     };
   }
 

@@ -31,6 +31,8 @@ class Motorcycle{
   bool isbook = false;
   bool iswaiting = false;
   bool isworking = false;
+  double currentlongitude;
+  double currentlatitude;
   
 
 
@@ -60,7 +62,9 @@ class Motorcycle{
     @required this.motorbacklink,
     @required this.motorleftlink,
     @required this.motorrightlink,
-    @required this.carstatus
+    @required this.carstatus,
+    @required this.currentlatitude,
+    @required this.currentlongitude,
   });
 
   Map<String , dynamic> toJson(){
@@ -95,6 +99,8 @@ class Motorcycle{
       'isbook' : this.isbook,
       'iswaiting' : this.iswaiting,
       'isworking' : this.isworking,
+      'currentlatitude' : this.currentlatitude,
+      'currentlongitude' : this.currentlongitude,
       
     };
   }

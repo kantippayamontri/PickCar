@@ -162,7 +162,9 @@ class MotorRentalFormBloc
         ownerdocid: Datamanager.user.documentid,
         ownerdropkey: false,
         renterdocid: null,
-        time: this.choosetimeslot);
+        time: this.choosetimeslot,
+        startdate: makestartdatetimesingle(this.dateTime,this.choosetimeslot),
+        );
 
     var bslrdocref = await Datamanager.firestore
         .collection("BoxslotRent")
@@ -188,6 +190,7 @@ class MotorRentalFormBloc
       university: Datamanager.user.university,
       motorplacelocdocid: Datamanager.placelocationshow.docplaceid,
       startdate: makestartdatetimesingle(this.dateTime,this.choosetimeslot),
+      status: null
     );
 
     var sgfrdocref = await Datamanager.firestore

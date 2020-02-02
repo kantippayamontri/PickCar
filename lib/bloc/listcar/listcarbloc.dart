@@ -64,6 +64,8 @@ class ListCarBloc extends Bloc<ListCarEvent, ListCarState> {
           motorrightpath: doc['motorrightpath'],
           motorrighttype: doc['motorrighttype'],
           motorrightlink: doc['motorrightlink'],
+          currentlatitude: doc['currentlatitude'],
+          currentlongitude: doc['currentlatitude'],
         );
         motor.firestoredocid = doc['firestoredocid'];
         motorcyclelist.add(motor);
