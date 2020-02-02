@@ -70,7 +70,7 @@
 //   }
 // }
 import 'package:flutter/material.dart';
-
+import 'package:quiver/async.dart';
 // The StatefulWidget's job is to take data and create a State class.
 // In this case, the widget takes a title, and creates a _MyHomePageState.
 class AnimatedContainerApp extends StatefulWidget {
@@ -83,36 +83,40 @@ class AnimatedContainerApp extends StatefulWidget {
 // update and building the UI using that data.
 class _AnimatedContainerAppState extends State<AnimatedContainerApp> {
   // Whether the green box should be visible
-  bool _visible = true;
+  int _start = 10;
+int _current = 10;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('aaaa'),
-      ),
-      body: Center(
-        child: AnimatedOpacity(
-          opacity: _visible ? 1.0 : 0.0,
-          duration: Duration(milliseconds: 500),
-          child: Container(
-            width: 200.0,
-            height: 200.0,
-            color: Colors.green,
-          ),
+void startTimer() {
+  CountdownTimer countDownTimer = new CountdownTimer(
+    new Duration(seconds: _start),
+    new Duration(seconds: 1),
+  );
+
+  var sub = countDownTimer.listen(null);
+  sub.onData((duration) {
+    setState(() { _current = _start - duration.elapsed.inSeconds; });
+  });
+
+  sub.onDone(() {
+    print("Done");
+    sub.cancel();
+  });
+}
+
+Widget build(BuildContext context) {
+  return new Scaffold(
+    appBar: AppBar(title: Text("Timer test")),
+    body: Column(
+      children: <Widget>[
+        RaisedButton(
+          onPressed: () {
+            startTimer();
+          },
+          child: Text("start"),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Call setState. This tells Flutter to rebuild the
-          // UI with the changes.
-          setState(() {
-            _visible = !_visible;
-          });
-        },
-        tooltip: 'Toggle Opacity',
-        child: Icon(Icons.flip),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
+        Text("$_current")
+      ],
+    ),
+  );
+}
 }

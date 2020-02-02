@@ -640,6 +640,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
   }
   booking(BuildContext context) async {
     Booking booking = Booking(
+      university: Datamanager.listcarslot.university,
       times: Datamanager.listcarslot.time,
       day: Datamanager.listcarslot.day,
       month: Datamanager.listcarslot.month,
@@ -652,6 +653,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
       boxslotrentdocid:  Datamanager.listcarslot.boxslotrentdocid,
       boxplacedocid:  Datamanager.listcarslot.boxplacedocid,
       motorplacelocdocid: Datamanager.listcarslot.motorplacelocdocid,
+      status: 'booking',
       bookingdocid:null,
     );
     var ref = await Datamanager.firestore.collection('Booking').add(booking.toJson());
@@ -778,8 +780,10 @@ class _ConfirmPageState extends State<ConfirmPage> {
                     width: 130,
                     height: 65,
                     // color: Colors.black,
-                    child: Text(UseString.getkey,
-                        style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*22,color: PickCarColor.colorcmu), 
+                    child: Center(
+                      child: Text(Datamanager.boxlocationshow.name,
+                          style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*22,color: PickCarColor.colorcmu), 
+                      ),
                     ),
                   ),
                 ],
@@ -1083,7 +1087,6 @@ class _ConfirmPageState extends State<ConfirmPage> {
                      RaisedButton(
                       color: Colors.grey[600],
                       onPressed: (){
-                          Navigator.pop(context);
                           Navigator.pop(context);
                       },
                       child: Text(UseString.cancel,

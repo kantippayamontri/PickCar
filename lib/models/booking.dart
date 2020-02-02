@@ -12,9 +12,11 @@ class Booking {
   String myid;
   String bookingdocid;
   String boxdocid;
+  String university;
   String boxplacedocid;
   String boxslotrentdocid;
   String motorplacelocdocid;
+  String status;
 
  
   Booking({
@@ -31,6 +33,8 @@ class Booking {
     @required this.boxplacedocid,
     @required this.boxslotrentdocid,
     @required this.motorplacelocdocid,
+    @required this.university,
+    @required this.status,
   }) {}
 
    Map<String , Object> toJson(){
@@ -48,6 +52,8 @@ class Booking {
       'boxplacedocid' : this.boxplacedocid,
       'boxslotrentdocid' : this.boxslotrentdocid,
       'motorplacelocdocid' : this.motorplacelocdocid,
+      'university' : this.university,
+      'status' : this.status,
     };
   }
 }
@@ -65,6 +71,7 @@ class Bookingshow {
   String boxplacedocid;
   String boxslotrentdocid;
   String motorplacelocdocid;
+  String university;
   final DocumentReference reference;
 
   Bookingshow.fromMap(Map<String, dynamic> map, {this.reference})
@@ -81,6 +88,7 @@ class Bookingshow {
        assert(map['boxplacedocid'] != null),
        assert(map['boxslotrentdocid'] != null),
        assert(map['motorplacelocdocid'] != null),
+       assert(map['university'] != null),
        time = map['time'],
        day = map['day'],
        month = map['month'],
@@ -91,9 +99,10 @@ class Bookingshow {
        myid = map['myid'],
        bookingdocid = map['bookingdocid'],
        boxdocid = map['boxdocid'],
-       boxplacedocid = map['ownerid'],
-       boxslotrentdocid = map['myid'],
-       motorplacelocdocid = map['bookingdocid'];
+       boxplacedocid = map['boxplacedocid'],
+       boxslotrentdocid = map['boxslotrentdocid'],
+       university = map['university'],
+       motorplacelocdocid = map['motorplacelocdocid'];
 
   Bookingshow.fromSnapshot(DocumentSnapshot snapshot)
      : this.fromMap(snapshot.data, reference: snapshot.reference);

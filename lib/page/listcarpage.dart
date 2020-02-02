@@ -7,6 +7,7 @@ import 'package:pickcar/bloc/listcar/listcarevent.dart';
 import 'package:pickcar/bloc/listcar/listcarstate.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/booking.dart';
+import 'package:pickcar/models/boxlocation.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/page/registercarlist.dart';
@@ -73,6 +74,16 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
   }
   @override
   Widget build(BuildContext context) {
+    // var a = true;
+    // while(a){
+    //   try{
+    //     print(a);
+    //     Realtime.timecar.cancel();
+    //     Realtime.timekey.cancel();
+    //   }catch(e){
+    //     a =false;
+    //   } 
+    // }
     var data = MediaQuery.of(context);
     final List<Tab> myTabs = <Tab>[
       new Tab(
@@ -99,8 +110,11 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
       Bookingshow bookingshow = Bookingshow.fromSnapshot(data);
       return GestureDetector(
         onTap: (){
+          
           Datamanager.booking = bookingshow;
           Datamanager.motorcycleShow = widget.motorshow;
+          // Datamanager.placelocationshow = widget.locationshow;
+          // Datamanager.boxlocationshow= widget.boxshow;
           Navigator.of(context).pushNamed(Datamanager.receivecar);
         },
         child: Stack(
@@ -113,13 +127,21 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
             FutureBuilder<DocumentSnapshot>(
               future: Firestore.instance.collection('Motorcycle').document(bookingshow.motorcycledocid).get(),
               builder: (context, snapshot) {
-                if (!snapshot.hasData) {
+                if(snapshot.connectionState == ConnectionState.waiting){
                   return Center(
                     child: Container(
                       margin: EdgeInsets.only(top: 50),
                       child: SpinKitCircle(
                         color: PickCarColor.colormain,
                       ),
+                    ),
+                  );
+                }
+                if (!snapshot.hasData) {
+                  return Container(
+                    width: double.infinity,
+                    child: Text(UseString.notbooked,
+                      style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*30,color: PickCarColor.colorFont1), 
                     ),
                   );
                 }else if(snapshot.hasData){
@@ -130,9 +152,16 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
                     children: <Widget>[
                       Container(
                         margin: EdgeInsets.only(top: 20,left: 30),
-                        width: 100,
+                        width: 150,
                         height: 100,
-                        child: Image.network(widget.motorshow.motorfrontlink,fit: BoxFit.fill,),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          image: DecorationImage(
+                            image: NetworkImage(widget.motorshow.motorfrontlink),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                        // child: Image.network(widget.motorshow.motorfrontlink,fit: BoxFit.fill,),
                       ),
                       Column(
                         children: <Widget>[
@@ -197,8 +226,25 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
                       .orderBy("day")
                       .snapshots(),
           builder: (context, snapshot) {
+            if(snapshot.connectionState == ConnectionState.waiting){
+              return Container(
+                height: data.size.height/1.4,
+                child: Center(
+                  child: Text(UseString.notbooked,
+                    style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*30,color: PickCarColor.colorFont1),
+                  ),
+                ),
+              );
+            }
             if (!snapshot.hasData) {
-              return Container();
+              return Container(
+                height: data.size.height/1.4,
+                child: Center(
+                  child: Text(UseString.notbooked,
+                    style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*30,color: PickCarColor.colorFont1),
+                  ),
+                ),
+              );
             }else{
               // print(snapshot.data.documents);
               // return Container();

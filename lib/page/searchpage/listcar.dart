@@ -644,6 +644,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:pickcar/datamanager.dart';
+import 'package:pickcar/models/boxlocation.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/models/placelocation.dart';
 import 'package:pickcar/widget/profile/profileImage.dart';
@@ -745,11 +746,14 @@ class _ListcarState extends State<Listcar> {
   }
   Widget build(BuildContext context) {
     fetchlocation();
+    var datasize = MediaQuery.of(context);
     // print(Datamanager.placelocationshow);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Listcar"),
+        title: Text(UseString.logo,
+          style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*25,color: Colors.white),
+        ),
         backgroundColor: Colors.transparent, 
         elevation: 0.0, 
         leading: IconButton(
@@ -826,6 +830,11 @@ class _ListcarState extends State<Listcar> {
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
     var datasize = MediaQuery.of(context);
     final timeslot = Listcarslot.fromSnapshot(data);
+    Firestore.instance.collection('boxlocation')
+                          .document(timeslot.boxplacedocid).get()
+                          .then((data){
+                            Datamanager.boxlocationshow = BoxlocationShow.fromSnapshot(data);
+                          });
     var imageusershow;
     MotorcycleShow motorshow;
     Usershow usershow;
@@ -849,6 +858,7 @@ class _ListcarState extends State<Listcar> {
     // print(Datamanager.user.documentid + ' '+timeslot.university+' '+timeslot.ownerdocid);
     // print(Datamanager.placelocationshow);
     if( timeslot.ownerdocid != Datamanager.user.documentid && timeslot.university == widget.university){
+      DataFetch.checknotsamenoresult =1;
           return GestureDetector(
             onTap: (){
               Datamanager.usershow = usershow;
@@ -979,7 +989,7 @@ class _ListcarState extends State<Listcar> {
                           child: Text(motorshow.brand+" "+motorshow.generation),
                         ),
                         Container(
-                          margin: EdgeInsets.only(left: 60,top: 58),
+                          margin: EdgeInsets.only(left: 30,top: 75),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             //  color: Colors.black,
@@ -989,8 +999,8 @@ class _ListcarState extends State<Listcar> {
                                                   motorshow.motorleftlink)
                                             )
                           ),
-                          width: 190,
-                          height: 160,
+                          width: 220,
+                          height: 140,
                         ),
                         Row(
                           children: <Widget>[

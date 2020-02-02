@@ -2063,19 +2063,19 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           fit: BoxFit.cover,
         ),
         centerTitle: true,
-        bottom: TabBar(
-          controller: _tabController,
-          labelColor: PickCarColor.colormain,
-          tabs: myTabs,
-          indicatorColor: PickCarColor.colormain,
-          onTap: (data) {
-            setState(() {
-              widget.indicatorpage = data;
-              print(widget.indicatorpage);
-              widget.i = 0;
-            });
-          },
-        ),
+        // bottom: TabBar(
+        //   controller: _tabController,
+        //   labelColor: PickCarColor.colormain,
+        //   tabs: myTabs,
+        //   indicatorColor: PickCarColor.colormain,
+        //   onTap: (data) {
+        //     setState(() {
+        //       widget.indicatorpage = data;
+        //       print(widget.indicatorpage);
+        //       widget.i = 0;
+        //     });
+        //   },
+        // ),
         title: Text(
           UseString.logo,
           style: TextStyle(

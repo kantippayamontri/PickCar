@@ -24,11 +24,10 @@ class _RegistercarlistState extends State<Registercarlist> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      height: MediaQuery.of(context).size.height -
-          MediaQuery.of(context).padding.top,
+      body: Container(
+      height: 500,
       width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).padding.top, 0, 0),
+      margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
       child: BlocBuilder(
         bloc: _listCarBloc,
         builder: (ctx, state) {

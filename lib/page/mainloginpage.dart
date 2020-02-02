@@ -34,8 +34,8 @@ class _MainloginpageState extends State<Mainloginpage> {
                     child: Image.asset("assets/images/imagelogin/bg.png"),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 10,left: 95),
-                    child: Text(UseString.pickabike,
+                    margin: EdgeInsets.only(top: 10,left: 120),
+                    child: Text(UseString.pickcar,
                         style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*30,color: Colors.white), 
                     ),
                   ),
