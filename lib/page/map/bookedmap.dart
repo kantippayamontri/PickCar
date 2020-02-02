@@ -36,14 +36,14 @@ class _BookedmapState extends State<Bookedmap> {
     Datasearch.boxlocationlatitude = [];
     Datasearch.boxlocationlogtitude = [];
     Datasearch.boxlocationindex = null;
-    widget.latitude = Datamanager.placelocationshow.latitude;
-    widget.logtitude = Datamanager.placelocationshow.longitude;
+    widget.latitude = Datamanager.motorcycleShow.currentlatitude;
+    widget.logtitude = Datamanager.motorcycleShow.currentlongitude;
     super.initState();
   }
   startmarker(){
     if(DataFetch.checkhavedata ==0){
-      var latitude = Datamanager.placelocationshow.latitude;
-      var longitude = Datamanager.placelocationshow.longitude;
+      var latitude = Datamanager.motorcycleShow.currentlatitude;
+      var longitude = Datamanager.motorcycleShow.currentlongitude;
       String googleUrl =
           'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
       allMarkers.add(

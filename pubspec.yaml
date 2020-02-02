@@ -78,6 +78,7 @@ flutter:
     - assets/images/imagelogin/
     - assets/images/imagereceivecar/
     - assets/images/imagemain/
+    - assets/images/keyopen/
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

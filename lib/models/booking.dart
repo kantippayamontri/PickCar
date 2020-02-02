@@ -72,6 +72,7 @@ class Bookingshow {
   String boxslotrentdocid;
   String motorplacelocdocid;
   String university;
+  String status;
   final DocumentReference reference;
 
   Bookingshow.fromMap(Map<String, dynamic> map, {this.reference})
@@ -102,6 +103,7 @@ class Bookingshow {
        boxplacedocid = map['boxplacedocid'],
        boxslotrentdocid = map['boxslotrentdocid'],
        university = map['university'],
+       status = map['status'],
        motorplacelocdocid = map['motorplacelocdocid'];
 
   Bookingshow.fromSnapshot(DocumentSnapshot snapshot)

@@ -260,7 +260,7 @@ class _AddlocationState extends State<Addlocation> {
                              .then((data){
                                Navigator.pop(context);
                                Navigator.pop(context);
-                               Navigator.pop(context);
+                               Navigator.of(context).pushNamed(Datamanager.openkey);
                              });
   }
   wait(){
@@ -383,8 +383,9 @@ class _AddlocationState extends State<Addlocation> {
       );
     }
   }
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+
+  //   super.dispose();
+  // }
 }

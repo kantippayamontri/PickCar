@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:pickcar/models/booking.dart';
 import 'package:pickcar/models/boxslotnumber.dart';
+import 'package:pickcar/models/listcarslot.dart';
 import 'package:quiver/async.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -130,7 +131,7 @@ class _ReceivecarState extends State<Receivecar> {
       });
       Future.delayed(const Duration(milliseconds: 500), () {
         print('wait');
-        print(Datamanager.boxslotnumbershow.name);
+        // print(Datamanager.boxslotnumbershow.name);
         DataFetch.waitlocation = 1;
         setState(() {
         });
@@ -145,16 +146,22 @@ class _ReceivecarState extends State<Receivecar> {
         // Realtime.timecar.cancel();
         // Navigator.of(context).pushNamed(Datamanager.openkey);
         setState(() {
-          if(widget.statebutton){
+          if(widget.statebutton && Datamanager.booking.status != 'working'){
             widget.colorchange = Colors.white;
             widget.statebutton = false;
             Navigator.of(context).pushNamed(Datamanager.receivekeymap);
+            widget._visible1 = !widget._visible1;
+          }if(widget.statebutton && Datamanager.booking.status == 'working'){
+            widget.colorchange = Colors.white;
+            widget.statebutton = false;
+            Navigator.of(context).pushNamed(Datamanager.addlocation);
             widget._visible1 = !widget._visible1;
           }else{
             widget.colorchange = PickCarColor.colormain;
             widget.statebutton = true;
             widget._visible1 = !widget._visible1;
           }
+          
         });
       },
       child: AnimatedContainer(
@@ -242,7 +249,7 @@ class _ReceivecarState extends State<Receivecar> {
         // Realtime.timecar.cancel();
         // Navigator.of(context).pushNamed(Datamanager.openkey);
         setState(() {
-          if(widget.statebutton2){
+          if(widget.statebutton2 && Datamanager.motorcycleShow.currentlongitude != null  && Datamanager.motorcycleShow.currentlatitude != null){
             widget.colorchange2 = Colors.white;
             widget.statebutton2 = false;
             widget._visible2 = !widget._visible2;
@@ -251,6 +258,9 @@ class _ReceivecarState extends State<Receivecar> {
             widget.colorchange2 = PickCarColor.colormain;
             widget.statebutton2 = true;
             widget._visible2 = !widget._visible2;
+          }
+          if(widget._visible2 && Datamanager.motorcycleShow.currentlongitude == null  && Datamanager.motorcycleShow.currentlatitude == null){
+            widget.colorchange = Colors.white;
           }
         });
       },
@@ -330,65 +340,8 @@ class _ReceivecarState extends State<Receivecar> {
       ),
     );
   }
-  // int _start = 10;
-  // void startTimer() {
-  //   CountdownTimer countDownTimer = new CountdownTimer(
-  //   new Duration(seconds: _start),
-  //   new Duration(seconds: 1),
-  //   );
-
-  //   var sub = countDownTimer.listen(null);
-  //   sub.onData((duration) {
-  //     setState(() { _current = _start - duration.elapsed.inSeconds; });
-  //   });
-  //   sub.onDone(() {
-  //     print("Done");
-  //     sub.cancel();
-  //   });
-  // }
-
-  // @override
-  // void dispose() {
-  //   _timer.cancel();
-  //   super.dispose();
-  // }
 
   void startTimer() {
-  // CountdownTimer countDownTimer = new CountdownTimer(
-  //   new Duration(seconds: _start),
-  //   new Duration(seconds: 1),
-  // );
-
-  // var sub = countDownTimer.listen(null);
-  // sub.onData((duration) async {
-  //   await Firestore.instance.collection('BoxslotRent').document(Datamanager.booking.boxslotrentdocid).get().then((data){
-  //     Datamanager.boxslotrentshow = Boxslotrentshow.fromSnapshot(data);
-  //     if(Datamanager.boxslotrentshow.iskey && DataFetch.checkkey ==0){
-  //       DataFetch.checkkey =1;
-  //       setState(() {
-  //         widget.status = "Available";
-  //       });
-  //       // setState(() {
-  //       //   widget.status= UseString.available;
-  //       // });
-  //     }else{
-  //       int i=1+duration.elapsed.inSeconds;
-  //       print(i);
-  //     }
-  //   });
-  // });
-
-  // sub.onDone(() {
-  //   print(DataFetch.checkkey);
-  //   if(DataFetch.checkkey ==1){
-  //     print("Done");
-  //   }else{
-  //     print('wait');
-  //     setState(() {
-  //     });
-  //   }
-  //   sub.cancel();
-  // });
   if(DataFetch.checkkey == 0){
     DataFetch.checkkey =1;
     Realtime.timekey = Timer.periodic(Duration(seconds: 5), (timer) async {
@@ -411,6 +364,9 @@ fetchcaravai() async {
       await Firestore.instance.collection('Booking').document(Datamanager.booking.bookingdocid).get().then((data){
         Datamanager.booking = Bookingshow.fromSnapshot(data);
       });
+      await Firestore.instance.collection('Motorcycle').document(Datamanager.booking.motorcycledocid).get().then((data){
+        Datamanager.motorcycleShow = MotorcycleShow.fromSnapshot(data);
+      });
       String a =Datamanager.booking.time;
       var result = a.split("-")[0].replaceAll(new RegExp(r' '), '').split(".");
       var minute =int.parse(result[1]);
@@ -427,7 +383,9 @@ fetchcaravai() async {
       if(DateTime.now().day == Datamanager.booking.day 
         &&DateTime.now().month == Datamanager.booking.month 
         &&DateTime.now().year == Datamanager.booking.year 
-        && now >=time){
+        && now >=time 
+        && Datamanager.motorcycleShow.currentlatitude != null
+        && Datamanager.motorcycleShow.currentlongitude != null){
           setState(() {
             DataFetch.fetchhavecar = 1;
             widget.status_car = "Available";
@@ -440,7 +398,9 @@ fetchcaravai() async {
           if(DateTime.now().day == Datamanager.booking.day 
           &&DateTime.now().month == Datamanager.booking.month 
           &&DateTime.now().year == Datamanager.booking.year 
-          && now >=time){
+          && now >=time
+          && Datamanager.motorcycleShow.currentlatitude != null
+          && Datamanager.motorcycleShow.currentlongitude != null){
       // print(DateTime.now().hour.toString() +" " + hour.toString()+" "+DateTime.now().minute.toString()+" "+minute.toString());
           setState(() {
             Realtime.timecar.cancel();

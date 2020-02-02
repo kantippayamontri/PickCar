@@ -320,6 +320,10 @@ class UseString {
   static String unlock = "Unlock";
   static String thisplace = "The car is This location.";
   static String thiscar = "This location car";
+  static String takekey = "Are you take a key?";
+  static String checktakekey = "Check you already get key from box.";
+  static String dropkey = "Are you drop a key?";
+  static String checkdropkey = "Check you already drop key to box.";
 }
 
 class Currency {
@@ -331,6 +335,7 @@ class Checkpolicy{
 class Realtime{
   static var timekey;
   static var timecar;
+  static var checkkeymap;
 }
 
 class Checkopenkey{
@@ -449,6 +454,7 @@ class DataFetch {
   static int waitlocation = 0;
   static int checkhavepin = 0;
   static int checkkey=0;
+  static int checkkeymap=0;
   static int fetchhavecar = 0;
 }
 
