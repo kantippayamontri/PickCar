@@ -242,12 +242,23 @@ class _ReceivekeymapState extends State<Receivekeymap>
                           borderRadius: new BorderRadius.circular(15.0),
                           // side: BorderSide(color: Colors.red)
                         ),
-                        child: Text(
-                          UseString.unlock,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: data.textScaleFactor * 25,
-                              color: Colors.white),
+                        child: IntrinsicWidth(
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                width: data.size.width/11,
+                                height: data.size.height/18,
+                                child: Image.asset("assets/images/imagemap/keyunlock.png",fit:BoxFit.fill),
+                              ),
+                              Text(
+                                " "+UseString.unlock,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: data.textScaleFactor * 25,
+                                    color: Colors.white),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

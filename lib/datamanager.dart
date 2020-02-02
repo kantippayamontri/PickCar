@@ -314,7 +314,7 @@ class UseString {
   static String pickcar = "PickCar";
   static String inuniversity = "in";
   static String notbooked = "You not have booked car";
-  static String unlock = "Key Unlock";
+  static String unlock = "Unlock";
 }
 
 class Currency {
