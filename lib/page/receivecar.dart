@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:pickcar/models/booking.dart';
+import 'package:pickcar/models/boxslotnumber.dart';
 import 'package:quiver/async.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -117,9 +118,19 @@ class _ReceivecarState extends State<Receivecar> {
       await Firestore.instance.collection('BoxslotRent').document(Datamanager.booking.boxslotrentdocid).get().then((data){
         Datamanager.boxslotrentshow = Boxslotrentshow.fromSnapshot(data);
       });
+      Future.delayed(const Duration(milliseconds: 500), () async {
+      await Firestore.instance.collection('box')
+                    .document(Datamanager.booking.boxdocid)
+                    .collection("boxslot")
+                    .document(Datamanager.boxslotrentshow.boxslotdocid)
+                    .get()
+                    .then((data){
+          Datamanager.boxslotnumbershow = Boxslotnumbershow.fromSnapshot(data);
+        });
+      });
       Future.delayed(const Duration(milliseconds: 500), () {
         print('wait');
-        print(Datamanager.boxslotrentshow.iskey);
+        print(Datamanager.boxslotnumbershow.name);
         DataFetch.waitlocation = 1;
         setState(() {
         });
@@ -623,30 +634,6 @@ void dispose() {
             ),
             key(context),
             location(context),
-            // animationbuttom(context),
-            // GestureDetector(
-            //   onTap: (){
-            //     setState(() {
-            //       // widget.width = data.size.width;
-            //       if(widget.statebutton){
-            //         widget.height = 0;
-            //         widget.top = 560;
-            //         widget.statebutton = false;
-            //       }else{
-            //         widget.height = 156;
-            //         widget.top = 404;
-            //         widget.statebutton = true;
-            //       }
-            //     });
-            //   },
-            //   child: Container(
-            //     width: 100,
-            //     height: 50,
-            //     margin: EdgeInsets.only(top: 404,left: 155),
-            //     // color: Colors.black,
-            //     child: Image.asset('assets/images/imagereceivecar/buttommap2.png',fit: BoxFit.fill),
-            //   ),
-            // ),
             
             GestureDetector(
               onTap: (){
@@ -654,6 +641,7 @@ void dispose() {
                 // Realtime.timecar.cancel();
                 // Navigator.of(context).pushNamed(Datamanager.bookedmap);
                 // Navigator.of(context).pushNamed(Datamanager.animatedContainerApp);
+                // Navigator.of(context).pushNamed(Datamanager.addlocation);
               },
               child: Container(
                 margin: EdgeInsets.only(top: 564),

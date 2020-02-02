@@ -74,6 +74,8 @@ class MotorcycleShow{
   bool isbook;
   bool iswaiting;
   bool isworking;
+  double currentlatitude;
+  double currentlongitude;
   final DocumentReference reference;
 
   
@@ -96,6 +98,10 @@ class MotorcycleShow{
        assert(map['isbook'] != null),
        assert(map['iswaiting'] != null),
        assert(map['isworking'] != null),
+      //  assert(map['currentlatitude'] != null),
+      //  assert(map['currentlongitude'] != null),
+       currentlatitude = map['currentlatitude'],
+       currentlongitude = map['currentlongitude'],
        brand = map['brand'],
        generation = map['generation'],
        cc = map['cc'],

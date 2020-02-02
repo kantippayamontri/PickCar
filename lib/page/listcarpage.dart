@@ -127,13 +127,21 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
             FutureBuilder<DocumentSnapshot>(
               future: Firestore.instance.collection('Motorcycle').document(bookingshow.motorcycledocid).get(),
               builder: (context, snapshot) {
-                if (!snapshot.hasData) {
+                if(snapshot.connectionState == ConnectionState.waiting){
                   return Center(
                     child: Container(
                       margin: EdgeInsets.only(top: 50),
                       child: SpinKitCircle(
                         color: PickCarColor.colormain,
                       ),
+                    ),
+                  );
+                }
+                if (!snapshot.hasData) {
+                  return Container(
+                    width: double.infinity,
+                    child: Text(UseString.notbooked,
+                      style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*30,color: PickCarColor.colorFont1), 
                     ),
                   );
                 }else if(snapshot.hasData){
@@ -219,14 +227,21 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
                       .snapshots(),
           builder: (context, snapshot) {
             if(snapshot.connectionState == ConnectionState.waiting){
-              return Container();
+              return Container(
+                height: data.size.height/1.4,
+                child: Center(
+                  child: Text(UseString.notbooked,
+                    style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*30,color: PickCarColor.colorFont1),
+                  ),
+                ),
+              );
             }
             if (!snapshot.hasData) {
               return Container(
                 height: data.size.height/1.4,
                 child: Center(
                   child: Text(UseString.notbooked,
-                    style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*36,color: PickCarColor.colorFont1),
+                    style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*30,color: PickCarColor.colorFont1),
                   ),
                 ),
               );

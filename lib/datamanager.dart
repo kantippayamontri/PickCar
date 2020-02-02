@@ -14,6 +14,7 @@ import 'dart:typed_data';
 
 import 'models/booking.dart';
 import 'models/boxlocation.dart';
+import 'models/boxslotnumber.dart';
 import 'models/boxslotrentshow.dart';
 import 'models/pincar.dart';
 import 'models/universityplace.dart';
@@ -56,6 +57,7 @@ class Datamanager {
   static String search = "/SearchPage";
   static String maplocation = "/Maplocation";
   static String receivekeymap = "/Receivekeymap";
+  static String addlocation = "/Addlocation";
   
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
@@ -71,6 +73,7 @@ class Datamanager {
   static BoxlocationShow boxlocationshow;
   static PlacelocationShow placelocationshow;
   static Boxslotrentshow boxslotrentshow;
+  static Boxslotnumbershow boxslotnumbershow;
   static List<Universityplaceshow> universityshow = [];
   static List<String> listUniversity = [];
 
@@ -315,6 +318,8 @@ class UseString {
   static String inuniversity = "in";
   static String notbooked = "You not have booked car";
   static String unlock = "Unlock";
+  static String thisplace = "The car is This location.";
+  static String thiscar = "This location car";
 }
 
 class Currency {

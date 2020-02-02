@@ -16,6 +16,7 @@ class Booking {
   String boxplacedocid;
   String boxslotrentdocid;
   String motorplacelocdocid;
+  String status;
 
  
   Booking({
@@ -33,6 +34,7 @@ class Booking {
     @required this.boxslotrentdocid,
     @required this.motorplacelocdocid,
     @required this.university,
+    @required this.status,
   }) {}
 
    Map<String , Object> toJson(){
@@ -51,6 +53,7 @@ class Booking {
       'boxslotrentdocid' : this.boxslotrentdocid,
       'motorplacelocdocid' : this.motorplacelocdocid,
       'university' : this.university,
+      'status' : this.status,
     };
   }
 }

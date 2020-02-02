@@ -653,6 +653,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
       boxslotrentdocid:  Datamanager.listcarslot.boxslotrentdocid,
       boxplacedocid:  Datamanager.listcarslot.boxplacedocid,
       motorplacelocdocid: Datamanager.listcarslot.motorplacelocdocid,
+      status: 'booking',
       bookingdocid:null,
     );
     var ref = await Datamanager.firestore.collection('Booking').add(booking.toJson());
