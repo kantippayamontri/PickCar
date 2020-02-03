@@ -324,6 +324,7 @@ class UseString {
   static String checktakekey = "Check you already get key from box.";
   static String dropkey = "Are you drop a key?";
   static String checkdropkey = "Check you already drop key to box.";
+  static String working = "working";
 }
 
 class Currency {

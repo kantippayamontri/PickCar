@@ -146,16 +146,27 @@ class _ReceivecarState extends State<Receivecar> {
         // Realtime.timecar.cancel();
         // Navigator.of(context).pushNamed(Datamanager.openkey);
         setState(() {
+          
           if(widget.statebutton && Datamanager.booking.status != 'working'){
             widget.colorchange = Colors.white;
             widget.statebutton = false;
-            Navigator.of(context).pushNamed(Datamanager.receivekeymap);
+            widget.colorchange2 = Colors.white;
+            widget.statebutton2 = false;
             widget._visible1 = !widget._visible1;
-          }if(widget.statebutton && Datamanager.booking.status == 'working'){
+            Navigator.of(context).pushNamed(Datamanager.receivekeymap);
+            if(!widget._visible2){
+              widget._visible2 = !widget._visible2;
+            }
+          }else if(widget.statebutton && Datamanager.booking.status == 'working'){
+            widget.colorchange2 = Colors.white;
+            widget.statebutton2 = false;
             widget.colorchange = Colors.white;
             widget.statebutton = false;
-            Navigator.of(context).pushNamed(Datamanager.addlocation);
             widget._visible1 = !widget._visible1;
+            Navigator.of(context).pushNamed(Datamanager.addlocation);
+            if(!widget._visible2){
+              widget._visible2 = !widget._visible2;
+            }
           }else{
             widget.colorchange = PickCarColor.colormain;
             widget.statebutton = true;
@@ -249,7 +260,7 @@ class _ReceivecarState extends State<Receivecar> {
         // Realtime.timecar.cancel();
         // Navigator.of(context).pushNamed(Datamanager.openkey);
         setState(() {
-          if(widget.statebutton2 && Datamanager.motorcycleShow.currentlongitude != null  && Datamanager.motorcycleShow.currentlatitude != null){
+          if(widget.statebutton2 && Datamanager.motorcycleShow.currentlongitude != null  && Datamanager.motorcycleShow.currentlatitude != null && widget.status_car == 'Available'){
             widget.colorchange2 = Colors.white;
             widget.statebutton2 = false;
             widget._visible2 = !widget._visible2;
@@ -259,8 +270,8 @@ class _ReceivecarState extends State<Receivecar> {
             widget.statebutton2 = true;
             widget._visible2 = !widget._visible2;
           }
-          if(widget._visible2 && Datamanager.motorcycleShow.currentlongitude == null  && Datamanager.motorcycleShow.currentlatitude == null){
-            widget.colorchange = Colors.white;
+          if(widget._visible2 && widget.status_car == 'Not Available'){
+            widget.colorchange2 = Colors.white;
           }
         });
       },
@@ -348,6 +359,8 @@ class _ReceivecarState extends State<Receivecar> {
       print(DateTime.now());
       await Firestore.instance.collection('BoxslotRent').document(Datamanager.booking.boxslotrentdocid).get().then((data){
         Datamanager.boxslotrentshow = Boxslotrentshow.fromSnapshot(data);
+        // print(Datamanager.booking.day);
+        // print(Datamanager.boxslotrentshow);
         if(Datamanager.boxslotrentshow.iskey){
           setState(() {
             Realtime.timekey.cancel();
@@ -422,6 +435,7 @@ void dispose() {
 }
   @override
   Widget build(BuildContext context) {
+    print(Datamanager.booking.boxslotrentdocid);
     var data = MediaQuery.of(context);
     if(DataFetch.waitlocation ==1){
       if(!Datamanager.boxslotrentshow.iskey){
@@ -438,6 +452,10 @@ void dispose() {
       }else if(widget.status_key == "Available"){
         Checkopenkey.checkkey = true;
         widget.showtextkey = UseString.available;
+        widget.colorkey = Colors.green;
+      }
+      if(Datamanager.booking.status == 'working'){
+        widget.showtextkey = UseString.working;
         widget.colorkey = Colors.green;
       }
       if(widget.status_car == "Not Available"){

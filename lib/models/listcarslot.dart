@@ -134,6 +134,7 @@ class Usershow{
   String profilepictype;
   String documentid;
   String documentchat;
+  double money;
   var imageurl;
   final DocumentReference reference;
 
@@ -145,11 +146,13 @@ class Usershow{
        assert(map['profilepictype'] != null),
        assert(map['documentid'] != null),
        assert(map['documentchat'] != null),
+       assert(map['money'] != null),
        name = map['name'],
        uid = map['uid'],
        profilepicpath = map['profilepicpath'],
        profilepictype = map['profilepictype'],
        documentid = map['documentid'],
+       money = map['money'].toDouble(),
        documentchat = map['documentchat'];
       
 

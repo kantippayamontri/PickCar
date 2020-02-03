@@ -17,6 +17,8 @@ class Booking {
   String boxslotrentdocid;
   String motorplacelocdocid;
   String status;
+  double priceaddtax;
+  DateTime startdate;
 
  
   Booking({
@@ -35,6 +37,8 @@ class Booking {
     @required this.motorplacelocdocid,
     @required this.university,
     @required this.status,
+    @required this.priceaddtax,
+    @required this.startdate,
   }) {}
 
    Map<String , Object> toJson(){
@@ -54,6 +58,8 @@ class Booking {
       'motorplacelocdocid' : this.motorplacelocdocid,
       'university' : this.university,
       'status' : this.status,
+      'priceaddtax' : this.priceaddtax,
+      'startdate' : this.startdate,
     };
   }
 }
@@ -63,6 +69,7 @@ class Bookingshow {
   int month;
   int year;
   double price;
+  double priceaddtax;
   String motorcycledocid;
   String ownerid;
   String myid;
@@ -73,6 +80,7 @@ class Bookingshow {
   String motorplacelocdocid;
   String university;
   String status;
+  DateTime startdate;
   final DocumentReference reference;
 
   Bookingshow.fromMap(Map<String, dynamic> map, {this.reference})
@@ -90,7 +98,11 @@ class Bookingshow {
        assert(map['boxslotrentdocid'] != null),
        assert(map['motorplacelocdocid'] != null),
        assert(map['university'] != null),
+      //  assert(map['priceaddtax'] != null),
+       assert(map['startdate'] != null),
+       startdate = (map['startdate'] as Timestamp).toDate(),
        time = map['time'],
+       priceaddtax = map['priceaddtax'],
        day = map['day'],
        month = map['month'],
        year = map['year'],

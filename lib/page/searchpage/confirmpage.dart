@@ -655,6 +655,8 @@ class _ConfirmPageState extends State<ConfirmPage> {
       motorplacelocdocid: Datamanager.listcarslot.motorplacelocdocid,
       status: 'booking',
       bookingdocid:null,
+      priceaddtax: widget.pricetotal,
+      startdate: Datamanager.listcarslot.startdate,
     );
     var ref = await Datamanager.firestore.collection('Booking').add(booking.toJson());
     var document = ref.documentID;

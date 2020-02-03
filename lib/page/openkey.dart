@@ -14,6 +14,7 @@ import 'package:pickcar/models/booking.dart';
 import 'package:pickcar/models/boxlocation.dart';
 import 'package:pickcar/models/boxslotrentshow.dart';
 import 'package:pickcar/models/listcarslot.dart';
+import 'package:pickcar/models/user.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Openkey extends StatefulWidget {
@@ -126,14 +127,29 @@ class _OpenkeyState extends State<Openkey> {
     );
   }
   updateworking(BuildContext context) async {
+    Realtime.checkkeymap.cancel();
     await Firestore.instance.collection('Booking')
                               .document(Datamanager.booking.bookingdocid)
                               .updateData({'status': 'working'});
+    await Firestore.instance.collection('BoxslotRent')
+                              .document(Datamanager.booking.boxslotrentdocid)
+                              .updateData({'iskey': false});
   }
   updateend(BuildContext context) async {
+    Realtime.checkkeymap.cancel();
+    var price = Datamanager.user.money - Datamanager.booking.priceaddtax;;
     await Firestore.instance.collection('Booking')
                               .document(Datamanager.booking.bookingdocid)
                               .updateData({'status': 'end'});
+    await Firestore.instance.collection('BoxslotRent')
+                              .document(Datamanager.booking.boxslotrentdocid)
+                              .updateData({'iskey': true});
+    await Firestore.instance.collection('User')
+                              .document(Datamanager.user.documentid)
+                              .updateData({'money': price});
+    Datamanager.user.money = price;
+    print(Datamanager.user.money);
+                                
   }
   checkiskey(BuildContext context) async {
     if(DataFetch.checkkeymap == 0){
@@ -175,9 +191,8 @@ class _OpenkeyState extends State<Openkey> {
                               .updateData({'isopen': false});
   }
   dispose() {
-  lock();
-  Realtime.checkkeymap.cancel();
-  Realtime.checkkeymap =null;
+    lock();
+    Realtime.checkkeymap =null;
   super.dispose();
 }
   @override

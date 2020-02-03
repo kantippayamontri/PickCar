@@ -106,13 +106,13 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
     TabController _tabController;
     _tabController = new TabController(vsync: this, length: myTabs.length,initialIndex: widget.indicatorpage);
      Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
+      var booking;
       var datasize = MediaQuery.of(context);
-      Bookingshow bookingshow = Bookingshow.fromSnapshot(data);
+      booking = Bookingshow.fromSnapshot(data);
       return GestureDetector(
         onTap: (){
-          
-          Datamanager.booking = bookingshow;
           Datamanager.motorcycleShow = widget.motorshow;
+          Datamanager.booking = booking;
           // Datamanager.placelocationshow = widget.locationshow;
           // Datamanager.boxlocationshow= widget.boxshow;
           Navigator.of(context).pushNamed(Datamanager.receivecar);
@@ -125,7 +125,7 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
               child: Image.asset('assets/images/imagesearch/card.png',fit: BoxFit.fill,),
             ),
             FutureBuilder<DocumentSnapshot>(
-              future: Firestore.instance.collection('Motorcycle').document(bookingshow.motorcycledocid).get(),
+              future: Firestore.instance.collection('Motorcycle').document(booking.motorcycledocid).get(),
               builder: (context, snapshot) {
                 if(snapshot.connectionState == ConnectionState.waiting){
                   return Center(
@@ -175,21 +175,21 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
                           Container(
                             alignment: Alignment.centerLeft,
                             // margin: EdgeInsets.only(left: 10),
-                            child: Text(UseString.date +" : "+ bookingshow.day.toString()+" "+monthy(bookingshow.month)+" "+bookingshow.year.toString(),
+                            child: Text(UseString.date +" : "+ booking.day.toString()+" "+monthy(booking.month)+" "+booking.year.toString(),
                               style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*20,color: PickCarColor.colorFont1), 
                             ),
                           ),
                           Container(
                             alignment: Alignment.centerLeft,
                             margin: EdgeInsets.only(left: 10),
-                            child: Text(UseString.time +" : "+ bookingshow.time,
+                            child: Text(UseString.time +" : "+ booking.time,
                               style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*20,color: PickCarColor.colorFont1), 
                             ),
                           ),
                           Container(
                             alignment: Alignment.centerLeft,
                             margin: EdgeInsets.only(left: 10),
-                            child: Text(UseString.price +" : "+ bookingshow.price.toString()+'฿',
+                            child: Text(UseString.price +" : "+ booking.price.toString()+'฿',
                               style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*20,color: PickCarColor.colorFont1), 
                             ),
                           ),
