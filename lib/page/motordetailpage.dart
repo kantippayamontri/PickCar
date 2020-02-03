@@ -21,22 +21,21 @@ class MotorDetailPage extends StatefulWidget {
   _MotorDetailPageState createState() => _MotorDetailPageState();
 }
 
-
 class _MotorDetailPageState extends State<MotorDetailPage> {
   MotorDetailBloc _motorDetailBloc;
 
-  void setstate(){
-    setState(() {
-      
-    });
+  void setstate() {
+    setState(() {});
   }
 
   @override
   void initState() {
     // TODO: implement initState
     print("motor firestore docid ; ${widget.motordocid}");
-    _motorDetailBloc =
-        MotorDetailBloc(context: context, firestoredocid: widget.motordocid , setstate: setstate);
+    _motorDetailBloc = MotorDetailBloc(
+        context: context,
+        firestoredocid: widget.motordocid,
+        setstate: setstate);
     _motorDetailBloc.add(MotorDetailLoadData());
     super.initState();
   }
@@ -240,14 +239,38 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
           },
         ),
       ),
-      floatingActionButton: _motorDetailBloc.openbox != null? FloatingActionButton(
-        onPressed: () {
-          print('press key box ja');
-          _motorDetailBloc.navigatetoopenbox();
-        },
-        child: Icon(Icons.vpn_key),
-        backgroundColor: PickCarColor.colormain,
-      ) : SizedBox(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            _motorDetailBloc.openbox != null
+                ? FloatingActionButton(
+                  heroTag: "dropkey",
+                    onPressed: () {
+                      print('press key box ja');
+                      _motorDetailBloc.navigatetoopenbox();
+                    },
+                    child: Icon(Icons.vpn_key),
+                    backgroundColor: PickCarColor.colormain,
+                  )
+                : SizedBox(),
+            SizedBox(
+              height: 20,
+            ),
+            FloatingActionButton(
+              heroTag: "recievekey",
+              onPressed: () {
+                print('press recieve key ja');
+                //_motorDetailBloc.navigatetoopenbox();
+              },
+              child: Icon(Icons.vpn_key),
+              backgroundColor: Colors.yellow,
+            )
+          ],
+        ),
+      ),
     );
   }
 
