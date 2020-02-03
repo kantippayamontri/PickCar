@@ -271,7 +271,7 @@ class _AddLocationOwnerState extends State<AddLocationOwner> {
                              .then((data){
                                Navigator.pop(context);
                                Navigator.pop(context);
-                               Navigator.pop(context);
+                               Navigator.pop(context , true);
                              });
   }
   wait(){

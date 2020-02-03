@@ -247,10 +247,11 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
           children: <Widget>[
             _motorDetailBloc.openbox != null
                 ? FloatingActionButton(
-                  heroTag: "dropkey",
-                    onPressed: () {
+                    heroTag: "dropkey",
+                    onPressed: () async {
                       print('press key box ja');
-                      _motorDetailBloc.navigatetoopenbox();
+                      await _motorDetailBloc.navigatetoopenbox();
+                      _motorDetailBloc.add(MotorDetailLoadData());
                     },
                     child: Icon(Icons.vpn_key),
                     backgroundColor: PickCarColor.colormain,
@@ -259,15 +260,18 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
             SizedBox(
               height: 20,
             ),
-            FloatingActionButton(
-              heroTag: "recievekey",
-              onPressed: () {
-                print('press recieve key ja');
-                //_motorDetailBloc.navigatetoopenbox();
-              },
-              child: Icon(Icons.vpn_key),
-              backgroundColor: Colors.yellow,
-            )
+            _motorDetailBloc.receivebox != null
+                ? FloatingActionButton(
+                    heroTag: "recievekey",
+                    onPressed: () {
+                      print('press recieve key ja');
+                      //_motorDetailBloc.navigatetoopenbox();
+                      _motorDetailBloc.navigatetoreceivebox();
+                    },
+                    child: Icon(Icons.vpn_key),
+                    backgroundColor: Colors.yellow,
+                  )
+                : SizedBox(),
           ],
         ),
       ),

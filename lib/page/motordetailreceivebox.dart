@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:pickcar/models/boxslotrent.dart';
+import 'package:pickcar/models/motorcycle.dart';
+
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,24 +11,33 @@ import 'package:pickcar/models/boxslotrent.dart';
 import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/page/addlocationowner.dart';
 
-class MotorDetailOpenBox extends StatefulWidget {
-  Boxslotrent boxslotrent;
-  Motorcycle motorcycle;
-  MotorDetailOpenBox({@required this.boxslotrent, @required this.motorcycle});
+
+
+class MotorDetailReceiveBox extends StatefulWidget {
+
+  final Boxslotrent boxslotrent;
+  final Motorcycle motorcycle;
+  final String bookingdocid;
+  
+  MotorDetailReceiveBox({@required this.boxslotrent , @required this.motorcycle , @required this.bookingdocid}){
+    print('boxslotrent eiei: ${boxslotrent.docid}');
+    print('boxslotrent isopen eiei: ${boxslotrent.isopen}');
+  }
 
   @override
-  _MotorDetailOpenBoxState createState() => _MotorDetailOpenBoxState();
+  _MotorDetailReceiveBoxState createState() => _MotorDetailReceiveBoxState();
 }
 
-class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
-  Color currentcolor = Colors.yellow;
+class _MotorDetailReceiveBoxState extends State<MotorDetailReceiveBox> {
+
+Color currentcolor = Colors.yellow;
   String statusbox = "Waiting";
   Boxslotrent _boxslotrent;
   //bool isdropkey;
   bool nowboxcheck;
   bool preboxcheck;
   bool isloop = true;
-  bool isaddlocation = false;
+  bool isremoving = false;
   
 
   Future loaddata() async {}
@@ -33,6 +46,9 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
     print("start timer");
 
     Realtime.timekey = Timer.periodic(Duration(seconds: 5), (timer) async {
+      if(isremoving){
+        return;
+      }
       if (!isloop) {
         return;
       }
@@ -54,17 +70,22 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
         await showslertdropkey();
         print("pass tapbox");
 
-        if (this._boxslotrent.iskey) {
+        if (!this._boxslotrent.iskey) {
+          this.isremoving = true;
           await Datamanager.firestore
               .collection("BoxslotRent")
               .document(_boxslotrent.docid)
-              .updateData({'iskey': true, 'ownerdropkey': true});
+              .updateData({'iskey': false, 'ownerdropkey': false});
+
+          print("delete book");
+          await Datamanager.firestore.collection("Booking").document(widget.bookingdocid).delete();
+          await Datamanager.firestore.collection("BoxslotRent").document(widget.boxslotrent.docid).delete();
           Navigator.of(context).pop();
         } else {
           await Datamanager.firestore
               .collection("BoxslotRent")
               .document(_boxslotrent.docid)
-              .updateData({'iskey': false, 'ownerdropkey': false});
+              .updateData({'iskey': true, 'ownerdropkey': true});
         }
 
         setstate();
@@ -82,16 +103,7 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
         .get();
     if (doc['isopen'] == false) {
       //todo check add location
-      if (!this.isaddlocation) {
-        await showalertaddlocation();
-      }
-
-      if(!this.isaddlocation){
-        print("dont add location");
-        return;
-      }else{
-        print("add location success");
-      }
+      
 
       await Datamanager.firestore
           .collection("BoxslotRent")
@@ -130,56 +142,6 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
     }*/
   }
 
-  Future<Null> showalertaddlocation() {
-    print('show alert add location');
-    return showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Please add your motorcycle location"),
-            content:
-                Text("You must add your motorycle location before open keybox"),
-            actions: <Widget>[
-              FlatButton(
-                child: Text("Yes"),
-                onPressed: () async {
-                  print("YES");
-                  var result = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddLocationOwner(
-                                    motorcycledocid:
-                                        widget.motorcycle.firestoredocid,
-                                  )));
-                                  print('resutl is ${result as bool}');
-                  this.isaddlocation = result as bool;
-                  if(this.isaddlocation == null){
-                    this.isaddlocation = false;
-                  }
-                  setstate();
-
-                  // await Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //             builder: (context) => AddLocationOwner(
-                  //                   motorcycledocid:
-                  //                       widget.motorcycle.firestoredocid,
-                  //                 )));
-                  Navigator.of(context).pop();
-                },
-              ),
-              FlatButton(
-                child: Text("No"),
-                onPressed: () {
-                  print("No");
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          );
-        });
-  }
 
   Future<void> showslertdropkey() async {
     print("showslertdropkey 111111111111111111111");
@@ -188,14 +150,14 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Are you drop your key?"),
-            content: Text("Are you drop your key?"),
+            title: Text("Are you get your key?"),
+            content: Text("Are you get your key?"),
             actions: <Widget>[
               FlatButton(
                 child: Text("Yes"),
                 onPressed: () {
                   print("YES");
-                  this._boxslotrent.iskey = true;
+                  this._boxslotrent.iskey = false;
                   Navigator.of(context).pop();
                 },
               ),
@@ -203,7 +165,7 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
                 child: Text("No"),
                 onPressed: () {
                   print("No");
-                  this._boxslotrent.iskey = false;
+                  this._boxslotrent.iskey = true;
                   Navigator.of(context).pop();
                 },
               )
@@ -228,6 +190,8 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
     }
 
     preboxcheck = this._boxslotrent.isopen;
+
+    print("start status box : ${this._boxslotrent.isopen}");
   }
 
   void setstate() {
@@ -311,4 +275,5 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
       ),
     );
   }
+  
 }
