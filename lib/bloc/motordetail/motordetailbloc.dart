@@ -17,6 +17,7 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
   bool needdropkey = false;
   Function setstate;
   Boxslotrent openbox;
+  Boxslotrent receivebox;
 
   MotorDetailBloc(
       {@required this.context,
@@ -37,8 +38,22 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
       yield MotorDetailStartState();
       await loaddata();
       await checkdropkey();
+      await checkreceive();
       yield MotorDetailShowdata(motorcycle: this.motorcycle);
     }
+  }
+
+  Future<Null> checkreceive() async {
+    DateTime datenow = DateTime.now();
+    var book =  await Datamanager.firestore
+        .collection("Booking")
+        .where('motorcycledocid', isEqualTo: this.motorcycle.firestoredocid)
+        .getDocuments();
+
+    List<DocumentSnapshot> booklist = book.documents;
+    //booklist = booklist.where((doc) =>  );
+
+
   }
 
   Future<Null> checkdropkey() async {
@@ -51,14 +66,15 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
 
     List<DocumentSnapshot> boxslotrentlist = boxslotrent.documents;
     //boxslotrentlist = boxslotrentlist.where((doc) => ( (doc['day'] == timenow.day) && (doc['month'] == timenow.month) && (doc['year'] == timenow.year)));
-    if(boxslotrentlist.isEmpty){
+    if (boxslotrentlist.isEmpty) {
       return;
     }
     print("boxslotrentlist : " + boxslotrentlist.length.toString());
     print("boxslotrentlist docid : " + boxslotrentlist[0]['docid']);
     for (var doc in boxslotrentlist) {
-
-      if(!(doc['day'] == timenow.day) && (doc['month'] == timenow.month) && (doc['year'] == timenow.year)){
+      if (!(doc['day'] == timenow.day) &&
+          (doc['month'] == timenow.month) &&
+          (doc['year'] == timenow.year)) {
         continue;
       }
 
@@ -77,14 +93,14 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
             startdate: (doc['startdate'] as Timestamp).toDate(),
             time: doc['time'],
             year: doc['year']);
-            currentopenbox.docid = doc['docid'];
+        currentopenbox.docid = doc['docid'];
         break;
       }
       continue;
     }
 
     this.openbox = currentopenbox;
-    if(openbox != null){
+    if (openbox != null) {
       print("infunction : ${this.openbox.docid}");
     }
     this.setstate();
@@ -93,7 +109,12 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
   Future navigatetoopenbox() async {
     print("before navigator : ${this.openbox.docid}");
     int message = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => MotorDetailOpenBox(boxslotrent: this.openbox,)));
+        context,
+        MaterialPageRoute(
+            builder: (context) => MotorDetailOpenBox(
+                  boxslotrent: this.openbox,
+                  motorcycle: this.motorcycle,
+                )));
     print("data back is : ${message}");
   }
 

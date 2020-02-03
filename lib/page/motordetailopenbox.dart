@@ -1,12 +1,16 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/boxslotrent.dart';
+import 'package:pickcar/models/motorcycle.dart';
+import 'package:pickcar/page/addlocationowner.dart';
 
 class MotorDetailOpenBox extends StatefulWidget {
   Boxslotrent boxslotrent;
-
-  MotorDetailOpenBox({@required this.boxslotrent});
+Motorcycle motorcycle;
+  MotorDetailOpenBox({@required this.boxslotrent , @required this.motorcycle});
 
   @override
   _MotorDetailOpenBoxState createState() => _MotorDetailOpenBoxState();
@@ -17,8 +21,55 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
   String statusbox = "Waiting";
   Boxslotrent _boxslotrent;
   //bool isdropkey;
+  bool nowboxcheck;
+  bool preboxcheck;
+  bool isloop = true;
 
   Future loaddata() async {}
+
+  void starttimer() {
+    print("start timer");
+
+    Realtime.timekey = Timer.periodic(Duration(seconds: 5), (timer) async {
+      if (!isloop) {
+        return;
+      }
+      print("timenow is " + DateTime.now().second.toString());
+      var doc = await Datamanager.firestore
+          .collection("BoxslotRent")
+          .document(_boxslotrent.docid)
+          .get();
+      nowboxcheck = doc['isopen'];
+
+      if ((preboxcheck == true) && (nowboxcheck == false)) {
+        //
+        this.currentcolor = Colors.red;
+        this.statusbox = "Close";
+        _boxslotrent.isopen = false;
+        setstate();
+        //
+        isloop = false;
+        await showslertdropkey();
+        print("pass tapbox");
+
+        if (this._boxslotrent.iskey) {
+          await Datamanager.firestore
+              .collection("BoxslotRent")
+              .document(_boxslotrent.docid)
+              .updateData({'iskey': true, 'ownerdropkey': true});
+        } else {
+          await Datamanager.firestore
+              .collection("BoxslotRent")
+              .document(_boxslotrent.docid)
+              .updateData({'iskey': false, 'ownerdropkey': false});
+        }
+
+        setstate();
+      }
+
+      preboxcheck = nowboxcheck;
+    });
+  }
 
   Future tapbox() async {
     print("boxslotrent docid : ${_boxslotrent.docid}");
@@ -35,7 +86,8 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
       this.statusbox = "Open";
       _boxslotrent.isopen = true;
       setstate();
-    } else {
+    }
+    /*else {
       await Datamanager.firestore
           .collection("BoxslotRent")
           .document(_boxslotrent.docid)
@@ -60,7 +112,7 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
       }
 
       setstate();
-    }
+    }*/
   }
 
   Future<void> showslertdropkey() async {
@@ -108,6 +160,8 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
       currentcolor = Colors.green;
       this.statusbox = "Open";
     }
+
+    preboxcheck = this._boxslotrent.isopen;
   }
 
   void setstate() {
@@ -116,6 +170,9 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
 
   @override
   Widget build(BuildContext context) {
+    if (isloop) {
+      starttimer();
+    }
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height -
@@ -167,6 +224,12 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
                           )),
                         )
                       : SizedBox(),
+
+                      RaisedButton(child: Text("add map"),
+                      onPressed: (){
+                        print("add map");
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => AddLocationOwner(motorcycledocid: widget.motorcycle.firestoredocid,)));
+                      },)
                 ],
               ),
             );
