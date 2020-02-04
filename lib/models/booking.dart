@@ -19,6 +19,7 @@ class Booking {
   String status;
   double priceaddtax;
   DateTime startdate;
+  bool isinhistory;
 
  
   Booking({
@@ -39,6 +40,7 @@ class Booking {
     @required this.status,
     @required this.priceaddtax,
     @required this.startdate,
+    @required this.isinhistory,
   }) {}
 
    Map<String , Object> toJson(){
@@ -60,6 +62,7 @@ class Booking {
       'status' : this.status,
       'priceaddtax' : this.priceaddtax,
       'startdate' : this.startdate,
+      'isinhistory' : this.isinhistory,
     };
   }
 }

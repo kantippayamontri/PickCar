@@ -65,6 +65,10 @@ class Motorcycle{
     @required this.carstatus,
     @required this.currentlatitude,
     @required this.currentlongitude,
+
+    @required this.isbook,
+    @required this.iswaiting,
+    @required this.isworking,
   });
 
   Map<String , dynamic> toJson(){

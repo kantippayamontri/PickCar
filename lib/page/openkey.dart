@@ -127,28 +127,81 @@ class _OpenkeyState extends State<Openkey> {
     );
   }
   updateworking(BuildContext context) async {
+    var number = 0;
     Realtime.checkkeymap.cancel();
     await Firestore.instance.collection('Booking')
-                              .document(Datamanager.booking.bookingdocid)
-                              .updateData({'status': 'working'});
-    await Firestore.instance.collection('BoxslotRent')
-                              .document(Datamanager.booking.boxslotrentdocid)
-                              .updateData({'iskey': false});
+                              .where('status' ,isEqualTo: 'booking')
+                              .where('motorcycledocid' ,isEqualTo: Datamanager.booking.motorcycledocid)
+                              .getDocuments().then((data) {
+                                Future.delayed(const Duration(milliseconds: 1000), () async {
+                                  if(data.documents.length == 1){
+                                    print(data.documents.length);
+                                    print('sdsd');
+                                    await Firestore.instance.collection('Booking')
+                                          .document(Datamanager.booking.bookingdocid)
+                                          .updateData({'status': 'working'});
+                                    await Firestore.instance.collection('BoxslotRent')
+                                          .document(Datamanager.booking.boxslotrentdocid)
+                                          .updateData({'iskey': false});
+                                    await Firestore.instance.collection('Motorcycle')
+                                                .document(Datamanager.booking.motorcycledocid)
+                                                .updateData({'isworking': true,'isbook': false});
+                                  }else{
+                                    print(data.documents.length);
+                                    print('=====');
+                                    await Firestore.instance.collection('Booking')
+                                          .document(Datamanager.booking.bookingdocid)
+                                          .updateData({'status': 'working'});
+                                    await Firestore.instance.collection('BoxslotRent')
+                                          .document(Datamanager.booking.boxslotrentdocid)
+                                          .updateData({'iskey': false});
+                                    await Firestore.instance.collection('Motorcycle')
+                                                .document(Datamanager.booking.motorcycledocid)
+                                                .updateData({'isworking': true});
+                                  }
+                                });
+                              });
   }
   updateend(BuildContext context) async {
     Realtime.checkkeymap.cancel();
-    var price = Datamanager.user.money - Datamanager.booking.priceaddtax;;
+    var price = Datamanager.user.money - Datamanager.booking.priceaddtax;
     await Firestore.instance.collection('Booking')
-                              .document(Datamanager.booking.bookingdocid)
-                              .updateData({'status': 'end'});
-    await Firestore.instance.collection('BoxslotRent')
-                              .document(Datamanager.booking.boxslotrentdocid)
-                              .updateData({'iskey': true});
-    await Firestore.instance.collection('User')
-                              .document(Datamanager.user.documentid)
-                              .updateData({'money': price});
+                              .where('status' ,isEqualTo: 'working')
+                              .where('motorcycledocid' ,isEqualTo: Datamanager.booking.motorcycledocid)
+                              .getDocuments().then((data) {
+                                Future.delayed(const Duration(milliseconds: 1000), () async {
+                                  if(data.documents.length == 1){
+                                    print(data.documents.length);
+                                    print('sdsd');
+                                    await Firestore.instance.collection('Booking')
+                                              .document(Datamanager.booking.bookingdocid)
+                                              .updateData({'status': 'end','isinhistory': true});
+                                    await Firestore.instance.collection('Motorcycle')
+                                              .document(Datamanager.booking.motorcycledocid)
+                                              .updateData({'isworking': false});
+                                    await Firestore.instance.collection('BoxslotRent')
+                                              .document(Datamanager.booking.boxslotrentdocid)
+                                              .updateData({'iskey': true});
+                                    await Firestore.instance.collection('User')
+                                              .document(Datamanager.user.documentid)
+                                              .updateData({'money': price});
+                                  }else{
+                                    print(data.documents.length);
+                                    print('=====');
+                                    await Firestore.instance.collection('Booking')
+                                              .document(Datamanager.booking.bookingdocid)
+                                              .updateData({'status': 'end','isinhistory': true});
+                                    await Firestore.instance.collection('BoxslotRent')
+                                              .document(Datamanager.booking.boxslotrentdocid)
+                                              .updateData({'iskey': true});
+                                    await Firestore.instance.collection('User')
+                                              .document(Datamanager.user.documentid)
+                                              .updateData({'money': price});
+                                  }
+                                });
+                              });
     Datamanager.user.money = price;
-    print(Datamanager.user.money);
+    // print(Datamanager.user.money);
                                 
   }
   checkiskey(BuildContext context) async {
@@ -191,6 +244,7 @@ class _OpenkeyState extends State<Openkey> {
                               .updateData({'isopen': false});
   }
   dispose() {
+    Realtime.checkkeymap.cancel();
     lock();
     Realtime.checkkeymap =null;
   super.dispose();

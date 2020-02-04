@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/page/example.dart';
+import 'package:pickcar/page/history.dart';
 import 'package:pickcar/page/listcarpage.dart';
 import 'package:pickcar/page/loginpage.dart';
 import 'package:pickcar/page/mainloginpage.dart';
@@ -87,6 +88,7 @@ class MyApp extends StatelessWidget {
         Datamanager.maplocation : (ctx) => Maplocation(),
         Datamanager.receivekeymap : (ctx) => Receivekeymap(),
         Datamanager.addlocation : (ctx) => Addlocation(),
+        Datamanager.historypage : (ctx) => HistoryPage(),
         //'loginpickcarpage': (ctx) => LoginPickCarPage()
       },
       onGenerateRoute: (setting) {},
