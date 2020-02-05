@@ -79,8 +79,10 @@ class Datamanager {
 
   static FirebaseStorage firebasestorage = FirebaseStorage.instance;
 
+  static Function gontosearchinHome;
+
   static List<Map<String, Object>> pages = [
-    {'page': HomePage(), 'title': 'Home'},
+    {'page': HomePage(gotosearchinHome: gontosearchinHome,), 'title': 'Home'},
     {'page': SearchPage(), 'title': 'Chat'},
     {'page': ListCarPage(), 'title': 'ListCar'},
     {'page': ProfilePage(), 'title': 'Profile'},

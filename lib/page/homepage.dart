@@ -7,6 +7,11 @@ import 'package:pickcar/page/tabscreen.dart';
 import 'package:pickcar/widget/home/cardrental.dart';
 int i=0;
 class HomePage extends StatefulWidget {
+
+  Function gotosearchinHome;
+
+  HomePage({@required this.gotosearchinHome});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -74,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                       width: constraints.maxWidth,
                       title: UseString.rentaltitle,
                       buttontext: UseString.rentalbutton,
-                      tap: _gotorental,
+                      tap: widget.gotosearchinHome,//_gotorental,
                       imageurl: 'assets/images/imagemain/forrent.png',
                     ),
                     SizedBox(

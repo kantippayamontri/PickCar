@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:pickcar/bloc/motordetail/motordetailevent.dart';
 import 'package:pickcar/bloc/motordetail/motordetailstate.dart';
 import 'package:pickcar/datamanager.dart';
+import 'package:pickcar/models/boxlocation.dart';
 import 'package:pickcar/models/boxslotrent.dart';
 import 'package:pickcar/models/motorcycle.dart';
+import 'package:pickcar/models/placelocation.dart';
 import 'package:pickcar/page/motordetailopenbox.dart';
 import 'package:pickcar/page/motordetailreceivebox.dart';
 
@@ -20,6 +22,12 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
   Boxslotrent openbox;
   Boxslotrent receivebox;
   String receivebookdocid;
+
+  Placelocation openboxmotorplace;
+  Boxlocation openboxboxplace;
+
+  Placelocation receivemotorplace;
+  Boxlocation receiveboxplace;
 
   MotorDetailBloc(
       {@required this.context,
@@ -66,27 +74,52 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
       setstate();
       return;
     } else {
-      DocumentSnapshot  book = booklist.first;
-      DocumentSnapshot boxslotrent = await Datamanager.firestore.collection("BoxslotRent").document(book['boxslotrentdocid']).get();
+      DocumentSnapshot book = booklist.first;
+      DocumentSnapshot boxslotrent = await Datamanager.firestore
+          .collection("BoxslotRent")
+          .document(book['boxslotrentdocid'])
+          .get();
 
       this.receivebox = Boxslotrent(
-        boxdocid: boxslotrent['boxdocid'],
-        boxplacedocid: boxslotrent['boxplacedocid'],
-        boxslotdocid: boxslotrent['boxslotdocid'],
-        day: boxslotrent['day'],
-        iskey: boxslotrent['iskey'],
-        isopen: boxslotrent['isopen'],
-        month: boxslotrent['month'],
-        ownerdocid: boxslotrent['ownerdocid'],
-        ownerdropkey: boxslotrent['ownerdropkey'],
-        renterdocid: boxslotrent['renterdocid'],
-        startdate: (boxslotrent['startdate'] as Timestamp).toDate(),
-        time: boxslotrent['time'],
-        year: boxslotrent['year'],
-      );
+          boxdocid: boxslotrent['boxdocid'],
+          boxplacedocid: boxslotrent['boxplacedocid'],
+          boxslotdocid: boxslotrent['boxslotdocid'],
+          day: boxslotrent['day'],
+          iskey: boxslotrent['iskey'],
+          isopen: boxslotrent['isopen'],
+          month: boxslotrent['month'],
+          ownerdocid: boxslotrent['ownerdocid'],
+          ownerdropkey: boxslotrent['ownerdropkey'],
+          renterdocid: boxslotrent['renterdocid'],
+          startdate: (boxslotrent['startdate'] as Timestamp).toDate(),
+          time: boxslotrent['time'],
+          year: boxslotrent['year'],
+          motorplaceloc: boxslotrent['motorplaceloc']);
       this.receivebox.docid = boxslotrent['docid'];
 
       this.receivebookdocid = book['bookingdocid'];
+
+      DocumentSnapshot motorplacedoc = await Datamanager.firestore
+          .collection("placelocation")
+          .document(this.receivebox.motorplaceloc)
+          .get();
+      this.receivemotorplace = Placelocation(
+        latitude: motorplacedoc['latitude'],
+        longitude: motorplacedoc['longitude'],
+        name: motorplacedoc['name'],
+        universityname: motorplacedoc['universityname'],
+      );
+
+      DocumentSnapshot boxplacedoc = await Datamanager.firestore
+          .collection("boxlocation")
+          .document(this.receivebox.boxplacedocid)
+          .get();
+      this.receiveboxplace = Boxlocation(
+        latitude: boxplacedoc['latitude'],
+        longitude:  boxplacedoc['longitude'],
+        name:  boxplacedoc['name'],
+        universityname:  boxplacedoc['universityname'],
+      );
 
       setstate();
       /*DocumentSnapshot  doc = booklist.first;
@@ -130,7 +163,10 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
     List<DocumentSnapshot> boxslotrentlist = boxslotrent.documents;
     //boxslotrentlist = boxslotrentlist.where((doc) => ( (doc['day'] == timenow.day) && (doc['month'] == timenow.month) && (doc['year'] == timenow.year)));
     if (boxslotrentlist.isEmpty) {
+      print("dropkey is empty");
       return;
+    } else {
+      print("dropkey is not empty");
     }
     print("boxslotrentlist : " + boxslotrentlist.length.toString());
     print("boxslotrentlist docid : " + boxslotrentlist[0]['docid']);
@@ -138,6 +174,7 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
       if (!(doc['day'] == timenow.day) &&
           (doc['month'] == timenow.month) &&
           (doc['year'] == timenow.year)) {
+        print("doc continuce : ${doc['docid']}");
         continue;
       }
 
@@ -155,7 +192,8 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
             renterdocid: doc['renterdocid'],
             startdate: (doc['startdate'] as Timestamp).toDate(),
             time: doc['time'],
-            year: doc['year']);
+            year: doc['year'],
+            motorplaceloc: doc['motorplaceloc']);
         currentopenbox.docid = doc['docid'];
         break;
       }
@@ -165,6 +203,29 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
     this.openbox = currentopenbox;
     if (openbox != null) {
       print("infunction : ${this.openbox.docid}");
+      print("motor place : ${this.openbox.docid}");
+      DocumentSnapshot motorplacedoc = await Datamanager.firestore
+          .collection("placelocation")
+          .document(this.openbox.motorplaceloc)
+          .get();
+      this.openboxmotorplace = Placelocation(
+          latitude: motorplacedoc['latitude'],
+          longitude: motorplacedoc['longitude'],
+          name: motorplacedoc['name'],
+          universityname: motorplacedoc['universityname']);
+
+      DocumentSnapshot boxlocationdoc = await Datamanager.firestore
+          .collection("boxlocation")
+          .document(this.openbox.boxplacedocid)
+          .get();
+      this.openboxboxplace = Boxlocation(
+        latitude: boxlocationdoc['latitude'],
+        longitude: boxlocationdoc['longitude'],
+        name: boxlocationdoc['name'],
+        universityname: boxlocationdoc['universityname'],
+      );
+    } else {
+      print("this.openbox is : null");
     }
     this.setstate();
   }
@@ -177,6 +238,8 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
             builder: (context) => MotorDetailOpenBox(
                   boxslotrent: this.openbox,
                   motorcycle: this.motorcycle,
+                  boxlocation: this.openboxboxplace,
+                  placelocation: this.openboxmotorplace,
                 )));
 
     print("data back is : ${message}");
@@ -190,6 +253,8 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
                   bookingdocid: this.receivebookdocid,
                   boxslotrent: this.receivebox,
                   motorcycle: this.motorcycle,
+                  motorboxplace: this.receiveboxplace,
+                  motorplaceloc: this.receivemotorplace,
                 )));
   }
 

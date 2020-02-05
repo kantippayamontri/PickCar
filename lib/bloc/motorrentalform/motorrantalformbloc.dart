@@ -120,25 +120,25 @@ class MotorRentalFormBloc
     }
   }
 
-  DateTime makestartdatetimesingle(DateTime date , String timeslot){
+  DateTime makestartdatetimesingle(DateTime date, String timeslot) {
     DateTime startdate;
-    if(timeslot == TimeSlotSingle.sub1){
-      startdate = DateTime(date.year,date.month,date.day,8,0);
+    if (timeslot == TimeSlotSingle.sub1) {
+      startdate = DateTime(date.year, date.month, date.day, 8, 0);
     }
-    if(timeslot == TimeSlotSingle.sub2){
-      startdate = DateTime(date.year,date.month,date.day,9,30);
+    if (timeslot == TimeSlotSingle.sub2) {
+      startdate = DateTime(date.year, date.month, date.day, 9, 30);
     }
-    if(timeslot == TimeSlotSingle.sub3){
-      startdate = DateTime(date.year,date.month,date.day,11,0);
+    if (timeslot == TimeSlotSingle.sub3) {
+      startdate = DateTime(date.year, date.month, date.day, 11, 0);
     }
-    if(timeslot == TimeSlotSingle.sub4){
-      startdate = DateTime(date.year,date.month,date.day,13,0);
+    if (timeslot == TimeSlotSingle.sub4) {
+      startdate = DateTime(date.year, date.month, date.day, 13, 0);
     }
-    if(timeslot == TimeSlotSingle.sub5){
-      startdate = DateTime(date.year,date.month,date.day,14,30);
+    if (timeslot == TimeSlotSingle.sub5) {
+      startdate = DateTime(date.year, date.month, date.day, 14, 30);
     }
-    if(timeslot == TimeSlotSingle.sub6){
-      startdate = DateTime(date.year,date.month,date.day,16,0);
+    if (timeslot == TimeSlotSingle.sub6) {
+      startdate = DateTime(date.year, date.month, date.day, 16, 0);
     }
 
     return startdate;
@@ -163,8 +163,8 @@ class MotorRentalFormBloc
         ownerdropkey: false,
         renterdocid: null,
         time: this.choosetimeslot,
-        startdate: makestartdatetimesingle(this.dateTime,this.choosetimeslot),
-        );
+        startdate: makestartdatetimesingle(this.dateTime, this.choosetimeslot),
+        motorplaceloc: Datamanager.placelocationshow.docplaceid);
 
     var bslrdocref = await Datamanager.firestore
         .collection("BoxslotRent")
@@ -177,21 +177,20 @@ class MotorRentalFormBloc
     });
 
     SingleForrent _singleforrent = SingleForrent(
-      boxdocid: boxdocid,
-      boxslotdocid: boxslotdocid,
-      boxplacedocid: boxlocid,
-      day: dateTime.day,
-      month: dateTime.month,
-      year: dateTime.year,
-      motorcycledocid: this.motorcycle.firestoredocid,
-      ownerdocid: Datamanager.user.documentid,
-      price: double.parse(this.pricecontroller.text),
-      time: this.choosetimeslot,
-      university: Datamanager.user.university,
-      motorplacelocdocid: Datamanager.placelocationshow.docplaceid,
-      startdate: makestartdatetimesingle(this.dateTime,this.choosetimeslot),
-      status: null
-    );
+        boxdocid: boxdocid,
+        boxslotdocid: boxslotdocid,
+        boxplacedocid: boxlocid,
+        day: dateTime.day,
+        month: dateTime.month,
+        year: dateTime.year,
+        motorcycledocid: this.motorcycle.firestoredocid,
+        ownerdocid: Datamanager.user.documentid,
+        price: double.parse(this.pricecontroller.text),
+        time: this.choosetimeslot,
+        university: Datamanager.user.university,
+        motorplacelocdocid: Datamanager.placelocationshow.docplaceid,
+        startdate: makestartdatetimesingle(this.dateTime, this.choosetimeslot),
+        status: null);
 
     var sgfrdocref = await Datamanager.firestore
         .collection("Singleforrent")
@@ -245,12 +244,32 @@ class MotorRentalFormBloc
 
     QuerySnapshot _singleforrentlist =
         await Datamanager.firestore.collection("Singleforrent").getDocuments();
-    
-     List<DocumentSnapshot> sgfr = _singleforrentlist.documents.where((doc) => (doc['motorcycledocid'] == this.motorcycle.firestoredocid) && (doc['year'] == this.dateTime.year) && (doc['month'] == this.dateTime.month) && (doc['day'] == this.dateTime.day)).toList();
-      for(var doc in sgfr){
-        //print(doc['time']);
-        timeslotlist.remove(doc['time']);
-      }
+
+    List<DocumentSnapshot> sgfr = _singleforrentlist.documents
+        .where((doc) =>
+            (doc['motorcycledocid'] == this.motorcycle.firestoredocid) &&
+            (doc['year'] == this.dateTime.year) &&
+            (doc['month'] == this.dateTime.month) &&
+            (doc['day'] == this.dateTime.day))
+        .toList();
+    for (var doc in sgfr) {
+      //print(doc['time']);
+      timeslotlist.remove(doc['time']);
+    }
+
+    QuerySnapshot booking = await Datamanager.firestore
+        .collection("Booking")
+        .where('motorcycledocid', isEqualTo: this.motorcycle.firestoredocid)
+        .where('day', isEqualTo: this.dateTime.day)
+        .where('month', isEqualTo: this.dateTime.month)
+        .where('year' , isEqualTo: this.dateTime.year)
+        .getDocuments();
+
+    List<DocumentSnapshot> bookinglist =  booking.documents;
+    for(var doc in bookinglist){
+      timeslotlist.remove(doc['time']);
+    }
+
     return timeslotlist;
   }
 

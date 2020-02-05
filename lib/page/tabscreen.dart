@@ -11,6 +11,9 @@ class _TabScreenPageState extends State<TabScreenPage> {
 
   @override
   void initState() {
+
+    Datamanager.gontosearchinHome = _gotosearchpageinHome;
+
     super.initState();
   }
 
@@ -19,6 +22,14 @@ class _TabScreenPageState extends State<TabScreenPage> {
       _selecedindex = index;
     });
   }
+
+  void _gotosearchpageinHome(){
+    setState(() {
+      _selecedindex = 1;
+    });
+  }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +64,7 @@ class _TabScreenPageState extends State<TabScreenPage> {
       selectedItemColor: Color.fromRGBO(33, 197, 155, 1),
       onTap: (index) => _selectedtab(index),
       type: BottomNavigationBarType.fixed,
+      
     ),
     );
   }

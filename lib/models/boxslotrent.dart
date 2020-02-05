@@ -15,6 +15,7 @@ class Boxslotrent {
   bool isopen;
   bool ownerdropkey;
   DateTime startdate;
+  String motorplaceloc;
 
   Boxslotrent(
       {
@@ -31,6 +32,7 @@ class Boxslotrent {
       @required this.boxplacedocid,
       @required this.ownerdropkey,
       @required this.startdate,
+      @required this.motorplaceloc
       
       }) {}
 
@@ -50,7 +52,8 @@ class Boxslotrent {
       'ownerdocid' : ownerdocid,
       'boxplacedocid' : boxplacedocid,
       'ownerdropkey' : ownerdropkey,
-      'startdate' : startdate
+      'startdate' : startdate,
+      'motorplaceloc' : motorplaceloc
     };
   }
 
