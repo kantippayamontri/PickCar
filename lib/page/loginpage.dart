@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:pickcar/bloc/login/loginevent.dart';
 import 'package:pickcar/datamanager.dart';
@@ -189,7 +191,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin{
             },
           ),
         title: Container(
-          width: SizeConfig.blockSizeHorizontal*20,
+          width: data.size.width/5,
           child: Image.asset('assets/images/imagelogin/logo.png',fit: BoxFit.fill,)
         ),
         leading: IconButton(

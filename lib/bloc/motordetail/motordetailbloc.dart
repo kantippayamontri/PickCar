@@ -309,6 +309,9 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
       storagedocid: ds['storagedocid'],
       currentlatitude: ds['currentlatitude'],
       currentlongitude: ds['currentlongitude'],
+      isbook: ds['isbook'],
+      iswaiting: ds['iswaiting'],
+      isworking: ds['isworking']
     );
 
     motor.firestoredocid = ds['firestoredocid'];
