@@ -647,6 +647,7 @@ import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/boxlocation.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/models/placelocation.dart';
+import 'package:pickcar/ui/uisize.dart';
 import 'package:pickcar/widget/profile/profileImage.dart';
 class Listcar extends StatefulWidget {
   int day = TimeSearch.today.day;
@@ -745,14 +746,16 @@ class _ListcarState extends State<Listcar> {
     });
   }
   Widget build(BuildContext context) {
+    SizeConfig();
     fetchlocation();
     var datasize = MediaQuery.of(context);
     // print(Datamanager.placelocationshow);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(UseString.logo,
-          style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*25,color: Colors.white),
+        title: Container(
+          width: SizeConfig.blockSizeHorizontal*20,
+          child: Image.asset('assets/images/imagelogin/logo.png',fit: BoxFit.fill,)
         ),
         backgroundColor: Colors.transparent, 
         elevation: 0.0, 

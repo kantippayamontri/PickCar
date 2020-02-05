@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/universityplace.dart';
+import 'package:pickcar/ui/uisize.dart';
 
 class SearchPage extends StatefulWidget {
   int indicatorpage = 0;
@@ -232,6 +233,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     // }
 
     selecttime(BuildContext context) {
+      SizeConfig().init(context);
       var data = MediaQuery.of(context);
       // print(TimeSearch.time1);
       return showDialog(
@@ -2076,12 +2078,9 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         //     });
         //   },
         // ),
-        title: Text(
-          UseString.logo,
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: data.textScaleFactor * 25,
-              color: Colors.white),
+        title: Container(
+          width: SizeConfig.blockSizeHorizontal*20,
+          child: Image.asset('assets/images/imagelogin/logo.png',fit: BoxFit.fill,)
         ),
         leading: IconButton(
           icon: Icon(

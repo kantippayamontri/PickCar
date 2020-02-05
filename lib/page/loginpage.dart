@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pickcar/bloc/login/loginevent.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/page/signuppage.dart';
+import 'package:pickcar/ui/uisize.dart';
 import 'package:pickcar/widget/login/signupbnt.dart';
 import 'package:pickcar/widget/pickcar_login_widget.dart';
 import '../bloc/login/loginbloc.dart';
@@ -133,6 +134,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin{
       );
     }
     body(BuildContext context){
+      SizeConfig().init(context);
       if(widget.indicatorpage ==0){
         return Container(
           margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
@@ -186,8 +188,9 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin{
               });
             },
           ),
-        title: Text(UseString.logo,
-            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color: Colors.white), 
+        title: Container(
+          width: SizeConfig.blockSizeHorizontal*20,
+          child: Image.asset('assets/images/imagelogin/logo.png',fit: BoxFit.fill,)
         ),
         leading: IconButton(
           icon: Icon(Icons.keyboard_arrow_left,

@@ -11,6 +11,7 @@ import 'package:pickcar/models/boxlocation.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/page/registercarlist.dart';
+import 'package:pickcar/ui/uisize.dart';
 import 'package:pickcar/widget/listcar/listcatitem.dart';
 
 class ListCarPage extends StatefulWidget {
@@ -213,6 +214,7 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
       );
     }
     body(BuildContext context){
+      SizeConfig().init(context);
       if(widget.indicatorpage == 0){
         // return RaisedButton(
         //   onPressed: (){
@@ -278,8 +280,9 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
               });
             },
           ),
-        title: Text(UseString.logo,
-            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color: Colors.white), 
+        title: Container(
+          width: SizeConfig.blockSizeHorizontal*20,
+          child: Image.asset('assets/images/imagelogin/logo.png',fit: BoxFit.fill,)
         ),
         leading: IconButton(
           icon: Icon(Icons.keyboard_arrow_left,
