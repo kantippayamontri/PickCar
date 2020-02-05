@@ -58,6 +58,7 @@ class Datamanager {
   static String maplocation = "/Maplocation";
   static String receivekeymap = "/Receivekeymap";
   static String addlocation = "/Addlocation";
+  static String historypage = "/HistoryPage";
   
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
@@ -327,6 +328,13 @@ class UseString {
   static String dropkey = "Are you drop a key?";
   static String checkdropkey = "Check you already drop key to box.";
   static String working = "working";
+  static String history = "History";
+  static String bookedhistory = "Booked";
+  static String renthistory = "Rented";
+  static String donthavehistory = "You not have history";
+  static String waitting = "Waiting";
+  static String bookking = "Booking";
+  static String workking = "Working";
 }
 
 class Currency {

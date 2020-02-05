@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/page/tabscreen.dart';
+import 'package:pickcar/ui/uisize.dart';
 import 'package:pickcar/widget/home/cardrental.dart';
 int i=0;
 class HomePage extends StatefulWidget {
@@ -29,6 +30,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     void _gotorental() {
       Navigator.of(context).pushNamed(Datamanager.search);
       // TabScreenPage(index: 1);
@@ -47,12 +49,9 @@ class _HomePageState extends State<HomePage> {
             fit: BoxFit.cover,
           ),
           centerTitle: true,
-          title: Text(
-            UseString.logo,
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: data.textScaleFactor * 25,
-                color: Colors.white),
+          title: Container(
+            width: SizeConfig.blockSizeHorizontal*20,
+            child: Image.asset('assets/images/imagelogin/logo.png',fit: BoxFit.fill,)
           ),
           leading: IconButton(
             icon: Icon(

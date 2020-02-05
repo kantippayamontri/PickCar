@@ -26,17 +26,23 @@ class _MainloginpageState extends State<Mainloginpage> {
           Container(
             width: double.infinity,
             alignment: Alignment.center,
-            margin: EdgeInsets.only(top:500),
+            margin: EdgeInsets.only(top:data.size.height/1.5),
             child: GestureDetector(
               child: Stack(
                 children: <Widget>[
                   Container(
-                    child: Image.asset("assets/images/imagelogin/bg.png"),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10,left: 120),
-                    child: Text(UseString.pickcar,
-                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*30,color: Colors.white), 
+                    // color: Colors.blue,
+                    child: Stack(
+                      children: <Widget>[
+                        Center(
+                          child: Image.asset("assets/images/imagelogin/bg.png")
+                        ),
+                        Center(
+                          child: Text(UseString.pickcar,
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*30,color: Colors.white), 
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

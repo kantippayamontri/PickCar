@@ -657,24 +657,40 @@ class _ConfirmPageState extends State<ConfirmPage> {
       bookingdocid:null,
       priceaddtax: widget.pricetotal,
       startdate: Datamanager.listcarslot.startdate,
+      isinhistory: false,
     );
-    var ref = await Datamanager.firestore.collection('Booking').add(booking.toJson());
-    var document = ref.documentID;
-    Datamanager.firestore.collection("Booking").document(document).updateData(
-        {'bookingdocid' : document}
-    );
-    Datamanager.firestore.collection("Motorcycle")
-                          .document(Datamanager.listcarslot.motorcycledocid)
-                          .updateData({"isbook": true});
-    // if(Datamanager.listcarslot.timeslotlist.length ==0){
-    //   Datamanager.firestore.collection("Motorcycleforrent")
-    //                       .document(Datamanager.listcarslot.docid)
-    //                       .delete();
-    //   Datamanager.firestore.collection("Motorcycle")
-    //                       .document(Datamanager.listcarslot.motorcycledocid)
-    //                       .updateData({"iswaiting": false});
-    // }
-    Datamanager.firestore.collection('Singleforrent').document(Datamanager.listcarslot.docid).delete();
+    await Firestore.instance.collection('Singleforrent')
+                              .where('ownerdocid' ,isEqualTo: Datamanager.listcarslot.ownerdocid)
+                              .getDocuments().then((data) {
+                                Future.delayed(const Duration(milliseconds: 1000), () async {
+                                  if(data.documents.length == 1){
+                                    print(data.documents.length);
+                                    print('sdsd');
+                                      var ref = await Datamanager.firestore.collection('Booking').add(booking.toJson());
+                                      var document = ref.documentID;
+                                      Datamanager.firestore.collection("Booking").document(document).updateData(
+                                          {'bookingdocid' : document}
+                                      );
+                                      Datamanager.firestore.collection("Motorcycle")
+                                                            .document(Datamanager.listcarslot.motorcycledocid)
+                                                            .updateData({"isbook": true,"iswaiting":false});
+                                      Datamanager.firestore.collection('Singleforrent').document(Datamanager.listcarslot.docid).delete();
+                                  }else{
+                                    print(data.documents.length);
+                                    print('=====');
+                                    var ref = await Datamanager.firestore.collection('Booking').add(booking.toJson());
+                                    var document = ref.documentID;
+                                    Datamanager.firestore.collection("Booking").document(document).updateData(
+                                        {'bookingdocid' : document}
+                                    );
+                                    Datamanager.firestore.collection("Motorcycle")
+                                                          .document(Datamanager.listcarslot.motorcycledocid)
+                                                          .updateData({"isbook": true});
+                                    Datamanager.firestore.collection('Singleforrent').document(Datamanager.listcarslot.docid).delete();
+                                   
+                                  }
+                                });
+                              });
   }
   Future<void> _ackAlert(BuildContext context) {
     return showDialog<void>(
