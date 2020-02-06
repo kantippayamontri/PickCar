@@ -1282,6 +1282,7 @@ void dispose() {
                             style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*22,color: PickCarColor.colorFont1), 
                         ),
                       ),
+                      
                     ],
                   ),
                 ],

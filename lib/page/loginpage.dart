@@ -18,10 +18,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin{
-  // var username = 'g@g.com';
-  // var password = '1234567';
-  var username = 'f@f.com';
-  var password = '1111111';
+  var username = 'g@g.com';
+  var password = '1234567';
+  // var username = 'f@f.com';
+  // var password = '1111111';
 
   //todo initusername and pass
   

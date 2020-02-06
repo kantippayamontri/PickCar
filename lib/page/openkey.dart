@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -15,6 +16,7 @@ import 'package:pickcar/models/boxlocation.dart';
 import 'package:pickcar/models/boxslotrentshow.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/models/user.dart';
+import 'package:pickcar/ui/uisize.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Openkey extends StatefulWidget {
@@ -212,45 +214,58 @@ class _OpenkeyState extends State<Openkey> {
                               .get().then((data){
                                 Datamanager.booking = Bookingshow.fromSnapshot(data);
                               });
-      Realtime.checkkeymap = Timer.periodic(Duration(seconds: 1), (timer) async {
-        await Firestore.instance.collection('BoxslotRent').document(Datamanager.booking.boxslotrentdocid).get().then((data){
+      Realtime.checkkeymap = Timer.periodic(Duration(seconds: 3), (timer) async {
+        var isopen;
+        await Firestore.instance.collection('BoxslotRent').document(Datamanager.booking.boxslotrentdocid).get().then((data) async {
           Datamanager.boxslotrentshow = Boxslotrentshow.fromSnapshot(data);
-          if(!Datamanager.boxslotrentshow.isopen){
-            setState(() {
-              if(widget.receivekey && Datamanager.booking.status == 'working'){
-                widget.receivekey = false;
-                showalertdropkey(context);
-              }else if(widget.receivekey && Datamanager.booking.status == 'booking'){
-                widget.receivekey = false;
-                showalertkeyisin(context);
-              }else{
+          await FirebaseDatabase.instance
+                            .reference()
+                            .child(Datamanager.booking.boxdocid)
+                            .child(Datamanager.boxslotrentshow.boxslotdocid)
+                            .once()
+                            .then((DataSnapshot doc) {
+                             Map<dynamic , dynamic> result = doc.value;
+                             isopen = result['isopen'];
+                             print(isopen);
+                              if(!isopen){
+                                setState(() {
+                                  if(widget.receivekey && Datamanager.booking.status == 'working'){
+                                    widget.receivekey = false;
+                                    showalertdropkey(context);
+                                  }else if(widget.receivekey && Datamanager.booking.status == 'booking'){
+                                    widget.receivekey = false;
+                                    showalertkeyisin(context);
+                                  }else{
 
-              }
-              widget.unlock =20;
-            });
-          }
+                                  }
+                                  widget.unlock =20;
+                                });
+                              }
+                            });
         });
       });
     }
   }
   openbox() async {
-    await Firestore.instance.collection('BoxslotRent')
-                              .document(Datamanager.booking.boxslotrentdocid)
-                              .updateData({'isopen': true});
+    // await Firestore.instance.collection('BoxslotRent')
+    //                           .document(Datamanager.booking.boxslotrentdocid)
+    //                           .updateData({'isopen': true});
+    await FirebaseDatabase().reference().child(Datamanager.booking.boxdocid).child(Datamanager.boxslotrentshow.boxslotdocid).update({"isopen": true,});
   }
   lock() async {
-  await Firestore.instance.collection('BoxslotRent')
-                              .document(Datamanager.booking.boxslotrentdocid)
-                              .updateData({'isopen': false});
+  // await Firestore.instance.collection('BoxslotRent')
+  //                             .document(Datamanager.booking.boxslotrentdocid)
+  //                             .updateData({'isopen': false});
+  await FirebaseDatabase().reference().child(Datamanager.booking.boxdocid).child(Datamanager.boxslotrentshow.boxslotdocid).update({"isopen": false,});
   }
   dispose() {
     Realtime.checkkeymap.cancel();
     lock();
-    Realtime.checkkeymap =null;
   super.dispose();
 }
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     checkiskey(context);
     var data = MediaQuery.of(context);
     return Scaffold(
@@ -272,16 +287,25 @@ class _OpenkeyState extends State<Openkey> {
                 ),
               ),
               openimage(context),
-              RaisedButton(
-                onPressed: (){
-                  openbox();
-                  setState(() {
-                    widget.receivekey = true;
-                    widget.unlock =0;
-                  });
-                },
-                child: Text('OPEN BOX',
-                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*30,color: Colors.black), 
+              ButtonTheme(
+                height: SizeConfig.blockSizeVertical *7,
+                minWidth: SizeConfig.blockSizeHorizontal *20,
+                child: RaisedButton(
+                  color: PickCarColor.colorbuttom,
+                  onPressed: (){
+                    openbox();
+                    setState(() {
+                      widget.receivekey = true;
+                      widget.unlock =0;
+                    });
+                  },
+                  shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(14.0),
+                    // side: BorderSide(color: Colors.red)
+                  ),
+                  child: Text('OPEN BOX',
+                      style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*30,color: Colors.black), 
+                  ),
                 ),
               ),
             ],

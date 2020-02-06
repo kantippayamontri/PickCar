@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -329,6 +330,7 @@ class _BoxselectadminState extends State<Boxselectadmin> {
                           .add(box.toJson());
     var docboxid = refbox.documentID;
     Datamanager.firestore.collection('box').document(docboxid).updateData({'docid': docboxid});
+    var realtime = FirebaseDatabase().reference().child(docboxid);
     for(int i=1;i<box.maxslot+1;i++){
       // print(i);
       var ref =Datamanager.firestore.collection('box')
@@ -341,6 +343,10 @@ class _BoxselectadminState extends State<Boxselectadmin> {
                           .collection('boxslot')
                           .document(docslot)
                           .setData({'name': i,'docid':docslot,'boxid':docboxid});
+      var aaa = realtime.child(docslot);
+      aaa.set({
+        "isopen": false,
+      });
     }
     // Future.delayed(const Duration(milliseconds: 1000), () {
     // print('a');
