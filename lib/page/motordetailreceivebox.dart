@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:pickcar/models/boxlocation.dart';
 import 'package:pickcar/models/boxslotrent.dart';
@@ -11,7 +12,6 @@ import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/boxslotrent.dart';
 import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/models/placelocation.dart';
-import 'package:pickcar/page/addlocationowner.dart';
 
 class MotorDetailReceiveBox extends StatefulWidget {
   final Boxslotrent boxslotrent;
@@ -45,6 +45,8 @@ class _MotorDetailReceiveBoxState extends State<MotorDetailReceiveBox> {
   bool isloop = true;
   bool isremoving = false;
 
+  bool isrealboxopen = false;
+
   Future loaddata() async {}
 
   void starttimer() {
@@ -57,8 +59,59 @@ class _MotorDetailReceiveBoxState extends State<MotorDetailReceiveBox> {
       if (!isloop) {
         return;
       }
-      print("timenow is " + DateTime.now().second.toString());
-      var doc = await Datamanager.firestore
+
+      bool checkrealbox;
+       var doc = await Datamanager.realtimedatabase
+          .reference()
+          .child(this._boxslotrent.boxdocid)
+          .child(this._boxslotrent.boxslotdocid)
+          .once()
+          .then((DataSnapshot doc) {
+            Map<dynamic , dynamic> result = doc.value;
+            checkrealbox = result['isopen'] as bool;
+            print("checkrealbox is ${checkrealbox}");
+          });
+      
+      if(this.isrealboxopen && !checkrealbox){
+        this.currentcolor = Colors.red;
+        this.statusbox = "Close";
+        _boxslotrent.isopen = false;
+        setstate();
+        //
+        isloop = false;
+        await showslertdropkey();
+        print("pass tapbox");
+
+        if (!this._boxslotrent.iskey) {
+          this.isremoving = true;
+          await Datamanager.firestore
+              .collection("BoxslotRent")
+              .document(_boxslotrent.docid)
+              .updateData({'iskey': false, 'ownerdropkey': false , 'isopen' : false});
+          //todo goto delete
+          print("delete book");
+          await Datamanager.firestore
+              .collection("Booking")
+              .document(widget.bookingdocid)
+              .delete();
+          await Datamanager.firestore
+              .collection("BoxslotRent")
+              .document(widget.boxslotrent.docid)
+              .delete();
+          Navigator.of(context).pop();
+        } else {
+          await Datamanager.firestore
+              .collection("BoxslotRent")
+              .document(_boxslotrent.docid)
+              .updateData({'iskey': true, 'ownerdropkey': true , 'isopen' : false});
+              this.isrealboxopen = false;
+        }
+
+        setstate();
+      }
+
+      /*print("timenow is " + DateTime.now().second.toString());
+       var doc = await Datamanager.firestore
           .collection("BoxslotRent")
           .document(_boxslotrent.docid)
           .get();
@@ -102,54 +155,55 @@ class _MotorDetailReceiveBoxState extends State<MotorDetailReceiveBox> {
         setstate();
       }
 
-      preboxcheck = nowboxcheck;
+      preboxcheck = nowboxcheck;*/
     });
   }
 
   Future tapbox() async {
-    print("boxslotrent docid : ${_boxslotrent.docid}");
-    DocumentSnapshot doc = await Datamanager.firestore
-        .collection("BoxslotRent")
-        .document(_boxslotrent.docid)
-        .get();
-    if (doc['isopen'] == false) {
-      //todo check add location
+
+    if(isrealboxopen == false){
+
+      Datamanager.realtimedatabase
+          .reference()
+          .child(this._boxslotrent.boxdocid)
+          .child(this._boxslotrent.boxslotdocid)
+          .update({
+        'isopen': true,
+      });
 
       await Datamanager.firestore
           .collection("BoxslotRent")
           .document(_boxslotrent.docid)
           .updateData({'isopen': true});
+
       this.currentcolor = Colors.green;
       this.statusbox = "Open";
       _boxslotrent.isopen = true;
+
+      this.isrealboxopen = true;
+      //todo realtimedatabase
       setstate();
+
     }
-    /*else {
-      await Datamanager.firestore
-          .collection("BoxslotRent")
-          .document(_boxslotrent.docid)
-          .updateData({'isopen': false});
-      this.currentcolor = Colors.red;
-      this.statusbox = "Close";
-      _boxslotrent.isopen = false;
 
-      await showslertdropkey();
-      print("pass tapbox");
+    // print("boxslotrent docid : ${_boxslotrent.docid}");
+    // DocumentSnapshot doc = await Datamanager.firestore
+    //     .collection("BoxslotRent")
+    //     .document(_boxslotrent.docid)
+    //     .get();
+    // if (doc['isopen'] == false) {
+    //   //todo check add location
 
-      if (this._boxslotrent.iskey) {
-        await Datamanager.firestore
-            .collection("BoxslotRent")
-            .document(_boxslotrent.docid)
-            .updateData({'iskey': true,'ownerdropkey' : true});
-      } else {
-        await Datamanager.firestore
-            .collection("BoxslotRent")
-            .document(_boxslotrent.docid)
-            .updateData({'iskey': false , 'ownerdropkey' : false});
-      }
-
-      setstate();
-    }*/
+    //   await Datamanager.firestore
+    //       .collection("BoxslotRent")
+    //       .document(_boxslotrent.docid)
+    //       .updateData({'isopen': true});
+    //   this.currentcolor = Colors.green;
+    //   this.statusbox = "Open";
+    //   _boxslotrent.isopen = true;
+    //   setstate();
+    // }
+    
   }
 
   Future<void> showslertdropkey() async {
@@ -364,7 +418,7 @@ class _MotorDetailReceiveBoxState extends State<MotorDetailReceiveBox> {
                       ),
                     ),
                   ),
-                  InkWell(
+                  /*InkWell(
                     child: Container(
                       height: constraint.maxWidth * 0.8,
                       width: constraint.maxWidth * 0.8,
@@ -399,7 +453,7 @@ class _MotorDetailReceiveBoxState extends State<MotorDetailReceiveBox> {
                             style: TextStyle(color: Colors.white),
                           )),
                         )
-                      : SizedBox(),
+                      : SizedBox(),*/
                   // RaisedButton(
                   //   child: Text("add map"),
                   //   onPressed: () {

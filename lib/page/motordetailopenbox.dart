@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:nice_button/NiceButton.dart';
 import 'package:pickcar/datamanager.dart';
@@ -38,6 +39,8 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
   Placelocation placeloc;
   Boxlocation boxloc;
 
+  bool isrealboxopen = false;
+
   Future loaddata() async {}
 
   void starttimer() {
@@ -47,7 +50,45 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
       if (!isloop) {
         return;
       }
-      print("timenow is " + DateTime.now().second.toString());
+      bool checkrealbox;
+      var doc = await Datamanager.realtimedatabase
+          .reference()
+          .child(this._boxslotrent.boxdocid)
+          .child(this._boxslotrent.boxslotdocid)
+          .once()
+          .then((DataSnapshot doc) {
+            Map<dynamic , dynamic> result = doc.value;
+            checkrealbox = result['isopen'] as bool;
+            print("checkrealbox is ${checkrealbox}");
+          });
+
+      if (this.isrealboxopen && !checkrealbox) {
+        this.currentcolor = Colors.red;
+        this.statusbox = "Close";
+        _boxslotrent.isopen = false;
+        setstate();
+        //
+        isloop = false;
+        await showslertdropkey();
+        print("pass tapbox");
+
+        if (this._boxslotrent.iskey) {
+          await Datamanager.firestore
+              .collection("BoxslotRent")
+              .document(_boxslotrent.docid)
+              .updateData({'iskey': true, 'ownerdropkey': true , 'isopen' : false});
+          Navigator.of(context).pop();
+        } else {
+          await Datamanager.firestore
+              .collection("BoxslotRent")
+              .document(_boxslotrent.docid)
+              .updateData({'iskey': false, 'ownerdropkey': false , 'isopen' : false});
+          this.isrealboxopen = false;
+        }
+
+        setstate();
+      }
+      /*print("timenow is " + DateTime.now().second.toString());
       var doc = await Datamanager.firestore
           .collection("BoxslotRent")
           .document(_boxslotrent.docid)
@@ -81,64 +122,68 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
         setstate();
       }
 
-      preboxcheck = nowboxcheck;
+      preboxcheck = nowboxcheck;*/
     });
   }
 
   Future tapbox() async {
     print("boxslotrent docid : ${_boxslotrent.docid}");
-    DocumentSnapshot doc = await Datamanager.firestore
-        .collection("BoxslotRent")
-        .document(_boxslotrent.docid)
-        .get();
-    if (doc['isopen'] == false) {
-      //todo check add location
+
+    if (this.isrealboxopen == false) {
       if (!this.isaddlocation) {
         await showalertaddlocation();
       }
 
-      if (!this.isaddlocation) {
-        print("dont add location");
-        return;
-      } else {
-        print("add location success");
-      }
+      Datamanager.realtimedatabase
+          .reference()
+          .child(this._boxslotrent.boxdocid)
+          .child(this._boxslotrent.boxslotdocid)
+          .update({
+        'isopen': true,
+      });
 
       await Datamanager.firestore
           .collection("BoxslotRent")
           .document(_boxslotrent.docid)
           .updateData({'isopen': true});
+
       this.currentcolor = Colors.green;
       this.statusbox = "Open";
       _boxslotrent.isopen = true;
+
+      this.isrealboxopen = true;
+      //todo realtimedatabase
       setstate();
     }
-    /*else {
-      await Datamanager.firestore
-          .collection("BoxslotRent")
-          .document(_boxslotrent.docid)
-          .updateData({'isopen': false});
-      this.currentcolor = Colors.red;
-      this.statusbox = "Close";
-      _boxslotrent.isopen = false;
 
-      await showslertdropkey();
-      print("pass tapbox");
+    // DocumentSnapshot doc = await Datamanager.firestore
+    //     .collection("BoxslotRent")
+    //     .document(_boxslotrent.docid)
+    //     .get();
+    // if (doc['isopen'] == false) {
+    //   //todo check add location
+    //   if (!this.isaddlocation) {
+    //     await showalertaddlocation();
+    //   }
 
-      if (this._boxslotrent.iskey) {
-        await Datamanager.firestore
-            .collection("BoxslotRent")
-            .document(_boxslotrent.docid)
-            .updateData({'iskey': true,'ownerdropkey' : true});
-      } else {
-        await Datamanager.firestore
-            .collection("BoxslotRent")
-            .document(_boxslotrent.docid)
-            .updateData({'iskey': false , 'ownerdropkey' : false});
-      }
+    //   if (!this.isaddlocation) {
+    //     print("dont add location");
+    //     return;
+    //   } else {
+    //     print("add location success");
+    //   }
 
-      setstate();
-    }*/
+    //   await Datamanager.firestore
+    //       .collection("BoxslotRent")
+    //       .document(_boxslotrent.docid)
+    //       .updateData({'isopen': true});
+    //   this.currentcolor = Colors.green;
+    //   this.statusbox = "Open";
+    //   _boxslotrent.isopen = true;
+
+    //   //todo realtimedatabase
+    //   setstate();
+    // }
   }
 
   Future<Null> showalertaddlocation() {
@@ -233,7 +278,9 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
     if (_boxslotrent.isopen == false) {
       currentcolor = Colors.red;
       this.statusbox = "Close";
+      //todo realtime
     } else {
+      //todo realtime
       currentcolor = Colors.green;
       this.statusbox = "Open";
     }
@@ -387,7 +434,7 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
                     child: Container(
                       padding: EdgeInsets.all(5),
                       width: constraint.maxWidth * 0.9,
-                      height: constraint.maxHeight * 0.15,
+                      height: constraint.maxHeight * 0.3,
                       decoration: BoxDecoration(
                           color: this.isaddlocation
                               ? PickCarColor.colormain.withOpacity(0.3)
@@ -402,27 +449,32 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
                           ),
                           Align(
                             alignment: Alignment.center,
-                            child: NiceButton(
-                              width: constraint.maxWidth * 0.5,
-                              radius: 25,
-                              background: PickCarColor.colormain,
-                              onPressed: () async {
-                                print("share motor location");
-                                var result = await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => AddLocationOwner(
-                                              motorcycledocid: widget
-                                                  .motorcycle.firestoredocid,
-                                            )));
-                                print('resutl is ${result as bool}');
-                                this.isaddlocation = result as bool;
-                                if (this.isaddlocation == null) {
-                                  this.isaddlocation = false;
-                                }
-                                setstate();
-                              },
-                              text: "Share location",
+                            child: ButtonTheme(
+                              minWidth: constraint.maxWidth * 0.7,
+                              height: constraint.maxHeight * 0.1,
+                              child: NiceButton(
+                                width: constraint.maxWidth * 0.5,
+                                radius: 25,
+                                background: PickCarColor.colormain,
+                                onPressed: () async {
+                                  print("share motor location");
+                                  var result = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              AddLocationOwner(
+                                                motorcycledocid: widget
+                                                    .motorcycle.firestoredocid,
+                                              )));
+                                  print('resutl is ${result as bool}');
+                                  this.isaddlocation = result as bool;
+                                  if (this.isaddlocation == null) {
+                                    this.isaddlocation = false;
+                                  }
+                                  setstate();
+                                },
+                                text: "Share location",
+                              ),
                             ),
                           )
                         ],
@@ -439,7 +491,7 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
                       width: constraint.maxWidth * 0.9,
                       height: constraint.maxHeight * 0.3,
                       decoration: BoxDecoration(
-                          color:this._boxslotrent.isopen
+                          color: this._boxslotrent.isopen
                               ? PickCarColor.colormain.withOpacity(0.3)
                               : Colors.white,
                           borderRadius: BorderRadius.circular(15)),

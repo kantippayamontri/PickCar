@@ -143,9 +143,10 @@ class _MotorWaitingListItemState extends State<MotorWaitingListItem> {
                       ),
                       onPressed: () {
                         //todo openbuttomsheet
-                        /*widget.showbottomsheet(
-                          this._motortimeslot
-                        );*/
+                        widget.showbottomsheet(
+                          widget.singleForrent,
+                          widget.editslot
+                        );
                       },
                     ),
                     SizedBox(width: 20,),

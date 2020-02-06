@@ -178,7 +178,7 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
         continue;
       }
 
-      if (doc['ownerdropkey'] == false) {
+      if (doc['ownerdropkey'] == false  &&((doc['startdate'] as Timestamp).toDate().isAfter(timenow))) {
         currentopenbox = Boxslotrent(
             boxdocid: doc['boxdocid'],
             boxplacedocid: doc['boxplacedocid'],

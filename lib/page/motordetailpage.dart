@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pickcar/bloc/motordetail/motordetailbloc.dart';
@@ -232,6 +233,24 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                         });
                       },
                     ),
+
+                    /*RaisedButton(
+                      child: Text("realtime database"),
+                      onPressed: () async {
+                        await Datamanager.realtimedatabase
+                            .reference()
+                            .child('firsttest')
+                            .update({'status': false});
+                        await Datamanager.realtimedatabase
+                            .reference()
+                            .child('firsttest')
+                            .once()
+                            .then((DataSnapshot doc) {
+                             Map<dynamic , dynamic> result = doc.value;
+                             print("data is ${result['status']}");
+                            });
+                      },
+                    ),*/
                   ],
                 ),
               );
