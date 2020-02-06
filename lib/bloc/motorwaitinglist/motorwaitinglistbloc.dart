@@ -49,57 +49,76 @@ class MotorWaitingListBloc
         //.where('motorcycledocid' , isEqualTo: this.motorcycle.firestoredocid)
         .orderBy('startdate')
         .getDocuments();
-    var singlelist = querySnapshot
-        .documents.where((doc) => doc['ownerdocid'] == Datamanager.user.documentid); //querySnapshot.documents.where((doc) => doc['motorcycledocid'] == this.motorcycle);
+    var singlelist = querySnapshot.documents.where((doc) =>
+        doc['ownerdocid'] ==
+        Datamanager.user
+            .documentid); //querySnapshot.documents.where((doc) => doc['motorcycledocid'] == this.motorcycle);
     print("in load all data function " + singlelist.length.toString());
     print("motor docid :" + this.motorcycle.firestoredocid);
     for (var doc in singlelist) {
       print(doc['day'].toString() + " " + doc['time']);
 
       SingleForrent sgfr = SingleForrent(
-        boxdocid: doc['boxdocid'],
-        boxplacedocid: doc['boxplacedocid'],
-        boxslotdocid: doc['boxslotdocid'],
-        day: doc['day'],
-        month: doc['month'],
-        motorcycledocid: doc['motorcycledocid'],
-        motorplacelocdocid: doc['motorplacelocdocid'],
-        ownerdocid: doc['ownerdocid'],
-        price: doc['price'],
-        startdate: (doc['startdate'] as Timestamp).toDate(),
-        time: doc['time'],
-        university: doc['university'],
-        year: doc['year'],
-        status: doc['status']
-      );
+          boxdocid: doc['boxdocid'],
+          boxplacedocid: doc['boxplacedocid'],
+          boxslotdocid: doc['boxslotdocid'],
+          day: doc['day'],
+          month: doc['month'],
+          motorcycledocid: doc['motorcycledocid'],
+          motorplacelocdocid: doc['motorplacelocdocid'],
+          ownerdocid: doc['ownerdocid'],
+          price: doc['price'],
+          startdate: (doc['startdate'] as Timestamp).toDate(),
+          time: doc['time'],
+          university: doc['university'],
+          year: doc['year'],
+          status: doc['status']);
 
       sgfr.boxslotrentdocid = doc['boxslotrentdocid'];
       sgfr.docid = doc['docid'];
 
-      if(sgfr.startdate.isAfter(DateTime.now())){
+      if (sgfr.startdate.isAfter(DateTime.now())) {
         print("in add singleforrentlist naja");
         print("startdate : " + sgfr.startdate.toString());
         print("Time now : " + DateTime.now().toString());
         this.singleforrentlist.add(sgfr);
       }
-      
     }
   }
 
-  /*void showbottomsheet(MotorcycleTimeSlot motorslot){
+  void showbottomsheet(SingleForrent singleForrent, Function editslot) {
+    print("in showbottomsheet function ");
     showModalBottomSheet(
         context: context,
         builder: (_) {
-          return MotorWaitingEdit(editslot: editslot,motorslot: motorslot,);
+          return MotorWaitingEdit(
+            editslot: editslot,
+            singleforrent: singleForrent,
+          );
         });
-  }*/
+  }
 
-  /*Future<Null> editslot(String docid , String pricestring) async{
-    if(pricestring == ""){
+  Future<Null> editslot(String docid, String pricestring) async {
+    if (pricestring == "") {
       Navigator.pop(context);
-    }else{
+    } else {
       print("HAVE CONDITION");
       final double value = double.parse(pricestring);
+      await Datamanager.firestore
+          .collection("Singleforrent")
+          .document(docid)
+          .updateData({'price': value});
+
+      for (int i = 0; i < singleforrentlist.length; i++) {
+        if (singleforrentlist[i].docid == docid) {
+          singleforrentlist[i].price = value;
+          setstate();
+          Navigator.pop(context);
+          return;
+        }
+      }
+
+      /*final double value = double.parse(pricestring);
       await Datamanager.firestore.collection("MotorcycleforrentSlot").document(docid).updateData(
         {
           'prize' : value
@@ -112,9 +131,9 @@ class MotorWaitingListBloc
           Navigator.pop(context);
           return;
         }
-      }
+      }*/
     }
-  }*/
+  }
 
   /*Future<Null> deleteslot(MotorcycleTimeSlot motorslot) async {
     print("delete slot : " + motorslot.timeslot);

@@ -77,9 +77,9 @@ class _MotorWaitingListPageState extends State<MotorWaitingListPage> {
                                               //_motorWaitingListBloc.deleteslot,
                                               () {},
                                           editslot: //_motorWaitingListBloc.editslot,
-                                              () {},
+                                            this._motorWaitingListBloc.editslot,
                                           showbottomsheet: //_motorWaitingListBloc.showbottomsheet,
-                                              () {}),
+                                              this._motorWaitingListBloc.showbottomsheet),
                                       SizedBox(
                                         height: 10,
                                       )
