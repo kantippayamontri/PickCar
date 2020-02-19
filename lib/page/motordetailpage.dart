@@ -177,61 +177,95 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                       )
                     ]),
                     _motorDetailBloc.motorcycle.iswaiting
-                        ? RaisedButton(
-                            child: Text("waitinglist"),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          MotorWaitingListPage(
-                                            motorcycle: this
-                                                ._motorDetailBloc
-                                                .motorcycle,
-                                          )));
-                            },
+                        ? ButtonTheme(
+                            height: MediaQuery.of(context).size.height * 0.1,
+                            minWidth: MediaQuery.of(context).size.width * 0.5,
+                            child: RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                  side: BorderSide(color: Colors.white)),
+                              color: Colors.yellow,
+                              child: Text("waitinglist",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 24)),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            MotorWaitingListPage(
+                                              motorcycle: this
+                                                  ._motorDetailBloc
+                                                  .motorcycle,
+                                            )));
+                              },
+                            ),
                           )
                         : SizedBox(
                             width: 0,
                           ),
-                    _motorDetailBloc.motorcycle.isbook
-                        ? RaisedButton(
-                            child: Text("isbooklist"),
-                            onPressed: () async {
-                              await Navigator.pushNamed(
-                                  context, Datamanager.motorbooklistpage,
-                                  arguments: MotorBookListArguments(
-                                      motorcycle: _motorDetailBloc.motorcycle));
-                            },
+                          SizedBox(height: 20,),
+                    _motorDetailBloc.motorcycle.isbook ||
+                            _motorDetailBloc.motorcycle.isworking
+                        ? ButtonTheme(
+                            height: MediaQuery.of(context).size.height * 0.1,
+                            minWidth: MediaQuery.of(context).size.width * 0.5,
+                            child: RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                  side: BorderSide(color: Colors.white)),
+                              child: Text("isbooklist",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 24)),
+                              onPressed: () async {
+                                await Navigator.pushNamed(
+                                    context, Datamanager.motorbooklistpage,
+                                    arguments: MotorBookListArguments(
+                                        motorcycle:
+                                            _motorDetailBloc.motorcycle));
+                              },
+                            ),
                           )
                         : SizedBox(
                             width: 0,
                           ),
-                    _motorDetailBloc.motorcycle.isworking
-                        ? RaisedButton(
-                            child: Text("isworkinglist"),
-                            onPressed: () {},
-                          )
-                        : SizedBox(
-                            width: 0,
-                          ),
+                          SizedBox(height: 20,),
+                    // _motorDetailBloc.motorcycle.isworking
+                    //     ? RaisedButton(
+                    //         child: Text("isworkinglist"),
+                    //         onPressed: () {},
+                    //       )
+                    //     : SizedBox(
+                    //         width: 0,
+                    //       ),
 
-                    Text("${state.motorcycle.carstatus}"),
-                    Text("${state.motorcycle.firestoredocid}"),
-                    RaisedButton(
-                      child: Text("${state.motorcycle.firestoredocid}"),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MotorRentalFormPage(
-                                    motorcycle: _motorDetailBloc.motorcycle,
-                                  )),
-                        ).then((_) {
-                          print("in then in detailpage");
-                          _motorDetailBloc.add(MotorDetailLoadData());
-                        });
-                      },
+                    // Text("${state.motorcycle.carstatus}"),
+                    //Text("${state.motorcycle.firestoredocid}"),
+                    ButtonTheme(
+                      height: MediaQuery.of(context).size.height * 0.1,
+                      minWidth: MediaQuery.of(context).size.width * 0.5,
+                      child: RaisedButton(
+                        color: PickCarColor.colormain,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.white)),
+                        child: Text(
+                          "Rental Car",
+                          style: TextStyle(color: Colors.white, fontSize: 24),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MotorRentalFormPage(
+                                      motorcycle: _motorDetailBloc.motorcycle,
+                                    )),
+                          ).then((_) {
+                            print("in then in detailpage");
+                            _motorDetailBloc.add(MotorDetailLoadData());
+                          });
+                        },
+                      ),
                     ),
 
                     /*RaisedButton(
