@@ -78,7 +78,8 @@ class _HomePageState extends State<HomePage> {
                       width: constraints.maxWidth,
                       title: UseString.rentaltitle,
                       buttontext: UseString.rentalbutton,
-                      tap: widget.gotosearchinHome,//_gotorental,
+                      tap: _gotorental,
+                      // widget.gotosearchinHome,//_gotorental,
                       imageurl: 'assets/images/imagemain/forrent.png',
                     ),
                     SizedBox(

@@ -44,8 +44,8 @@ class _TabScreenPageState extends State<TabScreenPage> {
           title: Text(UseString.navhome),
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.search),
-          title: Text(UseString.navsearch),
+          icon: Icon(Icons.chat),
+          title: Text(UseString.chat),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.list),

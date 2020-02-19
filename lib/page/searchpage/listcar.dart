@@ -645,11 +645,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/boxlocation.dart';
+import 'package:pickcar/models/chat.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/models/placelocation.dart';
+import 'package:pickcar/page/chatpage.dart';
 import 'package:pickcar/ui/uisize.dart';
 import 'package:pickcar/widget/profile/profileImage.dart';
+
+import '../../datamanager.dart';
+import '../../datamanager.dart';
+import '../../datamanager.dart';
 class Listcar extends StatefulWidget {
+  int countnotfound = 0;
+  int totalnotfound = 0;
   int day = TimeSearch.today.day;
   String university = SearchString.university;
   @override
@@ -662,7 +670,7 @@ class _ListcarState extends State<Listcar> {
     DataFetch.waitplace =0;
     DataFetch.fetchpiority = 0;
     DataFetch.checkhavedata = 0;
-    DataFetch.checknotsamenoresult = 0;
+    DataFetch.checknotsamenoresult = 99;
     DataFetch.checknothaveslottime = 0;
     Datamanager.placelocationshow = null;
     Datamanager.motorcycleShow = null;
@@ -811,7 +819,14 @@ class _ListcarState extends State<Listcar> {
         stream: loaddatatype(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-             return Container();
+             return Container(
+              height: datasize.size.height/1.4,
+              child: Center(
+                child: Text(UseString.notfound,
+                  style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*36,color: Colors.white),
+                ),
+              ),
+            );
           }else{
             // print(snapshot.data.documents);
             // return Container();
@@ -824,10 +839,23 @@ class _ListcarState extends State<Listcar> {
  
 
   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
-    return ListView(
-      padding: const EdgeInsets.only(top: 20.0),
-      children: snapshot.map((data) => _buildListItem(context, data)).toList(),
-    );
+    widget.totalnotfound = snapshot.length;
+    if(widget.totalnotfound > 0){
+      return ListView(
+        padding: const EdgeInsets.only(top: 20.0),
+        children: snapshot.map((data) => _buildListItem(context, data)).toList(),
+      );
+    }else{
+      var datasize = MediaQuery.of(context);
+      return Container(
+          height: datasize.size.height/1.4,
+          child: Center(
+            child: Text(UseString.notfound,
+              style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*36,color: Colors.white),
+            ),
+          ),
+        );
+    }
   }
   
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
@@ -861,7 +889,6 @@ class _ListcarState extends State<Listcar> {
     // print(Datamanager.user.documentid + ' '+timeslot.university+' '+timeslot.ownerdocid);
     // print(Datamanager.placelocationshow);
     if( timeslot.ownerdocid != Datamanager.user.documentid && timeslot.university == widget.university){
-      DataFetch.checknotsamenoresult =1;
           return GestureDetector(
             onTap: (){
               Datamanager.usershow = usershow;
@@ -1013,14 +1040,21 @@ class _ListcarState extends State<Listcar> {
                               margin: EdgeInsets.only(left: 20,top: 228),
                               // color: Colors.black,
                               child:  GestureDetector(
-                                // onTap: (){
-                                //   // addgroupchat(usershow);
-                                //   print('tttt');
-                                //   Datamanager.usershow = usershow;
-                                //   Datamanager.motorcycleShow = motorshow;
-                                //   Datamanager.listcarslot = timeslot;
-                                //   Navigator.of(context).pushNamed(Datamanager.editdetail);
-                                // },
+                                onTap: () async {
+                                  // addgroupchat(usershow);
+                                  print('tttt');
+                                  Datamanager.usershow = usershow;
+                                  Datamanager.motorcycleShow = motorshow;
+                                  Datamanager.listcarslot = timeslot;
+                                  Firestore.instance.collection('message').document(Datamanager.usershow.documentid);
+                                  Chatprofile chatvalue = Chatprofile(
+                                    documentcontact: Datamanager.usershow.documentid,
+                                    name: Datamanager.usershow.name,
+                                    arrivaltime: DateTime.now(),
+                                  );
+                                  await Firestore.instance.collection('chat').document(Datamanager.usershow.documentid).setData(chatvalue.toJson());
+                                  Navigator.of(context).pushNamed(Datamanager.messagepage);
+                                },
                                 child: StreamBuilder<QuerySnapshot>(
                                   stream: Firestore.instance.collection('User').where("uid", isEqualTo: motorshow.owneruid).snapshots(),
                                   builder: (context, snapshot) {
@@ -1176,8 +1210,10 @@ class _ListcarState extends State<Listcar> {
           ),
         );
     }else{
-      if(DataFetch.checknotsamenoresult == 0){
-        DataFetch.checknotsamenoresult =1;
+      widget.countnotfound++;
+      print(widget.countnotfound);
+      print(widget.totalnotfound);
+      if(widget.countnotfound == widget.totalnotfound){
         return Container(
           height: datasize.size.height/1.4,
           child: Center(

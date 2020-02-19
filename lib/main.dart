@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
+import 'package:pickcar/page/chatpage.dart';
 import 'package:pickcar/page/example.dart';
 import 'package:pickcar/page/history.dart';
 import 'package:pickcar/page/listcarpage.dart';
@@ -15,6 +16,7 @@ import 'package:pickcar/page/map/placeselectadmin.dart';
 import 'package:pickcar/page/map/receivekeymap.dart';
 import 'package:pickcar/page/map/registermap.dart';
 import 'package:pickcar/page/map/selectUniversity.dart';
+import 'package:pickcar/page/massagepage.dart';
 import 'package:pickcar/page/motorbooklistpage.dart';
 import 'package:pickcar/page/openkey.dart';
 import 'package:pickcar/page/profile/editprofile/NewPassword.dart';
@@ -35,6 +37,8 @@ import 'package:pickcar/page/searchpage/slottimeselect.dart';
 import 'package:pickcar/page/signuppage.dart';
 import 'package:pickcar/page/tabscreen.dart';
 import 'package:pickcar/page/map/maplocation.dart';
+
+import 'datamanager.dart';
 
 
 void main() => runApp(MyApp());
@@ -89,6 +93,8 @@ class MyApp extends StatelessWidget {
         Datamanager.receivekeymap : (ctx) => Receivekeymap(),
         Datamanager.addlocation : (ctx) => Addlocation(),
         Datamanager.historypage : (ctx) => HistoryPage(),
+        Datamanager.chatpage : (ctx) => Chatpage(),
+        Datamanager.messagepage : (ctx) => Messagepage(),
         //'loginpickcarpage': (ctx) => LoginPickCarPage()
       },
       onGenerateRoute: (setting) {},

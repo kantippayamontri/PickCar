@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/models/placelocation.dart';
+import 'package:pickcar/page/chatpage.dart';
 import 'package:pickcar/page/homepage.dart';
 import 'package:pickcar/page/listcarpage.dart';
 import 'package:pickcar/page/profile/profilepage.dart';
@@ -60,6 +61,8 @@ class Datamanager {
   static String receivekeymap = "/Receivekeymap";
   static String addlocation = "/Addlocation";
   static String historypage = "/HistoryPage";
+  static String chatpage = "/Chatpage";
+  static String messagepage = "/Messagepage";
   
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
@@ -87,7 +90,7 @@ class Datamanager {
 
   static List<Map<String, Object>> pages = [
     {'page': HomePage(gotosearchinHome: gontosearchinHome,), 'title': 'Home'},
-    {'page': SearchPage(), 'title': 'Chat'},
+    {'page': Chatpage(), 'title': 'Chat'},
     {'page': ListCarPage(), 'title': 'ListCar'},
     {'page': ProfilePage(), 'title': 'Profile'},
     {'page': SettingPage(), 'title': 'setting'},
@@ -338,6 +341,9 @@ class UseString {
   static String waitting = "Waiting";
   static String bookking = "Booking";
   static String workking = "Working";
+
+  static String chatprofile = "Chat Profile";
+  static String chat = "Chat";
 }
 
 class Currency {

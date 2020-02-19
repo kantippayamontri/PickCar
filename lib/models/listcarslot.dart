@@ -145,7 +145,7 @@ class Usershow{
        assert(map['profilepicpath'] != null),
        assert(map['profilepictype'] != null),
        assert(map['documentid'] != null),
-       assert(map['documentchat'] != null),
+      //  assert(map['documentchat'] != null),
        assert(map['money'] != null),
        name = map['name'],
        uid = map['uid'],
