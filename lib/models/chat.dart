@@ -5,7 +5,7 @@ class Chatprofile {
   String name;
   DateTime arrivaltime;
   // String documentchatid;
-  // String documentmessage;
+  String documentmessage;
   String documentcontact;
 
  
@@ -13,7 +13,7 @@ class Chatprofile {
     @required this.name,
     @required this.arrivaltime,
     // @required this.documentchatid,
-    // @required this.documentmessage,
+    this.documentmessage,
     @required this.documentcontact,
   }) {}
 
@@ -22,50 +22,92 @@ class Chatprofile {
       'name' : this.name,
       'arrivaltime' : this.arrivaltime,
       // 'documentchatid' : this.documentchatid,
-      // 'documentmessage' : this.documentmessage,
+      'documentmessage' : this.documentmessage,
+      'documentcontact' : this.documentcontact,
+    };
+  }
+}
+class Message {
+  String ownmessage;
+  DateTime arrivaltime;
+  // String documentchatid;
+  String messagevalue;
+  String image;
+
+ 
+  Message({
+    @required this.ownmessage,
+    @required this.arrivaltime,
+    // @required this.documentchatid,
+    this.messagevalue,
+    @required this.image,
+  }) {}
+
+   Map<String , Object> toJson(){
+    return {
+      'ownmessage' : this.ownmessage,
+      'arrivaltime' : this.arrivaltime,
+      // 'documentchatid' : this.documentchatid,
+      'messagevalue' : this.messagevalue,
+      'image' : this.image,
+    };
+  }
+}
+class Chatprofilehasmessage {
+  String name;
+  DateTime arrivaltime;
+  // String documentchatid;
+  String documentcontact;
+
+ 
+  Chatprofilehasmessage({
+    @required this.name,
+    @required this.arrivaltime,
+    // @required this.documentchatid,
+    @required this.documentcontact,
+  }) {}
+
+   Map<String , Object> toJson(){
+    return {
+      'name' : this.name,
+      'arrivaltime' : this.arrivaltime,
+      // 'documentchatid' : this.documentchatid,
       'documentcontact' : this.documentcontact,
     };
   }
 }
 class Chatprofileshow {
-  String time;
-  int day;
-  int month;
-  int year;
-  double price;
-  double priceaddtax;
-  String motorcycledocid;
-  String ownerid;
-  String myid;
-  String bookingdocid;
-  String boxdocid;
-  String boxplacedocid;
-  String boxslotrentdocid;
-  String motorplacelocdocid;
-  String university;
-  String status;
-  DateTime startdate;
+  String name;
+  DateTime arrivaltime;
+  // String documentchatid;
+  String documentmessage;
+  String documentcontact;
   final DocumentReference reference;
 
   Chatprofileshow.fromMap(Map<String, dynamic> map, {this.reference})
-       : startdate = (map['startdate'] as Timestamp).toDate(),
-       time = map['time'],
-       priceaddtax = map['priceaddtax'],
-       day = map['day'],
-       month = map['month'],
-       year = map['year'],
-       price = map['price'],
-       motorcycledocid = map['motorcycledocid'],
-       ownerid = map['ownerid'],
-       myid = map['myid'],
-       bookingdocid = map['bookingdocid'],
-       boxdocid = map['boxdocid'],
-       boxplacedocid = map['boxplacedocid'],
-       boxslotrentdocid = map['boxslotrentdocid'],
-       university = map['university'],
-       status = map['status'],
-       motorplacelocdocid = map['motorplacelocdocid'];
+       : arrivaltime = (map['arrivaltime'] as Timestamp).toDate(),
+       documentmessage = map['documentmessage'],
+       documentcontact = map['documentcontact'],
+       name = map['name'];
 
   Chatprofileshow.fromSnapshot(DocumentSnapshot snapshot)
+     : this.fromMap(snapshot.data, reference: snapshot.reference);
+}
+
+class Messageshow {
+  String ownmessage;
+  DateTime arrivaltime;
+  // String documentchatid;
+  String messagevalue;
+  String image;
+  final DocumentReference reference;
+
+  Messageshow.fromMap(Map<String, dynamic> map, {this.reference})
+       : arrivaltime = (map['arrivaltime'] as Timestamp).toDate(),
+       ownmessage = map['ownmessage'],
+       messagevalue = map['messagevalue'],
+       image = map['image'];
+
+  Messageshow.fromSnapshot(DocumentSnapshot snapshot)
      : this.fromMap(snapshot.data, reference: snapshot.reference);
 }

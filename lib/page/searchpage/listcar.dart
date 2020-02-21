@@ -1041,19 +1041,61 @@ class _ListcarState extends State<Listcar> {
                               // color: Colors.black,
                               child:  GestureDetector(
                                 onTap: () async {
+                                  Datamanager.imageusershow = imageusershow;
                                   // addgroupchat(usershow);
-                                  print('tttt');
                                   Datamanager.usershow = usershow;
                                   Datamanager.motorcycleShow = motorshow;
                                   Datamanager.listcarslot = timeslot;
-                                  Firestore.instance.collection('message').document(Datamanager.usershow.documentid);
-                                  Chatprofile chatvalue = Chatprofile(
-                                    documentcontact: Datamanager.usershow.documentid,
-                                    name: Datamanager.usershow.name,
-                                    arrivaltime: DateTime.now(),
-                                  );
-                                  await Firestore.instance.collection('chat').document(Datamanager.usershow.documentid).setData(chatvalue.toJson());
-                                  Navigator.of(context).pushNamed(Datamanager.messagepage);
+                                  var chatvalue;
+                                  var check = await Firestore.instance.collection('chat')
+                                            .document(Datamanager.user.documentid)
+                                            .collection('chatgroup')
+                                            .document(Datamanager.usershow.documentid).get();
+                                  if(check.data == null){
+                                    var message = Firestore.instance.collection('message').document();
+                                    chatvalue = Chatprofile(
+                                      documentcontact: Datamanager.usershow.documentid,
+                                      name: Datamanager.usershow.name,
+                                      arrivaltime: DateTime.now(),
+                                      documentmessage: message.documentID,
+                                    );
+                                    await Firestore.instance.collection('chat')
+                                            .document(Datamanager.user.documentid)
+                                            .collection('chatgroup')
+                                            .document(Datamanager.usershow.documentid)
+                                            .setData(chatvalue.toJson());
+                                    await Firestore.instance.collection('chat')
+                                              .document(Datamanager.usershow.documentid)
+                                              .collection('chatgroup')
+                                              .document(Datamanager.user.documentid)
+                                              .setData(chatvalue.toJson());
+                                  }else{
+                                    chatvalue = Chatprofilehasmessage(
+                                      documentcontact: Datamanager.usershow.documentid,
+                                      name: Datamanager.usershow.name,
+                                      arrivaltime: DateTime.now(),
+                                    );
+                                     await Firestore.instance.collection('chat')
+                                            .document(Datamanager.user.documentid)
+                                            .collection('chatgroup')
+                                            .document(Datamanager.usershow.documentid)
+                                            .updateData(chatvalue.toJson());
+                                    await Firestore.instance.collection('chat')
+                                              .document(Datamanager.usershow.documentid)
+                                              .collection('chatgroup')
+                                              .document(Datamanager.user.documentid)
+                                              .updateData(chatvalue.toJson());
+                                  }
+                                  Firestore.instance.collection('chat')
+                                            .document(Datamanager.user.documentid)
+                                            .collection('chatgroup')
+                                            .document(Datamanager.usershow.documentid).get().then((data){
+                                              var a = Chatprofileshow.fromSnapshot(data);
+                                              // print(a.documentmessage);
+                                              Datamanager.chatprofileshow = Chatprofileshow.fromSnapshot(data);
+                                              Navigator.of(context).pushNamed(Datamanager.messagepage);
+                                            });
+                                  // print(Datamanager.chatprofileshow.documentmessage);
                                 },
                                 child: StreamBuilder<QuerySnapshot>(
                                   stream: Firestore.instance.collection('User').where("uid", isEqualTo: motorshow.owneruid).snapshots(),

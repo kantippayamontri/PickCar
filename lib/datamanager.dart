@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:pickcar/models/chat.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/models/placelocation.dart';
@@ -74,11 +75,13 @@ class Datamanager {
   static Listcarslot listcarslot;
   static Slottime slottime;
   static Pincar pincar;
+  static Chatprofileshow chatprofileshow;
   static Bookingshow booking;
   static BoxlocationShow boxlocationshow;
   static PlacelocationShow placelocationshow;
   static Boxslotrentshow boxslotrentshow;
   static Boxslotnumbershow boxslotnumbershow;
+  static String imageusershow;
   static List<Universityplaceshow> universityshow = [];
   static List<String> listUniversity = [];
 
@@ -341,6 +344,9 @@ class UseString {
   static String waitting = "Waiting";
   static String bookking = "Booking";
   static String workking = "Working";
+  static String sayhi = "Say hi to";
+  static String sentimage = "sent image to you";
+  static String you = "You";
 
   static String chatprofile = "Chat Profile";
   static String chat = "Chat";
