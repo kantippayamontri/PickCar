@@ -117,7 +117,7 @@ class _MessagepageState extends State<Messagepage> {
     SizeConfig().init(context);
     var datasize = MediaQuery.of(context);
     void confirmUpload(BuildContext context){
-    showDialog(context: context,builder:  (BuildContext context){
+    showDialog(barrierDismissible: false,context: context,builder:  (BuildContext context){
       return AlertDialog(
         title: Center(
           child: Column(
@@ -148,8 +148,9 @@ class _MessagepageState extends State<Messagepage> {
                       color: PickCarColor.colorbuttom,
                       onPressed: () {
                         Navigator.pop(context);
+                        widget.image = null;
                       },
-                      child: Text('Cancle',
+                      child: Text('Cancel',
                         // style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Color(0x78849E)),
                         style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*15,color: Colors.white),
                       ),
@@ -371,7 +372,7 @@ class _MessagepageState extends State<Messagepage> {
                 }
                 
               } else {
-                return new Text('Loading...');
+                return Container();
               }
             },
           );

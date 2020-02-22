@@ -7,6 +7,7 @@ import 'package:pickcar/models/chat.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/models/placelocation.dart';
+import 'package:pickcar/page/admin/adminmenu.dart';
 import 'package:pickcar/page/chatpage.dart';
 import 'package:pickcar/page/homepage.dart';
 import 'package:pickcar/page/listcarpage.dart';
@@ -65,6 +66,8 @@ class Datamanager {
   static String chatpage = "/Chatpage";
   static String messagepage = "/Messagepage";
   static String fullimage = "/Fullimage";
+  static String adminmenu = "/Adminmenu";
+  static String adminlicense = "/adminlicense";
   
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
@@ -94,7 +97,8 @@ class Datamanager {
 
   static List<Map<String, Object>> pages = [
     {'page': HomePage(gotosearchinHome: gontosearchinHome,), 'title': 'Home'},
-    {'page': Chatpage(), 'title': 'Chat'},
+    // {'page': Chatpage(), 'title': 'Chat'},
+    {'page': Adminmenu(), 'title': 'Chat'},
     {'page': ListCarPage(), 'title': 'ListCar'},
     {'page': ProfilePage(), 'title': 'Profile'},
     {'page': SettingPage(), 'title': 'setting'},
@@ -133,8 +137,6 @@ class Datamanager {
   static var universityforadmin = [
     'Choose University',
     "Chiang Mai University",
-    "sdfasdfasd",
-    "dfasdfsdfasdf",
   ];
   static Map<String , Object> universitydatabase = {
       'Universityname' : 'Chiang Mai University',
@@ -351,6 +353,11 @@ class UseString {
 
   static String chatprofile = "Chat Profile";
   static String chat = "Chat";
+  static String menu = "Admin Menu";
+  static String checkdetail = "Approve license";
+  static String placebox = "Place & Box Location";
+  static String license = "License";
+  static String adduniversity = "Add University";
 }
 
 class Currency {
