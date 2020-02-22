@@ -187,14 +187,14 @@ class _ChatpageState extends State<Chatpage> {
                                                 return Container(
                                                   margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*7,left: SizeConfig.blockSizeHorizontal*3),
                                                   child: Text(UseString.you+" : " +messagelast.messagevalue+" - "+chatshow.arrivaltime.day.toString()+" "+monthy(chatshow.arrivaltime.month)+'.',
-                                                    style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*20,color: Colors.grey[600]), 
+                                                    style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*18,color: Colors.grey[600]), 
                                                   ),
                                                 );
                                               }else{
                                                 return Container(
                                                   margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*7,left: SizeConfig.blockSizeHorizontal*3),
                                                   child: Text(chatshow.name+" : " +messagelast.messagevalue+" - "+chatshow.arrivaltime.day.toString()+" "+monthy(chatshow.arrivaltime.month)+'.',
-                                                    style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*20,color: Colors.grey[600]), 
+                                                    style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*18,color: Colors.grey[600]), 
                                                   ),
                                                 );
                                               }
@@ -202,7 +202,7 @@ class _ChatpageState extends State<Chatpage> {
                                               return Container(
                                                 margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*7,left: SizeConfig.blockSizeHorizontal*3),
                                                 child: Text(chatshow.name +" "+UseString.sentimage+" - "+chatshow.arrivaltime.day.toString()+" "+monthy(chatshow.arrivaltime.month)+'.',
-                                                  style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*20,color: Colors.grey[600]), 
+                                                  style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*18,color: Colors.grey[600]), 
                                                 ),
                                               );
                                             }
@@ -210,7 +210,7 @@ class _ChatpageState extends State<Chatpage> {
                                             return Container(
                                               margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*7,left: SizeConfig.blockSizeHorizontal*3),
                                               child: Text(UseString.sayhi+" " +chatshow.name,
-                                                  style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*20,color: Colors.grey[600]), 
+                                                  style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*18,color: Colors.grey[600]), 
                                                 ),
                                             );
                                           }

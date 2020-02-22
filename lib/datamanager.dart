@@ -64,6 +64,7 @@ class Datamanager {
   static String historypage = "/HistoryPage";
   static String chatpage = "/Chatpage";
   static String messagepage = "/Messagepage";
+  static String fullimage = "/Fullimage";
   
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
@@ -417,7 +418,11 @@ class GearMotor {
     {'gear': GearMotor.manual}
   ];
 }
-
+class Imagesoom{
+  static var image;
+  static var width;
+  static var height;
+}
 class CarStatus {
   static const String nothing = "NOTHING";
   static const String waiting = "WAITING";

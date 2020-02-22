@@ -2,12 +2,15 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:mime_type/mime_type.dart';
 import 'dart:ui' as ui;
 
 import 'package:pickcar/datamanager.dart';
@@ -24,6 +27,7 @@ import '../datamanager.dart';
 
 class Messagepage extends StatefulWidget {
   final message = TextEditingController();
+  var image;
   double min = 0;
   bool press = true;
   bool visible = false;
@@ -32,6 +36,7 @@ class Messagepage extends StatefulWidget {
   int time1 =0;
   int time2 =0;
   int time3 =0;
+  String imagelink = '';
   @override
   _MessagepageState createState() => _MessagepageState();
 }
@@ -49,12 +54,22 @@ class _MessagepageState extends State<Messagepage> {
     super.dispose();
   }
   sentmessage(){
-    Message message = Message(
-      arrivaltime: DateTime.now(),
-      ownmessage: Datamanager.user.documentid,
-      image: null,
-      messagevalue: widget.message.text,
-    );
+    Message message;
+    if(widget.imagelink == ''){
+      message = Message(
+        arrivaltime: DateTime.now(),
+        ownmessage: Datamanager.user.documentid,
+        image: null,
+        messagevalue: widget.message.text,
+      );
+    }else{
+      message = Message(
+        arrivaltime: DateTime.now(),
+        ownmessage: Datamanager.user.documentid,
+        image: widget.imagelink,
+        messagevalue: null,
+      );
+    }
     Firestore.instance.collection('message')
                       .document(Datamanager.chatprofileshow.documentmessage)
                       .collection('messagegroup')
@@ -62,6 +77,23 @@ class _MessagepageState extends State<Messagepage> {
     Firestore.instance.collection('messagelast')
                       .document(Datamanager.chatprofileshow.documentmessage)
                       .setData(message.toJson());
+    
+  }
+  Future uploadPic(BuildContext context) async{
+    String contenttype;
+    String basename = widget.image.path.split('/').last;
+    StorageReference ref =
+        Datamanager.firebasestorage.ref().child("message").child(Datamanager.chatprofileshow.documentmessage);
+    StorageUploadTask uploadtask;
+    contenttype = mime(widget.image.path);
+    uploadtask = ref
+        .child(basename)
+        .putFile(widget.image, StorageMetadata(contentType: contenttype));
+    await uploadtask.onComplete.whenComplete(() async {
+      // print('aaa');
+      widget.imagelink = await FirebaseStorage.instance.ref().child('message').child(Datamanager.chatprofileshow.documentmessage).child(basename).getDownloadURL();
+      sentmessage();
+    });
   }
   updatetime() async {
     var chatvalue = Chatprofilehasmessage(
@@ -84,9 +116,71 @@ class _MessagepageState extends State<Messagepage> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     var datasize = MediaQuery.of(context);
+    void confirmUpload(BuildContext context){
+    showDialog(context: context,builder:  (BuildContext context){
+      return AlertDialog(
+        title: Center(
+          child: Column(
+            children: <Widget>[
+              Text("Are you sure?",
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*30,color: PickCarColor.colorFont1), 
+              ),
+              Container(
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(left: 15),
+                      child: RaisedButton(
+                        color: PickCarColor.colorbuttom,
+                        onPressed: () {
+                          uploadPic(context);
+                          Navigator.pop(context);
+                        },
+                        child: Text('Confirm',
+                          // style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Color(0x78849E)),
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*15,color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 20),
+                      child: RaisedButton(
+                      color: PickCarColor.colorbuttom,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('Cancle',
+                        // style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Color(0x78849E)),
+                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*15,color: Colors.white),
+                      ),
+                    ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ) 
+        ) 
+      );
+    }
+    );
+  }
+    Future getImageGallery() async {
+      widget.image = await ImagePicker.pickImage(source: ImageSource.gallery);
+      if(widget.image !=null){
+        confirmUpload(context);
+      }
+    }
+    Future getImageCamera() async {
+      widget.image = await ImagePicker.pickImage(source: ImageSource.camera);
+      if(widget.image !=null){
+        confirmUpload(context);
+      }
+    }
     Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
       var messageshow = Messageshow.fromSnapshot(data);
-      if(messageshow.ownmessage == Datamanager.user.documentid){
+      if(messageshow.image == null){
+        if(messageshow.ownmessage == Datamanager.user.documentid){
         return Container(
           margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*1,right: SizeConfig.blockSizeHorizontal*3),
           alignment: Alignment.centerRight,
@@ -115,7 +209,7 @@ class _MessagepageState extends State<Messagepage> {
                 decoration: new BoxDecoration(
                   shape: BoxShape.circle,
                   image: new DecorationImage(
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                       image: new NetworkImage(
                           Datamanager.imageusershow)
                     )
@@ -138,6 +232,152 @@ class _MessagepageState extends State<Messagepage> {
           ),
         );
       }
+      }else{
+        var image = Image.network(messageshow.image);
+        Completer<ui.Image> completer = Completer<ui.Image>();
+        image.image
+            .resolve(new ImageConfiguration())
+            .addListener(ImageStreamListener((ImageInfo info, bool _) {
+          completer.complete(info.image);
+        }));
+          // wait for ImageInfo to finish
+        completer.future.then((data){
+        });
+        if(messageshow.ownmessage == Datamanager.user.documentid){
+          // print('aaa');
+        return Container(
+          width: SizeConfig.blockSizeHorizontal*20,
+          height: SizeConfig.blockSizeHorizontal*20,
+          margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*1,right: SizeConfig.blockSizeHorizontal*3),
+          alignment: Alignment.centerRight,
+          child: Container(
+            width: SizeConfig.blockSizeHorizontal*20,
+            height: SizeConfig.blockSizeHorizontal*20,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14),
+              color: Colors.grey,
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: NetworkImage(messageshow.image),
+              ),
+            ),
+          ),
+        );
+      }else{
+        return FutureBuilder<ui.Image>(
+            future: completer.future,
+            builder: (BuildContext context, AsyncSnapshot<ui.Image> snapshot) {
+              // print(snapshot.data.height);
+              // print(snapshot.data.width);
+              if (snapshot.hasData) {
+                if(snapshot.data.height< snapshot.data.width){
+                  return GestureDetector(
+                    onTap: (){
+                      // Imagesoom.image = NetworkImage(messageshow.image);
+                      // Imagesoom.width = snapshot.data.width;
+                      // Imagesoom.height = snapshot.data.height;
+                      // Navigator.of(context).pushNamed(Datamanager.fullimage);
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*1,left: SizeConfig.blockSizeHorizontal*3),
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*18),
+                            width: (SizeConfig.blockSizeHorizontal+SizeConfig.blockSizeVertical)*3,
+                            height: (SizeConfig.blockSizeHorizontal+SizeConfig.blockSizeVertical)*3,
+                            decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: new NetworkImage(
+                                      Datamanager.imageusershow)
+                                )
+                              )
+                          ),
+                          SizedBox(width: SizeConfig.blockSizeHorizontal,),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(14),
+                              color: Colors.grey[200],
+                            ),
+                            child: Container(
+                              width: SizeConfig.blockSizeHorizontal*70,
+                              height: SizeConfig.blockSizeHorizontal*40,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(14),
+                                color: Colors.grey,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(messageshow.image),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }else{
+                  return GestureDetector(
+                    onTap: (){
+                      // Imagesoom.image = NetworkImage(messageshow.image);
+                      // Imagesoom.width = snapshot.data.width;
+                      // Imagesoom.height = snapshot.data.height;
+                      // Navigator.of(context).pushNamed(Datamanager.fullimage);
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*1,left: SizeConfig.blockSizeHorizontal*3),
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*28),
+                            width: (SizeConfig.blockSizeHorizontal+SizeConfig.blockSizeVertical)*3,
+                            height: (SizeConfig.blockSizeHorizontal+SizeConfig.blockSizeVertical)*3,
+                            decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: new NetworkImage(
+                                      Datamanager.imageusershow)
+                                )
+                              )
+                          ),
+                          SizedBox(width: SizeConfig.blockSizeHorizontal,),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(14),
+                              color: Colors.grey[200],
+                            ),
+                            child: Container(
+                              width: SizeConfig.blockSizeHorizontal*40,
+                              height: SizeConfig.blockSizeHorizontal*60,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(14),
+                                color: Colors.grey,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(messageshow.image),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+                
+              } else {
+                return new Text('Loading...');
+              }
+            },
+          );
+        }
+      }
+      
     }
     Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
       SizeConfig().init(context);
@@ -213,7 +453,7 @@ class _MessagepageState extends State<Messagepage> {
                     setState(() {
                       if(widget.press){
                         widget.press = !widget.press;
-                        widget.min = 100;
+                        widget.min = 70;
                         widget.more = PickCarColor.colormain;
                         widget.moreicon = Colors.white;
                         widget.visible = true;
@@ -250,30 +490,40 @@ class _MessagepageState extends State<Messagepage> {
                 margin: EdgeInsets.only(left:SizeConfig.blockSizeHorizontal*13),
                 child: Row(
                   children: <Widget>[
-                    AnimatedOpacity(
-                      opacity: widget.visible ? 1.0 : 0.0,
-                      duration: Duration(milliseconds: widget.time1),
-                      child: Container(
-                        margin: EdgeInsets.only(top:SizeConfig.blockSizeHorizontal*3),
-                        child: Icon(Icons.camera_alt,color: PickCarColor.colormain,size: SizeConfig.blockSizeHorizontal*9,),
+                    GestureDetector(
+                      onTap: (){
+                        getImageCamera();
+                      },
+                      child: AnimatedOpacity(
+                        opacity: widget.visible ? 1.0 : 0.0,
+                        duration: Duration(milliseconds: widget.time1),
+                        child: Container(
+                          margin: EdgeInsets.only(top:SizeConfig.blockSizeHorizontal*3),
+                          child: Icon(Icons.camera_alt,color: PickCarColor.colormain,size: SizeConfig.blockSizeHorizontal*9,),
+                        ),
                       ),
                     ),
-                    AnimatedOpacity(
-                      opacity: widget.visible ? 1.0 : 0.0,
-                      duration: Duration(milliseconds: widget.time2),
-                      child: Container(
-                        margin: EdgeInsets.only(top:SizeConfig.blockSizeHorizontal*3),
-                        child: Icon(Icons.photo_library,color: PickCarColor.colormain,size: SizeConfig.blockSizeHorizontal*9,),
+                    GestureDetector(
+                      onTap: (){
+                        getImageGallery();
+                      },
+                      child: AnimatedOpacity(
+                        opacity: widget.visible ? 1.0 : 0.0,
+                        duration: Duration(milliseconds: widget.time2),
+                        child: Container(
+                          margin: EdgeInsets.only(top:SizeConfig.blockSizeHorizontal*3),
+                          child: Icon(Icons.photo_library,color: PickCarColor.colormain,size: SizeConfig.blockSizeHorizontal*9,),
+                        ),
                       ),
                     ),
-                    AnimatedOpacity(
-                      opacity: widget.visible ? 1.0 : 0.0,
-                      duration: Duration(milliseconds: widget.time3),
-                      child: Container(
-                        margin: EdgeInsets.only(top:SizeConfig.blockSizeHorizontal*3),
-                        child: Icon(Icons.location_on,color: PickCarColor.colormain,size: SizeConfig.blockSizeHorizontal*9,),
-                      ),
-                    ),
+                    // AnimatedOpacity(
+                    //   opacity: widget.visible ? 1.0 : 0.0,
+                    //   duration: Duration(milliseconds: widget.time3),
+                    //   child: Container(
+                    //     margin: EdgeInsets.only(top:SizeConfig.blockSizeHorizontal*3),
+                    //     child: Icon(Icons.location_on,color: PickCarColor.colormain,size: SizeConfig.blockSizeHorizontal*9,),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

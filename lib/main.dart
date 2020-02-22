@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/page/chatpage.dart';
 import 'package:pickcar/page/example.dart';
+import 'package:pickcar/page/fullimage.dart';
 import 'package:pickcar/page/history.dart';
 import 'package:pickcar/page/listcarpage.dart';
 import 'package:pickcar/page/loginpage.dart';
@@ -95,6 +96,7 @@ class MyApp extends StatelessWidget {
         Datamanager.historypage : (ctx) => HistoryPage(),
         Datamanager.chatpage : (ctx) => Chatpage(),
         Datamanager.messagepage : (ctx) => Messagepage(),
+        Datamanager.fullimage : (ctx) => Fullimage(),
         //'loginpickcarpage': (ctx) => LoginPickCarPage()
       },
       onGenerateRoute: (setting) {},
