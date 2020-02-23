@@ -14,7 +14,7 @@ class Universityplaceshow {
      : assert(map['latitude'] != null),
        assert(map['longitude'] != null),
        assert(map['Universityname'] != null),
-       assert(map['docid'] != null),
+      //  assert(map['docid'] != null),
       //  assert(map['listplace'] != null),
        latitude = map['latitude'],
        longitude = map['longitude'],

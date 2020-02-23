@@ -1,10 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flat_icons_flutter/flat_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:path/path.dart';
 import 'package:pickcar/bloc/profile/changpassword/changpasswordbloc.dart';
+import 'package:pickcar/models/universityplace.dart';
 import 'package:pickcar/ui/uisize.dart';
 import 'dart:typed_data';
 
@@ -17,6 +19,7 @@ class SelectUniversity extends StatefulWidget {
   final universityname = TextEditingController();
   final latitude = TextEditingController();
   final longtutude = TextEditingController();
+  bool adduniversityname = true;
   String dropdownValue = 'Choose University';
   String adduniversity ='';
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
@@ -24,17 +27,50 @@ class SelectUniversity extends StatefulWidget {
   _SelectUniversityState createState() => _SelectUniversityState();
 }
 class _SelectUniversityState extends State<SelectUniversity> {
+  List<String> universitylist = ['Choose University'];
   dispose() {
     widget.universityname.dispose();
     widget.latitude.dispose();
     widget.longtutude.dispose();
     super.dispose();
   }
+  showwarning(BuildContext context){
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(UseString.fill),
+          // content: Text(UseString.pleaseselectdetail),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     widget.formkey = GlobalKey<FormState>();
     final data = MediaQuery.of(context);
+    if(widget.adduniversityname){
+      Firestore.instance.collection('universityplace').snapshots()
+                      .listen((data){
+                        data.documents.map((data){
+                          var document = Universityplaceshow.fromSnapshot(data);
+                          universitylist.add(document.universityname);
+                        }).toString();
+                        // print(universitylist);
+                        setState(() {
+                          widget.adduniversityname = false;
+                        });
+                      });
+    }
     return Scaffold(
       appBar: AppBar(
        backgroundColor: Colors.white,
@@ -87,6 +123,7 @@ class _SelectUniversityState extends State<SelectUniversity> {
                         child: Container(
                           margin: EdgeInsets.only(left:SizeConfig.blockSizeHorizontal*7,right: SizeConfig.blockSizeHorizontal*7),
                           child: TextFormField(
+                            
                             onTap: (){
                             },
                             // initialValue:widget.message.text,
@@ -121,6 +158,7 @@ class _SelectUniversityState extends State<SelectUniversity> {
                         child: Container(
                           margin: EdgeInsets.only(left:SizeConfig.blockSizeHorizontal*7,right: SizeConfig.blockSizeHorizontal*7),
                           child: TextFormField(
+                            keyboardType: TextInputType.numberWithOptions(signed:true),
                             onTap: (){
                             },
                             // initialValue:widget.message.text,
@@ -155,6 +193,7 @@ class _SelectUniversityState extends State<SelectUniversity> {
                         child: Container(
                           margin: EdgeInsets.only(left:SizeConfig.blockSizeHorizontal*7,right: SizeConfig.blockSizeHorizontal*7),
                           child: TextFormField(
+                            keyboardType: TextInputType.numberWithOptions(signed:true),
                             onTap: (){
                             },
                             // initialValue:widget.message.text,
@@ -189,18 +228,24 @@ class _SelectUniversityState extends State<SelectUniversity> {
                       // side: BorderSide(color: Colors.red)
                     ),
                     onPressed: () async {
-                      // var refuniversity = await Datamanager.firestore.collection('universityplace').add(Datamanager.universitydatabase);
-                      // var docuniversityid = refuniversity.documentID;
-                      // print(docuniversityid);
-                      // Datamanager.firestore.collection('universityplace')
-                      //                     .document(docuniversityid)
-                      //                     .updateData({'docid': docuniversityid})
-                      //                     .whenComplete((){
-                      //                       setState(() {
-                      //                         widget.adduniversity = 'complete';
-                      //                       });
-                      //                     });
-                      // Navigator.of(context).pushNamed(Datamanager.detailsearch);
+                      if(widget.longtutude.text != ''&&widget.latitude.text !=''&&widget.universityname.text != ''){
+                        var refuniversity = await Datamanager.firestore.collection('universityplace')
+                                                                      .add({'Universityname':widget.universityname.text,
+                                                                      'latitude':double.parse(widget.latitude.text),'longitude':double.parse(widget.longtutude.text)
+                                                                      ,'docid':null});
+                        var docid = refuniversity.documentID;
+                        await Datamanager.firestore.collection('universityplace').document(docid)
+                                                                        .updateData({'docid':docid}).whenComplete((){
+                                                                          setState(() {
+                                                                            widget.longtutude.text='';
+                                                                            widget.latitude.text ='';
+                                                                            widget.universityname.text = '';
+                                                                          });
+                                                                        });
+                        widget.adduniversityname = true;
+                      }else{
+                        showwarning(context);
+                      }
                     },
                     child: Text(UseString.adduniversity,
                         style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*20,color: Colors.white), 
@@ -239,7 +284,7 @@ class _SelectUniversityState extends State<SelectUniversity> {
                           widget.dropdownValue = newValue;
                         });
                       },
-                      items: Datamanager.universityforadmin
+                      items: universitylist
                         .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,

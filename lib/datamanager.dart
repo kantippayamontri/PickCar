@@ -363,6 +363,7 @@ class UseString {
   static String areyou = "Are you sure to";
   static String pleaseselecttitle = "Please select object";
   static String pleaseselectdetail= "The object does not select. \nPlease select object below.";
+  static String fill = "Please fill empty blank";
 }
 
 class Currency {
