@@ -134,6 +134,10 @@ class Usershow{
   String profilepictype;
   String documentid;
   String documentchat;
+  String email;
+  String driveliscensecarpath;
+  String driveliscensecarpictype;
+  String isapprove;
   double money;
   var imageurl;
   final DocumentReference reference;
@@ -142,17 +146,24 @@ class Usershow{
    Usershow.fromMap(Map<String, dynamic> map, {this.reference})
      : assert(map['name'] != null),
        assert(map['uid'] != null),
+       assert(map['email'] != null),
        assert(map['profilepicpath'] != null),
        assert(map['profilepictype'] != null),
        assert(map['documentid'] != null),
       //  assert(map['documentchat'] != null),
        assert(map['money'] != null),
+      //  assert(map['driveliscensecarpath'] != null),
+      //  assert(map['driveliscensecarpictype'] != null),
+       driveliscensecarpath = map['driveliscensecarpath'],
+       driveliscensecarpictype = map['driveliscensecarpictype'],
+       email = map['email'],
        name = map['name'],
        uid = map['uid'],
        profilepicpath = map['profilepicpath'],
        profilepictype = map['profilepictype'],
        documentid = map['documentid'],
        money = map['money'].toDouble(),
+       isapprove = map['isapprove'],
        documentchat = map['documentchat'];
       
 

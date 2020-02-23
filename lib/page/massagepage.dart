@@ -77,6 +77,7 @@ class _MessagepageState extends State<Messagepage> {
     Firestore.instance.collection('messagelast')
                       .document(Datamanager.chatprofileshow.documentmessage)
                       .setData(message.toJson());
+    widget.imagelink ='';
     
   }
   Future uploadPic(BuildContext context) async{
@@ -148,7 +149,7 @@ class _MessagepageState extends State<Messagepage> {
                       color: PickCarColor.colorbuttom,
                       onPressed: () {
                         Navigator.pop(context);
-                        widget.image = null;
+                        widget.image = '';
                       },
                       child: Text('Cancel',
                         // style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Color(0x78849E)),

@@ -165,6 +165,26 @@ class _OpenkeyState extends State<Openkey> {
                               });
   }
   updateend(BuildContext context) async {
+    var booking = Booking(
+      times:Datamanager.booking.time,
+      day:Datamanager.booking.day,
+      month:Datamanager.booking.month,
+      year:Datamanager.booking.year,
+      price:Datamanager.booking.price,
+      motorcycledocid:Datamanager.booking.motorcycledocid,
+      ownerid:Datamanager.booking.ownerid,
+      myid:Datamanager.booking.myid,
+      bookingdocid:Datamanager.booking.bookingdocid,
+      boxdocid:Datamanager.booking.boxdocid,
+      boxplacedocid:Datamanager.booking.boxplacedocid,
+      boxslotrentdocid:Datamanager.booking.boxslotrentdocid,
+      motorplacelocdocid:Datamanager.booking.motorplacelocdocid,
+      university:Datamanager.booking.university,
+      status:Datamanager.booking.status,
+      priceaddtax:Datamanager.booking.priceaddtax,
+      startdate:Datamanager.booking.startdate,
+      isinhistory:true,
+    );
     Realtime.checkkeymap.cancel();
     var price = Datamanager.user.money - Datamanager.booking.priceaddtax;
     await Firestore.instance.collection('Booking')
@@ -173,8 +193,8 @@ class _OpenkeyState extends State<Openkey> {
                               .getDocuments().then((data) {
                                 Future.delayed(const Duration(milliseconds: 1000), () async {
                                   if(data.documents.length == 1){
-                                    print(data.documents.length);
-                                    print('sdsd');
+                                    // print(data.documents.length);
+                                    // print('sdsd');
                                     await Firestore.instance.collection('Booking')
                                               .document(Datamanager.booking.bookingdocid)
                                               .updateData({'status': 'end','isinhistory': true});
@@ -188,8 +208,8 @@ class _OpenkeyState extends State<Openkey> {
                                               .document(Datamanager.user.documentid)
                                               .updateData({'money': price});
                                   }else{
-                                    print(data.documents.length);
-                                    print('=====');
+                                    // print(data.documents.length);
+                                    // print('=====');
                                     await Firestore.instance.collection('Booking')
                                               .document(Datamanager.booking.bookingdocid)
                                               .updateData({'status': 'end','isinhistory': true});
@@ -199,6 +219,13 @@ class _OpenkeyState extends State<Openkey> {
                                     await Firestore.instance.collection('User')
                                               .document(Datamanager.user.documentid)
                                               .updateData({'money': price});
+                                    await Firestore.instance.collection('historybooking')
+                                              .document(Datamanager.user.documentid)
+                                              .setData(booking.toJson());
+                                    await Firestore.instance.collection('historybooking')
+                                              .document(Datamanager.user.documentid)
+                                              .collection('listhistory')
+                                              .add({'startdate':Datamanager.booking.startdate,'price':Datamanager.booking.priceaddtax});
                                   }
                                 });
                               });

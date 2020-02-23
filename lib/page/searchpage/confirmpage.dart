@@ -664,8 +664,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
                               .getDocuments().then((data) {
                                 Future.delayed(const Duration(milliseconds: 1000), () async {
                                   if(data.documents.length == 1){
-                                    print(data.documents.length);
-                                    print('sdsd');
+                                    // print(data.documents.length);
                                       var ref = await Datamanager.firestore.collection('Booking').add(booking.toJson());
                                       var document = ref.documentID;
                                       Datamanager.firestore.collection("Booking").document(document).updateData(

@@ -97,8 +97,8 @@ class Datamanager {
 
   static List<Map<String, Object>> pages = [
     {'page': HomePage(gotosearchinHome: gontosearchinHome,), 'title': 'Home'},
-    // {'page': Chatpage(), 'title': 'Chat'},
     {'page': Adminmenu(), 'title': 'Chat'},
+    // {'page': Chatpage(), 'title': 'Chat'},
     {'page': ListCarPage(), 'title': 'ListCar'},
     {'page': ProfilePage(), 'title': 'Profile'},
     {'page': SettingPage(), 'title': 'setting'},
@@ -358,6 +358,11 @@ class UseString {
   static String placebox = "Place & Box Location";
   static String license = "License";
   static String adduniversity = "Add University";
+  static String approve = "Approve";
+  static String reject = "Reject";
+  static String areyou = "Are you sure to";
+  static String pleaseselecttitle = "Please select object";
+  static String pleaseselectdetail= "The object does not select. \nPlease select object below.";
 }
 
 class Currency {
