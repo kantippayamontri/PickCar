@@ -20,6 +20,7 @@ class Adminlicense extends StatefulWidget {
   Color licensedriver = PickCarColor.colormain;
   Color licensecar = PickCarColor.colorbuttom;
   Usershow userdata;
+  bool complete = true;
   MotorcycleShow motordata;
   @override
   _AdminlicenseState createState() => _AdminlicenseState();
@@ -48,9 +49,9 @@ class _AdminlicenseState extends State<Adminlicense> {
               await ref.child(usershow.driveliscensecarpath+"." + usershow.driveliscensecarpictype).getData(maxSize).then((data){
                 widget.image = data;
               }).whenComplete((){
-                print('aaa');
                 setState(() {
                   widget.loading = false;
+                  widget.complete = true;
                   widget.name = usershow.name;
                   widget.userdata = usershow;
                 });
@@ -61,6 +62,8 @@ class _AdminlicenseState extends State<Adminlicense> {
           onTap: (){
             setState(() {
               loadpicture();
+              // print('assaasa');
+              widget.complete = false;
               widget.loading = true;
             });
             // Future.delayed(const Duration(milliseconds: 2000), () {
@@ -457,14 +460,17 @@ class _AdminlicenseState extends State<Adminlicense> {
                     ),
                     GestureDetector(
                       onTap: (){
-                        setState(() {
-                          widget.typelicense = 'car';
-                          widget.image = null;
-                          widget.license = false;
-                          widget.licensedriver = PickCarColor.colorbuttom;
-                          widget.licensecar = PickCarColor.colormain;
-                          widget.name ='';
-                        });
+                        if(widget.complete){
+                          setState(() {
+                            widget.typelicense = 'car';
+                            widget.image = null;
+                            widget.license = false;
+                            widget.licensedriver = PickCarColor.colorbuttom;
+                            widget.licensecar = PickCarColor.colormain;
+                            widget.name ='';
+                          });
+                        }
+                        
                       },
                       child: Container(
                         alignment: Alignment.centerRight,

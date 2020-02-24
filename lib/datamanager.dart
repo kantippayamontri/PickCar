@@ -68,6 +68,7 @@ class Datamanager {
   static String fullimage = "/Fullimage";
   static String adminmenu = "/Adminmenu";
   static String adminlicense = "/adminlicense";
+  static String sendlicensepage = "/Sendlicensepage";
   
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
@@ -364,6 +365,18 @@ class UseString {
   static String pleaseselecttitle = "Please select object";
   static String pleaseselectdetail= "The object does not select. \nPlease select object below.";
   static String fill = "Please fill empty blank";
+  static String pleasewaittitle = "Please wait for approve driver license";
+  static String pleasewaitbody = "It take 1-2 day for approve your driver license. \nIt will take than 3 day a few case.";
+  static String rejectalert = "You driver license is rejected";
+  static String rejectalertbody = "Please send new driver license again before rent.";
+  static String driverlicense = "Driver License";
+  static String save = "Save";
+  static String gallory = "Gallory";
+  static String camara = "Camara";
+  static String uploaddriver ='Upload driver license';
+  static String uploadding ='Uploading';
+  static String senddriverlicense ='Already Send driver licesnse';
+  static String pleaseupload ='Please Upload \nyou driver license.';
 }
 
 class Currency {

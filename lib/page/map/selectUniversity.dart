@@ -59,6 +59,7 @@ class _SelectUniversityState extends State<SelectUniversity> {
     widget.formkey = GlobalKey<FormState>();
     final data = MediaQuery.of(context);
     if(widget.adduniversityname){
+      universitylist = ['Choose University'];
       Firestore.instance.collection('universityplace').snapshots()
                       .listen((data){
                         data.documents.map((data){

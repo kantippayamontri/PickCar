@@ -2085,10 +2085,10 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         leading: IconButton(
           icon: Icon(
             Icons.keyboard_arrow_left,
-            color: Colors.transparent,
+            color: Colors.white,
           ),
           onPressed: () {
-            // Navigator.pop(context);
+            Navigator.pop(context);
           },
         ),
       ),
