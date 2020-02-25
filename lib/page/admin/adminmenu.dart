@@ -28,8 +28,7 @@ class _AdminmenuState extends State<Adminmenu> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     var data = MediaQuery.of(context);
-    return Scaffold(
-      appBar: AppBar(
+    AppBar appbar = AppBar(
         backgroundColor: Colors.white,
         flexibleSpace: Image(
             image: AssetImage('assets/images/imagesprofile/appbar/background.png'),
@@ -46,12 +45,16 @@ class _AdminmenuState extends State<Adminmenu> {
           onPressed: () {
           },
         ),
-      ),
+      );
+      var sizeappbar = AppBar().preferredSize.height;
+      double sizetapbar = MediaQuery.of(context).padding.top;
+    return Scaffold(
+      appBar: appbar,
       body: Column(
         children: <Widget>[
           Container(
             width: SizeConfig.screenWidth,
-            height: SizeConfig.blockSizeVertical*40,
+            height: (SizeConfig.screenHeight/2) - ((sizeappbar+sizetapbar)/2),
             // color: Colors.black,
             child: RaisedButton(
               onPressed: (){
@@ -73,7 +76,7 @@ class _AdminmenuState extends State<Adminmenu> {
           ),
           Container(
             width: SizeConfig.screenWidth,
-            height: SizeConfig.blockSizeVertical*40,
+             height: (SizeConfig.screenHeight/2) - ((sizeappbar+sizetapbar)/2),
             // color: Colors.black,
             child: RaisedButton(
               onPressed: (){

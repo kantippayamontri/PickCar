@@ -71,6 +71,8 @@ class MotorcycleShow{
   String motorleftlink;
   String motorrightlink;
   String carstatus;
+  String motorreg;
+  String motorgas;
   bool isbook;
   bool iswaiting;
   bool isworking;
@@ -98,6 +100,8 @@ class MotorcycleShow{
        assert(map['isbook'] != null),
        assert(map['iswaiting'] != null),
        assert(map['isworking'] != null),
+       assert(map['motorreg'] != null),
+       assert(map['motorgas'] != null),
       //  assert(map['currentlatitude'] != null),
       //  assert(map['currentlongitude'] != null),
        currentlatitude = map['currentlatitude'],
@@ -119,6 +123,8 @@ class MotorcycleShow{
        carstatus = map['carstatus'],
        isbook = map['isbook'],
        iswaiting = map['iswaiting'],
+       motorreg = map['motorreg'],
+       motorgas = map['motorgas'],
        isworking = map['isworking'];
 
   MotorcycleShow.fromSnapshot(DocumentSnapshot snapshot)

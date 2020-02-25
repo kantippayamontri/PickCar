@@ -55,6 +55,8 @@ class _SelectUniversityState extends State<SelectUniversity> {
   }
   @override
   Widget build(BuildContext context) {
+    var sizeappbar = AppBar().preferredSize.height;
+    double sizetapbar = MediaQuery.of(context).padding.top;
     SizeConfig().init(context);
     widget.formkey = GlobalKey<FormState>();
     final data = MediaQuery.of(context);
@@ -97,7 +99,7 @@ class _SelectUniversityState extends State<SelectUniversity> {
           children: <Widget>[
             Container(
               width: SizeConfig.screenWidth,
-              height: SizeConfig.blockSizeVertical*80,
+              height: SizeConfig.blockSizeVertical*100 - (sizeappbar+sizetapbar),
               color: Colors.grey[200],
             ),
             Column(
@@ -219,7 +221,7 @@ class _SelectUniversityState extends State<SelectUniversity> {
               ],
             ),
             Container(
-              margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*44),
+              margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*53 -(sizeappbar+sizetapbar)),
               child: Column(
                 children: <Widget>[
                   RaisedButton(
@@ -253,7 +255,7 @@ class _SelectUniversityState extends State<SelectUniversity> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical),
+                    margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*3),
                     width: SizeConfig.screenWidth,
                     height: SizeConfig.blockSizeVertical*5,
                     alignment: Alignment.center,
@@ -299,8 +301,9 @@ class _SelectUniversityState extends State<SelectUniversity> {
                     child: Column(
                       children: <Widget>[
                         Container(
+                          margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*1.2),
                           width: SizeConfig.screenWidth,
-                          height: SizeConfig.blockSizeVertical*12,
+                          height: SizeConfig.blockSizeVertical*13,
                           child: GestureDetector(
                             child: RaisedButton(
                               color: PickCarColor.colormain,
@@ -324,7 +327,7 @@ class _SelectUniversityState extends State<SelectUniversity> {
                         ),
                         Container(
                           width: SizeConfig.screenWidth,
-                          height: SizeConfig.blockSizeVertical*12,
+                          height: SizeConfig.blockSizeVertical*13,
                           child: RaisedButton(
                             color: PickCarColor.colorbuttom,
                             onPressed: (){

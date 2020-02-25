@@ -291,7 +291,21 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                       widget.slottime4 = true;
                                       widget.slottime5 = true;
                                       widget.slottime6 = true;
-                                      widget.heightofalert = 340;
+                                      if(widget.havebuttom ==6){
+                                        widget.heightofalert = 100;
+                                      }else if(widget.havebuttom ==5){
+                                        widget.heightofalert = 140;
+                                      }else if(widget.havebuttom ==4){
+                                        widget.heightofalert = 180;
+                                      }else if(widget.havebuttom ==3){
+                                        widget.heightofalert = 220;
+                                      }else if(widget.havebuttom ==2){
+                                        widget.heightofalert = 260;
+                                      }else if(widget.havebuttom ==1){
+                                        widget.heightofalert = 300;
+                                      }else if(widget.havebuttom ==0){
+                                        widget.heightofalert = 340;
+                                      }
                                     }
                                     widget.noselect = !widget.noselect;
                                   }
@@ -350,7 +364,21 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                       widget.slottime4 = true;
                                       widget.slottime5 = true;
                                       widget.slottime6 = true;
-                                      widget.heightofalert = 340;
+                                      if(widget.havebuttom ==6){
+                                        widget.heightofalert = 100;
+                                      }else if(widget.havebuttom ==5){
+                                        widget.heightofalert = 140;
+                                      }else if(widget.havebuttom ==4){
+                                        widget.heightofalert = 180;
+                                      }else if(widget.havebuttom ==3){
+                                        widget.heightofalert = 220;
+                                      }else if(widget.havebuttom ==2){
+                                        widget.heightofalert = 260;
+                                      }else if(widget.havebuttom ==1){
+                                        widget.heightofalert = 300;
+                                      }else if(widget.havebuttom ==0){
+                                        widget.heightofalert = 340;
+                                      }
                                       widget.noselect = !widget.noselect;
                                     }
                                   }
@@ -409,7 +437,21 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                       widget.slottime4 = true;
                                       widget.slottime5 = true;
                                       widget.slottime6 = true;
-                                      widget.heightofalert = 340;
+                                      if(widget.havebuttom ==6){
+                                        widget.heightofalert = 100;
+                                      }else if(widget.havebuttom ==5){
+                                        widget.heightofalert = 140;
+                                      }else if(widget.havebuttom ==4){
+                                        widget.heightofalert = 180;
+                                      }else if(widget.havebuttom ==3){
+                                        widget.heightofalert = 220;
+                                      }else if(widget.havebuttom ==2){
+                                        widget.heightofalert = 260;
+                                      }else if(widget.havebuttom ==1){
+                                        widget.heightofalert = 300;
+                                      }else if(widget.havebuttom ==0){
+                                        widget.heightofalert = 340;
+                                      }
                                       widget.noselect = !widget.noselect;
                                     }
                                   }
@@ -468,7 +510,21 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                       widget.slottime1 = true;
                                       widget.slottime5 = true;
                                       widget.slottime6 = true;
-                                      widget.heightofalert = 340;
+                                      if(widget.havebuttom ==6){
+                                        widget.heightofalert = 100;
+                                      }else if(widget.havebuttom ==5){
+                                        widget.heightofalert = 140;
+                                      }else if(widget.havebuttom ==4){
+                                        widget.heightofalert = 180;
+                                      }else if(widget.havebuttom ==3){
+                                        widget.heightofalert = 220;
+                                      }else if(widget.havebuttom ==2){
+                                        widget.heightofalert = 260;
+                                      }else if(widget.havebuttom ==1){
+                                        widget.heightofalert = 300;
+                                      }else if(widget.havebuttom ==0){
+                                        widget.heightofalert = 340;
+                                      }
                                       widget.noselect = !widget.noselect;
                                     }
                                   }
@@ -527,7 +583,21 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                       widget.slottime4 = true;
                                       widget.slottime1 = true;
                                       widget.slottime6 = true;
-                                      widget.heightofalert = 340;
+                                      if(widget.havebuttom ==6){
+                                        widget.heightofalert = 100;
+                                      }else if(widget.havebuttom ==5){
+                                        widget.heightofalert = 140;
+                                      }else if(widget.havebuttom ==4){
+                                        widget.heightofalert = 180;
+                                      }else if(widget.havebuttom ==3){
+                                        widget.heightofalert = 220;
+                                      }else if(widget.havebuttom ==2){
+                                        widget.heightofalert = 260;
+                                      }else if(widget.havebuttom ==1){
+                                        widget.heightofalert = 300;
+                                      }else if(widget.havebuttom ==0){
+                                        widget.heightofalert = 340;
+                                      }
                                       widget.noselect = !widget.noselect;
                                     }
                                   }
@@ -586,7 +656,21 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                       widget.slottime4 = true;
                                       widget.slottime5 = true;
                                       widget.slottime1 = true;
-                                      widget.heightofalert = 340;
+                                      if(widget.havebuttom ==6){
+                                        widget.heightofalert = 100;
+                                      }else if(widget.havebuttom ==5){
+                                        widget.heightofalert = 140;
+                                      }else if(widget.havebuttom ==4){
+                                        widget.heightofalert = 180;
+                                      }else if(widget.havebuttom ==3){
+                                        widget.heightofalert = 220;
+                                      }else if(widget.havebuttom ==2){
+                                        widget.heightofalert = 260;
+                                      }else if(widget.havebuttom ==1){
+                                        widget.heightofalert = 300;
+                                      }else if(widget.havebuttom ==0){
+                                        widget.heightofalert = 340;
+                                      }
                                       widget.noselect = !widget.noselect;
                                     }
                                   }

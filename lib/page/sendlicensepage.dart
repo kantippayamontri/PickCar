@@ -38,6 +38,30 @@ class _SendlicensepageState extends State<Sendlicensepage> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     var data = MediaQuery.of(context);
+    AppBar appbar = AppBar(
+       backgroundColor: Colors.white,
+       centerTitle: true,
+       flexibleSpace: Image(
+          image: AssetImage('assets/images/imagesprofile/appbar/background.png'),
+          fit: BoxFit.cover,
+        ),
+       title: Text(UseString.driverlicense,
+          style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color: Colors.white), 
+       ),
+       leading: IconButton(
+          icon: Icon(Icons.keyboard_arrow_left,
+          color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.pop(context);
+          },
+          // tooltip: 'Share',
+        ),
+      );
+      var sizeappbar = AppBar().preferredSize.height;
+      double sizetapbar = MediaQuery.of(context).padding.top;
+    
     showwarningWait(BuildContext context){
       return showDialog<void>(
         barrierDismissible: false,
@@ -141,27 +165,7 @@ class _SendlicensepageState extends State<Sendlicensepage> {
       }
     }
     return Scaffold(
-      appBar: AppBar(
-       backgroundColor: Colors.white,
-       centerTitle: true,
-       flexibleSpace: Image(
-          image: AssetImage('assets/images/imagesprofile/appbar/background.png'),
-          fit: BoxFit.cover,
-        ),
-       title: Text(UseString.driverlicense,
-          style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color: Colors.white), 
-       ),
-       leading: IconButton(
-          icon: Icon(Icons.keyboard_arrow_left,
-          color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-            Navigator.pop(context);
-          },
-          // tooltip: 'Share',
-        ),
-      ),
+      appBar: appbar,
       body: SingleChildScrollView(
         child:Stack(
           children: <Widget>[
@@ -187,7 +191,7 @@ class _SendlicensepageState extends State<Sendlicensepage> {
               },
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 300),
-                margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*71-widget.heightimage),
+                margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*82.7 -(sizeappbar+sizetapbar)-widget.heightimage),
                 width: SizeConfig.screenWidth,
                 height: SizeConfig.blockSizeVertical*10,
                 color: PickCarColor.colormain,
@@ -219,7 +223,7 @@ class _SendlicensepageState extends State<Sendlicensepage> {
                 }
               },
               child: Container(
-                margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*71),
+                margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*82.7 -(sizeappbar+sizetapbar)),
                 width: SizeConfig.screenWidth,
                 height: SizeConfig.blockSizeVertical*10,
                 color: PickCarColor.colorbuttom,
@@ -270,7 +274,7 @@ class _SendlicensepageState extends State<Sendlicensepage> {
                 }
               },
               child: Container(
-                margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*81),
+                margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*92.7 -(sizeappbar+sizetapbar)),
                 width: SizeConfig.screenWidth,
                 height: SizeConfig.blockSizeVertical*7.3,
                 color: Colors.blueAccent,
@@ -290,7 +294,7 @@ class _SendlicensepageState extends State<Sendlicensepage> {
               visible: widget.loading,
               child: Container(
                 width: SizeConfig.screenWidth,
-                height: SizeConfig.blockSizeVertical*88.3,
+                height: SizeConfig.blockSizeVertical*100-((sizeappbar+sizetapbar)/2),
                 color: PickCarColor.colormain,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,

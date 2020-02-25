@@ -73,7 +73,7 @@ class _AdminlicenseState extends State<Adminlicense> {
           child: Container(
             margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical,bottom: SizeConfig.blockSizeVertical,left:SizeConfig.blockSizeHorizontal*3,right:SizeConfig.blockSizeHorizontal*3),
             width: SizeConfig.screenWidth,
-            height: SizeConfig.blockSizeVertical*10,
+            height: SizeConfig.blockSizeVertical*8,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Color.fromARGB(60, 255, 255, 255),
@@ -82,7 +82,7 @@ class _AdminlicenseState extends State<Adminlicense> {
               children: <Widget>[
                 Container(
                   alignment: Alignment.centerLeft,
-                  margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical,left:SizeConfig.blockSizeHorizontal*3),
+                  margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical/5,left:SizeConfig.blockSizeHorizontal*3),
                   width: SizeConfig.blockSizeHorizontal*40,
                   height: SizeConfig.blockSizeVertical*8,
                   // color: Colors.blue,
@@ -336,6 +336,8 @@ class _AdminlicenseState extends State<Adminlicense> {
       },
     );
   }
+  var sizeappbar = AppBar().preferredSize.height;
+  double sizetapbar = MediaQuery.of(context).padding.top;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -359,7 +361,7 @@ class _AdminlicenseState extends State<Adminlicense> {
       body: Column(
         children: <Widget>[
           Container(
-            height: SizeConfig.blockSizeVertical*58.2,
+            height: SizeConfig.blockSizeVertical*70 -(sizeappbar+sizetapbar),
             width: SizeConfig.screenWidth,
             // color: Colors.black,
             child: Stack(
