@@ -92,6 +92,13 @@ class _HomePageState extends State<HomePage> {
                       tap: _gotoregister,
                       imageurl: 'assets/images/imagemain/forregister.png',
                     ),
+
+                    RaisedButton(
+                      child: Text("Server"),
+                      onPressed: (){
+                        Navigator.of(context).pushNamed(Datamanager.serverpage);
+                      },
+                    ),
                     // Container(
                     //     alignment: Alignment.centerLeft,
                     //     margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical,left:  SizeConfig.blockSizeHorizontal*3),

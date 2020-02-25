@@ -61,7 +61,9 @@ class MotorRentalFormBloc
       );
     }
 
-    if (event is MotorRentalFormLoadDataEvent) {}
+    if (event is MotorRentalFormLoadDataEvent) {
+      
+    }
   }
 
   Future<Null> submitform() async {
@@ -164,7 +166,9 @@ class MotorRentalFormBloc
         renterdocid: null,
         time: this.choosetimeslot,
         startdate: makestartdatetimesingle(this.dateTime, this.choosetimeslot),
-        motorplaceloc: Datamanager.placelocationshow.docplaceid);
+        motorplaceloc: Datamanager.placelocationshow.docplaceid,
+        motorcycledocid: this.motorcycle.firestoredocid
+        );
 
     var bslrdocref = await Datamanager.firestore
         .collection("BoxslotRent")
@@ -190,7 +194,11 @@ class MotorRentalFormBloc
         university: Datamanager.user.university,
         motorplacelocdocid: Datamanager.placelocationshow.docplaceid,
         startdate: makestartdatetimesingle(this.dateTime, this.choosetimeslot),
-        status: null);
+        status: null,
+        iscancle: false,
+        ownercanclealert: false,
+        rentercanclealert: false,
+        );
 
     var sgfrdocref = await Datamanager.firestore
         .collection("Singleforrent")

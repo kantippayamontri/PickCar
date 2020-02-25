@@ -69,6 +69,9 @@ class ListCarBloc extends Bloc<ListCarEvent, ListCarState> {
           isworking:doc['isworking'],
           iswaiting:doc['iswaiting'],
           isbook:doc['isbook'],
+          motorgas: doc['motorgas'],
+          motorreg: doc['motorreg'],
+          isapprove: doc['isapprove']
         );
         motor.firestoredocid = doc['firestoredocid'];
         motorcyclelist.add(motor);

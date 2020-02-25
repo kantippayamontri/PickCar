@@ -94,7 +94,8 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
           startdate: (boxslotrent['startdate'] as Timestamp).toDate(),
           time: boxslotrent['time'],
           year: boxslotrent['year'],
-          motorplaceloc: boxslotrent['motorplaceloc']);
+          motorplaceloc: boxslotrent['motorplaceloc'],
+          motorcycledocid: boxslotrent['motorcycledocid']);
       this.receivebox.docid = boxslotrent['docid'];
 
       this.receivebookdocid = book['bookingdocid'];
@@ -116,9 +117,9 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
           .get();
       this.receiveboxplace = Boxlocation(
         latitude: boxplacedoc['latitude'],
-        longitude:  boxplacedoc['longitude'],
-        name:  boxplacedoc['name'],
-        universityname:  boxplacedoc['universityname'],
+        longitude: boxplacedoc['longitude'],
+        name: boxplacedoc['name'],
+        universityname: boxplacedoc['universityname'],
       );
 
       setstate();
@@ -153,6 +154,7 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
   }
 
   Future<Null> checkdropkey() async {
+    print("in function checkdropkey");
     Boxslotrent currentopenbox;
     DateTime timenow = DateTime.now();
     QuerySnapshot boxslotrent = await Datamanager.firestore
@@ -170,6 +172,7 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
     }
     print("boxslotrentlist : " + boxslotrentlist.length.toString());
     print("boxslotrentlist docid : " + boxslotrentlist[0]['docid']);
+    print("motorcycle docid : " + this.motorcycle.firestoredocid);
     for (var doc in boxslotrentlist) {
       if (!(doc['day'] == timenow.day) &&
           (doc['month'] == timenow.month) &&
@@ -178,22 +181,26 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
         continue;
       }
 
-      if (doc['ownerdropkey'] == false   /*&&((doc['startdate'] as Timestamp).toDate().isAfter(timenow))*/) {
+      if (doc['ownerdropkey'] == false &&
+          ((doc['startdate'] as Timestamp).toDate().isAfter(timenow)) &&
+          doc['motorcycledocid'] == this.motorcycle.firestoredocid) {
         currentopenbox = Boxslotrent(
-            boxdocid: doc['boxdocid'],
-            boxplacedocid: doc['boxplacedocid'],
-            boxslotdocid: doc['boxslotdocid'],
-            day: doc['day'],
-            iskey: doc['iskey'],
-            isopen: doc['isopen'],
-            month: doc['month'],
-            ownerdocid: doc['ownerdocid'],
-            ownerdropkey: doc['ownerdropkey'],
-            renterdocid: doc['renterdocid'],
-            startdate: (doc['startdate'] as Timestamp).toDate(),
-            time: doc['time'],
-            year: doc['year'],
-            motorplaceloc: doc['motorplaceloc']);
+          boxdocid: doc['boxdocid'],
+          boxplacedocid: doc['boxplacedocid'],
+          boxslotdocid: doc['boxslotdocid'],
+          day: doc['day'],
+          iskey: doc['iskey'],
+          isopen: doc['isopen'],
+          month: doc['month'],
+          ownerdocid: doc['ownerdocid'],
+          ownerdropkey: doc['ownerdropkey'],
+          renterdocid: doc['renterdocid'],
+          startdate: (doc['startdate'] as Timestamp).toDate(),
+          time: doc['time'],
+          year: doc['year'],
+          motorplaceloc: doc['motorplaceloc'],
+          motorcycledocid: doc['motorcycledocid'],
+        );
         currentopenbox.docid = doc['docid'];
         break;
       }
@@ -311,7 +318,10 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
       currentlongitude: ds['currentlongitude'],
       isbook: ds['isbook'],
       iswaiting: ds['iswaiting'],
-      isworking: ds['isworking']
+      isworking: ds['isworking'],
+      motorgas: ds['motorgas'],
+      motorreg: ds['motorreg'],
+      isapprove: ds['isapprove'],
     );
 
     motor.firestoredocid = ds['firestoredocid'];

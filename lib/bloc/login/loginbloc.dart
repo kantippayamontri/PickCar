@@ -120,6 +120,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                       drivecarimgtype: doc['driveliscensecarpictype'],
                       documentchat: doc['documentchat'],
                       money:  double.parse(doc['money'].toString()),
+                      isapprove: doc['isapprove']
                     );
                     print("run");
                     var maxSize = 7*1024*1024;

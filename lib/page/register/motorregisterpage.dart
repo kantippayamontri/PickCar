@@ -1,5 +1,6 @@
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
 import 'package:pickcar/bloc/registermotor/motorregisterbloc.dart';
@@ -21,7 +22,6 @@ class _MotorRegisterPageState extends State<MotorRegisterPage> {
   var motorleft;
   var motorright;
   var motorback;
-
 
   void _motorbackpicchange() {
     setState(() {
@@ -59,12 +59,11 @@ class _MotorRegisterPageState extends State<MotorRegisterPage> {
     });
   }
 
-
   @override
   void initState() {
     // TODO: implement initState
     _motorregisterbloc = MotorRegisterBloc(context);
-    
+
     super.initState();
   }
 
@@ -142,6 +141,32 @@ class _MotorRegisterPageState extends State<MotorRegisterPage> {
                         SizedBox(
                           height: 20,
                         ),
+                        /***********************************car registration************************************************** */
+                        _container(MediaQuery.of(context).size.height * 0.2,
+                            MediaQuery.of(context).size.width * 0.9, [
+                          Text(
+                            UseString.carregistration,
+                            style: _textstyle(),
+                          ),
+                          TextFormField(
+                            controller:
+                                _motorregisterbloc.carregistercontroller,
+                            decoration: InputDecoration(
+                                hintText: UseString.carregistration,
+                                hintStyle: TextStyle(
+                                    color: Colors.grey, fontSize: 12)),
+                            validator: (val) {
+                              if (val.isEmpty) {
+                                return UseString.carregistrationval;
+                              }
+                            },
+                          )
+                        ]),
+
+                        SizedBox(
+                          height: 20,
+                        ),
+
                         /********************************Brand**************************************** */
                         _container(MediaQuery.of(context).size.height * 0.2,
                             MediaQuery.of(context).size.width * 0.9, [
@@ -223,6 +248,39 @@ class _MotorRegisterPageState extends State<MotorRegisterPage> {
                             validator: (val) {
                               if (val.isEmpty) {
                                 return UseString.generationval;
+                              }
+                            },
+                          )
+                        ]),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        /**********************************Gas Petrol****************************************** */
+                        _container(MediaQuery.of(context).size.height * 0.2,
+                            MediaQuery.of(context).size.width * 0.9, [
+                          Text(
+                            UseString.gasandpetrol,
+                            style: _textstyle(),
+                          ),
+                          DropDownFormField(
+                            titleText: null,
+                            value: _motorregisterbloc.gas,
+                            dataSource: PickCarOil.todropdpwnmap,
+                            textField: 'gas',
+                            valueField: 'gas',
+                            onSaved: (val) {
+                              setState(() {
+                                _motorregisterbloc.gas = val;
+                              });
+                            },
+                            onChanged: (val) {
+                              setState(() {
+                                _motorregisterbloc.gas = val;
+                              });
+                            },
+                            validator: (val) {
+                              if (val == null) {
+                                return UseString.gasandpetrolval;
                               }
                             },
                           )
@@ -356,7 +414,9 @@ class _MotorRegisterPageState extends State<MotorRegisterPage> {
                             ),
                           )
                         ]),
-                        SizedBox(height: 20,),
+                        SizedBox(
+                          height: 20,
+                        ),
                         /***************************************front pic*************************************************** */
                         _container(MediaQuery.of(context).size.height * 0.5,
                             MediaQuery.of(context).size.width * 0.9, [
@@ -454,7 +514,9 @@ class _MotorRegisterPageState extends State<MotorRegisterPage> {
                             ),
                           )
                         ]),
-                        SizedBox(height: 20,),
+                        SizedBox(
+                          height: 20,
+                        ),
 
                         //TODO Right Pic
                         _container(MediaQuery.of(context).size.height * 0.5,

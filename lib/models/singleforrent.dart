@@ -19,6 +19,9 @@ class SingleForrent{
   String motorplacelocdocid;
   DateTime startdate;
   String status;
+  bool iscancle;
+  bool ownercanclealert;
+  bool rentercanclealert;
 
   SingleForrent({
     @required this.boxdocid,
@@ -34,7 +37,10 @@ class SingleForrent{
     @required this.boxslotdocid,
     @required this.motorplacelocdocid,
     @required this.startdate,
-    @required this.status
+    @required this.status,
+    @required this.iscancle,
+    @required this.ownercanclealert,
+    @required this.rentercanclealert,
     
   });
 
@@ -54,7 +60,10 @@ class SingleForrent{
       'docid' : this.docid,
       'motorplacelocdocid' : this.motorplacelocdocid,
       'startdate' : this.startdate,
-      'status' : this.status
+      'status' : this.status,
+      'iscancle' : this.iscancle,
+      'ownercanclealert' : this.ownercanclealert,
+      'rentercanclealert' : this.rentercanclealert,
       
     };
   }

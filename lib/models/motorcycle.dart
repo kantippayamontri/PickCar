@@ -33,7 +33,9 @@ class Motorcycle{
   bool isworking = false;
   double currentlongitude;
   double currentlatitude;
-  
+  String motorreg;
+  String motorgas;
+  String isapprove;
 
 
   Motorcycle({
@@ -69,6 +71,10 @@ class Motorcycle{
     @required this.isbook,
     @required this.iswaiting,
     @required this.isworking,
+    @required this.motorreg,
+    @required this.motorgas,
+    @required this.isapprove
+    
   });
 
   Map<String , dynamic> toJson(){
@@ -105,6 +111,9 @@ class Motorcycle{
       'isworking' : this.isworking,
       'currentlatitude' : this.currentlatitude,
       'currentlongitude' : this.currentlongitude,
+      'motorreg' : this.motorreg,
+      'motorgas' : this.motorgas,
+      'isapprove' : this.isapprove,
       
     };
   }

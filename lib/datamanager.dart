@@ -60,7 +60,7 @@ class Datamanager {
   static String receivekeymap = "/Receivekeymap";
   static String addlocation = "/Addlocation";
   static String historypage = "/HistoryPage";
-  
+  static String serverpage = "/serverpage";
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
   static FirebaseUser firebaseuser = null;
@@ -86,7 +86,12 @@ class Datamanager {
   static FirebaseDatabase realtimedatabase = FirebaseDatabase.instance;
 
   static List<Map<String, Object>> pages = [
-    {'page': HomePage(gotosearchinHome: gontosearchinHome,), 'title': 'Home'},
+    {
+      'page': HomePage(
+        gotosearchinHome: gontosearchinHome,
+      ),
+      'title': 'Home'
+    },
     {'page': SearchPage(), 'title': 'Chat'},
     {'page': ListCarPage(), 'title': 'ListCar'},
     {'page': ProfilePage(), 'title': 'Profile'},
@@ -129,14 +134,14 @@ class Datamanager {
     "sdfasdfasd",
     "dfasdfsdfasdf",
   ];
-  static Map<String , Object> universitydatabase = {
-      'Universityname' : 'Chiang Mai University',
-      'latitude':18.802587,
-      'longitude':98.951556,
-      'docid':'',
-      'listplacebox': null,
-      'listplacelocation': null,
-    };
+  static Map<String, Object> universitydatabase = {
+    'Universityname': 'Chiang Mai University',
+    'latitude': 18.802587,
+    'longitude': 98.951556,
+    'docid': '',
+    'listplacebox': null,
+    'listplacelocation': null,
+  };
 
   static var year = [
     {"year": "1"},
@@ -333,26 +338,34 @@ class UseString {
   static String working = "working";
   static String history = "History";
   static String bookedhistory = "Booked";
-  static String renthistory = "Rented";
+  static String renthistory = "Rented"; 
   static String donthavehistory = "You not have history";
   static String waitting = "Waiting";
   static String bookking = "Booking";
   static String workking = "Working";
+  static String gas = "Gas";
+  static String petrol = "Petrol";
+  static String gasandpetrol = "Gas(Petrol)";
+  static String gasandpetrolval = "Please Enter Gas(Petrol)";
+  static String carregistration = "Car Registration";
+  static String carregistrationval = "Please Enter Car Registration";
 }
 
 class Currency {
   static String thb = "THB";
 }
-class Checkpolicy{
+
+class Checkpolicy {
   static bool checkpolicy;
 }
-class Realtime{
+
+class Realtime {
   static var timekey;
   static var timecar;
   static var checkkeymap;
 }
 
-class Checkopenkey{
+class Checkopenkey {
   static bool checkkey = false;
   static bool checkcar = false;
 }
@@ -363,12 +376,12 @@ class ImageProfiles {
   static Uint8List idcard;
   static Uint8List universitycard;
 }
+
 class SearchString {
   static String university;
   static String location;
   static String type;
 }
-
 
 class SetUniversity {
   static String university;
@@ -385,6 +398,7 @@ class PickCarColor {
   static var colorFont2 = Color.fromARGB(255, 148, 145, 145);
   static var colorbuttom = Color.fromARGB(255, 33, 197, 155);
 }
+
 class Datasearch {
   static List<String> boxlocationname = [];
   static List<double> boxlocationlatitude = [];
@@ -467,8 +481,8 @@ class DataFetch {
   static int waitplace = 0;
   static int waitlocation = 0;
   static int checkhavepin = 0;
-  static int checkkey=0;
-  static int checkkeymap=0;
+  static int checkkey = 0;
+  static int checkkeymap = 0;
   static int fetchhavecar = 0;
 }
 
@@ -481,28 +495,20 @@ class TimeSlotSingle {
   static const String sub6 = "16.00 - 17.30";
 
   static List<String> tolist() {
-    return [
-      sub1,
-      sub2,
-      sub3,
-      sub4,
-      sub5,
-      sub6
-    ];
+    return [sub1, sub2, sub3, sub4, sub5, sub6];
   }
 }
 
-class TimeslotDouble{
+class TimeslotDouble {}
 
-}
-
-class TypeRental{
+class TypeRental {
   static String singleslot = "Single Slot";
   static String doubleslot = "Double Slot";
 
-  static int waitplace = 0;      
+  static int waitplace = 0;
 }
-class TimeSearch{
+
+class TimeSearch {
   static bool time1 = false;
   static bool time2 = false;
   static bool time3 = false;
@@ -513,6 +519,7 @@ class TimeSearch{
   static DateTime yesterday = today.add(new Duration(days: -1));
   static DateTime nextmonth = today.add(new Duration(days: 30));
 }
+
 class TimeSlot {
   //TimeSlot();
 
@@ -562,4 +569,33 @@ class TimeSlot {
   static List<String> toList(DateTime date) {
     return loadlist(date);
   }
+}
+
+class PickCarOil {
+  static String gasoline91 = "Gasoline 91";
+  static String gasoline95 = "Gasoline 95";
+  static String gassohol91 = "Gassohol 91";
+  static String gassohol95 = "Gassohol 95";
+  static String gassohole20 = "Gassohol E20";
+  static String gassohole85 = "Gassohol E85";
+
+  static List<String> tolist() {
+    return [
+      gasoline91,
+      gasoline95,
+      gassohol91,
+      gassohol95,
+      gassohole20,
+      gassohole85,
+    ];
+  }
+
+  static var todropdpwnmap = [
+    {'gas': PickCarOil.gasoline91},
+    {'gas': PickCarOil.gasoline95},
+    {'gas': PickCarOil.gassohol91},
+    {'gas': PickCarOil.gassohol95},
+    {'gas': PickCarOil.gassohole20},
+    {'gas': PickCarOil.gassohole85},
+  ];
 }

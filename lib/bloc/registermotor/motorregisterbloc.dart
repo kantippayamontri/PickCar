@@ -22,6 +22,7 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
   var generationcontroller = TextEditingController();
   var cccontroller = TextEditingController();
   var colorcontroller = TextEditingController();
+  var carregistercontroller = TextEditingController();
   File motorprofile;
   File motorfront;
   File motorback;
@@ -36,6 +37,7 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
   String motorrighttype;
   String gear;
   String docstorageid;
+  String gas;
   var permission_status_camera;
   var permission_status_gallery;
   ProgressDialog prwaitingforsubmitdata;
@@ -95,7 +97,7 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
 
     if (event is MotorSubmitForm) {
       //yield WaitingSubmitForm();
-      prwaitingforsubmitdata.show();
+      //prwaitingforsubmitdata.show();
       await submitform();
     }
   }
@@ -263,7 +265,7 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
     return check;
   }
 
-  void createmotor() async {
+  Future<Null> createmotor() async {
     print("in createmotor");
     if (await putdatastorage()) {
       print("ready for createmotor");
@@ -299,6 +301,9 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
         isworking: false,
         iswaiting: false,
         isbook: false,
+        motorgas: this.gas,
+        motorreg: this.carregistercontroller.text,
+        isapprove: 'wait',
       );
 
       final docref = await Datamanager.firestore
@@ -346,15 +351,19 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
         (motorback != null);
   }
 
-  void submitform() async {
+  Future<Null> submitform() async {
     print("in submitform in motorbloc");
     final form = formkey.currentState;
 
     if (form.validate()) {
+      print("form validate naja");
       if (checkpictureval()) {
         print("form  motor success");
+        prwaitingforsubmitdata.show();
         await createmotor();
       } else {
+        print("gas : " + this.gas);
+        print("car reg : " + this.carregistercontroller.text);
         //prwaitingforsubmitdata.update(message: "sdfasdfasdfasdf");
         if (prwaitingforsubmitdata.isShowing()) {
           prwaitingforsubmitdata.hide();
@@ -364,6 +373,9 @@ class MotorRegisterBloc extends Bloc<MotorRegisterEvent, MotorRegisterState> {
         showdialogpicval(UseString.picuploadval, UseString.picuploadval);
         return;
       }
+    }else{
+      print("form not validate");
+      return;
     }
   }
 

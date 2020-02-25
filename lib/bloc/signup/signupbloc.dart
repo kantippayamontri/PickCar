@@ -282,69 +282,78 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     /*print(Datamanager.univeresity
         .where((uni) => uni["university"] == "Chaing Mai University")
         .map((uni) => uni["faculty"]));*/
-    if (idcardimage == null) {
-      showalertidcard();
-      return;
-    }
+
     if (form.validate()) {
+      if (idcardimage == null) {
+        showalertidcard();
+        return;
+      }
+      print("form is validate");
       form.save();
       await createuser();
       Navigator.of(context).pushNamedAndRemoveUntil(
           Datamanager.tabpage, ModalRoute.withName('/'));
+    } else {
+      print("form is not validate");
+      return;
     }
   }
 
-  void createuser() async {
+  Future<Null> createuser() async {
     print("in function createuser");
 
-    FirebaseAuth.instance
+    await FirebaseAuth.instance
         .createUserWithEmailAndPassword(
             email: emailcontroller.text, password: passwordcontroller.text)
         .then((user) async {
       print("user uid : ${user.user.uid}");
       Datamanager.firebaseuser = user.user;
 
-      final chatref = await Datamanager.firestore
-            .collection("chat")
-            .document();
+      final chatref = await Datamanager.firestore.collection("chat").document();
       String chatid = chatref.documentID;
 
       if (await putdatatostorage(Datamanager.firebaseuser.uid)) {
         Datamanager.user = User(
-            uid: Datamanager.firebaseuser.uid,
-            email: emailcontroller.text,
-            password: passwordcontroller.text,
-            name: namecontroller.text,
-            address: addresscontroller.text,
-            university: university,
-            faculty: faculty,
-            tel: telcontroller.text,
-            profileimg: profileimage,
-            profileimgtype: profileimgtype,
-            idcardimg: idcardimage,
-            idcardimgtype: idcardimgtype,
-            universityimg: universityimage,
-            universityimgtype: universityimgtype,
-            drivemotorimg: driverliscensemotorcycleimage,
-            drivemotorimgtype: drivemotorimgtype,
-            drivecarimg: driverliscensecarimage,
-            drivecarimgtype: drivecarimgtype,
-            money: 500.00, 
-            documentchat: chatid,
-            );
+          uid: Datamanager.firebaseuser.uid,
+          email: emailcontroller.text,
+          password: passwordcontroller.text,
+          name: namecontroller.text,
+          address: addresscontroller.text,
+          university: university,
+          faculty: faculty,
+          tel: telcontroller.text,
+          profileimg: profileimage,
+          profileimgtype: profileimgtype,
+          idcardimg: idcardimage,
+          idcardimgtype: idcardimgtype,
+          universityimg: universityimage,
+          universityimgtype: universityimgtype,
+          drivemotorimg: driverliscensemotorcycleimage,
+          drivemotorimgtype: drivemotorimgtype,
+          drivecarimg: driverliscensecarimage,
+          drivecarimgtype: drivecarimgtype,
+          money: 500.00,
+          documentchat: chatid,
+          isapprove: 'wait',
+        );
 
         final docref = await Datamanager.firestore
             .collection("User")
             .add(Datamanager.user.toJson());
         String docid = docref.documentID;
-        await Datamanager.firestore.collection("User").document(docid).updateData(
-          {'documentid' : docid}
-        );
+        await Datamanager.firestore
+            .collection("User")
+            .document(docid)
+            .updateData({'documentid': docid});
         Datamanager.user.documentid = docid;
         // await Datamanager.firestore
         //     .collection('User')
         //     .document()
         //     .setData(Datamanager.user.toJson());
+
+        //todo signin with email and pass
+        await Datamanager.firebaseauth.signInWithEmailAndPassword(
+            email: emailcontroller.text, password: passwordcontroller.text);
 
         print("Sign Up User Successful");
       }

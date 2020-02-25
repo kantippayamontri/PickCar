@@ -72,7 +72,11 @@ class MotorWaitingListBloc
           time: doc['time'],
           university: doc['university'],
           year: doc['year'],
-          status: doc['status']);
+          status: doc['status'],
+          iscancle: doc['iscancle'],
+          ownercanclealert: doc['ownercanclealert'],
+          rentercanclealert: doc['rentercanclealert'],
+          );
 
       sgfr.boxslotrentdocid = doc['boxslotrentdocid'];
       sgfr.docid = doc['docid'];

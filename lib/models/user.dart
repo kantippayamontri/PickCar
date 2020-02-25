@@ -27,6 +27,7 @@ class User{
   double money;
   String documentid;
   String documentchat;
+  String isapprove;
 
   User({
   @required this.uid,  
@@ -49,6 +50,7 @@ class User{
   @required this.drivecarimgtype,
   @required this.money,
   @required this.documentchat,
+  @required this.isapprove
   });
 
   Map<String , dynamic> toJson(){
@@ -72,7 +74,8 @@ class User{
       'profilepicpath' : 'profile',
       'profilepictype' : profileimgtype,
       'money' : money,
-      'documentid' : documentid
+      'documentid' : documentid,
+      'isapprove' : isapprove,
     };
   }
 }
