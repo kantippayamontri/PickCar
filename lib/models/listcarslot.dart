@@ -18,6 +18,9 @@ class Listcarslot {
   String boxplacedocid;
   String boxslotrentdocid;
   String motorplacelocdocid;
+  bool iscancle;
+  bool ownercanclealert;
+  bool rentercanclealert;
   final DocumentReference reference;
 
   Listcarslot.fromMap(Map<String, dynamic> map, {this.reference})
@@ -35,6 +38,12 @@ class Listcarslot {
        assert(map['boxplacedocid'] != null),
        assert(map['boxslotrentdocid'] != null),
        assert(map['motorplacelocdocid'] != null),
+       assert(map['iscancle'] != null),
+       assert(map['ownercanclealert'] != null),
+       assert(map['rentercanclealert'] != null),
+       iscancle = map['iscancle'],
+       ownercanclealert = map['ownercanclealert'],
+       rentercanclealert = map['rentercanclealert'],
        time = map['time'],
        startdate = (map['startdate'] as Timestamp).toDate(),
        day = map['day'],
@@ -78,6 +87,7 @@ class MotorcycleShow{
   bool isworking;
   double currentlatitude;
   double currentlongitude;
+  String isapprove;
   final DocumentReference reference;
 
   
@@ -102,8 +112,10 @@ class MotorcycleShow{
        assert(map['isworking'] != null),
        assert(map['motorreg'] != null),
        assert(map['motorgas'] != null),
+       assert(map['isapprove'] != null),
       //  assert(map['currentlatitude'] != null),
       //  assert(map['currentlongitude'] != null),
+      isapprove = map['isapprove'],
        currentlatitude = map['currentlatitude'],
        currentlongitude = map['currentlongitude'],
        brand = map['brand'],

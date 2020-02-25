@@ -183,6 +183,9 @@ class _OpenkeyState extends State<Openkey> {
       status:Datamanager.booking.status,
       priceaddtax:Datamanager.booking.priceaddtax,
       startdate:Datamanager.booking.startdate,
+      iscancle: Datamanager.booking.iscancle,
+      rentercanclealert: Datamanager.booking.rentercanclealert,
+      ownercanclealert: Datamanager.booking.ownercanclealert,
       isinhistory:true,
     );
     Realtime.checkkeymap.cancel();

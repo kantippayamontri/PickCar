@@ -34,24 +34,24 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     showwarningWait(BuildContext context){
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(UseString.pleasewaittitle),
-          content: Text(UseString.pleasewaitbody),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Ok'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+      return showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(UseString.pleasewaittitle),
+            content: Text(UseString.pleasewaitbody),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   showwarningreject(BuildContext context){
     return showDialog<void>(
       context: context,

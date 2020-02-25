@@ -86,6 +86,9 @@ class _ConfirmPageState extends State<ConfirmPage> {
       boxslotrentdocid:  Datamanager.listcarslot.boxslotrentdocid,
       boxplacedocid:  Datamanager.listcarslot.boxplacedocid,
       motorplacelocdocid: Datamanager.listcarslot.motorplacelocdocid,
+      iscancle: Datamanager.listcarslot.iscancle,
+      ownercanclealert: Datamanager.listcarslot.ownercanclealert,
+      rentercanclealert: Datamanager.listcarslot.rentercanclealert,
       status: 'booking',
       bookingdocid:null,
       priceaddtax: widget.pricetotal,
@@ -139,6 +142,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
               child: Text(UseString.confirm),
               onPressed: () {
                 booking(context);
+                Navigator.pop(context);
                 Navigator.pop(context);
                 Navigator.pop(context);
                 Navigator.pop(context);

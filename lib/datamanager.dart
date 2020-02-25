@@ -69,6 +69,7 @@ class Datamanager {
   static String adminmenu = "/Adminmenu";
   static String adminlicense = "/adminlicense";
   static String sendlicensepage = "/Sendlicensepage";
+  static String sendregistation = "/Sendregistation";
   
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
@@ -87,6 +88,7 @@ class Datamanager {
   static Boxslotrentshow boxslotrentshow;
   static Boxslotnumbershow boxslotnumbershow;
   static String imageusershow;
+  static Motorcycle motorcycle;
   static List<Universityplaceshow> universityshow = [];
   static List<String> listUniversity = [];
 
@@ -379,6 +381,14 @@ class UseString {
   static String senddriverlicense ='Already Send driver licesnse';
   static String pleaseupload ='Please Upload \nyou driver license.';
   static String licenseplate ='License plate';
+
+  static String pleasewaittitlecar = "Please wait for approve Vehicle registration";
+  static String rejectalertcar = "You Vehicle registration is rejected";
+  static String rejectalertbodycar = "Please send new Vehicle registration again before rent.";
+  static String vehicleregistration = "Vehicle Registration";
+  static String sendregistration='Already Send Vehicle registration';
+  static String pleaseuploadcar ='Please Upload \nyou Vehicle registration.';
+  static String uploadregistration ='Upload Vehicle registration';
   
 }
 

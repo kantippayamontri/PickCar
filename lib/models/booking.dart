@@ -20,6 +20,9 @@ class Booking {
   double priceaddtax;
   DateTime startdate;
   bool isinhistory;
+  bool iscancle;
+  bool ownercanclealert;
+  bool rentercanclealert;
 
  
   Booking({
@@ -41,6 +44,9 @@ class Booking {
     @required this.priceaddtax,
     @required this.startdate,
     @required this.isinhistory,
+    @required this.iscancle,
+    @required this.ownercanclealert,
+    @required this.rentercanclealert,
   }) {}
 
    Map<String , Object> toJson(){
@@ -63,6 +69,9 @@ class Booking {
       'priceaddtax' : this.priceaddtax,
       'startdate' : this.startdate,
       'isinhistory' : this.isinhistory,
+      'iscancle' : this.iscancle,
+      'ownercanclealert' : this.ownercanclealert,
+      'rentercanclealert' : this.rentercanclealert,
     };
   }
 }
@@ -83,6 +92,9 @@ class Bookingshow {
   String motorplacelocdocid;
   String university;
   String status;
+  bool iscancle;
+  bool ownercanclealert;
+  bool rentercanclealert;
   DateTime startdate;
   final DocumentReference reference;
 
@@ -119,7 +131,10 @@ class Bookingshow {
        boxslotrentdocid = map['boxslotrentdocid'],
        university = map['university'],
        status = map['status'],
-       motorplacelocdocid = map['motorplacelocdocid'];
+       motorplacelocdocid = map['motorplacelocdocid'],
+       iscancle = map['iscancle'],
+       ownercanclealert = map['ownercanclealert'],
+       rentercanclealert = map['rentercanclealert'];
 
   Bookingshow.fromSnapshot(DocumentSnapshot snapshot)
      : this.fromMap(snapshot.data, reference: snapshot.reference);
