@@ -138,6 +138,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     var data = MediaQuery.of(context);
     showalertuni(BuildContext context) {
       var data = MediaQuery.of(context);
@@ -1847,7 +1848,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                         });
                       },
                       child: Container(
-                          margin: EdgeInsets.only(top: 45, left: 120),
+                          margin: EdgeInsets.only(top: 45, left: SizeConfig.blockSizeHorizontal*29),
+                          // color: Colors.black,
                           width: 150,
                           height: 130,
                           child: Stack(
@@ -1889,43 +1891,11 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                 ),
                               ),
                             ],
-                          )),
+                          ),
+                        ),
                     ),
-                    // GestureDetector(
-                    //   onTap: (){
-                    //     if(SearchString.university != UseString.universityhint){
-                    //       showSearch(context: context,delegate:SearcLocation());
-                    //     }else{
-                    //       showalertuni(context);
-                    //     }
-                    //   },
-                    //   child: Container(
-                    //     margin: EdgeInsets.only(top: 40,left: 20,right: 20),
-                    //     width: double.infinity,
-                    //     child: Stack(
-                    //       children: <Widget>[
-                    //         Container(
-                    //           width: double.infinity,
-                    //           child: Image.asset("assets/images/imagesearch/search.png",fit: BoxFit.fill,),
-                    //         ),
-                    //         Container(
-                    //           width: double.infinity,
-                    //           margin:EdgeInsets.only(left: 25,top: 15),
-                    //           child: Text(SearchString.location,
-                    //               style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*22,color: Colors.grey[700]),
-                    //           ),
-                    //         ),
-                    //         Container(
-                    //           width: double.infinity,
-                    //           margin:EdgeInsets.only(left: 270,top: 15),
-                    //           child: Icon(Icons.search,color: Colors.grey[700],),
-                    //         ),
-                    //       ],
-                    //     )
-                    //   ),
-                    // ),
                     Container(
-                      margin: EdgeInsets.only(top: 180, left: 121),
+                      margin: EdgeInsets.only(top: 180, left: SizeConfig.blockSizeHorizontal*29.5),
                       child: RaisedButton(
                         color: Colors.white,
                         shape: RoundedRectangleBorder(
@@ -2121,14 +2091,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
               SizedBox(
                 height: 15,
               ),
-              // SizedBox(height: 20,),
-              // RaisedButton(
-              //   onPressed: (){
-              //     Navigator.of(context).pushNamed(Datamanager.selectUniversity);
-              //     // Navigator.of(context).pushNamed(Datamanager.detailsearch);
-              //   },
-              //   child: Text("goto place"),
-              // ),
             ],
           ),
         );
@@ -2136,7 +2098,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         return Container();
       }
     }
-
     // print(Datamanager.universityshow.listplacebox);
     // print(Datamanager.listUniversity);
     // print(Datamanager.universityshow);
@@ -2149,19 +2110,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           fit: BoxFit.cover,
         ),
         centerTitle: true,
-        // bottom: TabBar(
-        //   controller: _tabController,
-        //   labelColor: PickCarColor.colormain,
-        //   tabs: myTabs,
-        //   indicatorColor: PickCarColor.colormain,
-        //   onTap: (data) {
-        //     setState(() {
-        //       widget.indicatorpage = data;
-        //       print(widget.indicatorpage);
-        //       widget.i = 0;
-        //     });
-        //   },
-        // ),
         title: Container(
           width: SizeConfig.blockSizeHorizontal*20,
           child: Image.asset('assets/images/imagelogin/logo.png',fit: BoxFit.fill,)
@@ -2367,58 +2315,3 @@ class SearcLocation extends SearchDelegate<String> {
     );
   }
 }
-
-// Center(
-//         child: Column(
-//           children: <Widget>[
-//             Text("ChatPage"),
-//             RaisedButton(
-//               onPressed: (){
-//                 Navigator.of(context).pushNamed(Datamanager.listcar);
-//                 // Navigator.of(context).pushNamed(Datamanager.detailsearch);
-//               },
-//               child: Text("search"),
-//             ),
-//             SizedBox(height: 20,),
-//             RaisedButton(
-//               onPressed: (){
-//                 Navigator.of(context).pushNamed(Datamanager.boxselectadmin);
-//                 // Navigator.of(context).pushNamed(Datamanager.detailsearch);
-//               },
-//               child: Text("goto box"),
-//             ),
-//             SizedBox(height: 20,),
-//             RaisedButton(
-//               onPressed: (){
-//                 Navigator.of(context).pushNamed(Datamanager.placeselectadmin);
-//                 // Navigator.of(context).pushNamed(Datamanager.detailsearch);
-//               },
-//               child: Text("goto place"),
-//             ),
-//             SizedBox(height: 20,),
-//             RaisedButton(
-//               onPressed: (){
-//                 Navigator.of(context).pushNamed(Datamanager.mapaddmark);
-//                 // Navigator.of(context).pushNamed(Datamanager.detailsearch);
-//               },
-//               child: Text("goto add mark"),
-//             ),
-//             SizedBox(height: 20,),
-//             RaisedButton(
-//               onPressed: (){
-//                 Navigator.of(context).pushNamed(Datamanager.registerMap);
-//                 // Navigator.of(context).pushNamed(Datamanager.detailsearch);
-//               },
-//               child: Text("register map"),
-//             ),
-//             SizedBox(height: 20,),
-//             RaisedButton(
-//               onPressed: (){
-//                 Navigator.of(context).pushNamed(Datamanager.mapplaceselect);
-//                 // Navigator.of(context).pushNamed(Datamanager.detailsearch);
-//               },
-//               child: Text("mapplaceselect"),
-//             ),
-//           ],
-//         ),
-//       ),

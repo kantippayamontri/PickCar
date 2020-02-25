@@ -276,6 +276,7 @@ class UseString {
   static String rentaldetail = "Rentail Detail";
   static String selectedcar = "Selected Car";
   static String getkey = "Get the key";
+  static String getcar = "Get the car";
   static String receivecar = "Receive Car";
   static String returncar = "Return Car";
   static String day = "Datetime";
@@ -377,6 +378,8 @@ class UseString {
   static String uploadding ='Uploading';
   static String senddriverlicense ='Already Send driver licesnse';
   static String pleaseupload ='Please Upload \nyou driver license.';
+  static String licenseplate ='License plate';
+  
 }
 
 class Currency {
