@@ -27,30 +27,117 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
       //todo init var
 
       //todo -----------
-      DateTime timenow = DateTime(DateTime.now().year, DateTime.now().month,
-          DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
-      // DateTime timenow = DateTime(DateTime.now().year, DateTime.now().month,
-      //     DateTime.now().day, 8, 15);
+      //DateTime timenow = DateTime(DateTime.now().year, DateTime.now().month,
+      //DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
+      DateTime timenow = DateTime(2020, 2, 25, 9, 20);
       bool istimeinslot = checkintimeslot(timenow);
+      String timeslotin = timeslotmatch(timenow);
       await checkownerdontdropkey(timenow);
-      await checkownerdontreceivekey(timenow);
-      await checkrenterdontdropkey(timenow);
+      print(
+          "--------------------------------------------------------------------");
+      await checkownerdontreceivekey(timenow, istimeinslot, timeslotin);
+      print(
+          "--------------------------------------------------------------------");
+      await checkrenterdontdropkey(timenow, istimeinslot, timeslotin);
+      print(
+          "--------------------------------------------------------------------");
     });
 
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxx");
+    //print("xxxxxxxxxxxxxxxxxxxxxxxxxx");
   }
 
-  Future<Null> checkrenterdontdropkey(DateTime dateTime) async {}
+  Future<Null> checkrenterdontdropkey(
+      DateTime dateTime, bool isintimeslot, String slotmatch) async {
+    var bookingDoc = await Datamanager.firestore
+        .collection("Booking")
+        .where('status', isEqualTo: 'working')
+        .where('iscancle', isEqualTo: false)
+        .getDocuments();
+    List<DocumentSnapshot> bookinglist = bookingDoc.documents;
+    if (bookinglist.isEmpty) {
+      print("booklist empty");
+    } else {
+      print("booklst not empty : ${bookinglist.length}");
+    }
+    
 
-  Future<Null> checkownerdontreceivekey(DateTime dateTime) async {
+  }
+
+  Future<Null> checkownerdontreceivekey(
+      DateTime dateTime, bool isintimeslot, String slotmatch) async {
+    if (!isintimeslot) {
+      print("return because not in slot");
+      return;
+    }
+
     var bookingDoc = await Datamanager.firestore
         .collection("Booking")
         .where('status', isEqualTo: 'end')
         .where('iscancle', isEqualTo: false)
         .getDocuments();
     List<DocumentSnapshot> bookinglist = bookingDoc.documents;
-    if(bookinglist.isEmpty){
-      //print()
+    if (bookinglist.isEmpty) {
+      print("booklist empty");
+    } else {
+      print("booklst not empty : ${bookinglist.length}");
+    }
+
+    for (var booking in bookinglist) {
+      print("${booking['bookingdocid']}");
+      if (dateTime.isAfter((booking['startdate'] as Timestamp).toDate()) &&
+          dateTime.isBefore((booking['startdate'] as Timestamp)
+              .toDate()
+              .add(Duration(hours: 1, minutes: 15)))) {
+        print("end in time");
+        continue;
+      } else {
+        print("end not in time");
+        var bookingslotrent = await Datamanager.firestore
+            .collection("BoxslotRent")
+            .document(booking['boxslotrentdocid'])
+            .get();
+        String bookingslotdocid =
+            bookingslotrent['boxslotdocid']; //todo docid of boxslot
+        //print("bookingslotrentdocid : ${bookingslotrentdocid}");
+        //todo check this boxslotrent book in this time
+        QuerySnapshot boxslotrentDoc = await Datamanager.firestore
+            .collection("BoxslotRent")
+            .where('boxslotdocid', isEqualTo: bookingslotdocid)
+            .getDocuments();
+        List<DocumentSnapshot> boxslotrenttarget = boxslotrentDoc.documents;
+        for (var boxslotrent in boxslotrenttarget) {
+          if (boxslotrent['docid'] == bookingslotrent['docid']) {
+            continue;
+          }
+          print("boxslotrenttarget");
+          print("boxslotrentdocid : ${boxslotrent['docid']}");
+          //todo check next slot
+          if (dateTime
+                  .isAfter((boxslotrent['startdate'] as Timestamp).toDate()) &&
+              dateTime.isBefore((boxslotrent['startdate'] as Timestamp)
+                  .toDate()
+                  .add(Duration(hours: 1, minutes: 15)))) {
+            print("this boxslotrent is should cancle");
+            //todo find booking from boxsltrent
+            var canclebookDoc = await Datamanager.firestore
+                .collection("Booking")
+                .where('boxslotrentdocid', isEqualTo: boxslotrent['docid'])
+                .getDocuments();
+
+            DocumentSnapshot canclebook = canclebookDoc.documents.first;
+            print("bookingcancle docid : ${canclebook['bookingdocid']}");
+            await Datamanager.firestore
+                .collection("Booking")
+                .document(canclebook['bookingdocid'])
+                .updateData({
+              'iscancle': true,
+            }).whenComplete(() {
+              print("cancle ${canclebook['bookingdocid']} complete");
+            });
+            return;
+          }
+        }
+      }
     }
   }
 
@@ -117,54 +204,107 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
     }
   }
 
+  String timeslotmatch(DateTime dateTime) {
+    if (dateTime.isAfter(
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 8, 0)) &&
+        dateTime.isBefore(
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 9, 15))) {
+      print("this time is in timeslot");
+      return TimeSlotSingle.sub1;
+    }
+
+    if (dateTime.isAfter(
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 9, 30)) &&
+        dateTime.isBefore(
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 10, 45))) {
+      print("this time is in timeslot");
+      return TimeSlotSingle.sub2;
+    }
+
+    if (dateTime.isAfter(
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 11, 00)) &&
+        dateTime.isBefore(
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 12, 15))) {
+      print("this time is in timeslot");
+      return TimeSlotSingle.sub3;
+    }
+
+    if (dateTime.isAfter(
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 13, 0)) &&
+        dateTime.isBefore(
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 14, 15))) {
+      print("this time is in timeslot");
+      return TimeSlotSingle.sub4;
+    }
+
+    if (dateTime.isAfter(
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 14, 30)) &&
+        dateTime.isBefore(
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 15, 45))) {
+      print("this time is in timeslot");
+      return TimeSlotSingle.sub5;
+    }
+
+    if (dateTime.isAfter(
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 16, 00)) &&
+        dateTime.isBefore(
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 17, 30))) {
+      print("this time is in timeslot");
+      return TimeSlotSingle.sub6;
+    }
+
+    print("this time is not in timeslot");
+    return null;
+  }
+
   bool checkintimeslot(DateTime dateTime) {
     print(
         "checkintimeslot : ${dateTime.year} ${dateTime.month} ${dateTime.day} ${dateTime.hour} ${dateTime.minute} ");
-    DateTime timenow = DateTime.now();
+    //DateTime timenow = DateTime.now();
     if (dateTime.isAfter(
-            DateTime(timenow.year, timenow.month, timenow.day, 8, 0)) &&
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 8, 0)) &&
         dateTime.isBefore(
-            DateTime(timenow.year, timenow.month, timenow.day, 9, 15))) {
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 9, 15))) {
       print("this time is in timeslot");
       return true;
     }
 
     if (dateTime.isAfter(
-            DateTime(timenow.year, timenow.month, timenow.day, 9, 30)) &&
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 9, 30)) &&
         dateTime.isBefore(
-            DateTime(timenow.year, timenow.month, timenow.day, 10, 45))) {
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 10, 45))) {
       print("this time is in timeslot");
       return true;
     }
 
     if (dateTime.isAfter(
-            DateTime(timenow.year, timenow.month, timenow.day, 11, 00)) &&
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 11, 00)) &&
         dateTime.isBefore(
-            DateTime(timenow.year, timenow.month, timenow.day, 12, 15))) {
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 12, 15))) {
       print("this time is in timeslot");
       return true;
     }
 
     if (dateTime.isAfter(
-            DateTime(timenow.year, timenow.month, timenow.day, 13, 0)) &&
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 13, 0)) &&
         dateTime.isBefore(
-            DateTime(timenow.year, timenow.month, timenow.day, 14, 15))) {
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 14, 15))) {
       print("this time is in timeslot");
       return true;
     }
 
     if (dateTime.isAfter(
-            DateTime(timenow.year, timenow.month, timenow.day, 14, 30)) &&
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 14, 30)) &&
         dateTime.isBefore(
-            DateTime(timenow.year, timenow.month, timenow.day, 15, 45))) {
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 15, 45))) {
       print("this time is in timeslot");
       return true;
     }
 
     if (dateTime.isAfter(
-            DateTime(timenow.year, timenow.month, timenow.day, 16, 00)) &&
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 16, 00)) &&
         dateTime.isBefore(
-            DateTime(timenow.year, timenow.month, timenow.day, 17, 30))) {
+            DateTime(dateTime.year, dateTime.month, dateTime.day, 17, 30))) {
       print("this time is in timeslot");
       return true;
     }
