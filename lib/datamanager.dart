@@ -354,7 +354,6 @@ class UseString {
   static String sayhi = "Say hi to";
   static String sentimage = "sent image to you";
   static String you = "You";
-
   static String chatprofile = "Chat Profile";
   static String chat = "Chat";
   static String menu = "Admin Menu";
@@ -389,6 +388,9 @@ class UseString {
   static String sendregistration='Already Send Vehicle registration';
   static String pleaseuploadcar ='Please Upload \nyou Vehicle registration.';
   static String uploadregistration ='Upload Vehicle registration';
+
+  static String bookinreport ='Your order  booking is cancel';
+  static String cancelrent='Your car is cancel';
   
 }
 

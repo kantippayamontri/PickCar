@@ -30,7 +30,7 @@ class Sendregistation extends StatefulWidget {
 class _SendregistationState extends State<Sendregistation> {
   @override
   void initState() {
-    widget.image = "assets/images/imagemain/examplelicense.png";
+    widget.image = "assets/images/imagemain/exampleregistration.jpg";
   }
   String universitytext = Datamanager.user.university;
   String factorytext = Datamanager.user.faculty;
@@ -177,9 +177,9 @@ class _SendregistationState extends State<Sendregistation> {
             Container(
               // margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*65),
               width: SizeConfig.screenWidth,
-              height: SizeConfig.blockSizeVertical*55,
+              height: SizeConfig.blockSizeVertical*75,
               child: Container(
-                margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*3,right:SizeConfig.blockSizeHorizontal*3,top: SizeConfig.blockSizeVertical*15,bottom: SizeConfig.blockSizeVertical*5),
+                margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*3,right:SizeConfig.blockSizeHorizontal*3,top: SizeConfig.blockSizeVertical*3,bottom: SizeConfig.blockSizeVertical*5),
                 decoration: BoxDecoration(
                   // color: Colors.purple,
                   borderRadius: BorderRadius.circular(0),
