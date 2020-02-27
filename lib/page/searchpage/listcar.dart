@@ -58,17 +58,20 @@ class _ListcarState extends State<Listcar> {
     if(SearchString.type == UseString.rent1){
       return Firestore.instance.collection('Singleforrent')
                       .where("day", isEqualTo: widget.day)
+                      .where('iscancle',isEqualTo: false)
                       .where("motorplacelocdocid", isEqualTo: Datamanager.placelocationshow.docplaceid)
                       .where("time", isEqualTo: time)
                       .snapshots();
     }else if(SearchString.type == UseString.rent2){
       return Firestore.instance.collection('Singleforrent')
+                      .where('iscancle',isEqualTo: false)
                       .where("day", isEqualTo: widget.day)
                       // .where("motorplacelocdocid", isEqualTo: Datamanager.placelocationshow.docplaceid)
                       .snapshots();
     }else{
       return Firestore.instance.collection('Singleforrent')
                       .where("day", isEqualTo: widget.day)
+                      .where('iscancle',isEqualTo: false)
                       // .where("motorplacelocdocid", isEqualTo: Datamanager.placelocationshow.docplaceid)
                       .snapshots();
     }

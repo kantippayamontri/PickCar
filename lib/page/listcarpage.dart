@@ -17,6 +17,7 @@ import 'package:pickcar/ui/uisize.dart';
 import 'package:pickcar/widget/listcar/listcatitem.dart';
 
 class ListCarPage extends StatefulWidget {
+  bool nub = true;
   bool visible = false;
   int indicatorpage = 0;
   var motorshow;
@@ -31,9 +32,10 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
   
   @override
   void initState() {
-    widget.width = 0;
-    widget.visible = true;
-    widget.indicatorpage = 0;
+    // widget.nub = true;
+    // widget.width = 0;
+    // widget.visible = false;
+    // widget.indicatorpage = 0;
     // TODO: implement initState
     _listCarBloc = ListCarBloc(context: this.context);
     _listCarBloc.add(ListCarLoadingDataEvent());
@@ -79,23 +81,55 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
         break;
     }
   }
-  showdialogrenter(BuildContext context){
+  showdialogrenter(BuildContext context,Bookingshow booking,MotorcycleShow motorcycleShow){
       return showDialog<void>(
+        barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(UseString.bookinreport),
-            content: Text("Brand: "+Datamanager.motorcycleShow.brand
-                          +"\nGeneration: "+Datamanager.motorcycleShow.generation
-                          +"\n"+UseString.date +" : "+ Datamanager.booking.day.toString()+" "+monthy(Datamanager.booking.month)+" "+Datamanager.booking.year.toString()
-                          +"\n"+UseString.time +" : "+ Datamanager.booking.time
-                          +"\n"+UseString.price +" : "+ Datamanager.booking.price.toString()+'฿'),
+            content: Text("Brand: "+motorcycleShow.brand
+                          +"\nGeneration: "+motorcycleShow.generation
+                          +"\n"+UseString.date +" : "+ booking.day.toString()+" "+monthy(booking.month)+" "+booking.year.toString()
+                          +"\n"+UseString.time +" : "+ booking.time
+                          +"\n"+UseString.price +" : "+ booking.price.toString()+'฿'),
             actions: <Widget>[
               FlatButton(
                 child: Text('Ok'),
-                onPressed: () {
-                  Firestore.instance.collection('Booking')
-                          .document(Datamanager.booking.bookingdocid)
+                onPressed: () async {
+                  // print('aaa');
+                  print(booking.bookingdocid);
+                  await Firestore.instance.collection('Booking')
+                          .document(booking.bookingdocid)
+                          .updateData({"ownercanclealert":true}).whenComplete((){
+                            // print('bbbb');
+                            Navigator.of(context).pop();
+                          });
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+    showdialogowner(BuildContext context,Bookingshow booking,MotorcycleShow motorcycleShow){
+      return showDialog<void>(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(UseString.cancelrent),
+            content:Text("Brand: "+motorcycleShow.brand
+                          +"\nGeneration: "+motorcycleShow.generation
+                          +"\n"+UseString.date +" : "+ booking.day.toString()+" "+monthy(booking.month)+" "+booking.year.toString()
+                          +"\n"+UseString.time +" : "+ booking.time
+                          +"\n"+UseString.price +" : "+ booking.price.toString()+'฿'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () async {
+                  await Firestore.instance.collection('Booking')
+                          .document(booking.bookingdocid)
                           .updateData({"rentercanclealert":true}).whenComplete((){
                             Navigator.of(context).pop();
                           });
@@ -106,51 +140,116 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
         },
       );
     }
-    showdialogowner(BuildContext context){
-      return showDialog<void>(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(UseString.cancelrent),
-            content:Text("Brand: "+Datamanager.motorcycleShow.brand
-                          +"\nGeneration: "+Datamanager.motorcycleShow.generation
-                          +"\n"+UseString.date +" : "+ Datamanager.booking.day.toString()+" "+monthy(Datamanager.booking.month)+" "+Datamanager.booking.year.toString()
-                          +"\n"+UseString.time +" : "+ Datamanager.booking.time
-                          +"\n"+UseString.price +" : "+ Datamanager.booking.price.toString()+'฿'),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Ok'),
-                onPressed: () {
-                  Firestore.instance.collection('Booking')
-                          .document(Datamanager.booking.bookingdocid)
-                          .updateData({"ownercanclealert":true}).whenComplete((){
-                            Navigator.of(context).pop();
-                          });
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
   showAleartcancel(BuildContext context) async {
-    Firestore.instance.collection('Booking').where('iscancle',isEqualTo:true).snapshots().listen((data){
-      data.documents.map((doc){
-        var booking= Bookingshow.fromSnapshot(doc);
-        Datamanager.booking = booking;
-        Firestore.instance.collection('Motorcycle').document(Datamanager.booking.motorcycledocid).get().then((data){
-          Datamanager.motorcycleShow = MotorcycleShow.fromSnapshot(data);
-          // print(Datamanager.booking.ownerid);
-          // print(Datamanager.user.documentid);
-          // print(booking.rentercanclealert);
-          if(!booking.rentercanclealert&& Datamanager.booking.ownerid != Datamanager.user.documentid){
-            showdialogrenter(context);
-          }else if(!booking.ownercanclealert && Datamanager.booking.ownerid == Datamanager.user.documentid){
-            showdialogowner(context);
-          }
-        });
-      }).toString();
-    });
+    // if(widget.nub){
+      widget.nub = false;
+      Firestore.instance.collection('Booking').where('iscancle',isEqualTo:true).snapshots().listen((data){
+        data.documents.map((doc){
+          var booking= Bookingshow.fromSnapshot(doc);
+          Datamanager.booking = booking;
+          Firestore.instance.collection('Motorcycle').document(Datamanager.booking.motorcycledocid).get().then((data){
+            var motorshow = MotorcycleShow.fromSnapshot(data);
+            Datamanager.motorcycleShow = motorshow;
+            // print(Datamanager.booking.ownerid);
+            // print(Datamanager.user.documentid);
+            // print(booking.rentercanclealert);
+            // print(booking.rentercanclealert);
+            // print(booking.ownercanclealert);
+            Datamanager.booking = booking;
+            if(booking.rentercanclealert && booking.ownercanclealert ){
+
+            }else if(booking.rentercanclealert&& Datamanager.booking.ownerid != Datamanager.user.documentid){
+              showdialogrenter(context,booking,motorshow);
+            }else if(booking.ownercanclealert && Datamanager.booking.ownerid == Datamanager.user.documentid){
+              showdialogowner(context,booking,motorshow);
+            }
+          });
+        }).toString();
+      });
+    // }
+  }
+  showwarningcancel(BuildContext context,Bookingshow booking) async {
+    var datasize = MediaQuery.of(context);
+     showDialog(barrierDismissible: false,context: context,builder:  (BuildContext context){
+        return AlertDialog(
+          title: Center(
+            child: Column(
+              children: <Widget>[
+                Text(UseString.areyousure,
+                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: SizeConfig.blockSizeHorizontal*5,color: PickCarColor.colorFont1), 
+                ),
+                Container(
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*4),
+                        child: RaisedButton(
+                          color: PickCarColor.colorbuttom,
+                          onPressed: () {
+                            Firestore.instance.collection('Booking')
+                                        .document(booking.bookingdocid)
+                                        .updateData({'iscancle':true,'rentercanclealert':true})
+                                        .whenComplete((){
+                                          Booking book = Booking(
+                                            times:booking.time,
+                                            day:booking.day,
+                                            month:booking.month,
+                                            year:booking.year,
+                                            price:booking.price,
+                                            motorcycledocid:booking.motorcycledocid,
+                                            ownerid:booking.ownerid,
+                                            myid:booking.myid,
+                                            bookingdocid:booking.bookingdocid,
+                                            boxdocid:booking.boxdocid,
+                                            boxplacedocid:booking.boxplacedocid,
+                                            boxslotrentdocid:booking.boxslotrentdocid,
+                                            motorplacelocdocid:booking.motorplacelocdocid,
+                                            university:booking.university,
+                                            status:booking.status,
+                                            startdate:booking.startdate,
+                                            iscancle:false,
+                                            ownercanclealert:false,
+                                            rentercanclealert:false,
+                                          );
+                                          Firestore.instance.collection('Singleforrent')
+                                                            .document(booking.bookingdocid)
+                                                            .setData(book.toJson())
+                                                            .whenComplete((){
+                                                              setState(() {
+                                                                Navigator.pop(context);
+                                                              });
+                                                            }); 
+                                          
+                                        });
+                          },
+                          child: Text('Confirm',
+                            // style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Color(0x78849E)),
+                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*15,color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*4),
+                        child: RaisedButton(
+                        color: PickCarColor.colorbuttom,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text('Cancel',
+                          // style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Color(0x78849E)),
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*15,color: Colors.white),
+                        ),
+                      ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ) 
+          ) 
+        );
+      }
+    );
   }
   @override
   Widget build(BuildContext context) {
@@ -177,7 +276,7 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
     TabController _tabController;
     _tabController = new TabController(vsync: this, length: myTabs.length,initialIndex: widget.indicatorpage);
      Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
-      var booking;
+      Bookingshow booking;
       var datasize = MediaQuery.of(context);
       booking = Bookingshow.fromSnapshot(data);
       return GestureDetector(
@@ -248,7 +347,7 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
                             icon: Icon(Icons.clear),
                             color: Colors.white,
                             onPressed: (){
-
+                              showwarningcancel(context,booking);
                             },
                           ),
                         ),
@@ -276,8 +375,10 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
                       ),
                       Container(
                         // color: Colors.black,
-                        margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*44+widget.width,top: SizeConfig.blockSizeVertical*6,right: SizeConfig.blockSizeHorizontal*3),
+                        margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*44+widget.width,top: SizeConfig.blockSizeVertical*7,right: SizeConfig.blockSizeHorizontal*3),
                         width: SizeConfig.blockSizeVertical*31,
+                        // color: Colors.black,
+                        height: SizeConfig.blockSizeVertical*11,
                         child: AutoSizeText(UseString.date +" : "+ booking.day.toString()+" "+monthy(booking.month)+" "+booking.year.toString()
                                 +"\n"+UseString.time +" : "+ booking.time+"\n"+UseString.price +" : "+ booking.price.toString()+'฿',
                           style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*20,color: PickCarColor.colorFont1), 
@@ -378,11 +479,11 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
                 setState(() {
                   if(widget.visible){
                     widget.visible = false;
-                    print('sss');
+                    // print('sss');
                     widget.width = 0;
                   }else{
                     widget.visible = true;
-                    print('aaaa');
+                    // print('aaaa');
                     widget.width = SizeConfig.blockSizeHorizontal *12;
                   }
                 });
