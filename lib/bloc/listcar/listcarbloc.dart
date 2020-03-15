@@ -35,7 +35,7 @@ class ListCarBloc extends Bloc<ListCarEvent, ListCarState> {
         .snapshots()
         .listen((data) {
       data.documents.forEach((doc) {
-        print("Motor doc id : ${doc['firestoredocid']}");
+        // print("Motor doc id : ${doc['firestoredocid']}");
 
         Motorcycle motor = Motorcycle(
           carstatus: doc['carstatus'],

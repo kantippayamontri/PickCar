@@ -1,12 +1,15 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
+import 'package:pickcar/models/booking.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/page/tabscreen.dart';
 import 'package:pickcar/ui/uisize.dart';
+import 'package:pickcar/widget/cancel.dart';
 import 'package:pickcar/widget/home/cardrental.dart';
 int i=0;
 class HomePage extends StatefulWidget {
@@ -29,9 +32,13 @@ class _HomePageState extends State<HomePage> {
     appbar = AppBar();
     super.initState();
   }
-
+  void dispose() {
+    // Realtime.checkalert.cancel();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
+    // cancelshow(context);
     SizeConfig().init(context);
     showwarningWait(BuildContext context){
       return showDialog<void>(
@@ -90,6 +97,7 @@ class _HomePageState extends State<HomePage> {
                                                 showwarningWait(context);
                                               }else if(usershow.isapprove == 'Approve'){
                                                 Navigator.of(context).pushNamed(Datamanager.search);
+                                                // Navigator.of(context).pushNamed(Datamanager.adminmenu);
                                               }else{
                                                 showwarningreject(context);
                                               }

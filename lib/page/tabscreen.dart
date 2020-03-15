@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
+import 'package:pickcar/widget/cancel.dart';
 
 class TabScreenPage extends StatefulWidget {
   @override
@@ -13,7 +14,10 @@ class _TabScreenPageState extends State<TabScreenPage> {
   void initState() {
 
     Datamanager.gontosearchinHome = _gotosearchpageinHome;
-
+    try{
+      Realtime.checkalert.cancel();
+    }catch(e){}
+    
     super.initState();
   }
 
@@ -33,6 +37,7 @@ class _TabScreenPageState extends State<TabScreenPage> {
 
   @override
   Widget build(BuildContext context) {
+    cancelshow(context);
     return Scaffold(
       body: Datamanager.pages[_selecedindex]['page'],
       bottomNavigationBar: BottomNavigationBar(

@@ -320,7 +320,7 @@ class _BoxselectadminState extends State<Boxselectadmin> {
       latitude: widget.latitudemark,
       longitude: widget.logtitudemark,
       boxlocationid: docboxlocationid,
-      maxslot: 10,
+      maxslot: 3,
     );
     Datamanager.firestore.collection('universityplace')
                         .document(university.docid)

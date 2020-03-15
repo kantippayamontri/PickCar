@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -100,8 +102,8 @@ class Datamanager {
 
   static List<Map<String, Object>> pages = [
     {'page': HomePage(gotosearchinHome: gontosearchinHome,), 'title': 'Home'},
-    {'page': Adminmenu(), 'title': 'Chat'},
-    // {'page': Chatpage(), 'title': 'Chat'},
+    // {'page': Adminmenu(), 'title': 'Chat'},
+    {'page': Chatpage(), 'title': 'Chat'},
     {'page': ListCarPage(), 'title': 'ListCar'},
     {'page': ProfilePage(), 'title': 'Profile'},
     {'page': SettingPage(), 'title': 'setting'},
@@ -391,7 +393,8 @@ class UseString {
 
   static String bookinreport ='Your order  booking is cancel';
   static String cancelrent='Your car is cancel';
-  
+  static String cancelappbar='CANCEL';
+  static String sendlongmessage = 'new messages';
 }
 
 class Currency {
@@ -404,6 +407,7 @@ class Realtime{
   static var timekey;
   static var timecar;
   static var checkkeymap;
+  static Timer checkalert;
 }
 
 class Checkopenkey{
@@ -528,6 +532,10 @@ class DataFetch {
   static int checkkey=0;
   static int checkkeymap=0;
   static int fetchhavecar = 0;
+  static int fetchcancelalert= 0;
+  static int waitloaddata =0;
+  static int logincancelshow =0;
+
 }
 
 class TimeSlotSingle {

@@ -144,7 +144,11 @@ class _SendlicensepageState extends State<Sendlicensepage> {
       
     }
     Future getImageGallery() async {
-      var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+      var image;
+      try{
+        image = await ImagePicker.pickImage(source: ImageSource.gallery);
+      }catch(e){
+      }
       if(image !=null){
         setState(() {
           widget.imagetype = 'hasimage';
@@ -154,7 +158,11 @@ class _SendlicensepageState extends State<Sendlicensepage> {
       }
     }
     Future getImageCamera() async {
-      var image = await ImagePicker.pickImage(source: ImageSource.camera);
+      var image;
+      try{
+        image = await ImagePicker.pickImage(source: ImageSource.camera);
+      }catch(e){
+      }
       if(image !=null){
         setState(() {
           widget.imagefile = image;

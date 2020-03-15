@@ -72,6 +72,7 @@ class Booking {
       'iscancle' : this.iscancle,
       'ownercanclealert' : this.ownercanclealert,
       'rentercanclealert' : this.rentercanclealert,
+      'alreadycheck' : null,
     };
   }
 }

@@ -19,6 +19,7 @@ import 'package:pickcar/models/chat.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/models/user.dart';
 import 'package:pickcar/ui/uisize.dart';
+import 'package:pickcar/widget/cancel.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Chatpage extends StatefulWidget {
@@ -38,11 +39,12 @@ class _ChatpageState extends State<Chatpage> {
   }
   
   dispose() {
-
-  super.dispose();
-}
+    // Realtime.checkalert.cancel();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
+    // cancelshow(context);
     String monthy(int month) {
     switch (month) {
       case 1:
@@ -103,6 +105,7 @@ class _ChatpageState extends State<Chatpage> {
           // addgroupchat(usershow);
           Datamanager.usershow = usershow;
           Datamanager.chatprofileshow = chatshow;
+          // print(Datamanager.chatprofileshow.documentcontact);
           Navigator.of(context).pushNamed(Datamanager.messagepage);
         },
         child: Container(
@@ -161,7 +164,7 @@ class _ChatpageState extends State<Chatpage> {
                                 Stack(
                                   children: <Widget>[
                                     Container(
-                                      margin: EdgeInsets.only(left:SizeConfig.blockSizeHorizontal*3,top: SizeConfig.blockSizeHorizontal*3),
+                                      margin: EdgeInsets.only(left:SizeConfig.blockSizeHorizontal*3,top: SizeConfig.blockSizeHorizontal*2),
                                       height: SizeConfig.blockSizeVertical*10,
                                       width: SizeConfig.blockSizeHorizontal*62,
                                       // color: Colors.blue,
@@ -184,32 +187,57 @@ class _ChatpageState extends State<Chatpage> {
                                             var messagelast = Messageshow.fromSnapshot(snapshot.data);
                                             if(messagelast.messagevalue != null){
                                               if(messagelast.ownmessage == Datamanager.user.documentid){
-                                                return Container(
-                                                  margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*7,left: SizeConfig.blockSizeHorizontal*3),
-                                                  child: Text(UseString.you+" : " +messagelast.messagevalue+" - "+chatshow.arrivaltime.day.toString()+" "+monthy(chatshow.arrivaltime.month)+'.',
-                                                    style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*18,color: Colors.grey[600]), 
-                                                  ),
-                                                );
+                                                if(messagelast.messagevalue.length < 15){
+                                                  return Container(
+                                                    width: SizeConfig.blockSizeHorizontal*55,
+                                                    margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*6,left: SizeConfig.blockSizeHorizontal*3),
+                                                    child: Text(UseString.you+" : " +messagelast.messagevalue+" - "+chatshow.arrivaltime.day.toString()+" "+monthy(chatshow.arrivaltime.month)+'.',
+                                                      style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*18,color: Colors.grey[600]), 
+                                                    ),
+                                                  );
+                                                }else{
+                                                  return Container(
+                                                    width: SizeConfig.blockSizeHorizontal*55,
+                                                    margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*6,left: SizeConfig.blockSizeHorizontal*3),
+                                                    child: Text(UseString.you+" : " +UseString.sendlongmessage+" - "+chatshow.arrivaltime.day.toString()+" "+monthy(chatshow.arrivaltime.month)+'.',
+                                                      style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*18,color: Colors.grey[600]), 
+                                                    ),
+                                                  );
+                                                }
+                                                
                                               }else{
-                                                return Container(
-                                                  margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*7,left: SizeConfig.blockSizeHorizontal*3),
-                                                  child: Text(chatshow.name+" : " +messagelast.messagevalue+" - "+chatshow.arrivaltime.day.toString()+" "+monthy(chatshow.arrivaltime.month)+'.',
-                                                    style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*18,color: Colors.grey[600]), 
-                                                  ),
-                                                );
+                                                if(messagelast.messagevalue.length < 15){
+                                                  return Container(
+                                                    width: SizeConfig.blockSizeHorizontal*55,
+                                                    margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*6,left: SizeConfig.blockSizeHorizontal*3),
+                                                    child: Text(chatshow.name+" : " +messagelast.messagevalue+" - "+chatshow.arrivaltime.day.toString()+" "+monthy(chatshow.arrivaltime.month)+'.',
+                                                      style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*18,color: Colors.grey[600]), 
+                                                    ),
+                                                  );
+                                                }else{
+                                                  return Container(
+                                                    width: SizeConfig.blockSizeHorizontal*55,
+                                                    margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*6,left: SizeConfig.blockSizeHorizontal*3),
+                                                    child: Text(chatshow.name+" : " +UseString.sendlongmessage+" - "+chatshow.arrivaltime.day.toString()+" "+monthy(chatshow.arrivaltime.month)+'.',
+                                                      style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*18,color: Colors.grey[600]), 
+                                                    ),
+                                                  );
+                                                }
                                               }
                                             }else{
                                               return Container(
-                                                margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*7,left: SizeConfig.blockSizeHorizontal*3),
-                                                child: Text(chatshow.name +" "+UseString.sentimage+" - "+chatshow.arrivaltime.day.toString()+" "+monthy(chatshow.arrivaltime.month)+'.',
+                                                width: SizeConfig.blockSizeHorizontal*55,
+                                                margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*6,left: SizeConfig.blockSizeHorizontal*3),
+                                                child: Text(chatshow.name +" : "+UseString.sentimage+" - "+chatshow.arrivaltime.day.toString()+" "+monthy(chatshow.arrivaltime.month)+'.',
                                                   style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*18,color: Colors.grey[600]), 
                                                 ),
                                               );
                                             }
                                           }catch (error){
                                             return Container(
-                                              margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*7,left: SizeConfig.blockSizeHorizontal*3),
-                                              child: Text(UseString.sayhi+" " +chatshow.name,
+                                              width: SizeConfig.blockSizeHorizontal*55,
+                                              margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*6,left: SizeConfig.blockSizeHorizontal*3),
+                                              child: Text(UseString.sayhi+" : " +chatshow.name,
                                                   style: TextStyle(fontWeight: FontWeight.normal,fontSize: datasize.textScaleFactor*18,color: Colors.grey[600]), 
                                                 ),
                                             );

@@ -391,6 +391,7 @@ class _ListcarState extends State<Listcar> {
                                   Datamanager.usershow = usershow;
                                   Datamanager.motorcycleShow = motorshow;
                                   Datamanager.listcarslot = timeslot;
+                                  var chatvalueowner;
                                   var chatvalue;
                                   var check = await Firestore.instance.collection('chat')
                                             .document(Datamanager.user.documentid)
@@ -398,9 +399,15 @@ class _ListcarState extends State<Listcar> {
                                             .document(Datamanager.usershow.documentid).get();
                                   if(check.data == null){
                                     var message = Firestore.instance.collection('message').document();
-                                    chatvalue = Chatprofile(
+                                    chatvalueowner = Chatprofile(
                                       documentcontact: Datamanager.usershow.documentid,
                                       name: Datamanager.usershow.name,
+                                      arrivaltime: DateTime.now(),
+                                      documentmessage: message.documentID,
+                                    );
+                                    chatvalue = Chatprofile(
+                                      documentcontact: Datamanager.user.documentid,
+                                      name: Datamanager.user.name,
                                       arrivaltime: DateTime.now(),
                                       documentmessage: message.documentID,
                                     );
@@ -408,23 +415,28 @@ class _ListcarState extends State<Listcar> {
                                             .document(Datamanager.user.documentid)
                                             .collection('chatgroup')
                                             .document(Datamanager.usershow.documentid)
-                                            .setData(chatvalue.toJson());
+                                            .setData(chatvalueowner.toJson());
                                     await Firestore.instance.collection('chat')
                                               .document(Datamanager.usershow.documentid)
                                               .collection('chatgroup')
                                               .document(Datamanager.user.documentid)
                                               .setData(chatvalue.toJson());
                                   }else{
-                                    chatvalue = Chatprofilehasmessage(
+                                    chatvalueowner = Chatprofilehasmessage(
                                       documentcontact: Datamanager.usershow.documentid,
                                       name: Datamanager.usershow.name,
                                       arrivaltime: DateTime.now(),
                                     );
-                                     await Firestore.instance.collection('chat')
+                                    chatvalue = Chatprofilehasmessage(
+                                      documentcontact: Datamanager.user.documentid,
+                                      name: Datamanager.user.name,
+                                      arrivaltime: DateTime.now(),
+                                    );
+                                    await Firestore.instance.collection('chat')
                                             .document(Datamanager.user.documentid)
                                             .collection('chatgroup')
                                             .document(Datamanager.usershow.documentid)
-                                            .updateData(chatvalue.toJson());
+                                            .updateData(chatvalueowner.toJson());
                                     await Firestore.instance.collection('chat')
                                               .document(Datamanager.usershow.documentid)
                                               .collection('chatgroup')

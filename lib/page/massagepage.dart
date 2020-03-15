@@ -168,13 +168,17 @@ class _MessagepageState extends State<Messagepage> {
     );
   }
     Future getImageGallery() async {
+      try{
       widget.image = await ImagePicker.pickImage(source: ImageSource.gallery);
+      }catch(e){}
       if(widget.image !=null){
         confirmUpload(context);
       }
     }
     Future getImageCamera() async {
+      try{
       widget.image = await ImagePicker.pickImage(source: ImageSource.camera);
+      }catch(e){}
       if(widget.image !=null){
         confirmUpload(context);
       }
@@ -184,7 +188,7 @@ class _MessagepageState extends State<Messagepage> {
       if(messageshow.image == null){
         if(messageshow.ownmessage == Datamanager.user.documentid){
         return Container(
-          margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*1,right: SizeConfig.blockSizeHorizontal*3),
+          margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*1,right: SizeConfig.blockSizeHorizontal*3,left:SizeConfig.blockSizeHorizontal*15),
           alignment: Alignment.centerRight,
           child: Container(
             decoration: BoxDecoration(
@@ -201,11 +205,12 @@ class _MessagepageState extends State<Messagepage> {
         );
       }else{
         return Container(
-          margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*1,left: SizeConfig.blockSizeHorizontal*3),
+          margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*1,left: SizeConfig.blockSizeHorizontal*3,right: SizeConfig.blockSizeHorizontal*8),
           alignment: Alignment.centerLeft,
-          child: Row(
+          child: Stack(
             children: <Widget>[
               Container(
+                margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical/2),
                 width: (SizeConfig.blockSizeHorizontal+SizeConfig.blockSizeVertical)*3,
                 height: (SizeConfig.blockSizeHorizontal+SizeConfig.blockSizeVertical)*3,
                 decoration: new BoxDecoration(
@@ -219,6 +224,7 @@ class _MessagepageState extends State<Messagepage> {
               ),
               SizedBox(width: SizeConfig.blockSizeHorizontal,),
               Container(
+                margin: EdgeInsets.only(left:SizeConfig.blockSizeHorizontal*9),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(14),
                   color: Colors.grey[200],

@@ -37,9 +37,6 @@ class _ListCarItemState extends State<ListCarItem> {
 
   @override
   Widget build(BuildContext context) {
-    // print(widget.motor.iswaiting);
-    // print(widget.motor.isbook);
-    // print(widget.motor.isworking);
     if(widget.motor.iswaiting){
       widget.showwaiting = true;
     }
@@ -117,7 +114,6 @@ class _ListCarItemState extends State<ListCarItem> {
     }
     return InkWell(
       onTap: () {
-        //print("Inkwell firstore docid : ${widget.motor.motorprofilelink}");
         Datamanager.motorcycle = widget.motor;
         Firestore.instance.collection('Motorcycle').document(widget.motor.firestoredocid)
                                             .get().then((data){

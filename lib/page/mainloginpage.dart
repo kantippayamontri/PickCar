@@ -9,7 +9,25 @@ class Mainloginpage extends StatefulWidget {
 
 class _MainloginpageState extends State<Mainloginpage> {
   @override
+  void initState() {
+    // TODO: implement initState
+    DataFetch.logincancelshow = 0;
+    try{
+      Realtime.checkalert.cancel();
+    }catch(e){
+
+    }
+    DataFetch.fetchcancelalert = 0;
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
+    try{
+      DataFetch.fetchcancelalert = 0;
+      Realtime.checkalert.cancel();
+    }catch(e){
+
+    }
     var data = MediaQuery.of(context);
     return Scaffold(
       body: Stack(

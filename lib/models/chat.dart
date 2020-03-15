@@ -76,6 +76,26 @@ class Chatprofilehasmessage {
     };
   }
 }
+class Chatnoname {
+  DateTime arrivaltime;
+  // String documentchatid;
+  String documentcontact;
+
+ 
+  Chatnoname({
+    @required this.arrivaltime,
+    // @required this.documentchatid,
+    @required this.documentcontact,
+  }) {}
+
+   Map<String , Object> toJson(){
+    return {
+      'arrivaltime' : this.arrivaltime,
+      // 'documentchatid' : this.documentchatid,
+      'documentcontact' : this.documentcontact,
+    };
+  }
+}
 class Chatprofileshow {
   String name;
   DateTime arrivaltime;
