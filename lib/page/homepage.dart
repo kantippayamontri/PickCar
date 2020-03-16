@@ -32,15 +32,17 @@ class _HomePageState extends State<HomePage> {
     appbar = AppBar();
     super.initState();
   }
+
   void dispose() {
     // Realtime.checkalert.cancel();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     // cancelshow(context);
     SizeConfig().init(context);
-    showwarningWait(BuildContext context){
+    showwarningWait(BuildContext context) {
       return showDialog<void>(
         context: context,
         builder: (BuildContext context) {
@@ -59,49 +61,56 @@ class _HomePageState extends State<HomePage> {
         },
       );
     }
-  showwarningreject(BuildContext context){
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(UseString.rejectalert,
-              style: TextStyle(color: Colors.red), 
-          ),
-          content: Text(UseString.rejectalertbody,
-              style: TextStyle(color: Colors.red), 
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Send license'),
-              onPressed: () {
-                // Navigator.of(context).pop();
-                Navigator.of(context).pushNamed(Datamanager.sendlicensepage);
-              },
+
+    showwarningreject(BuildContext context) {
+      return showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              UseString.rejectalert,
+              style: TextStyle(color: Colors.red),
             ),
-            FlatButton(
-              child: Text(UseString.cancel),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+            content: Text(
+              UseString.rejectalertbody,
+              style: TextStyle(color: Colors.red),
             ),
-          ],
-        );
-      },
-    );
-  }
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Send license'),
+                onPressed: () {
+                  // Navigator.of(context).pop();
+                  Navigator.of(context).pushNamed(Datamanager.sendlicensepage);
+                },
+              ),
+              FlatButton(
+                child: Text(UseString.cancel),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     void _gotorental() {
-      Firestore.instance.collection('User').document(Datamanager.user.documentid)
-                                            .get().then((data){
-                                              Usershow usershow = Usershow.fromSnapshot(data);
-                                              if(usershow.isapprove == 'wait'){
-                                                showwarningWait(context);
-                                              }else if(usershow.isapprove == 'Approve'){
-                                                Navigator.of(context).pushNamed(Datamanager.search);
-                                                // Navigator.of(context).pushNamed(Datamanager.adminmenu);
-                                              }else{
-                                                showwarningreject(context);
-                                              }
-                                            });
+      Firestore.instance
+          .collection('User')
+          .document(Datamanager.user.documentid)
+          .get()
+          .then((data) {
+        Usershow usershow = Usershow.fromSnapshot(data);
+        if (usershow.isapprove == 'wait') {
+          showwarningWait(context);
+        } else if (usershow.isapprove == 'Approve') {
+          Navigator.of(context).pushNamed(Datamanager.search);
+          // Navigator.of(context).pushNamed(Datamanager.adminmenu);
+        } else {
+          showwarningreject(context);
+        }
+      });
       // Navigator.of(context).pushNamed(Datamanager.search);
       // TabScreenPage(index: 1);
     }
@@ -151,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                       width: constraints.maxWidth,
                       title: UseString.rentaltitle,
                       buttontext: UseString.rentalbutton,
-                      tap: widget.gotosearchinHome, //_gotorental,
+                      tap: /*widget.gotosearchinHome,*/ _gotorental,
                       imageurl: 'assets/images/imagemain/forrent.png',
                     ),
                     SizedBox(
