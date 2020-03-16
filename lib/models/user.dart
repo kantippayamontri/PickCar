@@ -1,10 +1,9 @@
-
 import 'dart:io';
 // import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
-class User{
+class User {
   String uid;
   String email;
   String password;
@@ -23,59 +22,62 @@ class User{
   String idcardimgtype;
   String universityimgtype;
   String drivemotorimgtype;
-  String drivecarimgtype; 
+  String drivecarimgtype;
   double money;
   String documentid;
   String documentchat;
   String isapprove;
+  bool isadmin;
 
   User({
-  @required this.uid,  
-  @required this.email , 
-  @required this.password , 
-  @required this.name , 
-  @required this.university , 
-  @required this.faculty , 
-  @required this.tel , 
-  @required this.address,
-  @required this.profileimg,
-  @required this.idcardimg,
-  @required this.universityimg,
-  @required this.drivemotorimg,
-  @required this.drivecarimg,
-  @required this.profileimgtype,
-  @required this.idcardimgtype,
-  @required this.universityimgtype,
-  @required this.drivemotorimgtype,
-  @required this.drivecarimgtype,
-  @required this.money,
-  @required this.documentchat,
-  @required this.isapprove
+    @required this.uid,
+    @required this.email,
+    @required this.password,
+    @required this.name,
+    @required this.university,
+    @required this.faculty,
+    @required this.tel,
+    @required this.address,
+    @required this.profileimg,
+    @required this.idcardimg,
+    @required this.universityimg,
+    @required this.drivemotorimg,
+    @required this.drivecarimg,
+    @required this.profileimgtype,
+    @required this.idcardimgtype,
+    @required this.universityimgtype,
+    @required this.drivemotorimgtype,
+    @required this.drivecarimgtype,
+    @required this.money,
+    @required this.documentchat,
+    @required this.isapprove,
+    @required this.isadmin,
   });
 
-  Map<String , dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
-      'uid' : uid,
-      'email' : email,
-      'password' : password,
-      'address' : address,
-      'telepphonenumnber' : tel,
-      'driveliscensemotorpath' : 'drimotorcard',
-      'driveliscensemotorpictype' : drivemotorimgtype,
-      'driveliscensecarpath' : 'dricarcard',
-      'driveliscensecarpictype' : drivecarimgtype,
-      'idcardpath' : 'idcard',
-      'idcardpictype' : idcardimgtype,
-      'universitycadrpath' : 'universitycard',
-      'universitycardtype' : universityimgtype,
-      'university' : university,
-      'faculty' : faculty,
-      'name' : name,
-      'profilepicpath' : 'profile',
-      'profilepictype' : profileimgtype,
-      'money' : money,
-      'documentid' : documentid,
-      'isapprove' : isapprove,
+      'uid': uid,
+      'email': email,
+      'password': password,
+      'address': address,
+      'telepphonenumnber': tel,
+      'driveliscensemotorpath': 'drimotorcard',
+      'driveliscensemotorpictype': drivemotorimgtype,
+      'driveliscensecarpath': 'dricarcard',
+      'driveliscensecarpictype': drivecarimgtype,
+      'idcardpath': 'idcard',
+      'idcardpictype': idcardimgtype,
+      'universitycadrpath': 'universitycard',
+      'universitycardtype': universityimgtype,
+      'university': university,
+      'faculty': faculty,
+      'name': name,
+      'profilepicpath': 'profile',
+      'profilepictype': profileimgtype,
+      'money': money,
+      'documentid': documentid,
+      'isapprove': isapprove,
+      'isadmin': isadmin
     };
   }
 }
@@ -98,7 +100,7 @@ class User{
 //   String idcardimgtype;
 //   String universityimgtype;
 //   String drivemotorimgtype;
-//   String drivecarimgtype; 
+//   String drivecarimgtype;
 //   double money;
 //   String documentid;
 //   String documentchat;

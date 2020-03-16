@@ -37,6 +37,7 @@ class Datamanager {
   static String newpassword = "/Newpassword";
   static String emailsend = "/Emailsend";
   static String motorbooklistpage = "/motorbooklistpage";
+  static String chooseadminserverpage = "/chooseadminserverpage";
 
   static String listcar = "/Listcar";
   static String detailsearch = "/Detailsearch";
@@ -338,7 +339,7 @@ class UseString {
   static String working = "working";
   static String history = "History";
   static String bookedhistory = "Booked";
-  static String renthistory = "Rented"; 
+  static String renthistory = "Rented";
   static String donthavehistory = "You not have history";
   static String waitting = "Waiting";
   static String bookking = "Booking";
@@ -349,6 +350,7 @@ class UseString {
   static String gasandpetrolval = "Please Enter Gas(Petrol)";
   static String carregistration = "Car Registration";
   static String carregistrationval = "Please Enter Car Registration";
+  static String carownercancle = "Your car is cancle";
 }
 
 class Currency {

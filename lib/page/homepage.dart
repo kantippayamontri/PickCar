@@ -6,9 +6,10 @@ import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/page/tabscreen.dart';
 import 'package:pickcar/ui/uisize.dart';
 import 'package:pickcar/widget/home/cardrental.dart';
-int i=0;
-class HomePage extends StatefulWidget {
 
+int i = 0;
+
+class HomePage extends StatefulWidget {
   Function gotosearchinHome;
 
   HomePage({@required this.gotosearchinHome});
@@ -19,7 +20,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   AppBar appbar;
-  
 
   @override
   void initState() {
@@ -36,9 +36,10 @@ class _HomePageState extends State<HomePage> {
       // TabScreenPage(index: 1);
     }
 
-    void _gotoregister(){
+    void _gotoregister() {
       Navigator.of(context).pushNamed(Datamanager.registerpage);
     }
+
     var data = MediaQuery.of(context);
     return Scaffold(
         appBar: AppBar(
@@ -50,9 +51,11 @@ class _HomePageState extends State<HomePage> {
           ),
           centerTitle: true,
           title: Container(
-            width: SizeConfig.blockSizeHorizontal*20,
-            child: Image.asset('assets/images/imagelogin/logo.png',fit: BoxFit.fill,)
-          ),
+              width: SizeConfig.blockSizeHorizontal * 20,
+              child: Image.asset(
+                'assets/images/imagelogin/logo.png',
+                fit: BoxFit.fill,
+              )),
           leading: IconButton(
             icon: Icon(
               Icons.keyboard_arrow_left,
@@ -78,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                       width: constraints.maxWidth,
                       title: UseString.rentaltitle,
                       buttontext: UseString.rentalbutton,
-                      tap: widget.gotosearchinHome,//_gotorental,
+                      tap: widget.gotosearchinHome, //_gotorental,
                       imageurl: 'assets/images/imagemain/forrent.png',
                     ),
                     SizedBox(
@@ -93,12 +96,12 @@ class _HomePageState extends State<HomePage> {
                       imageurl: 'assets/images/imagemain/forregister.png',
                     ),
 
-                    RaisedButton(
-                      child: Text("Server"),
-                      onPressed: (){
-                        Navigator.of(context).pushNamed(Datamanager.serverpage);
-                      },
-                    ),
+                    // RaisedButton(
+                    //   child: Text("Server"),
+                    //   onPressed: (){
+                    //     Navigator.of(context).pushNamed(Datamanager.serverpage);
+                    //   },
+                    // ),
                     // Container(
                     //     alignment: Alignment.centerLeft,
                     //     margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical,left:  SizeConfig.blockSizeHorizontal*3),

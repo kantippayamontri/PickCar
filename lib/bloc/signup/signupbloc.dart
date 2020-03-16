@@ -335,6 +335,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           money: 500.00,
           documentchat: chatid,
           isapprove: 'wait',
+          isadmin: false,
         );
 
         final docref = await Datamanager.firestore

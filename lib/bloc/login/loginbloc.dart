@@ -20,6 +20,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   var start = false;
   var signinerrorm = "";
   BuildContext context;
+  bool isadmin = false;
   @override
   LoginState get initialState => StartState();
 
@@ -30,6 +31,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (event is SignInwithEmailEvent) {
       print('pass maptoevent LoadingSnackBarState');
       try {
+        print("in try");
         await Datamanager.firebaseauth.signInWithEmailAndPassword(
             email: event.email, password: event.password);
         /*.then((user){
@@ -44,6 +46,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               .snapshots()
               .listen((data) => data.documents.forEach((doc) async {
                     print(doc);
+                    print('doc isadmin : ${doc['isadmin']}');
                     var starageref = Datamanager.firebasestorage.ref();
                     String imgurl;
                     //print("uri of profilepic : ${doc['profilepicpath']}.${doc['profilepictype']}");
@@ -96,59 +99,74 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                           .getDownloadURL()
                           .toString();
                       dricarimg = await File.fromUri(Uri.parse(imgurl));
-                    }else{
+                    } else {
                       dricarimg = null;
                     }
                     Datamanager.user = User(
-                      uid: doc['uid'],
-                      email: doc['email'],
-                      password: doc['password'],
-                      name: doc['name'],
-                      address: doc['address'],
-                      university: doc['university'],
-                      faculty: doc['faculty'],
-                      tel: doc['telepphonenumnber'],
-                      profileimg: profileimg,
-                      profileimgtype: doc['profilepictype'],
-                      idcardimg: idcardimg,
-                      idcardimgtype: doc['idcardpictype'],
-                      universityimg: universityimg,
-                      universityimgtype: doc['universitycardtype'],
-                      drivemotorimg: drimotorimg,
-                      drivemotorimgtype: doc['driveliscensemotorpictype'],
-                      drivecarimg: dricarimg,
-                      drivecarimgtype: doc['driveliscensecarpictype'],
-                      documentchat: doc['documentchat'],
-                      money:  double.parse(doc['money'].toString()),
-                      isapprove: doc['isapprove']
-                    );
+                        uid: doc['uid'],
+                        email: doc['email'],
+                        password: doc['password'],
+                        name: doc['name'],
+                        address: doc['address'],
+                        university: doc['university'],
+                        faculty: doc['faculty'],
+                        tel: doc['telepphonenumnber'],
+                        profileimg: profileimg,
+                        profileimgtype: doc['profilepictype'],
+                        idcardimg: idcardimg,
+                        idcardimgtype: doc['idcardpictype'],
+                        universityimg: universityimg,
+                        universityimgtype: doc['universitycardtype'],
+                        drivemotorimg: drimotorimg,
+                        drivemotorimgtype: doc['driveliscensemotorpictype'],
+                        drivecarimg: dricarimg,
+                        drivecarimgtype: doc['driveliscensecarpictype'],
+                        documentchat: doc['documentchat'],
+                        money: double.parse(doc['money'].toString()),
+                        isapprove: doc['isapprove'],
+                        isadmin: doc['isadmin']);
                     print("run");
-                    var maxSize = 7*1024*1024;
-                    final StorageReference ref = FirebaseStorage.instance.ref()
-                    .child("User")
-                    .child(Datamanager.user.uid);
-                    await ref.child("profile." + Datamanager.user.profileimgtype).getData(maxSize).then((data){
+                    var maxSize = 7 * 1024 * 1024;
+                    final StorageReference ref = FirebaseStorage.instance
+                        .ref()
+                        .child("User")
+                        .child(Datamanager.user.uid);
+                    await ref
+                        .child("profile." + Datamanager.user.profileimgtype)
+                        .getData(maxSize)
+                        .then((data) {
                       ImageProfiles.profileUrl = data;
-                    }).catchError((error){
+                    }).catchError((error) {
                       print("------");
                       debugPrint(error.toString());
                     });
 
-                    await ref.child("drimotorcard." + Datamanager.user.drivemotorimgtype).getData(maxSize).then((data){
+                    await ref
+                        .child("drimotorcard." +
+                            Datamanager.user.drivemotorimgtype)
+                        .getData(maxSize)
+                        .then((data) {
                       ImageProfiles.drimotorcard = data;
-                    }).catchError((error){
+                    }).catchError((error) {
                       print("------");
                       debugPrint(error.toString());
                     });
-                    await ref.child("universitycard." + Datamanager.user.universityimgtype).getData(maxSize).then((data){
+                    await ref
+                        .child("universitycard." +
+                            Datamanager.user.universityimgtype)
+                        .getData(maxSize)
+                        .then((data) {
                       ImageProfiles.universitycard = data;
-                    }).catchError((error){
+                    }).catchError((error) {
                       print("------");
                       debugPrint(error.toString());
                     });
-                     await ref.child("idcard." + Datamanager.user.idcardimgtype).getData(maxSize).then((data){
+                    await ref
+                        .child("idcard." + Datamanager.user.idcardimgtype)
+                        .getData(maxSize)
+                        .then((data) {
                       ImageProfiles.idcard = data;
-                    }).catchError((error){
+                    }).catchError((error) {
                       print("------");
                       debugPrint(error.toString());
                     });
@@ -163,43 +181,46 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                     //                       });
                     Datamanager.listUniversity = [];
                     Firestore.instance
-                      .collection("universityplace")
-                      .snapshots()
-                      .listen((data) => data.documents.forEach((doc) async {
-                        // print(doc);
-                        if(doc != null){
-                        var universityshow = Universityplaceshow.fromSnapshot(doc);
-                        print(universityshow.universityname);
-                        print(universityshow);
-                        Datamanager.listUniversity.add(universityshow.universityname);
-                        Datamanager.universityshow.add(universityshow);
-                        }else{
-                          print('aaa');
-                        }
-                    }));
+                        .collection("universityplace")
+                        .snapshots()
+                        .listen((data) => data.documents.forEach((doc) async {
+                              // print(doc);
+                              if (doc != null) {
+                                var universityshow =
+                                    Universityplaceshow.fromSnapshot(doc);
+                                print(universityshow.universityname);
+                                print(universityshow);
+                                Datamanager.listUniversity
+                                    .add(universityshow.universityname);
+                                Datamanager.universityshow.add(universityshow);
+                              } else {
+                                print('aaa');
+                              }
+                            }));
                     // print(datashow);
                     // print("-------------------");
                     // for (var data in datashow){
                     //   for (var docdata in data.documents){
-                        // var universityshow = Universityplaceshow.fromSnapshot(docdata);
-                        // print(universityshow.universityname);
+                    // var universityshow = Universityplaceshow.fromSnapshot(docdata);
+                    // print(universityshow.universityname);
                     //     if(universityshow != null){
                     //       Datamanager.listUniversity.add(universityshow.universityname);
                     //     }
                     //   }
                     // }
-                                          // ((data){
-                                          //   data.documents.map((data){
-                                          //     var universityshow = Universityplaceshow.fromSnapshot(data);
-                                          //     print(universityshow);
-                                          //     // Datamanager.listUniversity.add(universityshow.universityname);
-                                          //   }).toList();
-                                          // });
+                    // ((data){
+                    //   data.documents.map((data){
+                    //     var universityshow = Universityplaceshow.fromSnapshot(data);
+                    //     print(universityshow);
+                    //     // Datamanager.listUniversity.add(universityshow.universityname);
+                    //   }).toList();
+                    // });
                     print(Datamanager.user);
                   }));
         });
         signinsuccess = true;
         start = true;
+        print("end try");
       } on PlatformException catch (e) {
         start = true;
         signinsuccess = false;
@@ -207,8 +228,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         print(e.message);
       }
       event.checkerrorsignin();
-      if(signinsuccess){
-        Navigator.of(context).pushNamedAndRemoveUntil(Datamanager.tabpage, ModalRoute.withName('/'));
+      if (signinsuccess) {
+        print('start signinsuccess');
+        Firestore.instance
+            .collection("User")
+            .where("uid", isEqualTo: Datamanager.firebaseuser.uid)
+            .snapshots()
+            .listen((data) => data.documents.forEach((doc) async {
+                  if (doc['isadmin']) {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        Datamanager.chooseadminserverpage,
+                        ModalRoute.withName('/'));
+                  } else {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        Datamanager.tabpage, ModalRoute.withName('/'));
+                  }
+                }));
       }
     }
   }
