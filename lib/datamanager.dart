@@ -93,6 +93,7 @@ class Datamanager {
   static Motorcycle motorcycle;
   static List<Universityplaceshow> universityshow = [];
   static List<String> listUniversity = [];
+  static List<String> universitylist = ['Choose University'];
 
   static FirebaseStorage firebasestorage = FirebaseStorage.instance;
 

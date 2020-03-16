@@ -27,7 +27,6 @@ class SelectUniversity extends StatefulWidget {
   _SelectUniversityState createState() => _SelectUniversityState();
 }
 class _SelectUniversityState extends State<SelectUniversity> {
-  List<String> universitylist = ['Choose University'];
   dispose() {
     widget.universityname.dispose();
     widget.latitude.dispose();
@@ -61,12 +60,12 @@ class _SelectUniversityState extends State<SelectUniversity> {
     widget.formkey = GlobalKey<FormState>();
     final data = MediaQuery.of(context);
     if(widget.adduniversityname){
-      universitylist = ['Choose University'];
+      Datamanager.universitylist = ['Choose University'];
       Firestore.instance.collection('universityplace').snapshots()
                       .listen((data){
                         data.documents.map((data){
                           var document = Universityplaceshow.fromSnapshot(data);
-                          universitylist.add(document.universityname);
+                          Datamanager.universitylist.add(document.universityname);
                         }).toString();
                         // print(universitylist);
                         setState(() {
@@ -74,6 +73,7 @@ class _SelectUniversityState extends State<SelectUniversity> {
                         });
                       });
     }
+    print(Datamanager.universitylist);
     return Scaffold(
       appBar: AppBar(
        backgroundColor: Colors.white,
@@ -287,7 +287,7 @@ class _SelectUniversityState extends State<SelectUniversity> {
                           widget.dropdownValue = newValue;
                         });
                       },
-                      items: universitylist
+                      items: Datamanager.universitylist
                         .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -309,6 +309,7 @@ class _SelectUniversityState extends State<SelectUniversity> {
                               color: PickCarColor.colormain,
                               onPressed: (){
                                 if(widget.dropdownValue !='Choose University'){
+                                  Navigator.of(context).pop();
                                   Navigator.of(context).pushNamed(Datamanager.boxselectadmin);
                                 }
                                 // Navigator.of(context).pushNamed(Datamanager.detailsearch);
@@ -332,6 +333,7 @@ class _SelectUniversityState extends State<SelectUniversity> {
                             color: PickCarColor.colorbuttom,
                             onPressed: (){
                               if(widget.dropdownValue !='Choose University'){
+                                Navigator.of(context).pop();
                                 Navigator.of(context).pushNamed(Datamanager.placeselectadmin);
                               }
                               // Navigator.of(context).pushNamed(Datamanager.detailsearch);

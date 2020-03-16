@@ -260,7 +260,18 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
             }else{
               // print(snapshot.data.documents);
               // return Container();
-              return _buildList(context, snapshot.data.documents);
+              if(snapshot.data.documents.length >0){
+                return _buildList(context, snapshot.data.documents);
+              }else{
+                return Container(
+                  height: data.size.height/1.4,
+                  child: Center(
+                    child: Text(UseString.donthavehistory,
+                      style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*30,color: PickCarColor.colorFont1),
+                    ),
+                  ),
+                );
+              }
             }
           },
         ); 
@@ -294,7 +305,18 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
             }else{
               // print(snapshot.data.documents);
               // return Container();
-              return _buildListrent(context, snapshot.data.documents);
+              if(snapshot.data.documents.length >0){
+                return _buildListrent(context, snapshot.data.documents);
+              }else{
+                return Container(
+                  height: data.size.height/1.4,
+                  child: Center(
+                    child: Text(UseString.donthavehistory,
+                      style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*30,color: PickCarColor.colorFont1),
+                    ),
+                  ),
+                );
+              }
             }
           },
         ); 

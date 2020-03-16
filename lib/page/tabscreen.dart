@@ -33,7 +33,10 @@ class _TabScreenPageState extends State<TabScreenPage> {
     });
   }
 
-  
+  void dispose() {
+    Realtime.checkalert.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

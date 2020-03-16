@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/booking.dart';
+import 'package:pickcar/models/history.dart';
 import 'package:pickcar/ui/uisize.dart';
 class ConfirmPage extends StatefulWidget {
   bool isExpand = false;
@@ -95,14 +96,30 @@ class _ConfirmPageState extends State<ConfirmPage> {
       startdate: Datamanager.listcarslot.startdate,
       isinhistory: false,
     );
+    History history = History(
+      times:Datamanager.listcarslot.time,
+      price:Datamanager.listcarslot.price,
+      motorcycledocid:Datamanager.listcarslot.motorcycledocid,
+      // boxname:,
+      // plancename:,
+      iscancel: false,
+      university:Datamanager.listcarslot.university,
+      priceaddtax:widget.pricetotal,
+      startdate:Datamanager.listcarslot.startdate,
+      ownername:Datamanager.user.name,
+      brand:Datamanager.motorcycleShow.brand,
+      generation:Datamanager.motorcycleShow.generation,
+      imagelink:Datamanager.motorcycleShow.motorfrontlink,
+    );
     await Firestore.instance.collection('Singleforrent')
                               .where('ownerdocid' ,isEqualTo: Datamanager.listcarslot.ownerdocid)
                               .getDocuments().then((data) {
+                                var document ;
                                 Future.delayed(const Duration(milliseconds: 1000), () async {
                                   if(data.documents.length == 1){
                                     // print(data.documents.length);
                                       var ref = await Datamanager.firestore.collection('Booking').add(booking.toJson());
-                                      var document = ref.documentID;
+                                      document = ref.documentID;
                                       Datamanager.firestore.collection("Booking").document(document).updateData(
                                           {'bookingdocid' : document}
                                       );
@@ -114,7 +131,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
                                     print(data.documents.length);
                                     print('=====');
                                     var ref = await Datamanager.firestore.collection('Booking').add(booking.toJson());
-                                    var document = ref.documentID;
+                                    document = ref.documentID;
                                     Datamanager.firestore.collection("Booking").document(document).updateData(
                                         {'bookingdocid' : document}
                                     );
@@ -124,6 +141,11 @@ class _ConfirmPageState extends State<ConfirmPage> {
                                     Datamanager.firestore.collection('Singleforrent').document(Datamanager.listcarslot.docid).delete();
                                    
                                   }
+                                  await Firestore.instance.collection("history")
+                                                          .document(Datamanager.user.documentid)
+                                                          .collection(Datamanager.listcarslot.ownerdocid)
+                                                          .document(document)
+                                                          .setData(history.toJson());
                                 });
                               });
   }

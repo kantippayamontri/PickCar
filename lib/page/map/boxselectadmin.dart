@@ -359,11 +359,13 @@ class _BoxselectadminState extends State<Boxselectadmin> {
                               allMarkers = [];
                               textController = TextEditingController();
                               _controller = Completer();
-                              Navigator.pop(context);
+                              Navigator.of(context).pop();
+                              // Navigator.of(context).pushNamed(Datamanager.selectUniversity);
                             });
                           });
     }else{
-      Navigator.pop(context);
+      Navigator.of(context).pop();
+      // Navigator.of(context).pushNamed(Datamanager.selectUniversity);
       textController = TextEditingController();
       showalert(context);
     }
@@ -403,6 +405,7 @@ class _BoxselectadminState extends State<Boxselectadmin> {
             onPressed: () {
               DataFetch.checkhavedata = 0;
               Navigator.pop(context);
+              Navigator.of(context).pushNamed(Datamanager.selectUniversity);
             },
           ),
         ),

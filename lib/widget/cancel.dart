@@ -138,11 +138,11 @@ import 'package:pickcar/models/listcarslot.dart';
                 var booking= Bookingshow.fromSnapshot(databook.documents.first);
                 Firestore.instance.collection('Motorcycle').document(booking.motorcycledocid).get().then((data) async {
                   var motorshow = MotorcycleShow.fromSnapshot(data);
-                  print(booking.ownerid);
-                  print(Datamanager.user.documentid);
-                  print(booking.ownercanclealert);
+                  // print(booking.ownerid);
+                  // print(Datamanager.user.documentid);
+                  // print(booking.ownercanclealert);
                   if(booking.rentercanclealert && booking.ownercanclealert ){
-                    print('has cancel');
+                    // print('has cancel');
                     DataFetch.waitloaddata = 0;
                   }else if(!booking.ownercanclealert && booking.ownerid == Datamanager.user.documentid){
                     showdialogowner(context,booking,motorshow);

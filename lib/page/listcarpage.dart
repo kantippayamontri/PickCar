@@ -135,9 +135,12 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
                                                             .document(booking.bookingdocid)
                                                             .setData(book.toJson())
                                                             .whenComplete((){
-                                                              setState(() {
-                                                                Navigator.pop(context);
-                                                              });
+                                                              Firestore.instance.collection("history")
+                                                                                .document(Datamanager.user.documentid)
+                                                                                .collection(book.ownerid)
+                                                                                .document(booking.bookingdocid)
+                                                                                .updateData({"ishistory":true,"iscancel":true});
+                                                              Navigator.pop(context);
                                                             }); 
                                           
                                         });
@@ -170,6 +173,50 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
         );
       }
     );
+  }
+  showcancelbooking(BuildContext context){
+    var data = MediaQuery.of(context);
+    if(widget.indicatorpage == 0){
+      return Stack(
+        children: <Widget>[
+          Visibility(
+              visible: !widget.visible,
+              child: Container(
+                margin: EdgeInsets.only(right:SizeConfig.blockSizeHorizontal*5,top: SizeConfig.blockSizeVertical),
+                child: IconButton(
+                  icon: Icon(Icons.reorder,color: Colors.white,size: SizeConfig.blockSizeHorizontal*10,),
+                  onPressed: (){
+                    setState(() {
+                        widget.visible = true;
+                        widget.width = SizeConfig.blockSizeHorizontal *12;
+                    });
+                  },
+                ),
+              ),
+            ),
+            Visibility(
+              visible: widget.visible,
+              child: Container(
+                margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*2),
+                child: FlatButton(
+                  child: Text(UseString.cancelappbar,
+                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*16,color: Colors.white),
+                  ),
+                  onPressed: (){
+                    setState(() {
+                        widget.visible = false;
+                        widget.width = 0;
+                    });
+                  },
+                ),
+              ),
+            ),
+        ],
+      );
+    }else{
+      return Container();
+    }
+    
   }
   @override
   Widget build(BuildContext context) {
@@ -223,7 +270,7 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
           children: <Widget>[
             Container(
               width: datasize.size.width,
-              height: 150,
+              height: SizeConfig.blockSizeVertical*21,
               child: Image.asset('assets/images/imagesearch/card.png',fit: BoxFit.fill,),
             ),
             FutureBuilder<DocumentSnapshot>(
@@ -250,13 +297,12 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
                   widget.motorshow = MotorcycleShow.fromSnapshot(snapshot.data);
                   return Stack(
                     children: <Widget>[
-                      
                       Visibility(
                         visible: widget.visible,
                         child: Container(
                           margin: EdgeInsets.only(left:SizeConfig.blockSizeHorizontal*8,top: SizeConfig.blockSizeVertical*1.5),
                           width: widget.width-SizeConfig.blockSizeHorizontal*5,
-                          height: SizeConfig.blockSizeVertical*14+(SizeConfig.blockSizeVertical/1.5),
+                          height: SizeConfig.blockSizeVertical*17,
                           decoration: BoxDecoration(
                             // borderRadius: BorderRadius.circular(14),
                             color: Colors.red,
@@ -268,7 +314,7 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
                         child: Container(
                           margin: EdgeInsets.only(left:SizeConfig.blockSizeHorizontal*3,top: SizeConfig.blockSizeVertical*1.5),
                           width: widget.width,
-                          height: SizeConfig.blockSizeVertical*14+(SizeConfig.blockSizeVertical/1.5),
+                          height: SizeConfig.blockSizeVertical*17,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14),
                             color: Colors.red,
@@ -285,7 +331,7 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
                       Container(
                         margin: EdgeInsets.only(top: SizeConfig.blockSizeHorizontal*5,left: widget.width+SizeConfig.blockSizeHorizontal*5),
                         width: SizeConfig.blockSizeHorizontal*35,
-                        height: SizeConfig.blockSizeVertical*12,
+                        height: SizeConfig.blockSizeVertical*14,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           image: DecorationImage(
@@ -406,38 +452,7 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
             },
           ),
         actions: <Widget>[
-          Visibility(
-            visible: !widget.visible,
-            child: Container(
-              margin: EdgeInsets.only(right:SizeConfig.blockSizeHorizontal*5),
-              child: IconButton(
-                icon: Icon(Icons.reorder,color: Colors.white,size: SizeConfig.blockSizeHorizontal*10,),
-                onPressed: (){
-                  setState(() {
-                      widget.visible = true;
-                      widget.width = SizeConfig.blockSizeHorizontal *12;
-                  });
-                },
-              ),
-            ),
-          ),
-          Visibility(
-            visible: widget.visible,
-            child: Container(
-              // margin: EdgeInsets.only(right:SizeConfig.blockSizeHorizontal*5),
-              child: FlatButton(
-                child: Text(UseString.cancelappbar,
-                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*16,color: Colors.white),
-                ),
-                onPressed: (){
-                  setState(() {
-                      widget.visible = false;
-                      widget.width = 0;
-                  });
-                },
-              ),
-            ),
-          ),
+          showcancelbooking(context),
         ],
         title: Container(
           width: SizeConfig.blockSizeHorizontal*20,

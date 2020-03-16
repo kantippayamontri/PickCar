@@ -363,7 +363,8 @@ class _PlaceselectadminState extends State<Placeselectadmin> {
             ),
             onPressed: () {
               DataFetch.checkhavedata = 0;
-              Navigator.pop(context);
+              Navigator.of(context).pop();
+              Navigator.of(context).pushNamed(Datamanager.selectUniversity);
             },
           ),
         ),
