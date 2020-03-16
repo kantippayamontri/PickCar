@@ -27,9 +27,9 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
       //todo init var
 
       //todo -----------
-      // DateTime timenow = DateTime(DateTime.now().year, DateTime.now().month,
-      //     DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
-      DateTime timenow = DateTime(2020, 3, 25, 10, 46);
+      DateTime timenow = DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
+      // DateTime timenow = DateTime(2020, 3, 25, 10, 46);
       bool istimeinslot = checkintimeslot(timenow);
       String timeslotin = timeslotmatch(timenow);
       await checkownerdontdropkey(timenow);
