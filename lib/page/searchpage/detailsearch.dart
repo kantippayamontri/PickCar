@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:path/path.dart';
 import 'package:pickcar/bloc/profile/changpassword/changpasswordbloc.dart';
+import 'package:pickcar/ui/uisize.dart';
 import 'dart:typed_data';
 
 import '../../datamanager.dart';
@@ -39,6 +40,8 @@ class _DetailsearchState extends State<Detailsearch> {
   }
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    // var fontsize = SizeConfig.blockSizeHorizontal+SizeConfig.blockSizeVertical;
     widget.formkey = GlobalKey<FormState>();
     final data = MediaQuery.of(context);
     return Scaffold(
@@ -72,26 +75,26 @@ class _DetailsearchState extends State<Detailsearch> {
             Container(
               margin: EdgeInsets.only(top: data.size.height),
               width: data.size.width,
-              height: 400,
+              height: SizeConfig.blockSizeVertical*40,
               color: Colors.grey[400],
             ),
             Container(
               width: data.size.width,
-              height: 350,
+              height: SizeConfig.blockSizeVertical*51,
               color: Colors.white,
               child: Stack(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(top: 10,left: 10),
+                    margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical,left: SizeConfig.blockSizeHorizontal),
                     child: Text(Datamanager.motorcycleShow.brand+' '+Datamanager.motorcycleShow.generation,
                         style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*30,color: PickCarColor.colorFont1), 
                     ),
                   ),
                   Center(
                     child: Container(
-                      margin: EdgeInsets.only(top: 20),
-                      width: 370,
-                      height: 270,
+                      margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*8),
+                      width: SizeConfig.blockSizeHorizontal*90,
+                      height: SizeConfig.blockSizeVertical*50,
                       // color: Colors.black,
                       child: Container(
                         child: Stack(
@@ -99,7 +102,7 @@ class _DetailsearchState extends State<Detailsearch> {
                           // crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             carouselSlider = CarouselSlider(
-                              height: 220.0,
+                              height: SizeConfig.blockSizeVertical*30,
                               initialPage: 0,
                               enlargeCenterPage: true,
                               // autoPlay: true,
@@ -119,7 +122,7 @@ class _DetailsearchState extends State<Detailsearch> {
                                   builder: (BuildContext context) {
                                     return Container(
                                       width: MediaQuery.of(context).size.width,
-                                      margin: EdgeInsets.symmetric(horizontal: 10.0),
+                                      margin: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal),
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                       ),
@@ -133,17 +136,17 @@ class _DetailsearchState extends State<Detailsearch> {
                               }).toList(),
                             ),
                             SizedBox(
-                              height: 20,
+                              height: SizeConfig.blockSizeVertical,
                             ),
                             Container(
-                              margin: EdgeInsets.only(top: 200),
+                              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*30),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: map<Widget>(imgList, (index, url) {
                                   return Container(
-                                    width: 10.0,
-                                    height: 10.0,
-                                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                                    width: SizeConfig.blockSizeVertical*1.5,
+                                    height: SizeConfig.blockSizeVertical*1.5,
+                                    margin: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical, horizontal: SizeConfig.blockSizeHorizontal/2),
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: _current == index ? PickCarColor.colormain : Colors.grey,
@@ -178,21 +181,21 @@ class _DetailsearchState extends State<Detailsearch> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 290,left: 10),
+              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*42,left: SizeConfig.blockSizeHorizontal),
               child: Text(Currency.thb+' '+Datamanager.listcarslot.price.toString(),
                   style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*30,color: PickCarColor.colorFont1), 
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 290,left: 243),
+              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*42,left: SizeConfig.blockSizeHorizontal*60),
               child: Text(UseString.forrent,
                   style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*18,color: PickCarColor.colorFont1), 
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 280,left: 340),
-              width: 45,
-              height: 45,
+              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*41,left: SizeConfig.blockSizeHorizontal*82),
+              width: SizeConfig.blockSizeHorizontal*11,
+              height: SizeConfig.blockSizeHorizontal*11,
               decoration: new BoxDecoration(
                 shape: BoxShape.circle,
                 image: new DecorationImage(
@@ -203,9 +206,9 @@ class _DetailsearchState extends State<Detailsearch> {
               )
             ),
             Container(
-              width: 100,
-              height: 20,
-              margin: EdgeInsets.only(top: 325,left: 310),
+              width: SizeConfig.blockSizeHorizontal*24,
+              height: SizeConfig.blockSizeVertical*3,
+              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*47,left: SizeConfig.blockSizeHorizontal*75),
               // color: Colors.black,
               child: Center(
                 child: Text(Datamanager.usershow.name,
@@ -215,32 +218,32 @@ class _DetailsearchState extends State<Detailsearch> {
             ),
 
             Container(
-              width: 195,
-              height: 250,
-              margin: EdgeInsets.only(top: 355),
+              width: SizeConfig.blockSizeHorizontal*47.5,
+              height: SizeConfig.blockSizeVertical*36.5,
+              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*52),
               color: Colors.white,
               child: Stack(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(top: 10,left: 20),
+                    margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical,left: SizeConfig.blockSizeHorizontal*4),
                     child: Text(UseString.detail,
                       style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*18,color: PickCarColor.colormain),
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 40,left: 40),
+                    margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*5,left: SizeConfig.blockSizeHorizontal*8),
                     child: Column(
                       children: <Widget>[
                         Row(
                           children: <Widget>[
                             Container(
-                              height: 30,
-                              width: 30,
+                              height: SizeConfig.blockSizeHorizontal*7,
+                              width: SizeConfig.blockSizeHorizontal*7,
                               child: Image.asset('assets/images/imagesearch/gears.png',fit: BoxFit.fill,),
                             ),
                             Container(
-                              margin: EdgeInsets.only(left: 2),
-                              child: Text("autometic"+' ',
+                              margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal),
+                              child: Text(Datamanager.motorcycleShow.gear,
                                 style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*18,color: PickCarColor.colorFont2),
                               ),
                             ),
@@ -249,14 +252,14 @@ class _DetailsearchState extends State<Detailsearch> {
                         Row(
                           children: <Widget>[
                             Container(
-                              margin: EdgeInsets.only(top: 5),
-                              height: 30,
-                              width: 30,
+                              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical),
+                              height: SizeConfig.blockSizeHorizontal*7,
+                              width: SizeConfig.blockSizeHorizontal*7,
                               child: Image.asset('assets/images/imagesearch/cc.png',fit: BoxFit.fill,),
                             ),
                             Container(
-                              margin: EdgeInsets.only(left: 2,top: 5),
-                              child: Text("123"+' '+UseString.cc,
+                              margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal,top: SizeConfig.blockSizeVertical),
+                              child: Text(Datamanager.motorcycleShow.cc.toString()+' '+UseString.cc,
                                 style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*18,color: PickCarColor.colorFont2),
                               ),
                             ),
@@ -265,14 +268,14 @@ class _DetailsearchState extends State<Detailsearch> {
                         Row(
                           children: <Widget>[
                             Container(
-                              margin: EdgeInsets.only(top: 5),
-                              height: 30,
-                              width: 30,
+                              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical),
+                              height: SizeConfig.blockSizeHorizontal*7,
+                              width: SizeConfig.blockSizeHorizontal*7,
                               child: Image.asset('assets/images/imagesearch/gas.png',fit: BoxFit.fill,),
                             ),
                             Container(
-                              margin: EdgeInsets.only(left: 2,top: 5),
-                              child: Text("123"+' '+UseString.cc,
+                              margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal,top: SizeConfig.blockSizeVertical),
+                              child: Text(Datamanager.motorcycleShow.motorgas,
                                 style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*18,color: PickCarColor.colorFont2),
                               ),
                             ),
@@ -281,19 +284,35 @@ class _DetailsearchState extends State<Detailsearch> {
                         Row(
                           children: <Widget>[
                             Container(
-                              margin: EdgeInsets.only(top: 5),
-                              height: 30,
-                              width: 30,
+                              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical),
+                              height: SizeConfig.blockSizeHorizontal*7,
+                              width: SizeConfig.blockSizeHorizontal*7,
                               child: Image.asset('assets/images/imagesearch/color.png',fit: BoxFit.fill,),
                             ),
                             Container(
-                              margin: EdgeInsets.only(left: 2,top: 5),
-                              child: Text("red",
+                              margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal,top: SizeConfig.blockSizeVertical),
+                              child: Text(Datamanager.motorcycleShow.color,
                                 style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*18,color: PickCarColor.colorFont2),
                               ),
                             ),
                           ],
                         ),
+                        // Row(
+                        //   children: <Widget>[
+                        //     Container(
+                        //       margin: EdgeInsets.only(top: 5),
+                        //       height: 30,
+                        //       width: 30,
+                        //       child: Image.asset('assets/images/imagesearch/color.png',fit: BoxFit.fill,),
+                        //     ),
+                        //     Container(
+                        //       margin: EdgeInsets.only(left: 2,top: 5),
+                        //       child: Text(Datamanager.motorcycleShow.color,
+                        //         style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*18,color: PickCarColor.colorFont2),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                       ],
                     ),
                   ),
@@ -301,28 +320,28 @@ class _DetailsearchState extends State<Detailsearch> {
               ),
             ),
             Container(
-              width: 215,
-              height: 250,
-              margin: EdgeInsets.only(top: 355,left: 201),
+              width: SizeConfig.blockSizeHorizontal*51.5,
+              height: SizeConfig.blockSizeVertical*36.5,
+              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*52,left: SizeConfig.blockSizeHorizontal*49),
               color: Colors.white,
               child: Stack(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(top: 10,left: 20),
+                    margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical,left: SizeConfig.blockSizeHorizontal*4),
                     child: Text(UseString.included,
                       style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colormain),
                     ),
                   ),
                   Container(
-                     margin: EdgeInsets.only(top: 47,left: 17),
+                     margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*5,left: SizeConfig.blockSizeHorizontal*4),
                      child: Icon(Icons.done,color: PickCarColor.colormain,),
                   ),
                   Container(
-                     margin: EdgeInsets.only(top: 93,left: 17),
+                     margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*12,left: SizeConfig.blockSizeHorizontal*4),
                      child: Icon(Icons.done,color: PickCarColor.colormain,),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 47,left: 40),
+                    margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*5,left: SizeConfig.blockSizeHorizontal*10),
                     child: Column(
                       children: <Widget>[
                         Container(
@@ -333,7 +352,7 @@ class _DetailsearchState extends State<Detailsearch> {
                         ),
                         Container(
                           alignment: Alignment.centerLeft,
-                          margin: EdgeInsets.only(top: 5),
+                          margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical),
                           child: Text(UseString.insurancemotorcycle,
                             style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*18,color: PickCarColor.colorFont2),
                           ),
@@ -346,31 +365,31 @@ class _DetailsearchState extends State<Detailsearch> {
             ),
             Container(
               width: data.size.width,
-              height: 200,
-              margin: EdgeInsets.only(top: 610),
+              height: SizeConfig.blockSizeVertical*29,
+              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*89.5),
               color: Colors.white,
               child: Stack(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(left: 20,top: 20),
+                    margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*4,top: SizeConfig.blockSizeVertical*2),
                     child: Text(UseString.precautions,
                       style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color: PickCarColor.colormain),
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 20,top: 50),
+                    margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*4,top: SizeConfig.blockSizeVertical*6),
                     child: Text(UseString.precautionsdetail,
                       style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*20,color: PickCarColor.colorFont2),
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 20,top: 150),
+                    margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*4,top: SizeConfig.blockSizeVertical*22),
                     child: Row(
                       children: <Widget>[
                         Container(
-                          margin: EdgeInsets.only(right: 3),
-                          height: 20,
-                          width: 20,
+                          margin: EdgeInsets.only(right: SizeConfig.blockSizeHorizontal),
+                          height: SizeConfig.blockSizeVertical*2,
+                          width: SizeConfig.blockSizeHorizontal*4,
                           child: Image.asset('assets/images/imagesearch/warning.png',fit: BoxFit.fill,),
                         ),
                         Text(UseString.warnning,
@@ -384,19 +403,19 @@ class _DetailsearchState extends State<Detailsearch> {
             ),
             Container(
               width: data.size.width,
-              height: 175,
-              margin: EdgeInsets.only(top: 815),
+              height: SizeConfig.blockSizeVertical*30,
+              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*119.5),
               color: Colors.white,
               child: Stack(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(left: 20,top: 20),
+                    margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*4,top: SizeConfig.blockSizeVertical*2),
                     child: Text(UseString.location,
                             style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color: PickCarColor.colormain),
                           ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 20,top: 50),
+                    margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*4,top: SizeConfig.blockSizeVertical*7),
                     child: Text(UseString.locationdetail,
                       style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*20,color: PickCarColor.colorFont2),
                     ),
@@ -408,13 +427,13 @@ class _DetailsearchState extends State<Detailsearch> {
                     child: Stack(
                       children: <Widget>[
                         Container(
-                          margin: EdgeInsets.only(left: 177,top: 80),
+                          margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*43,top: SizeConfig.blockSizeVertical*12),
                           width: 50,
                           height: 55,
                           child: Image.asset('assets/images/imagesearch/pin.png',fit: BoxFit.fill,),
                         ),
                         Container(
-                          margin: EdgeInsets.only(left: 174,top: 130),
+                          margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*42,top: SizeConfig.blockSizeVertical*20),
                           width: 60,
                           height: 55,
                           child: Text(UseString.location,
@@ -428,10 +447,10 @@ class _DetailsearchState extends State<Detailsearch> {
               ),
             ),
             Container(
-              height: 120,
-              margin: EdgeInsets.only(top: 995),
+              height: SizeConfig.blockSizeVertical*10,
+              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*142),
               width: data.size.width,
-              color: Colors.white,
+              // color: Colors.black,
               child: Stack(
                 children: <Widget>[
                   Center(
@@ -443,13 +462,13 @@ class _DetailsearchState extends State<Detailsearch> {
                     },
                     child: Center(
                       child: Container(
-                        margin: EdgeInsets.only(bottom: 9),
+                        margin: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical*1.1),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(18),
                           // color: Colors.black,
                         ),
-                        width: 148,
-                        height: 45,
+                        width: SizeConfig.blockSizeHorizontal*35,
+                        height: SizeConfig.blockSizeVertical*6,
                         child: Center(
                           child: Text(UseString.next,
                             style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: Colors.white),

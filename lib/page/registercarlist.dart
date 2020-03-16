@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pickcar/bloc/listcar/listcarbloc.dart';
 import 'package:pickcar/bloc/listcar/listcarevent.dart';
 import 'package:pickcar/bloc/listcar/listcarstate.dart';
+import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/widget/listcar/listcatitem.dart';
 
 class Registercarlist extends StatefulWidget {

@@ -173,11 +173,13 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
     print("boxslotrentlist : " + boxslotrentlist.length.toString());
     print("boxslotrentlist docid : " + boxslotrentlist[0]['docid']);
     print("motorcycle docid : " + this.motorcycle.firestoredocid);
+    // print("boxslotrentlist : " + boxslotrentlist.length.toString());
+    // print("boxslotrentlist docid : " + boxslotrentlist[0]['docid']);
     for (var doc in boxslotrentlist) {
       if (!(doc['day'] == timenow.day) &&
           (doc['month'] == timenow.month) &&
           (doc['year'] == timenow.year)) {
-        print("doc continuce : ${doc['docid']}");
+        // print("doc continuce : ${doc['docid']}");
         continue;
       }
 
@@ -209,8 +211,8 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
 
     this.openbox = currentopenbox;
     if (openbox != null) {
-      print("infunction : ${this.openbox.docid}");
-      print("motor place : ${this.openbox.docid}");
+      // print("infunction : ${this.openbox.docid}");
+      // print("motor place : ${this.openbox.docid}");
       DocumentSnapshot motorplacedoc = await Datamanager.firestore
           .collection("placelocation")
           .document(this.openbox.motorplaceloc)
@@ -238,7 +240,7 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
   }
 
   Future navigatetoopenbox() async {
-    print("before navigator : ${this.openbox.docid}");
+    // print("before navigator : ${this.openbox.docid}");
     int message = await Navigator.push(
         context,
         MaterialPageRoute(
@@ -249,7 +251,7 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
                   placelocation: this.openboxmotorplace,
                 )));
 
-    print("data back is : ${message}");
+    // print("data back is : ${message}");
   }
 
   Future navigatetoreceivebox() async {
@@ -274,7 +276,7 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
   // }
 
   Future<void> loaddata() async {
-    print("firestoredocid : ${this.firestoredocid}");
+    // print("firestoredocid : ${this.firestoredocid}");
 
     await Datamanager.firestore
         .collection("Motorcycle")
@@ -286,7 +288,7 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
   }
 
   Motorcycle assigndata(DocumentSnapshot ds) {
-    print("startdfasdfadsfasdfas");
+    // print("startdfasdfadsfasdfas");
     Motorcycle motor = Motorcycle(
       brand: ds["brand"],
       carstatus: ds['carstatus'],

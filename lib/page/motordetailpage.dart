@@ -16,7 +16,7 @@ import 'motorwaitinglistpage.dart';
 class MotorDetailPage extends StatefulWidget {
   String motordocid;
   MotorDetailPage({@required this.motordocid}) {
-    print("MotorDetailPage motordocid : ${motordocid}");
+    // print("MotorDetailPage motordocid : ${motordocid}");
   }
   @override
   _MotorDetailPageState createState() => _MotorDetailPageState();
@@ -32,7 +32,7 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
   @override
   void initState() {
     // TODO: implement initState
-    print("motor firestore docid ; ${widget.motordocid}");
+    // print("motor firestore docid ; ${widget.motordocid}");
     _motorDetailBloc = MotorDetailBloc(
         context: context,
         firestoredocid: widget.motordocid,
@@ -261,7 +261,7 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                                       motorcycle: _motorDetailBloc.motorcycle,
                                     )),
                           ).then((_) {
-                            print("in then in detailpage");
+                            // print("in then in detailpage");
                             _motorDetailBloc.add(MotorDetailLoadData());
                           });
                         },
@@ -302,7 +302,7 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                 ? FloatingActionButton(
                     heroTag: "dropkey",
                     onPressed: () async {
-                      print('press key box ja');
+                      // print('press key box ja');
                       await _motorDetailBloc.navigatetoopenbox();
                       _motorDetailBloc.add(MotorDetailLoadData());
                     },

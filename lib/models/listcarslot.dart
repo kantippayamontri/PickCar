@@ -18,6 +18,9 @@ class Listcarslot {
   String boxplacedocid;
   String boxslotrentdocid;
   String motorplacelocdocid;
+  bool iscancle;
+  bool ownercanclealert;
+  bool rentercanclealert;
   final DocumentReference reference;
 
   Listcarslot.fromMap(Map<String, dynamic> map, {this.reference})
@@ -35,6 +38,12 @@ class Listcarslot {
        assert(map['boxplacedocid'] != null),
        assert(map['boxslotrentdocid'] != null),
        assert(map['motorplacelocdocid'] != null),
+       assert(map['iscancle'] != null),
+       assert(map['ownercanclealert'] != null),
+       assert(map['rentercanclealert'] != null),
+       iscancle = map['iscancle'],
+       ownercanclealert = map['ownercanclealert'],
+       rentercanclealert = map['rentercanclealert'],
        time = map['time'],
        startdate = (map['startdate'] as Timestamp).toDate(),
        day = map['day'],
@@ -71,11 +80,14 @@ class MotorcycleShow{
   String motorleftlink;
   String motorrightlink;
   String carstatus;
+  String motorreg;
+  String motorgas;
   bool isbook;
   bool iswaiting;
   bool isworking;
   double currentlatitude;
   double currentlongitude;
+  String isapprove;
   final DocumentReference reference;
 
   
@@ -98,8 +110,12 @@ class MotorcycleShow{
        assert(map['isbook'] != null),
        assert(map['iswaiting'] != null),
        assert(map['isworking'] != null),
+       assert(map['motorreg'] != null),
+       assert(map['motorgas'] != null),
+       assert(map['isapprove'] != null),
       //  assert(map['currentlatitude'] != null),
       //  assert(map['currentlongitude'] != null),
+      isapprove = map['isapprove'],
        currentlatitude = map['currentlatitude'],
        currentlongitude = map['currentlongitude'],
        brand = map['brand'],
@@ -119,6 +135,8 @@ class MotorcycleShow{
        carstatus = map['carstatus'],
        isbook = map['isbook'],
        iswaiting = map['iswaiting'],
+       motorreg = map['motorreg'],
+       motorgas = map['motorgas'],
        isworking = map['isworking'];
 
   MotorcycleShow.fromSnapshot(DocumentSnapshot snapshot)
@@ -134,6 +152,10 @@ class Usershow{
   String profilepictype;
   String documentid;
   String documentchat;
+  String email;
+  String driveliscensecarpath;
+  String driveliscensecarpictype;
+  String isapprove;
   double money;
   var imageurl;
   final DocumentReference reference;
@@ -142,17 +164,24 @@ class Usershow{
    Usershow.fromMap(Map<String, dynamic> map, {this.reference})
      : assert(map['name'] != null),
        assert(map['uid'] != null),
+       assert(map['email'] != null),
        assert(map['profilepicpath'] != null),
        assert(map['profilepictype'] != null),
        assert(map['documentid'] != null),
-       assert(map['documentchat'] != null),
+      //  assert(map['documentchat'] != null),
        assert(map['money'] != null),
+      //  assert(map['driveliscensecarpath'] != null),
+      //  assert(map['driveliscensecarpictype'] != null),
+       driveliscensecarpath = map['driveliscensecarpath'],
+       driveliscensecarpictype = map['driveliscensecarpictype'],
+       email = map['email'],
        name = map['name'],
        uid = map['uid'],
        profilepicpath = map['profilepicpath'],
        profilepictype = map['profilepictype'],
        documentid = map['documentid'],
        money = map['money'].toDouble(),
+       isapprove = map['isapprove'],
        documentchat = map['documentchat'];
       
 

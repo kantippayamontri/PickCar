@@ -1,11 +1,16 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:pickcar/models/chat.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/models/placelocation.dart';
+import 'package:pickcar/page/admin/adminmenu.dart';
+import 'package:pickcar/page/chatpage.dart';
 import 'package:pickcar/page/homepage.dart';
 import 'package:pickcar/page/listcarpage.dart';
 import 'package:pickcar/page/profile/profilepage.dart';
@@ -62,6 +67,14 @@ class Datamanager {
   static String addlocation = "/Addlocation";
   static String historypage = "/HistoryPage";
   static String serverpage = "/serverpage";
+  static String chatpage = "/Chatpage";
+  static String messagepage = "/Messagepage";
+  static String fullimage = "/Fullimage";
+  static String adminmenu = "/Adminmenu";
+  static String adminlicense = "/adminlicense";
+  static String sendlicensepage = "/Sendlicensepage";
+  static String sendregistation = "/Sendregistation";
+  
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
   static FirebaseUser firebaseuser = null;
@@ -72,13 +85,17 @@ class Datamanager {
   static Listcarslot listcarslot;
   static Slottime slottime;
   static Pincar pincar;
+  static Chatprofileshow chatprofileshow;
   static Bookingshow booking;
   static BoxlocationShow boxlocationshow;
   static PlacelocationShow placelocationshow;
   static Boxslotrentshow boxslotrentshow;
   static Boxslotnumbershow boxslotnumbershow;
+  static String imageusershow;
+  static Motorcycle motorcycle;
   static List<Universityplaceshow> universityshow = [];
   static List<String> listUniversity = [];
+  static List<String> universitylist = ['Choose University'];
 
   static FirebaseStorage firebasestorage = FirebaseStorage.instance;
 
@@ -87,13 +104,9 @@ class Datamanager {
   static FirebaseDatabase realtimedatabase = FirebaseDatabase.instance;
 
   static List<Map<String, Object>> pages = [
-    {
-      'page': HomePage(
-        gotosearchinHome: gontosearchinHome,
-      ),
-      'title': 'Home'
-    },
-    {'page': SearchPage(), 'title': 'Chat'},
+    {'page': HomePage(gotosearchinHome: gontosearchinHome,), 'title': 'Home'},
+    // {'page': Adminmenu(), 'title': 'Chat'},
+    {'page': Chatpage(), 'title': 'Chat'},
     {'page': ListCarPage(), 'title': 'ListCar'},
     {'page': ProfilePage(), 'title': 'Profile'},
     {'page': SettingPage(), 'title': 'setting'},
@@ -132,8 +145,6 @@ class Datamanager {
   static var universityforadmin = [
     'Choose University',
     "Chiang Mai University",
-    "sdfasdfasd",
-    "dfasdfsdfasdf",
   ];
   static Map<String, Object> universitydatabase = {
     'Universityname': 'Chiang Mai University',
@@ -272,6 +283,7 @@ class UseString {
   static String rentaldetail = "Rentail Detail";
   static String selectedcar = "Selected Car";
   static String getkey = "Get the key";
+  static String getcar = "Get the car";
   static String receivecar = "Receive Car";
   static String returncar = "Return Car";
   static String day = "Datetime";
@@ -351,6 +363,48 @@ class UseString {
   static String carregistration = "Car Registration";
   static String carregistrationval = "Please Enter Car Registration";
   static String carownercancle = "Your car is cancle";
+  static String sayhi = "Say hi to";
+  static String sentimage = "sent image to you";
+  static String you = "You";
+  static String chatprofile = "Chat Profile";
+  static String chat = "Chat";
+  static String menu = "Admin Menu";
+  static String checkdetail = "Approve license";
+  static String placebox = "Place & Box Location";
+  static String license = "License";
+  static String adduniversity = "Add University";
+  static String approve = "Approve";
+  static String reject = "Reject";
+  static String areyou = "Are you sure to";
+  static String pleaseselecttitle = "Please select object";
+  static String pleaseselectdetail= "The object does not select. \nPlease select object below.";
+  static String fill = "Please fill empty blank";
+  static String pleasewaittitle = "Please wait for approve driver license";
+  static String pleasewaitbody = "It take 1-2 day for approve your driver license. \nIt will take than 3 day a few case.";
+  static String rejectalert = "You driver license is rejected";
+  static String rejectalertbody = "Please send new driver license again before rent.";
+  static String driverlicense = "Driver License";
+  static String save = "Save";
+  static String gallory = "Gallory";
+  static String camara = "Camara";
+  static String uploaddriver ='Upload driver license';
+  static String uploadding ='Uploading';
+  static String senddriverlicense ='Already Send driver licesnse';
+  static String pleaseupload ='Please Upload \nyou driver license.';
+  static String licenseplate ='License plate';
+
+  static String pleasewaittitlecar = "Please wait for approve Vehicle registration";
+  static String rejectalertcar = "You Vehicle registration is rejected";
+  static String rejectalertbodycar = "Please send new Vehicle registration again before rent.";
+  static String vehicleregistration = "Vehicle Registration";
+  static String sendregistration='Already Send Vehicle registration';
+  static String pleaseuploadcar ='Please Upload \nyou Vehicle registration.';
+  static String uploadregistration ='Upload Vehicle registration';
+
+  static String bookinreport ='Your order  booking is cancel';
+  static String cancelrent='Your car is cancel';
+  static String cancelappbar='CANCEL';
+  static String sendlongmessage = 'new messages';
 }
 
 class Currency {
@@ -365,6 +419,7 @@ class Realtime {
   static var timekey;
   static var timecar;
   static var checkkeymap;
+  static Timer checkalert;
 }
 
 class Checkopenkey {
@@ -421,7 +476,11 @@ class GearMotor {
     {'gear': GearMotor.manual}
   ];
 }
-
+class Imagesoom{
+  static var image;
+  static var width;
+  static var height;
+}
 class CarStatus {
   static const String nothing = "NOTHING";
   static const String waiting = "WAITING";
@@ -486,6 +545,10 @@ class DataFetch {
   static int checkkey = 0;
   static int checkkeymap = 0;
   static int fetchhavecar = 0;
+  static int fetchcancelalert= 0;
+  static int waitloaddata =0;
+  static int logincancelshow =0;
+
 }
 
 class TimeSlotSingle {

@@ -1,82 +1,60 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
-class Booking {
+class History {
   String times;
-  int day;
-  int month;
-  int year;
   double price;
   String motorcycledocid;
-  String ownerid;
-  String myid;
-  String bookingdocid;
-  String boxdocid;
   String university;
-  String boxplacedocid;
-  String boxslotrentdocid;
-  String motorplacelocdocid;
-  String status;
+  String boxname;
+  String plancename;
   double priceaddtax;
   DateTime startdate;
-  bool isinhistory;
-  bool iscancle;
-  bool ownercanclealert;
-  bool rentercanclealert;
+  String ownername;
+  String brand;
+  String generation;
+  String imagelink;
+  bool iscancel;
+  bool ishistory = false;
 
  
-  Booking({
+  History({
     @required this.times,
-    @required this.day,
-    @required this.month,
-    @required this.year,
     @required this.price,
     @required this.motorcycledocid,
-    @required this.ownerid,
-    @required this.myid,
-    @required this.bookingdocid,
-    @required this.boxdocid,
-    @required this.boxplacedocid,
-    @required this.boxslotrentdocid,
-    @required this.motorplacelocdocid,
+    // @required this.boxname,
+    // @required this.plancename,
     @required this.university,
-    @required this.status,
-    this.priceaddtax,
+    @required this.priceaddtax,
     @required this.startdate,
-    this.isinhistory,
-    @required this.iscancle,
-    @required this.ownercanclealert,
-    @required this.rentercanclealert,
+    @required this.ownername,
+    @required this.brand,
+    @required this.generation,
+    @required this.imagelink,
+    @required this.iscancel,
+    @required this.ishistory,
   }) {}
 
    Map<String , Object> toJson(){
     return {
       'motorcycledocid' : this.motorcycledocid,
-      'bookingdocid' : this.bookingdocid,
       'price' : this.price,
-      'ownerid' : this.ownerid,
-      'myid' : this.myid,
-      'day' : this.day,
-      'month' : this.month,
-      'year' : this.year,
       'time' : this.times,
-      'boxdocid' : this.boxdocid,
-      'boxplacedocid' : this.boxplacedocid,
-      'boxslotrentdocid' : this.boxslotrentdocid,
-      'motorplacelocdocid' : this.motorplacelocdocid,
+      // 'boxplacedocid' : this.boxname,
+      // 'boxslotrentdocid' : this.plancename,
       'university' : this.university,
-      'status' : this.status,
       'priceaddtax' : this.priceaddtax,
       'startdate' : this.startdate,
-      'isinhistory' : this.isinhistory,
-      'iscancle' : this.iscancle,
-      'ownercanclealert' : this.ownercanclealert,
-      'rentercanclealert' : this.rentercanclealert,
-      'alreadycheck' : null,
+      'ownername' : this.ownername,
+      'brand' : this.brand,
+      'generation' : this.generation,
+      'imagelink' : this.imagelink,
+      'iscancel' : this.iscancel,
+      'ishistory' : false,
     };
   }
 }
-class Bookingshow {
+class HistoryShow {
   String time;
   int day;
   int month;
@@ -99,7 +77,7 @@ class Bookingshow {
   DateTime startdate;
   final DocumentReference reference;
 
-  Bookingshow.fromMap(Map<String, dynamic> map, {this.reference})
+  HistoryShow.fromMap(Map<String, dynamic> map, {this.reference})
     //  : assert(map['time'] != null),
     //    assert(map['day'] != null),
     //    assert(map['month'] != null),
@@ -137,6 +115,6 @@ class Bookingshow {
        ownercanclealert = map['ownercanclealert'],
        rentercanclealert = map['rentercanclealert'];
 
-  Bookingshow.fromSnapshot(DocumentSnapshot snapshot)
+  HistoryShow.fromSnapshot(DocumentSnapshot snapshot)
      : this.fromMap(snapshot.data, reference: snapshot.reference);
 }

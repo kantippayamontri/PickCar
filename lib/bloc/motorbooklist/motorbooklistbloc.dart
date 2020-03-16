@@ -42,8 +42,9 @@ class MotorBookListBloc extends Bloc<MotorBookListEvent, MotorBookListState> {
         .where(
             (doc) => (doc['motorcycledocid'] == this.motorcycle.firestoredocid))
         .toList();
-print("rrrrrrrrrrrrrrrrrrrrr : ${list.length}");
-    for (var doc in list) {print("yyyyyyyyyyyyyyyyyyyyy");
+// print("rrrrrrrrrrrrrrrrrrrrr : ${list.length}");
+    for (var doc in list) {
+      // print("yyyyyyyyyyyyyyyyyyyyy");
       MotorcycleBook motorbook = MotorcycleBook(
         bookingdocid: doc['bookingdocid'],
         day: doc['day'],

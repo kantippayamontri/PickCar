@@ -1,10 +1,15 @@
+import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
+import 'package:pickcar/models/booking.dart';
+import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/page/tabscreen.dart';
 import 'package:pickcar/ui/uisize.dart';
+import 'package:pickcar/widget/cancel.dart';
 import 'package:pickcar/widget/home/cardrental.dart';
 
 int i = 0;
@@ -27,12 +32,77 @@ class _HomePageState extends State<HomePage> {
     appbar = AppBar();
     super.initState();
   }
-
+  void dispose() {
+    // Realtime.checkalert.cancel();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
+    // cancelshow(context);
     SizeConfig().init(context);
+    showwarningWait(BuildContext context){
+      return showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(UseString.pleasewaittitle),
+            content: Text(UseString.pleasewaitbody),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  showwarningreject(BuildContext context){
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(UseString.rejectalert,
+              style: TextStyle(color: Colors.red), 
+          ),
+          content: Text(UseString.rejectalertbody,
+              style: TextStyle(color: Colors.red), 
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Send license'),
+              onPressed: () {
+                // Navigator.of(context).pop();
+                Navigator.of(context).pushNamed(Datamanager.sendlicensepage);
+              },
+            ),
+            FlatButton(
+              child: Text(UseString.cancel),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
     void _gotorental() {
-      Navigator.of(context).pushNamed(Datamanager.search);
+      Firestore.instance.collection('User').document(Datamanager.user.documentid)
+                                            .get().then((data){
+                                              Usershow usershow = Usershow.fromSnapshot(data);
+                                              if(usershow.isapprove == 'wait'){
+                                                showwarningWait(context);
+                                              }else if(usershow.isapprove == 'Approve'){
+                                                Navigator.of(context).pushNamed(Datamanager.search);
+                                                // Navigator.of(context).pushNamed(Datamanager.adminmenu);
+                                              }else{
+                                                showwarningreject(context);
+                                              }
+                                            });
+      // Navigator.of(context).pushNamed(Datamanager.search);
       // TabScreenPage(index: 1);
     }
 
