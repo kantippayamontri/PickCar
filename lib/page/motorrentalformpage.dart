@@ -12,6 +12,7 @@ import '../datamanager.dart';
 
 class MotorRentalFormPage extends StatefulWidget {
   Motorcycle motorcycle;
+
   MotorRentalFormPage({@required this.motorcycle});
   @override
   _MotorRentalFormPageState createState() => _MotorRentalFormPageState();
@@ -25,7 +26,9 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
     Datamanager.placelocationshow = null;
     Datamanager.boxlocationshow = null;
     _motorRentalFormBloc = MotorRentalFormBloc(
-        context: this.context, motorcycle: widget.motorcycle);
+        context: this.context,
+        motorcycle: widget.motorcycle,
+        setstate: setstate);
     _motorRentalFormBloc.add(MotorRentalFormLoadDataEvent());
     super.initState();
   }
@@ -226,13 +229,15 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
                               onSaved: (value) {
                                 setState(() {
                                   _motorRentalFormBloc.choosetimeslot = value;
-                                  print("choose time slot : " + _motorRentalFormBloc.choosetimeslot);
+                                  print("choose time slot : " +
+                                      _motorRentalFormBloc.choosetimeslot);
                                 });
                               },
                               onChanged: (value) {
                                 setState(() {
                                   _motorRentalFormBloc.choosetimeslot = value;
-                                  print("choose time slot : " + _motorRentalFormBloc.choosetimeslot);
+                                  print("choose time slot : " +
+                                      _motorRentalFormBloc.choosetimeslot);
                                 });
                               },
                               dataSource:

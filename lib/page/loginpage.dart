@@ -11,23 +11,21 @@ import '../bloc/login/loginbloc.dart';
 
 class LoginPage extends StatefulWidget {
   int indicatorpage = 0;
-  int i =0;
+  int i = 0;
   // const LoginPage({Key key}) : super(key: key);
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin{
-  var username = 'g@g.com';
-  var password = '1234567';
-  // var username = 'f@f.com';
-  // var password = '1111111';
+class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
+  // var username = 'g@g.com';
+  // var password = '1234567';
+  var username = 'f@f.com';
+  var password = '1111111';
   // var username = '';
   // var password = '';
 
   //todo initusername and pass
-  
-  
 
   final _scaffoldkey = GlobalKey<ScaffoldState>();
   var _showloginstatus = false;
@@ -47,18 +45,17 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin{
     });
   }
 
-  void _signup(){
+  void _signup() {
     print('press sign up ja');
     Navigator.of(context).pushNamed(Datamanager.signuppage);
   }
-
 
   @override
   Widget build(BuildContext context) {
     var data = MediaQuery.of(context);
     loginbloc.context = context;
     //todo test user
-    loginbloc.emailcontroller.text = this.username;//"g@g.com";
+    loginbloc.emailcontroller.text = this.username; //"g@g.com";
     loginbloc.passcontroller.text = this.password; //"1234567";
 
     final List<Tab> myTabs = <Tab>[
@@ -66,23 +63,32 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin{
         child: Container(
           // width: double.infinity,
           // color: Colors.blue,
-          child: Text(UseString.signin,
-                style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colormain), 
-            ),
+          child: Text(
+            UseString.signin,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: data.textScaleFactor * 20,
+                color: PickCarColor.colormain),
+          ),
         ),
       ),
       new Tab(
         child: Container(
           // width: double.infinity,
           // margin: EdgeInsets.only(top: 10),
-          child: Text(UseString.signup,
-              style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colormain), 
+          child: Text(
+            UseString.signup,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: data.textScaleFactor * 20,
+                color: PickCarColor.colormain),
           ),
         ),
       ),
     ];
     TabController _tabController;
-    _tabController = new TabController(vsync: this, length: myTabs.length,initialIndex: widget.indicatorpage);
+    _tabController = new TabController(
+        vsync: this, length: myTabs.length, initialIndex: widget.indicatorpage);
 
     // @override
     // void dispose() {
@@ -137,9 +143,10 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin{
         ),
       );
     }
-    body(BuildContext context){
+
+    body(BuildContext context) {
       SizeConfig().init(context);
-      if(widget.indicatorpage ==0){
+      if (widget.indicatorpage == 0) {
         return Container(
           margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
           child: SingleChildScrollView(
@@ -156,9 +163,12 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin{
                         : Container(
                             child: Text('Fail to login'),
                           )
-                    : SizedBox(height: 0,width: 0),
-                PickCarLogin(loginbloc.emailcontroller, loginbloc.passcontroller,
-                    _summitSingInEmail, loginbloc.formkey),
+                    : SizedBox(height: 0, width: 0),
+                PickCarLogin(
+                    loginbloc.emailcontroller,
+                    loginbloc.passcontroller,
+                    _summitSingInEmail,
+                    loginbloc.formkey),
                 SizedBox(
                   height: 20,
                 ),
@@ -166,39 +176,44 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin{
             ),
           ),
         );
-      }else{
+      } else {
         return SignUpPage();
       }
     }
+
     return Scaffold(
-      backgroundColor:Colors.grey[100],
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
         backgroundColor: Colors.white,
         flexibleSpace: Image(
-            image: AssetImage('assets/images/imagesprofile/appbar/background.png'),
-            fit: BoxFit.cover,
-          ),
+          image:
+              AssetImage('assets/images/imagesprofile/appbar/background.png'),
+          fit: BoxFit.cover,
+        ),
         centerTitle: true,
         bottom: TabBar(
-            controller: _tabController,
-            labelColor: PickCarColor.colormain,
-            tabs: myTabs,
-            indicatorColor: PickCarColor.colormain,
-            onTap: (data){
-              setState(() {
-                widget.indicatorpage=data;
-                print(widget.indicatorpage);
-                widget.i =0;
-              });
-            },
-          ),
-        title: Container(
-          width: data.size.width/5,
-          child: Image.asset('assets/images/imagelogin/logo.png',fit: BoxFit.fill,)
+          controller: _tabController,
+          labelColor: PickCarColor.colormain,
+          tabs: myTabs,
+          indicatorColor: PickCarColor.colormain,
+          onTap: (data) {
+            setState(() {
+              widget.indicatorpage = data;
+              print(widget.indicatorpage);
+              widget.i = 0;
+            });
+          },
         ),
+        title: Container(
+            width: data.size.width / 5,
+            child: Image.asset(
+              'assets/images/imagelogin/logo.png',
+              fit: BoxFit.fill,
+            )),
         leading: IconButton(
-          icon: Icon(Icons.keyboard_arrow_left,
-          color: Colors.white,
+          icon: Icon(
+            Icons.keyboard_arrow_left,
+            color: Colors.white,
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -206,7 +221,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin{
         ),
       ),
       key: _scaffoldkey,
-      body:  body(context),
+      body: body(context),
     );
   }
 }

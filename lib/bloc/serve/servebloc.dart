@@ -27,9 +27,9 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
       //todo init var
 
       //todo -----------
-      DateTime timenow = DateTime(DateTime.now().year, DateTime.now().month,
-          DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
-      // DateTime timenow = DateTime(2020, 3, 25, 10, 46);
+      // DateTime timenow = DateTime(DateTime.now().year, DateTime.now().month,
+      //     DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
+      DateTime timenow = DateTime(2020, 3, 25, 9, 31);
       bool istimeinslot = checkintimeslot(timenow);
       String timeslotin = timeslotmatch(timenow);
       await checkownerdontdropkey(timenow);
@@ -44,9 +44,41 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
       await checkbookingandnotusing(timenow);
       print(
           "--------------------------------------------------------------------");
+      await deleteallcancle();
     });
 
     //print("xxxxxxxxxxxxxxxxxxxxxxxxxx");
+  }
+
+  Future<Null> deleteallcancle() async {
+    //todo delete in singleforrent
+    QuerySnapshot singledoc = await Datamanager.firestore
+        .collection("Singleforrent")
+        .where('iscancle', isEqualTo: true)
+        .where('ownercanclealert', isEqualTo: true)
+        .where('rentercanclealert', isEqualTo: true)
+        .getDocuments();
+    for (var singleforrent in singledoc.documents) {
+      await Datamanager.firestore
+          .collection("Singleforrent")
+          .document(singleforrent['docid'])
+          .delete();
+    }
+    print('delete all singleforrent success');
+
+    QuerySnapshot bookingdoc = await Datamanager.firestore
+        .collection("Booking")
+        .where('iscancle', isEqualTo: true)
+        .where('ownercanclealert', isEqualTo: true)
+        .where('rentercanclealert', isEqualTo: true)
+        .getDocuments();
+    for (var booking in bookingdoc.documents) {
+      await Datamanager.firestore
+          .collection("Booking")
+          .document(booking['bookingdocid'])
+          .delete();
+    }
+    print('delete all booking success');
   }
 
   Future<Null> delete_boxslotrent_booking(String bookingdocid) async {
@@ -58,11 +90,6 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
     await Datamanager.firestore
         .collection("BoxslotRent")
         .document(bookingdoc['boxslotrentdocid'])
-        .delete();
-    //todo delete in booking
-    await Datamanager.firestore
-        .collection("Booking")
-        .document(bookingdocid)
         .delete();
   }
 
@@ -77,19 +104,13 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
         .collection("BoxslotRent")
         .document(singleforrentdoc['boxslotrentdocid'])
         .get();
-    if ((boxslotrentdoc['ownerdropkey'] == true) &&
+    if ((boxslotrentdoc['ownerdropkey'] == true) ||
         (boxslotrentdoc['iskey'] == true)) {
       return;
     }
     await Datamanager.firestore
         .collection("BoxslotRent")
         .document(singleforrentdoc['boxslotrentdocid'])
-        .delete();
-
-    //todo delete in single
-    await Datamanager.firestore
-        .collection("Singleforrent")
-        .document(singleforrentdocid)
         .delete();
   }
 
@@ -185,6 +206,7 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
                 'iscancle': true,
               }).whenComplete(() {
                 print("cancle ${canclebook['bookingdocid']} complete");
+                delete_boxslotrent_booking(canclebook['bookingdocid']);
               });
               return;
             }
@@ -264,6 +286,7 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
               'iscancle': true,
             }).whenComplete(() {
               print("cancle ${canclebook['bookingdocid']} complete");
+              delete_boxslotrent_booking(canclebook['bookingdocid']);
             });
             return;
           }
@@ -299,6 +322,7 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
           'rentercanclealert': true,
         }).whenComplete(() {
           //print("update success");
+          delete_boxslotrent_singleforrent(singleforrent['docid']);
         });
       } else {
         //print("should not delete");
@@ -329,7 +353,8 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
             .updateData({
           'iscancle': true,
         }).whenComplete(() {
-          print("cancle ${booking['bookingdocid']} complete");
+          //print("cancle ${booking['bookingdocid']} complete");
+          delete_boxslotrent_booking(booking['bookingdocid']);
         });
       }
     }

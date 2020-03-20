@@ -37,6 +37,8 @@ class ListCarBloc extends Bloc<ListCarEvent, ListCarState> {
       if (isshowalert) return;
       List<String> singlefordelete = List<String>();
       String deletelist;
+      List<String> bookingfordelete = List<String>();
+
       //todo find in singeforrent
       QuerySnapshot singleforrentquey = await Datamanager.firestore
           .collection("Singleforrent")
@@ -54,7 +56,23 @@ class ListCarBloc extends Bloc<ListCarEvent, ListCarState> {
         }
       }
 
-      if (singlefordelete.isNotEmpty) {
+      //todo find in booking
+      QuerySnapshot bookingquey = await Datamanager.firestore
+          .collection("Booking")
+          .where('ownerdocid', isEqualTo: Datamanager.user.documentid)
+          .where('iscancle', isEqualTo: true)
+          .where('ownercanclealert', isEqualTo: false)
+          .getDocuments();
+      if (bookingquey.documents.isNotEmpty) {
+        print('booking not empty');
+        deletelist += "singleforrent \\n";
+        for (var booking in bookingquey.documents) {
+          deletelist = deletelist + booking['bookingdocid'] + '\n';
+          bookingfordelete.add((booking['bookingdocid'] as String));
+        }
+      }
+
+      if (singlefordelete.isNotEmpty || bookingfordelete.isNotEmpty) {
         this.isshowalert = true;
         showDialog(
             context: this.context,
@@ -64,17 +82,10 @@ class ListCarBloc extends Bloc<ListCarEvent, ListCarState> {
                 content: Text(deletelist),
                 actions: <Widget>[
                   FlatButton(
-                    child: Text("close"),
-                    onPressed: () {
-                      this.isshowalert = false;
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  FlatButton(
                     child: Text("ok"),
                     onPressed: () async {
                       this.isshowalert = false;
-                      await confirmcancle(singlefordelete);
+                      await confirmcancle(singlefordelete, bookingfordelete);
                       Navigator.of(context).pop();
                     },
                   ),
@@ -104,7 +115,8 @@ class ListCarBloc extends Bloc<ListCarEvent, ListCarState> {
     });
   }
 
-  Future<Null> confirmcancle(List<String> singlelistdoc) async {
+  Future<Null> confirmcancle(
+      List<String> singlelistdoc, List<String> bookinglistdoc) async {
     for (var singleforrentdoc in singlelistdoc) {
       await Datamanager.firestore
           .collection("Singleforrent")
@@ -112,7 +124,18 @@ class ListCarBloc extends Bloc<ListCarEvent, ListCarState> {
           .updateData({
         'ownercanclealert': true,
       }).whenComplete(() {
-        print('complete');
+        print('single complete');
+      });
+    }
+
+    for (var bookingdocid in bookinglistdoc) {
+      await Datamanager.firestore
+          .collection("Booking")
+          .document(bookingdocid)
+          .updateData({
+        'ownercanclealert': true,
+      }).whenComplete(() {
+        print('booking complete');
       });
     }
   }

@@ -22,12 +22,17 @@ class MotorRentalFormBloc
   DateTime dateTime;
 
   //todo type
+  bool ischoosedate = false;
   String type;
   List<String> timeslot;
   String choosetimeslot;
   List<Map<String, String>> datasourcefordrop;
+  Function setstate;
 
-  MotorRentalFormBloc({@required this.context, @required this.motorcycle}) {
+  MotorRentalFormBloc(
+      {@required this.context,
+      @required this.motorcycle,
+      @required this.setstate}) {
     pricecontroller.text = CarPrice.motorminprice.toString();
     //datenow = DateTime.now();
     DateTime now = DateTime.now();
@@ -61,9 +66,7 @@ class MotorRentalFormBloc
       );
     }
 
-    if (event is MotorRentalFormLoadDataEvent) {
-      
-    }
+    if (event is MotorRentalFormLoadDataEvent) {}
   }
 
   Future<Null> submitform() async {
@@ -81,6 +84,7 @@ class MotorRentalFormBloc
 
   Future<Null> rentalsingle() async {
     print("in rentalsingle function");
+    bool isfull = false;
     QuerySnapshot boxlist = await Datamanager.firestore
         .collection("box")
         .where("boxlocationid", isEqualTo: Datamanager.boxlocationshow.docboxid)
@@ -104,6 +108,7 @@ class MotorRentalFormBloc
           print('this slot is empty');
           addsingleforrent(
               box.documentID, boxslot.documentID, box['boxlocationid']);
+          isfull = true;
           break OUTERLOOP;
         } else {
           print("this slot is not empty");
@@ -115,10 +120,30 @@ class MotorRentalFormBloc
           } else {
             addsingleforrent(
                 box.documentID, boxslot.documentID, box['boxlocationid']);
+            isfull = true;
           }
           break OUTERLOOP;
         }
       }
+    }
+
+    if (isfull) {
+      showDialog(
+          context: this.context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(UseString.carownercancle),
+              content: Text(UseString.fullslot),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text("ok"),
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
     }
   }
 
@@ -167,8 +192,7 @@ class MotorRentalFormBloc
         time: this.choosetimeslot,
         startdate: makestartdatetimesingle(this.dateTime, this.choosetimeslot),
         motorplaceloc: Datamanager.placelocationshow.docplaceid,
-        motorcycledocid: this.motorcycle.firestoredocid
-        );
+        motorcycledocid: this.motorcycle.firestoredocid);
 
     var bslrdocref = await Datamanager.firestore
         .collection("BoxslotRent")
@@ -181,24 +205,24 @@ class MotorRentalFormBloc
     });
 
     SingleForrent _singleforrent = SingleForrent(
-        boxdocid: boxdocid,
-        boxslotdocid: boxslotdocid,
-        boxplacedocid: boxlocid,
-        day: dateTime.day,
-        month: dateTime.month,
-        year: dateTime.year,
-        motorcycledocid: this.motorcycle.firestoredocid,
-        ownerdocid: Datamanager.user.documentid,
-        price: double.parse(this.pricecontroller.text),
-        time: this.choosetimeslot,
-        university: Datamanager.user.university,
-        motorplacelocdocid: Datamanager.placelocationshow.docplaceid,
-        startdate: makestartdatetimesingle(this.dateTime, this.choosetimeslot),
-        status: null,
-        iscancle: false,
-        ownercanclealert: false,
-        rentercanclealert: false,
-        );
+      boxdocid: boxdocid,
+      boxslotdocid: boxslotdocid,
+      boxplacedocid: boxlocid,
+      day: dateTime.day,
+      month: dateTime.month,
+      year: dateTime.year,
+      motorcycledocid: this.motorcycle.firestoredocid,
+      ownerdocid: Datamanager.user.documentid,
+      price: double.parse(this.pricecontroller.text),
+      time: this.choosetimeslot,
+      university: Datamanager.user.university,
+      motorplacelocdocid: Datamanager.placelocationshow.docplaceid,
+      startdate: makestartdatetimesingle(this.dateTime, this.choosetimeslot),
+      status: null,
+      iscancle: false,
+      ownercanclealert: false,
+      rentercanclealert: false,
+    );
 
     var sgfrdocref = await Datamanager.firestore
         .collection("Singleforrent")
@@ -211,6 +235,14 @@ class MotorRentalFormBloc
       'boxslotrentdocid': bslrdocref.documentID,
       'docid': sgfrdocref.documentID,
     });
+  }
+
+  Future<List<String>> makeslottimelistdouble(DateTime date) async {
+    print('in function makeslottimelistdouble');
+    List<String> timeslotlist = TimeslotDouble.tolist();
+    print('timeslotlist double slot is ');
+    print(timeslotlist);
+    return timeslotlist;
   }
 
   Future<List<String>> makeslottimelist(DateTime date) async {
@@ -270,13 +302,15 @@ class MotorRentalFormBloc
         .where('motorcycledocid', isEqualTo: this.motorcycle.firestoredocid)
         .where('day', isEqualTo: this.dateTime.day)
         .where('month', isEqualTo: this.dateTime.month)
-        .where('year' , isEqualTo: this.dateTime.year)
+        .where('year', isEqualTo: this.dateTime.year)
         .getDocuments();
 
-    List<DocumentSnapshot> bookinglist =  booking.documents;
-    for(var doc in bookinglist){
+    List<DocumentSnapshot> bookinglist = booking.documents;
+    for (var doc in bookinglist) {
       timeslotlist.remove(doc['time']);
     }
+    print('timeslotlist is ');
+    print(timeslotlist);
 
     return timeslotlist;
   }
@@ -285,7 +319,9 @@ class MotorRentalFormBloc
     if (this.type == TypeRental.singleslot) {
       this.timeslot = await makeslottimelist(dateTime);
       this.datasourcefordrop = datasourcefordropdown();
+      setstate();
     } else if (this.type == TypeRental.doubleslot) {
+      this.timeslot = await makeslottimelistdouble(dateTime);
       print("settimeslot double");
     }
   }
@@ -352,6 +388,8 @@ class MotorRentalFormBloc
     for (String slot in this.timeslot) {
       datasource.add({"display": slot, "value": slot});
     }
+    print('datasource is ');
+    print(datasource);
 
     return datasource;
   }

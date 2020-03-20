@@ -74,7 +74,6 @@ class Datamanager {
   static String adminlicense = "/adminlicense";
   static String sendlicensepage = "/Sendlicensepage";
   static String sendregistation = "/Sendregistation";
-  
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
   static FirebaseUser firebaseuser = null;
@@ -104,7 +103,12 @@ class Datamanager {
   static FirebaseDatabase realtimedatabase = FirebaseDatabase.instance;
 
   static List<Map<String, Object>> pages = [
-    {'page': HomePage(gotosearchinHome: gontosearchinHome,), 'title': 'Home'},
+    {
+      'page': HomePage(
+        gotosearchinHome: gontosearchinHome,
+      ),
+      'title': 'Home'
+    },
     // {'page': Adminmenu(), 'title': 'Chat'},
     {'page': Chatpage(), 'title': 'Chat'},
     {'page': ListCarPage(), 'title': 'ListCar'},
@@ -377,34 +381,40 @@ class UseString {
   static String reject = "Reject";
   static String areyou = "Are you sure to";
   static String pleaseselecttitle = "Please select object";
-  static String pleaseselectdetail= "The object does not select. \nPlease select object below.";
+  static String pleaseselectdetail =
+      "The object does not select. \nPlease select object below.";
   static String fill = "Please fill empty blank";
   static String pleasewaittitle = "Please wait for approve driver license";
-  static String pleasewaitbody = "It take 1-2 day for approve your driver license. \nIt will take than 3 day a few case.";
+  static String pleasewaitbody =
+      "It take 1-2 day for approve your driver license. \nIt will take than 3 day a few case.";
   static String rejectalert = "You driver license is rejected";
-  static String rejectalertbody = "Please send new driver license again before rent.";
+  static String rejectalertbody =
+      "Please send new driver license again before rent.";
   static String driverlicense = "Driver License";
   static String save = "Save";
   static String gallory = "Gallory";
   static String camara = "Camara";
-  static String uploaddriver ='Upload driver license';
-  static String uploadding ='Uploading';
-  static String senddriverlicense ='Already Send driver licesnse';
-  static String pleaseupload ='Please Upload \nyou driver license.';
-  static String licenseplate ='License plate';
+  static String uploaddriver = 'Upload driver license';
+  static String uploadding = 'Uploading';
+  static String senddriverlicense = 'Already Send driver licesnse';
+  static String pleaseupload = 'Please Upload \nyou driver license.';
+  static String licenseplate = 'License plate';
 
-  static String pleasewaittitlecar = "Please wait for approve Vehicle registration";
+  static String pleasewaittitlecar =
+      "Please wait for approve Vehicle registration";
   static String rejectalertcar = "You Vehicle registration is rejected";
-  static String rejectalertbodycar = "Please send new Vehicle registration again before rent.";
+  static String rejectalertbodycar =
+      "Please send new Vehicle registration again before rent.";
   static String vehicleregistration = "Vehicle Registration";
-  static String sendregistration='Already Send Vehicle registration';
-  static String pleaseuploadcar ='Please Upload \nyou Vehicle registration.';
-  static String uploadregistration ='Upload Vehicle registration';
+  static String sendregistration = 'Already Send Vehicle registration';
+  static String pleaseuploadcar = 'Please Upload \nyou Vehicle registration.';
+  static String uploadregistration = 'Upload Vehicle registration';
 
-  static String bookinreport ='Your order  booking is cancel';
-  static String cancelrent='Your car is cancel';
-  static String cancelappbar='CANCEL';
+  static String bookinreport = 'Your order  booking is cancel';
+  static String cancelrent = 'Your car is cancel';
+  static String cancelappbar = 'CANCEL';
   static String sendlongmessage = 'new messages';
+  static String fullslot = "You can't rent this time because this slot is full";
 }
 
 class Currency {
@@ -476,11 +486,13 @@ class GearMotor {
     {'gear': GearMotor.manual}
   ];
 }
-class Imagesoom{
+
+class Imagesoom {
   static var image;
   static var width;
   static var height;
 }
+
 class CarStatus {
   static const String nothing = "NOTHING";
   static const String waiting = "WAITING";
@@ -545,10 +557,9 @@ class DataFetch {
   static int checkkey = 0;
   static int checkkeymap = 0;
   static int fetchhavecar = 0;
-  static int fetchcancelalert= 0;
-  static int waitloaddata =0;
-  static int logincancelshow =0;
-
+  static int fetchcancelalert = 0;
+  static int waitloaddata = 0;
+  static int logincancelshow = 0;
 }
 
 class TimeSlotSingle {
@@ -557,14 +568,22 @@ class TimeSlotSingle {
   static const String sub3 = "11.00 - 12.15";
   static const String sub4 = "13.00 - 14.15";
   static const String sub5 = "14.30 - 15.45";
-  static const String sub6 = "16.00 - 17.30";
+  static const String sub6 = "16.00 - 17.15";
 
   static List<String> tolist() {
     return [sub1, sub2, sub3, sub4, sub5, sub6];
   }
 }
 
-class TimeslotDouble {}
+class TimeslotDouble {
+  static const String sub1 = "8.00 - 10.45";
+  static const String sub2 = "9.30 - 12.15";
+  static const String sub3 = "13.00 - 15.45";
+  static const String sub4 = "14.30 - 17.15";
+  static List<String> tolist() {
+    return [sub1, sub2, sub3, sub4];
+  }
+}
 
 class TypeRental {
   static String singleslot = "Single Slot";
@@ -593,7 +612,7 @@ class TimeSlot {
   static const String sub3 = "11.00 - 12.30";
   static const String sub4 = "13.00 - 14.30";
   static const String sub5 = "14.30 - 16.00";
-  static const String sub6 = "16.00 - 17.30";
+  static const String sub6 = "16.00 - 17.15";
 
   static List<String> timeslotlist = List<String>();
   static DateTime now = DateTime.now();
