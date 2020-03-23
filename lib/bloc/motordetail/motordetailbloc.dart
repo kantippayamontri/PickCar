@@ -95,7 +95,9 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
           time: boxslotrent['time'],
           year: boxslotrent['year'],
           motorplaceloc: boxslotrent['motorplaceloc'],
-          motorcycledocid: boxslotrent['motorcycledocid']);
+          motorcycledocid: boxslotrent['motorcycledocid'],
+          type: boxslotrent['type'],
+          enddate: (boxslotrent['enddate'] as Timestamp).toDate());
       this.receivebox.docid = boxslotrent['docid'];
 
       this.receivebookdocid = book['bookingdocid'];
@@ -202,6 +204,8 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
           year: doc['year'],
           motorplaceloc: doc['motorplaceloc'],
           motorcycledocid: doc['motorcycledocid'],
+          type: doc['type'],
+          enddate: (doc['enddate'] as Timestamp).toDate(),
         );
         currentopenbox.docid = doc['docid'];
         break;

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class Boxslotrent {
+  String type;
   String docid;
   String boxdocid;
   String boxslotdocid;
@@ -15,11 +16,12 @@ class Boxslotrent {
   bool isopen;
   bool ownerdropkey;
   DateTime startdate;
+  DateTime enddate;
   String motorplaceloc;
   String motorcycledocid;
 
   Boxslotrent(
-      {
+      {@required this.type,
       @required this.month,
       @required this.year,
       @required this.time,
@@ -33,32 +35,31 @@ class Boxslotrent {
       @required this.boxplacedocid,
       @required this.ownerdropkey,
       @required this.startdate,
+      @required this.enddate,
       @required this.motorplaceloc,
-      @required this.motorcycledocid
-      
-      }) {}
+      @required this.motorcycledocid}) {}
 
-  Map<String , dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
-      'docid' : docid,
-      'month' : month,
-      'year' : year ,
-      'time' : time,
-      'day' : day,
-      'boxslotdocid' : boxslotdocid,
-      'iskey' : iskey,
-      'isopen' : isopen,
-      'isopen' : isopen,
-      'renterdocid' : renterdocid,
-      'boxdocid' : boxdocid,
-      'ownerdocid' : ownerdocid,
-      'boxplacedocid' : boxplacedocid,
-      'ownerdropkey' : ownerdropkey,
-      'startdate' : startdate,
-      'motorplaceloc' : motorplaceloc,
-      'motorcycledocid' : this.motorcycledocid,
+      'docid': docid,
+      'month': month,
+      'year': year,
+      'time': time,
+      'day': day,
+      'boxslotdocid': boxslotdocid,
+      'iskey': iskey,
+      'isopen': isopen,
+      'isopen': isopen,
+      'renterdocid': renterdocid,
+      'boxdocid': boxdocid,
+      'ownerdocid': ownerdocid,
+      'boxplacedocid': boxplacedocid,
+      'ownerdropkey': ownerdropkey,
+      'startdate': startdate,
+      'motorplaceloc': motorplaceloc,
+      'motorcycledocid': this.motorcycledocid,
+      'type': this.type,
+      'enddate': this.enddate,
     };
   }
-
-  
 }

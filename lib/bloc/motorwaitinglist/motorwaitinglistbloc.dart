@@ -76,7 +76,7 @@ class MotorWaitingListBloc
           iscancle: doc['iscancle'],
           ownercanclealert: doc['ownercanclealert'],
           rentercanclealert: doc['rentercanclealert'],
-          );
+          enddate: doc['enddate']);
 
       sgfr.boxslotrentdocid = doc['boxslotrentdocid'];
       sgfr.docid = doc['docid'];
