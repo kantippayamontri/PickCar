@@ -118,3 +118,64 @@ class Motorcycle{
     };
   }
 }
+
+class Motorcyclehistory{
+  String brand;
+  String generation;
+  int cc;
+  String gear;
+  String color;
+  String storagedocid;
+  String firestoredocid;
+  String owneruid;
+  String motorprofilelink;
+  String motorfrontlink;
+  String motorbacklink;
+  String motorleftlink;
+  String motorrightlink;
+  String motorreg;
+  String motorgas;
+  String myid;
+
+
+  Motorcyclehistory({
+    @required this.brand,
+    @required this.generation,
+    @required this.cc,
+    @required this.color,
+    @required this.gear,
+    @required this.owneruid,
+    @required this.storagedocid,
+    @required this.motorprofilelink,
+    @required this.motorfrontlink,
+    @required this.motorbacklink,
+    @required this.motorleftlink,
+    @required this.motorrightlink,
+    @required this.motorreg,
+    @required this.motorgas,
+    @required this.myid,
+    
+  });
+
+  Map<String , dynamic> toJson(){
+    return {
+      'firestoredocid' : this.firestoredocid,
+      'storagedocid' : this.storagedocid,
+      'owneruid' : this.owneruid,
+      'gear' : this.gear,
+      'color' : this.color,
+      'cc' : this.cc,
+      'generation' : this.generation,
+      'brand' : this.brand,
+      'motorprofilelink' : this.motorprofilelink,
+      'motorfrontlink' : this.motorfrontlink,
+      'motorbacklink' : this.motorbacklink,
+      'motorleftlink' : this.motorleftlink,
+      'motorrightlink' : this.motorrightlink,
+      'motorreg' : this.motorreg,
+      'motorgas' : this.motorgas,
+      'myid' : this.myid,
+      
+    };
+  }
+}

@@ -23,6 +23,7 @@ class Booking {
   bool iscancle;
   bool ownercanclealert;
   bool rentercanclealert;
+  String docid;
 
  
   Booking({
@@ -33,7 +34,7 @@ class Booking {
     @required this.price,
     @required this.motorcycledocid,
     @required this.ownerid,
-    @required this.myid,
+    this.myid,
     @required this.bookingdocid,
     @required this.boxdocid,
     @required this.boxplacedocid,
@@ -47,6 +48,7 @@ class Booking {
     @required this.iscancle,
     @required this.ownercanclealert,
     @required this.rentercanclealert,
+    this.docid,
   }) {}
 
    Map<String , Object> toJson(){
@@ -54,7 +56,7 @@ class Booking {
       'motorcycledocid' : this.motorcycledocid,
       'bookingdocid' : this.bookingdocid,
       'price' : this.price,
-      'ownerid' : this.ownerid,
+      'ownerdocid' : this.ownerid,
       'myid' : this.myid,
       'day' : this.day,
       'month' : this.month,
@@ -73,6 +75,7 @@ class Booking {
       'ownercanclealert' : this.ownercanclealert,
       'rentercanclealert' : this.rentercanclealert,
       'alreadycheck' : null,
+      'docid' : this.docid,
     };
   }
 }
@@ -124,7 +127,7 @@ class Bookingshow {
        year = map['year'],
        price = map['price'],
        motorcycledocid = map['motorcycledocid'],
-       ownerid = map['ownerid'],
+       ownerid = map['ownerdocid'],
        myid = map['myid'],
        bookingdocid = map['bookingdocid'],
        boxdocid = map['boxdocid'],

@@ -182,7 +182,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                ),
                                                GestureDetector(
                                                  onTap: (){
-
+                                                  // Navigator.of(context).pushNamed(Datamanager.coupongpage);
                                                  },
                                                  child: Container(
                                                   //  color: Colors.blue,
@@ -193,7 +193,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       margin: EdgeInsets.only(right:data.size.width/35,bottom: data.size.height/45,),
                                                       child: IconButton(
                                                         onPressed: (){
-                                                          
+                                                          // print("aaab");
+                                                          Navigator.of(context).pushNamed(Datamanager.coupongpage);
                                                         },
                                                         icon:Icon(Icons.card_giftcard,color: PickCarColor.colormain,),
                                                         iconSize: (data.size.width+data.size.height)/22,

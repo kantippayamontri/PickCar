@@ -123,7 +123,7 @@ import 'package:pickcar/models/listcarslot.dart';
       time =10000;
       DataFetch.logincancelshow = 1;
     }else{
-      print('alert');
+      // print('alert');
       time = 100;
     }
     Future.delayed(Duration(milliseconds: time), () {
@@ -134,7 +134,7 @@ import 'package:pickcar/models/listcarslot.dart';
             DataFetch.waitloaddata = 1;
             Firestore.instance.collection('Booking').where('iscancle',isEqualTo:true).where('ownercanclealert',isEqualTo:false).where('alreadycheck',isNull: true).snapshots().first.then((databook){
               try{
-                print('-----');
+                // print('-----');
                 var booking= Bookingshow.fromSnapshot(databook.documents.first);
                 Firestore.instance.collection('Motorcycle').document(booking.motorcycledocid).get().then((data) async {
                   var motorshow = MotorcycleShow.fromSnapshot(data);
@@ -151,7 +151,7 @@ import 'package:pickcar/models/listcarslot.dart';
                   }
                 });
               }catch(error){
-                print(error);
+                // print(error);
                 DataFetch.waitloaddata = 0;
               }
             });
@@ -159,15 +159,15 @@ import 'package:pickcar/models/listcarslot.dart';
             DataFetch.waitloaddata = 1;
             Firestore.instance.collection('Booking').where('iscancle',isEqualTo:true).where('rentercanclealert',isEqualTo:false).where('alreadycheck',isNull: true).snapshots().first.then((databook){
               try{
-                print('-----');
+                // print('-----');
                 var booking= Bookingshow.fromSnapshot(databook.documents.first);
                 Firestore.instance.collection('Motorcycle').document(booking.motorcycledocid).get().then((data) async {
                   var motorshow = MotorcycleShow.fromSnapshot(data);
-                  print(booking.ownerid);
-                  print(Datamanager.user.documentid);
-                  print(booking.ownercanclealert);
+                  // print(booking.ownerid);
+                  // print(Datamanager.user.documentid);
+                  // print(booking.ownercanclealert);
                   if(booking.rentercanclealert && booking.ownercanclealert ){
-                    print('has cancel');
+                    // print('has cancel');
                     DataFetch.waitloaddata = 0;
                   }else if(!booking.rentercanclealert&& booking.ownerid != Datamanager.user.documentid){
                     showdialogrenter(context,booking,motorshow);
@@ -176,7 +176,7 @@ import 'package:pickcar/models/listcarslot.dart';
                   }
                 });
               }catch(error){
-                print(error);
+                // print(error);
                 DataFetch.waitloaddata = 0;
               }
             });
