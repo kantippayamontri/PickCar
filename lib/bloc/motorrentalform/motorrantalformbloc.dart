@@ -129,9 +129,14 @@ class MotorRentalFormBloc
               DateTime timecheck = boxslrstarttime.add(Duration(minutes: 1));
               DateTime choosetime =
                   makestartdatetimedouble(this.dateTime, this.choosetimeslot);
+              print('-----------------------rrr---------------------');
+              print(timecheck);
+              print(choosetime);
+              print('-----------------------rrr---------------------');
               if (timecheck.isAfter(choosetime) &&
                   timecheck.isBefore(
                       choosetime.add(Duration(hours: 2, minutes: 45)))) {
+                print('-- already slot --');
                 alreadyslot = true;
                 break;
               }
@@ -309,18 +314,30 @@ class MotorRentalFormBloc
   }
 
   DateTime makestartdatetimedouble(DateTime date, String timeslot) {
+    print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+    print('in function makestartdatetimedouble');
+    print(date);
+    print(date.year);
+    print(date.month);
+    print(date.day);
+    print(timeslot);
+    DateTime startdate = DateTime(date.year, date.month, date.day);
     if (timeslot == TimeslotDouble.sub1) {
-      return DateTime(date.year, date.month, date.day, 8, 0);
+      startdate = DateTime(date.year, date.month, date.day, 8, 0);
     }
     if (timeslot == TimeslotDouble.sub2) {
-      return DateTime(date.year, date.month, date.day, 9, 30);
+      startdate = DateTime(date.year, date.month, date.day, 9, 30);
     }
     if (timeslot == TimeslotDouble.sub3) {
-      return DateTime(date.year, date.month, date.day, 13, 0);
+      startdate = DateTime(date.year, date.month, date.day, 13, 0);
     }
     if (timeslot == TimeslotDouble.sub4) {
-      return DateTime(date.year, date.month, date.year, 14, 30);
+      print('ininin');
+      startdate = DateTime(date.year, date.month, date.day, 14, 30);
     }
+    print(startdate);
+    print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+    return startdate;
   }
 
   DateTime makestartdatetimesingle(DateTime date, String timeslot) {
@@ -352,7 +369,10 @@ class MotorRentalFormBloc
     print("in function adddoubleforrent");
     print("boxdocid " + boxdocid);
     print("boxslotdocid " + boxslotdocid);
-
+    print(dateTime);
+    print(makestartdatetimedouble(dateTime, this.choosetimeslot));
+    print(makestartdatetimedouble(dateTime, this.choosetimeslot)
+        .add(Duration(hours: 2, minutes: 45)));
     Boxslotrent bslr = Boxslotrent(
       boxdocid: boxdocid,
       boxplacedocid: boxlocid,
@@ -360,8 +380,8 @@ class MotorRentalFormBloc
       day: this.dateTime.day,
       month: this.dateTime.month,
       year: this.dateTime.year,
-      startdate: makestartdatetimedouble(this.dateTime, this.choosetimeslot),
-      enddate: makestartdatetimedouble(this.dateTime, this.choosetimeslot)
+      startdate: makestartdatetimedouble(dateTime, this.choosetimeslot),
+      enddate: makestartdatetimedouble(dateTime, this.choosetimeslot)
           .add(Duration(hours: 2, minutes: 45)),
       iskey: false,
       isopen: false,
@@ -723,8 +743,14 @@ class MotorRentalFormBloc
         dateTime = now;
       }
       print("date picked : ${firstdate.toString()}");
-      this.timeslot = await makeslottimelist(dateTime);
-      this.datasourcefordrop = datasourcefordropdown();
+      if (this.type == TypeRental.singleslot) {
+        this.timeslot = await makeslottimelist(dateTime);
+        this.datasourcefordrop = datasourcefordropdown();
+      } else {
+        this.timeslot = await makeslottimelistdouble(dateTime);
+        this.datasourcefordrop = datasourcefordropdown();
+      }
+
       changetime();
     }
   }
