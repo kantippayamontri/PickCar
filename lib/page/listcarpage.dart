@@ -109,7 +109,7 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
                             Firestore.instance.collection('Booking')
                                         .document(booking.bookingdocid)
                                         .updateData({'iscancle':true,'rentercanclealert':true})
-                                        .whenComplete((){
+                                        .whenComplete(() async {
                                           Booking book = Booking(
                                             times:booking.time,
                                             day:booking.day,
@@ -118,28 +118,34 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
                                             price:booking.price,
                                             motorcycledocid:booking.motorcycledocid,
                                             ownerid:booking.ownerid,
-                                            myid:booking.myid,
                                             bookingdocid:booking.bookingdocid,
                                             boxdocid:booking.boxdocid,
                                             boxplacedocid:booking.boxplacedocid,
                                             boxslotrentdocid:booking.boxslotrentdocid,
                                             motorplacelocdocid:booking.motorplacelocdocid,
                                             university:booking.university,
-                                            status:booking.status,
+                                            status:null,
                                             startdate:booking.startdate,
                                             iscancle:false,
                                             ownercanclealert:false,
                                             rentercanclealert:false,
+                                            docid: booking.bookingdocid,
                                           );
-                                          Firestore.instance.collection('Singleforrent')
+                                          print(booking.ownerid);
+                                          await Firestore.instance.collection('Singleforrent')
                                                             .document(booking.bookingdocid)
                                                             .setData(book.toJson())
-                                                            .whenComplete((){
-                                                              Firestore.instance.collection("history")
-                                                                                .document(Datamanager.user.documentid)
-                                                                                .collection(book.ownerid)
-                                                                                .document(booking.bookingdocid)
-                                                                                .updateData({"ishistory":true,"iscancel":true});
+                                                            .whenComplete(() async {
+                                                              await Firestore.instance.collection('history')
+                                                                    .document(Datamanager.user.documentid)
+                                                                    .collection('historylist')
+                                                                    .document(booking.bookingdocid)
+                                                                    .updateData({'ishistory':true,'iscancel':true,"whocancel":"renter"});
+                                                              await Firestore.instance.collection('history')
+                                                                    .document(booking.ownerid)
+                                                                    .collection('historylist')
+                                                                    .document(booking.bookingdocid)
+                                                                    .updateData({'ishistory':true,'iscancel':true,"whocancel":"renter"});
                                                               Navigator.pop(context);
                                                             }); 
                                           

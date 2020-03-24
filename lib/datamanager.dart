@@ -22,6 +22,7 @@ import 'models/booking.dart';
 import 'models/boxlocation.dart';
 import 'models/boxslotnumber.dart';
 import 'models/boxslotrentshow.dart';
+import 'models/history.dart';
 import 'models/pincar.dart';
 import 'models/universityplace.dart';
 import 'models/user.dart';
@@ -74,6 +75,7 @@ class Datamanager {
   static String adminlicense = "/adminlicense";
   static String sendlicensepage = "/Sendlicensepage";
   static String sendregistation = "/Sendregistation";
+  static String coupongpage = "/Coupongpage";
   
 
   static final FirebaseAuth firebaseauth = FirebaseAuth.instance;
@@ -93,6 +95,7 @@ class Datamanager {
   static Boxslotnumbershow boxslotnumbershow;
   static String imageusershow;
   static Motorcycle motorcycle;
+  static HistoryShow historyshow;
   static List<Universityplaceshow> universityshow = [];
   static List<String> listUniversity = [];
   static List<String> universitylist = ['Choose University'];
@@ -405,6 +408,19 @@ class UseString {
   static String cancelrent='Your car is cancel';
   static String cancelappbar='CANCEL';
   static String sendlongmessage = 'new messages';
+  static String status = "Status";
+  static String complete = "Complete";
+  static String youcancel = "Cancel by";
+  static String yousmall = "you";
+  static String owner = "owner";
+  static String renter = "renter";
+  static String expired = "Expired";
+  static String expire = "Expiring Soon";
+  static String apply = "APPLY";
+  static String promo = "Coupon Code";
+  static String dopromo = "Do you have a Coupon code?";
+  static String selectcoupon = "Select Coupon";
+
 }
 
 class Currency {

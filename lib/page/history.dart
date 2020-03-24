@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,9 +9,11 @@ import 'package:pickcar/bloc/listcar/listcarstate.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/booking.dart';
 import 'package:pickcar/models/boxlocation.dart';
+import 'package:pickcar/models/history.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/page/registercarlist.dart';
+import 'package:pickcar/ui/uisize.dart';
 import 'package:pickcar/widget/listcar/listcatitem.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -74,6 +77,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
   }
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     // var a = true;
     // while(a){
     //   try{
@@ -106,32 +110,76 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
 
     TabController _tabController;
     _tabController = new TabController(vsync: this, length: myTabs.length,initialIndex: widget.indicatorpage);
-    widgetcard(Bookingshow booking,var datasize,BuildContext context){
+    status(BuildContext context,HistoryShow history,var datasize){
+      if(history.iscancel){
+        if(history.whocancel == "renter"){
+          if(history.ownermotorcycle == Datamanager.user.documentid){
+            return Container(
+              alignment: Alignment.centerLeft,
+              margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*30,top: SizeConfig.blockSizeVertical*8.8),
+              child: Text(UseString.status +" : "+ UseString.youcancel+" "+UseString.renter,
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*16,color: Colors.redAccent), 
+              ),
+            );
+          }else{
+            return Container(
+              alignment: Alignment.centerLeft,
+              margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*30,top: SizeConfig.blockSizeVertical*8.8),
+              child: Text(UseString.status +" : "+ UseString.youcancel+" "+UseString.yousmall,
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*16,color: Colors.redAccent), 
+              ),
+            );
+          }
+        }else{
+          return Container(
+            alignment: Alignment.centerLeft,
+            margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*30,top: SizeConfig.blockSizeVertical*8.8),
+            child: Text(UseString.status +" : "+ UseString.youcancel+" "+UseString.owner,
+              style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*16,color: Colors.redAccent), 
+            ),
+          );
+        }
+      }else{
+        return Container(
+          alignment: Alignment.centerLeft,
+          margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*30,top: SizeConfig.blockSizeVertical*8.8),
+          child: Text(UseString.status +" : "+ UseString.complete,
+            style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*16,color: Colors.lightGreen), 
+          ),
+        );
+      }
+    }
+    widgetcard(HistoryShow history,var datasize,BuildContext context){
       var motorshow;
        return GestureDetector(
         onTap: (){
           Datamanager.motorcycleShow = motorshow;
-          Datamanager.booking = booking;
+          Datamanager.historyshow = history;
           // Datamanager.placelocationshow = widget.locationshow;
           // Datamanager.boxlocationshow= widget.boxshow;
-          Navigator.of(context).pushNamed(Datamanager.receivecar);
+          // Navigator.of(context).pushNamed(Datamanager.receivecar);
         },
         child: Stack(
           children: <Widget>[
             Container(
               width: datasize.size.width,
-              height: 150,
-              child: Image.asset('assets/images/imagesearch/card.png',fit: BoxFit.fill,),
+              height: SizeConfig.blockSizeVertical*13,
+              // color: Colors.black,
+              child: Image.asset('assets/images/imagesearch/cardhistory.png',fit: BoxFit.fill,),
             ),
             FutureBuilder<DocumentSnapshot>(
-              future: Firestore.instance.collection('Motorcycle').document(booking.motorcycledocid).get(),
+              future: Firestore.instance.collection('Motorcycle').document(history.motorcycledocid).get(),
               builder: (context, snapshot) {
                 if(snapshot.connectionState == ConnectionState.waiting){
-                  return Center(
-                    child: Container(
-                      margin: EdgeInsets.only(top: 50),
-                      child: SpinKitCircle(
-                        color: PickCarColor.colormain,
+                  return Container(
+                    width: double.infinity,
+                    // height: double.infinity,
+                    child: Center(
+                      child: Container(
+                        margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*2.5),
+                        child: SpinKitCircle(
+                          color: PickCarColor.colormain,
+                        ),
                       ),
                     ),
                   );
@@ -147,12 +195,12 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                   motorshow = MotorcycleShow.fromSnapshot(snapshot.data);
                   // print(snapshot.data.documents);
                   // return Container();
-                  return Row(
+                  return Stack(
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.only(top: 20,left: 30),
-                        width: 150,
-                        height: 100,
+                        margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*3,top:SizeConfig.blockSizeVertical),
+                        width: SizeConfig.blockSizeHorizontal*25,
+                        height: SizeConfig.blockSizeVertical*11,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           image: DecorationImage(
@@ -162,38 +210,39 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                         ),
                         // child: Image.network(widget.motorshow.motorfrontlink,fit: BoxFit.fill,),
                       ),
-                      Column(
-                        children: <Widget>[
-                          SizedBox(height: 15,),
-                          Container(
-                            margin: EdgeInsets.only(left: 10),
-                            child: Text(motorshow.brand +" "+ motorshow.generation,
-                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*25,color: Colors.grey), 
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            // margin: EdgeInsets.only(left: 10),
-                            child: Text(UseString.date +" : "+ booking.day.toString()+" "+monthy(booking.month)+" "+booking.year.toString(),
-                              style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*20,color: Colors.grey), 
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            margin: EdgeInsets.only(left: 10),
-                            child: Text(UseString.time +" : "+ booking.time,
-                              style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*20,color: Colors.grey), 
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            margin: EdgeInsets.only(left: 10),
-                            child: Text(UseString.price +" : "+ booking.price.toString()+'฿',
-                              style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*20,color: Colors.grey), 
-                            ),
-                          ),
-                        ],
+                      Container(
+                        margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*30),
+                        child: Text(motorshow.brand +" "+ motorshow.generation,
+                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*22,color: Colors.grey), 
+                        ),
                       ),
+                      Container(
+                        width: SizeConfig.blockSizeHorizontal*68,
+                        // color: Colors.black,
+                        alignment: Alignment.centerLeft,
+                        margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*30,top: SizeConfig.blockSizeVertical*4),
+                        child: AutoSizeText(UseString.date +" : "+ history.startdate.day.toString()+" "+monthy(history.startdate.month)+" "+history.startdate.year.toString()
+                        +" "+UseString.time +" : "+ history.times,
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*16,color: Colors.grey), 
+                          maxLines: 1,
+                        ),
+                      ),
+                      // Container(
+                      //   // alignment: Alignment.centerLeft,
+                      //   margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*30,top: SizeConfig.blockSizeVertical*6),
+                      //   child: Text(UseString.time +" : "+ history.times,
+                      //     style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*17,color: Colors.grey), 
+                      //   ),
+                      // ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        margin: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*30,top: SizeConfig.blockSizeVertical*6),
+                        child: Text(UseString.price +" : "+ history.priceaddtax.toString()+'฿',
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: datasize.textScaleFactor*16,color: Colors.grey), 
+                        ),
+                      ),
+                      status(context,history,datasize),
+                      
                     ],
                   );
                 }else{
@@ -206,35 +255,37 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
       );
     }
     Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
-      var booking;
+      var history;
       var datasize = MediaQuery.of(context);
-      booking = Bookingshow.fromSnapshot(data);
-      return widgetcard(booking,datasize,context);
+      history = HistoryShow.fromSnapshot(data);
+      return widgetcard(history,datasize,context);
     }
     Widget _buildListItemrent(BuildContext context, DocumentSnapshot data) {
-      var booking;
+      var history;
       var datasize = MediaQuery.of(context);
-      booking = Bookingshow.fromSnapshot(data);
-      return widgetcard(booking,datasize,context);
+      history = HistoryShow.fromSnapshot(data);
+      return widgetcard(history,datasize,context);
     }
     Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
       return ListView(
-        padding: const EdgeInsets.only(top: 20.0),
+        padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical),
         children: snapshot.map((data) => _buildListItem(context, data)).toList(),
       );
     }
      Widget _buildListrent(BuildContext context, List<DocumentSnapshot> snapshot) {
       return ListView(
-        padding: const EdgeInsets.only(top: 20.0),
+        padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical),
         children: snapshot.map((data) => _buildListItemrent(context, data)).toList(),
       );
     }
     body(BuildContext context){
       if(widget.indicatorpage == 0){
         return StreamBuilder<QuerySnapshot>(
-          stream: Firestore.instance.collection('Booking')
-                      .where("myid", isEqualTo: Datamanager.user.documentid)
-                      .where("status", isEqualTo: "end")
+          stream: Firestore.instance.collection('history')
+                      .document(Datamanager.user.documentid)
+                      .collection('historylist')
+                      .where("ishistory",isEqualTo:true)
+                      .where("renterdocid",isEqualTo: Datamanager.user.documentid)
                       .orderBy("startdate")
                       .snapshots(),
           builder: (context, snapshot) {
@@ -277,9 +328,11 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
         ); 
       }else{
          return StreamBuilder<QuerySnapshot>(
-          stream: Firestore.instance.collection('Booking')
-                      .where("ownerid", isEqualTo: Datamanager.user.documentid)
-                      .where("status", isEqualTo: "end")
+          stream: Firestore.instance.collection('history')
+                      .document(Datamanager.user.documentid)
+                      .collection('historylist')
+                      .where("ishistory",isEqualTo:true)
+                      .where("ownermotorcycle",isEqualTo: Datamanager.user.documentid)
                       .orderBy("startdate")
                       .snapshots(),
           builder: (context, snapshot) {

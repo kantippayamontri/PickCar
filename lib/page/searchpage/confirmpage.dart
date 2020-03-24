@@ -1,17 +1,24 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/booking.dart';
 import 'package:pickcar/models/history.dart';
+import 'package:pickcar/models/listcarslot.dart';
+import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/ui/uisize.dart';
+import 'package:flutter/services.dart';
 class ConfirmPage extends StatefulWidget {
-  bool isExpand = false;
+  var code = TextEditingController();
+  bool isExpand = true;
   bool alertpolicy = false;
+  bool coupon = true;
+  var icon = Icons.arrow_drop_down;
   var pricefree;
   var pricetotal;
   double pricevat;
-  var iconchange = Icon(Icons.add,size: 32,color: PickCarColor.colormain,);
+  var iconchange = Icon(Icons.arrow_drop_up,size: 32,color: PickCarColor.colormain,);
   @override
   _ConfirmPageState createState() => _ConfirmPageState();
 }
@@ -96,21 +103,6 @@ class _ConfirmPageState extends State<ConfirmPage> {
       startdate: Datamanager.listcarslot.startdate,
       isinhistory: false,
     );
-    History history = History(
-      times:Datamanager.listcarslot.time,
-      price:Datamanager.listcarslot.price,
-      motorcycledocid:Datamanager.listcarslot.motorcycledocid,
-      // boxname:,
-      // plancename:,
-      iscancel: false,
-      university:Datamanager.listcarslot.university,
-      priceaddtax:widget.pricetotal,
-      startdate:Datamanager.listcarslot.startdate,
-      ownername:Datamanager.user.name,
-      brand:Datamanager.motorcycleShow.brand,
-      generation:Datamanager.motorcycleShow.generation,
-      imagelink:Datamanager.motorcycleShow.motorfrontlink,
-    );
     await Firestore.instance.collection('Singleforrent')
                               .where('ownerdocid' ,isEqualTo: Datamanager.listcarslot.ownerdocid)
                               .getDocuments().then((data) {
@@ -141,9 +133,48 @@ class _ConfirmPageState extends State<ConfirmPage> {
                                     Datamanager.firestore.collection('Singleforrent').document(Datamanager.listcarslot.docid).delete();
                                    
                                   }
+                                  History history = History(
+                                    times:Datamanager.listcarslot.time,
+                                    price:Datamanager.listcarslot.price,
+                                    motorcycledocid:Datamanager.listcarslot.motorcycledocid,
+                                    // boxname:,
+                                    // plancename:,
+                                    iscancel: false,
+                                    university:Datamanager.listcarslot.university,
+                                    priceaddtax:widget.pricetotal,
+                                    startdate:Datamanager.listcarslot.startdate,
+                                    ownername:Datamanager.user.name,
+                                    brand:Datamanager.motorcycleShow.brand,
+                                    generation:Datamanager.motorcycleShow.generation,
+                                    imagelink:Datamanager.motorcycleShow.motorfrontlink,
+                                    ownermotorcycle:Datamanager.listcarslot.ownerdocid,
+                                    renterdocid:Datamanager.user.documentid,
+                                  );
+                                  // Motorcyclehistory motorcycle = Motorcyclehistory(
+                                  //     brand:Datamanager.motorcycleShow.brand,
+                                  //     generation:Datamanager.motorcycleShow.generation,
+                                  //     cc:Datamanager.motorcycleShow.cc,
+                                  //     color:Datamanager.motorcycleShow.gear,
+                                  //     gear:Datamanager.motorcycleShow,
+                                  //     owneruid:Datamanager.motorcycleShow,
+                                  //     storagedocid:Datamanager.motorcycleShow,
+                                  //     motorprofilelink:Datamanager.motorcycleShow,
+                                  //     motorfrontlink:Datamanager.motorcycleShow,
+                                  //     motorbacklink:Datamanager.motorcycleShow,
+                                  //     motorleftlink:Datamanager.motorcycleShow,
+                                  //     motorrightlink:Datamanager.motorcycleShow,
+                                  //     motorreg:Datamanager.motorcycleShow,
+                                  //     motorgas:Datamanager.motorcycleShow,
+                                  //     myid:Datamanager.motorcycleShow,
+                                  // );
                                   await Firestore.instance.collection("history")
                                                           .document(Datamanager.user.documentid)
-                                                          .collection(Datamanager.listcarslot.ownerdocid)
+                                                          .collection("historylist")
+                                                          .document(document)
+                                                          .setData(history.toJson());
+                                  await Firestore.instance.collection("history")
+                                                          .document(Datamanager.listcarslot.ownerdocid)
+                                                          .collection("historylist")
                                                           .document(document)
                                                           .setData(history.toJson());
                                 });
@@ -505,9 +536,9 @@ class _ConfirmPageState extends State<ConfirmPage> {
                   onExpansionChanged: (value){
                     setState(() {
                       if(value){
-                        widget.iconchange = Icon(Icons.arrow_drop_down,size: 32,color: PickCarColor.colormain,);
+                        widget.iconchange = Icon(Icons.arrow_drop_up,size: 32,color: PickCarColor.colormain,);
                       }else{
-                        widget.iconchange = Icon(Icons.add,size: 32,color: PickCarColor.colormain,);
+                        widget.iconchange = Icon(Icons.arrow_drop_down,size: 32,color: PickCarColor.colormain,);
                       }
                       widget.isExpand = value;
                     });
@@ -522,6 +553,137 @@ class _ConfirmPageState extends State<ConfirmPage> {
                 ),
               ),
               Container(
+                  // color: Colors.grey[200],
+                  width: SizeConfig.screenWidth,
+                  alignment: Alignment.centerRight,
+                  // margin: EdgeInsets.only(right:SizeConfig.blockSizeHorizontal*10),
+                  child: GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        widget.coupon = !widget.coupon;
+                        if(widget.coupon){
+                          widget.icon = Icons.arrow_drop_up;
+                        }else{
+                          widget.icon = Icons.arrow_drop_down;
+                        }
+                      });
+                    },
+                    child: Container(
+                      width: SizeConfig.blockSizeHorizontal*60,
+                      child: Row(
+                        children: <Widget>[
+                          Text(UseString.dopromo,
+                            style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*16,color: PickCarColor.colorFont1), 
+                          ),
+                          GestureDetector(
+                            child: Icon(widget.icon), 
+                            onTap: (){
+                              setState(() {
+                                widget.coupon = !widget.coupon;
+                                if(widget.coupon){
+                                  widget.icon = Icons.arrow_drop_up;
+                                }else{
+                                  widget.icon = Icons.arrow_drop_down;
+                                }
+                              });
+                            }
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              Visibility(
+                visible: widget.coupon,
+                child: Container(
+                  width: SizeConfig.screenWidth,
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    margin: EdgeInsets.only(right:SizeConfig.blockSizeHorizontal*8),
+                    width: SizeConfig.blockSizeHorizontal*40,
+                    height: SizeConfig.blockSizeHorizontal*8,
+                    child: Container(),
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: widget.coupon,
+                child: Container(
+                  // margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*5),
+                  width: SizeConfig.screenWidth,
+                  height: SizeConfig.blockSizeVertical*10,
+                  // color:Colors.black,
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(left:SizeConfig.blockSizeHorizontal*35,top:SizeConfig.blockSizeVertical),
+                        width: SizeConfig.blockSizeHorizontal*35,
+                        height: SizeConfig.blockSizeVertical*5,
+                        // color: Colors.blue,
+                        child: Material(
+                          elevation: 8.0,
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          shadowColor: Colors.grey[300],
+                          child: Center(
+                            child: TextFormField(
+                              // maxLength: 12,
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(12),
+                              ],
+                              // textAlignVertical: TextAlignVertical.center,
+                              // keyboardType: TextInputType.number,
+                              controller: widget.code,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: data.textScaleFactor*18,
+                                  // color: Color.fromRGBO(69,79,99,1)
+                              ),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.only(left:SizeConfig.blockSizeHorizontal*2,bottom: SizeConfig.blockSizeVertical*2),
+                                // border: OutlineInputBorder(
+                                //   borderSide: BorderSide(
+                                //     color: Colors.grey[300],
+                                //     width: 3,
+                                //   ),
+                                //   borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                // ),
+                                // border: InputBorder.none,
+                                hintText: UseString.promo,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.topRight,
+                        margin: EdgeInsets.only(right:SizeConfig.blockSizeHorizontal*7),
+                        child: Container(
+                          margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical),
+                          width: SizeConfig.blockSizeHorizontal*20,
+                          height: SizeConfig.blockSizeVertical*5,
+                          child: FlatButton(
+                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            color: PickCarColor.colorbuttom,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(8.0),
+                              // side: BorderSide(color: Colors.red)
+                            ),
+                            onPressed: (){
+                              
+                            },
+                            child: AutoSizeText(UseString.apply,
+                              maxLines: 1,
+                              style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*17,color: Colors.white), 
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+                Container(
                 margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical*1),
                 width: data.size.width,
                 child: Stack(
@@ -551,52 +713,52 @@ class _ConfirmPageState extends State<ConfirmPage> {
                 height: 2,
                 color: Colors.grey[300],
               ),
-              Container(
-                alignment: Alignment.centerLeft,
-                margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4,left: SizeConfig.blockSizeHorizontal*5),
-                child: Text(UseString.userdetail,
-                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color: PickCarColor.colormain), 
-                ),
-              ),
-              Container(
-                alignment: Alignment.centerLeft,
-                margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical,left: SizeConfig.blockSizeHorizontal*7),
-                child: Row(
-                  children: <Widget>[
-                    Icon(Icons.person,color: Colors.grey[500],),
-                    SizedBox(width: SizeConfig.blockSizeHorizontal,),
-                    Text(Datamanager.user.name,
-                        style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*22,color: PickCarColor.colorcmu), 
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                alignment: Alignment.centerLeft,
-                margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical,left: SizeConfig.blockSizeHorizontal*7),
-                child: Row(
-                  children: <Widget>[
-                    Icon(Icons.email,color: Colors.grey[500],),
-                    SizedBox(width: SizeConfig.blockSizeHorizontal,),
-                    Text(Datamanager.user.email,
-                        style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*22,color: PickCarColor.colorcmu), 
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                alignment: Alignment.centerLeft,
-                margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical,left: SizeConfig.blockSizeHorizontal*7),
-                child: Row(
-                  children: <Widget>[
-                    Icon(Icons.phone,color: Colors.grey[500],),
-                    SizedBox(width: SizeConfig.blockSizeHorizontal,),
-                    Text(Datamanager.user.tel,
-                        style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*22,color: PickCarColor.colorcmu), 
-                    ),
-                  ],
-                ),
-              ),
+              // Container(
+              //   alignment: Alignment.centerLeft,
+              //   margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4,left: SizeConfig.blockSizeHorizontal*5),
+              //   child: Text(UseString.userdetail,
+              //       style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*25,color: PickCarColor.colormain), 
+              //   ),
+              // ),
+              // Container(
+              //   alignment: Alignment.centerLeft,
+              //   margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical,left: SizeConfig.blockSizeHorizontal*7),
+              //   child: Row(
+              //     children: <Widget>[
+              //       Icon(Icons.person,color: Colors.grey[500],),
+              //       SizedBox(width: SizeConfig.blockSizeHorizontal,),
+              //       Text(Datamanager.user.name,
+              //           style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*22,color: PickCarColor.colorcmu), 
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              // Container(
+              //   alignment: Alignment.centerLeft,
+              //   margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical,left: SizeConfig.blockSizeHorizontal*7),
+              //   child: Row(
+              //     children: <Widget>[
+              //       Icon(Icons.email,color: Colors.grey[500],),
+              //       SizedBox(width: SizeConfig.blockSizeHorizontal,),
+              //       Text(Datamanager.user.email,
+              //           style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*22,color: PickCarColor.colorcmu), 
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              // Container(
+              //   alignment: Alignment.centerLeft,
+              //   margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical,left: SizeConfig.blockSizeHorizontal*7),
+              //   child: Row(
+              //     children: <Widget>[
+              //       Icon(Icons.phone,color: Colors.grey[500],),
+              //       SizedBox(width: SizeConfig.blockSizeHorizontal,),
+              //       Text(Datamanager.user.tel,
+              //           style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*22,color: PickCarColor.colorcmu), 
+              //       ),
+              //     ],
+              //   ),
+              // ),
               Container(
                 alignment: Alignment.centerLeft,
                 margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*3,left: SizeConfig.blockSizeHorizontal*7),

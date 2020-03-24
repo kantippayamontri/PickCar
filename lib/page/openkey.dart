@@ -222,13 +222,11 @@ class _OpenkeyState extends State<Openkey> {
                                     await Firestore.instance.collection('User')
                                               .document(Datamanager.user.documentid)
                                               .updateData({'money': price});
-                                    await Firestore.instance.collection('historybooking')
+                                    await Firestore.instance.collection('history')
                                               .document(Datamanager.user.documentid)
-                                              .setData(booking.toJson());
-                                    await Firestore.instance.collection('historybooking')
-                                              .document(Datamanager.user.documentid)
-                                              .collection('listhistory')
-                                              .add({'startdate':Datamanager.booking.startdate,'price':Datamanager.booking.priceaddtax});
+                                              .collection('historylist')
+                                              .document(Datamanager.booking.bookingdocid)
+                                              .updateData({'ishistory':true});
                                   }
                                 });
                               });

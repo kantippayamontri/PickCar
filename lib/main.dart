@@ -4,6 +4,7 @@ import 'package:pickcar/page/chooseadminserver.dart';
 import 'package:pickcar/page/admin/adminlicense.dart';
 import 'package:pickcar/page/admin/adminmenu.dart';
 import 'package:pickcar/page/chatpage.dart';
+import 'package:pickcar/page/coupongpage.dart';
 import 'package:pickcar/page/example.dart';
 import 'package:pickcar/page/fullimage.dart';
 import 'package:pickcar/page/history.dart';
@@ -109,6 +110,7 @@ class MyApp extends StatelessWidget {
         Datamanager.sendregistation : (ctx) => Sendregistation(),
         Datamanager.serverpage: (ctx) => ServerPage(),
         Datamanager.chooseadminserverpage: (ctx) => ChooseAdminServer(),
+        Datamanager.coupongpage: (ctx) => Coupongpage(),
         //'loginpickcarpage': (ctx) => LoginPickCarPage()
       },
       onGenerateRoute: (setting) {},
