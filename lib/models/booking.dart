@@ -19,11 +19,13 @@ class Booking {
   String status;
   double priceaddtax;
   DateTime startdate;
+  DateTime enddate;
   bool isinhistory;
   bool iscancle;
   bool ownercanclealert;
   bool rentercanclealert;
   String docid;
+  String type;
 
  
   Booking({
@@ -48,6 +50,8 @@ class Booking {
     @required this.iscancle,
     @required this.ownercanclealert,
     @required this.rentercanclealert,
+    @required this.enddate,
+    @required this.type,
     this.docid,
   }) {}
 
@@ -75,7 +79,9 @@ class Booking {
       'ownercanclealert' : this.ownercanclealert,
       'rentercanclealert' : this.rentercanclealert,
       'alreadycheck' : null,
+      'enddate' : this.enddate,
       'docid' : this.docid,
+      'type' : this.type,
     };
   }
 }
@@ -100,6 +106,8 @@ class Bookingshow {
   bool ownercanclealert;
   bool rentercanclealert;
   DateTime startdate;
+  DateTime enddate;
+  String type;
   final DocumentReference reference;
 
   Bookingshow.fromMap(Map<String, dynamic> map, {this.reference})
@@ -137,7 +145,9 @@ class Bookingshow {
        status = map['status'],
        motorplacelocdocid = map['motorplacelocdocid'],
        iscancle = map['iscancle'],
+       type = map['type'],
        ownercanclealert = map['ownercanclealert'],
+       enddate = (map['enddate']as Timestamp).toDate(),
        rentercanclealert = map['rentercanclealert'];
 
   Bookingshow.fromSnapshot(DocumentSnapshot snapshot)

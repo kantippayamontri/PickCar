@@ -15,14 +15,14 @@ class SearchPage extends StatefulWidget {
     '11.00 - 12.15',
     '13.00 - 14.15',
     '14.30 - 15.45',
-    '16.00 - 17.30'
+    '16.00 - 17.15'
   ];
   var timeselect2 = [
-    '08.00 - 11.00',
-    '09.30 - 12.30',
-    '11.00 - 14.30',
-    '13.00 - 16.00',
-    '14.30 - 17.30'
+    '08.00 - 10.45',
+    '09.30 - 12.15',
+    '11.00 - 14.15',
+    '13.00 - 15.45',
+    '14.30 - 17.15'
   ];
   var timeselect3 = [
     '08.00 - 12.30',
@@ -1729,7 +1729,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                 items: <String>[
                                   UseString.rent1,
                                   UseString.rent2,
-                                  UseString.rent3
+                                  // UseString.rent3
                                 ].map((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,

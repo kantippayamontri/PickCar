@@ -42,19 +42,34 @@ class _ListcarState extends State<Listcar> {
   }
   loaddatatype(){
     var time;
-    if(TimeSearch.time1){
+    if(SearchString.type == UseString.rent1){
+      if(TimeSearch.time1){
       time = "8.00 - 9.15";
-    }else if(TimeSearch.time2){
-      time = "9.30 - 10.45";
-    }else if(TimeSearch.time3){
-      time = "11.00 - 12.15";
-    }else if(TimeSearch.time4){
-      time = "13.00 - 14.15";
-    }else if(TimeSearch.time5){
-      time = "14.30 - 15.45";
-    }else{
-      time = "16.00 - 17.30";
+      }else if(TimeSearch.time2){
+        time = "9.30 - 10.45";
+      }else if(TimeSearch.time3){
+        time = "11.00 - 12.15";
+      }else if(TimeSearch.time4){
+        time = "13.00 - 14.15";
+      }else if(TimeSearch.time5){
+        time = "14.30 - 15.45";
+      }else{
+        time = "16.00 - 17.15";
+      }
+    }else if(SearchString.type == UseString.rent2){
+      if(TimeSearch.time1){
+      time = "8.00 - 10.45";
+      }else if(TimeSearch.time2){
+        time = "9.30 - 12.15";
+      }else if(TimeSearch.time3){
+        time = "11.00 - 14.15";
+      }else if(TimeSearch.time4){
+        time = "13.00 - 15.45";
+      }else {
+        time = "14.30 - 17.15";
+      }
     }
+    
     if(SearchString.type == UseString.rent1){
       return Firestore.instance.collection('Singleforrent')
                       .where("day", isEqualTo: widget.day)
@@ -63,10 +78,11 @@ class _ListcarState extends State<Listcar> {
                       .where("time", isEqualTo: time)
                       .snapshots();
     }else if(SearchString.type == UseString.rent2){
-      return Firestore.instance.collection('Singleforrent')
+      return Firestore.instance.collection('Doubleforrent')
+                       .where("day", isEqualTo: widget.day)
                       .where('iscancle',isEqualTo: false)
-                      .where("day", isEqualTo: widget.day)
-                      // .where("motorplacelocdocid", isEqualTo: Datamanager.placelocationshow.docplaceid)
+                      .where("motorplacelocdocid", isEqualTo: Datamanager.placelocationshow.docplaceid)
+                      .where("time", isEqualTo: time)
                       .snapshots();
     }else{
       return Firestore.instance.collection('Singleforrent')
@@ -92,7 +108,7 @@ class _ListcarState extends State<Listcar> {
   }
   wait(){
     Future.delayed(const Duration(milliseconds: 1000), () {
-      print('wait');
+      // print('wait');
       DataFetch.waitplace = 1;
       setState(() {
       });
@@ -233,6 +249,7 @@ class _ListcarState extends State<Listcar> {
     // }
     // print(Datamanager.user.documentid + ' '+timeslot.university+' '+timeslot.ownerdocid);
     // print(Datamanager.placelocationshow);
+    // print("0000000");
     if( timeslot.ownerdocid != Datamanager.user.documentid && timeslot.university == widget.university){
           return GestureDetector(
             onTap: (){
@@ -610,8 +627,8 @@ class _ListcarState extends State<Listcar> {
         );
     }else{
       widget.countnotfound++;
-      print(widget.countnotfound);
-      print(widget.totalnotfound);
+      // print(widget.countnotfound);
+      // print(widget.totalnotfound);
       if(widget.countnotfound == widget.totalnotfound){
         return Container(
           height: datasize.size.height/1.4,

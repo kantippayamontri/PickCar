@@ -6,6 +6,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:pickcar/models/chat.dart';
+import 'package:pickcar/models/coupon.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/models/placelocation.dart';
@@ -93,6 +94,7 @@ class Datamanager {
   static PlacelocationShow placelocationshow;
   static Boxslotrentshow boxslotrentshow;
   static Boxslotnumbershow boxslotnumbershow;
+  static Couponshow couponshow;
   static String imageusershow;
   static Motorcycle motorcycle;
   static HistoryShow historyshow;
@@ -425,13 +427,24 @@ class UseString {
   static String yousmall = "you";
   static String owner = "owner";
   static String renter = "renter";
-  static String expired = "Expired";
+  static String expired = "Expired/Used";
   static String expire = "Expiring Soon";
   static String apply = "APPLY";
   static String promo = "Coupon Code";
   static String dopromo = "Do you have a Coupon code?";
   static String selectcoupon = "Select Coupon";
-
+  static String coupon = "coupon";
+  static String applied = "applied";
+  static String remove = "REMOVE";
+  static String discount = "Discount";
+  static String notfoundcoupon = "Coupon does not found.";
+  static String offin = "off in your next renter";
+  static String validexpaired = "Valid Until: ";
+  static String notcoupon = "You don't have coupon";
+  static String ok ="OK";
+  static String coupondetail = "you can use one coupon per renter.";
+  static String couponrule = "Coupon Rule";
+  static String back = "BACK";
 }
 
 class Currency {
@@ -509,7 +522,10 @@ class Imagesoom {
   static var width;
   static var height;
 }
-
+class Activate{
+  static bool activatecoupon =false;
+  static bool pressed = false;
+}
 class CarStatus {
   static const String nothing = "NOTHING";
   static const String waiting = "WAITING";

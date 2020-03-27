@@ -130,9 +130,11 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
                                             ownercanclealert:false,
                                             rentercanclealert:false,
                                             docid: booking.bookingdocid,
+                                            enddate: booking.enddate,
+                                            type: booking.type
                                           );
-                                          print(booking.ownerid);
-                                          await Firestore.instance.collection('Singleforrent')
+                                          if(booking.type == UseString.rent1){
+                                            await Firestore.instance.collection('Singleforrent')
                                                             .document(booking.bookingdocid)
                                                             .setData(book.toJson())
                                                             .whenComplete(() async {
@@ -148,6 +150,25 @@ class _ListCarPageState extends State<ListCarPage> with TickerProviderStateMixin
                                                                     .updateData({'ishistory':true,'iscancel':true,"whocancel":"renter"});
                                                               Navigator.pop(context);
                                                             }); 
+                                          }else if(booking.type == UseString.rent2){
+                                            await Firestore.instance.collection('Doubleforrent')
+                                                            .document(booking.bookingdocid)
+                                                            .setData(book.toJson())
+                                                            .whenComplete(() async {
+                                                              await Firestore.instance.collection('history')
+                                                                    .document(Datamanager.user.documentid)
+                                                                    .collection('historylist')
+                                                                    .document(booking.bookingdocid)
+                                                                    .updateData({'ishistory':true,'iscancel':true,"whocancel":"renter"});
+                                                              await Firestore.instance.collection('history')
+                                                                    .document(booking.ownerid)
+                                                                    .collection('historylist')
+                                                                    .document(booking.bookingdocid)
+                                                                    .updateData({'ishistory':true,'iscancel':true,"whocancel":"renter"});
+                                                              Navigator.pop(context);
+                                                            }); 
+                                          }
+                                          
                                           
                                         });
                           },
