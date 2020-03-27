@@ -48,6 +48,7 @@ dependencies:
   nice_button: ^0.1.7
   auto_size_text: ^2.1.0
   random_string: ^2.0.1
+  latlong: ^0.6.1
   
 
   # The following adds the Cupertino Icons font to your application.

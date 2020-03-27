@@ -445,6 +445,9 @@ class UseString {
   static String coupondetail = "you can use one coupon per renter.";
   static String couponrule = "Coupon Rule";
   static String back = "BACK";
+  static String fardetail = "you can't open the box when you far from it more than 20 meter.";
+  static String fartitle = "from box: ";
+  static String meters = "meters";
 }
 
 class Currency {
