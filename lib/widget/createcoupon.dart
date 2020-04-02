@@ -5,7 +5,7 @@ import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/coupon.dart';
 import 'package:random_string/random_string.dart';
 
-createcoupon() async {
+createcoupon(String userdocid) async {
   var now = DateTime.now();
   String code ="";
   for(int i = 0; i<12;i++){
@@ -16,7 +16,7 @@ createcoupon() async {
     }
   }
   String docid = await Firestore.instance.collection("Coupon")
-                          .document(Datamanager.user.documentid)
+                          .document(userdocid)
                           .collection("Coupongroup").document().documentID;
   Coupon coupon = Coupon(
     startdate: now,
@@ -27,7 +27,7 @@ createcoupon() async {
     coupondocid: docid
   );
   await Firestore.instance.collection("Coupon")
-                          .document(Datamanager.user.documentid)
+                          .document(userdocid)
                           .collection("Coupongroup")
                           .document(docid)
                           .setData(coupon.toJson());

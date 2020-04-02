@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pickcar/bloc/serve/servebloc.dart';
+import 'package:pickcar/datamanager.dart';
 
 class ServerPage extends StatefulWidget {
   @override
@@ -17,7 +18,10 @@ class _ServerPageState extends State<ServerPage> {
 
     super.initState();
   }
-
+  dispose() {
+    Realtime.servertimer.cancel();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     _serveBloc.looptime();

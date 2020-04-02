@@ -22,7 +22,7 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
   Stream<ServeState> mapEventToState(ServeEvent event) {}
 
   Future<Null> looptime() async {
-    Timer.periodic(Duration(seconds: 5), (timer) async {
+    Realtime.servertimer = Timer.periodic(Duration(seconds: 5), (timer) async {
       print("count : ${count++}");
       //todo init var
 

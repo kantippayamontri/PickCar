@@ -175,6 +175,7 @@ class Datamanager {
   ];
 }
 
+
 class UseString {
   static String name = "Name";
   static String nameemptyval = "Please Enter Name.";
@@ -448,6 +449,7 @@ class UseString {
   static String fardetail = "you can't open the box when you far from it more than 20 meter.";
   static String fartitle = "from box: ";
   static String meters = "meters";
+  static String server = "SERVER";
 }
 
 class Currency {
@@ -463,6 +465,7 @@ class Realtime {
   static var timecar;
   static var checkkeymap;
   static Timer checkalert;
+  static Timer servertimer;
 }
 
 class Checkopenkey {

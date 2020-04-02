@@ -117,8 +117,8 @@ class _HomePageState extends State<HomePage> {
     }
 
     void _gotoregister() {
-      // Navigator.of(context).pushNamed(Datamanager.registerpage);
-      createcoupon();
+      Navigator.of(context).pushNamed(Datamanager.registerpage);
+      // createcoupon();
     }
 
     var data = MediaQuery.of(context);

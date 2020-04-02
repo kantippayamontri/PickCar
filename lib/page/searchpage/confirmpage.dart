@@ -210,11 +210,13 @@ class _ConfirmPageState extends State<ConfirmPage> {
                                                           .collection("historylist")
                                                           .document(document)
                                                           .setData(history.toJson());
-                                  await Firestore.instance.collection("Coupon")
+                                  try{
+                                    await Firestore.instance.collection("Coupon")
                                                           .document(Datamanager.user.documentid)
                                                           .collection("Coupongroup")
                                                           .document(Datamanager.couponshow.coupondocid)
                                                           .updateData({"use":true});
+                                  }catch(e){}
                                 });
                               });
     }else if(SearchString.type == UseString.rent2){
@@ -292,11 +294,14 @@ class _ConfirmPageState extends State<ConfirmPage> {
                                                           .collection("historylist")
                                                           .document(document)
                                                           .setData(history.toJson());
-                                  await Firestore.instance.collection("Coupon")
+                                  try{
+                                    await Firestore.instance.collection("Coupon")
                                                           .document(Datamanager.user.documentid)
                                                           .collection("Coupongroup")
                                                           .document(Datamanager.couponshow.coupondocid)
                                                           .updateData({"use":true});
+                                  }catch(e){}
+                                  
                                 });
                               });
     }
