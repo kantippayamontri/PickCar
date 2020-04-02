@@ -76,7 +76,7 @@ class MotorWaitingListBloc
           iscancle: doc['iscancle'],
           ownercanclealert: doc['ownercanclealert'],
           rentercanclealert: doc['rentercanclealert'],
-          enddate: doc['enddate']);
+          enddate: (doc['enddate'] as Timestamp).toDate());
 
       sgfr.boxslotrentdocid = doc['boxslotrentdocid'];
       sgfr.docid = doc['docid'];

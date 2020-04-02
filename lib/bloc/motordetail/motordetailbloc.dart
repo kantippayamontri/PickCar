@@ -156,9 +156,10 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
   }
 
   Future<Null> checkdropkey() async {
-    print("in function checkdropkey");
+    print("---in function checkdropkey");
     Boxslotrent currentopenbox;
     DateTime timenow = DateTime.now();
+    print("${timenow.day} -- ${timenow.month} -- ${timenow.year}");
     QuerySnapshot boxslotrent = await Datamanager.firestore
         .collection("BoxslotRent")
         .orderBy('startdate')
@@ -178,12 +179,15 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
     // print("boxslotrentlist : " + boxslotrentlist.length.toString());
     // print("boxslotrentlist docid : " + boxslotrentlist[0]['docid']);
     for (var doc in boxslotrentlist) {
-      if (!(doc['day'] == timenow.day) &&
+      print(" checkday in doc--${doc['day']} -- ${doc['month']} -- ${doc['year']}");
+      if (!((doc['day'] == timenow.day) &&
           (doc['month'] == timenow.month) &&
-          (doc['year'] == timenow.year)) {
-        // print("doc continuce : ${doc['docid']}");
+          (doc['year'] == timenow.year))) {
+        print("doc continuce : ${doc['docid']}");
+        print(" today in doc--${doc['day']} -- ${doc['month']} -- ${doc['year']}");
         continue;
       }
+      print("****pass****");
 
       if (doc['ownerdropkey'] == false &&
           ((doc['startdate'] as Timestamp).toDate().isAfter(timenow)) &&

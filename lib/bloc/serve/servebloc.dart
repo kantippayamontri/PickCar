@@ -27,9 +27,9 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
       //todo init var
 
       //todo -----------
-      // DateTime timenow = DateTime(DateTime.now().year, DateTime.now().month,
-      //     DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
-      DateTime timenow = DateTime(2020, 3, 25, 9, 31);
+      DateTime timenow = DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
+      //DateTime timenow = DateTime(2020, 3, 25, 9, 31);
       bool istimeinslot = checkintimeslot(timenow);
       String timeslotin = timeslotmatch(timenow);
       await checkownerdontdropkey(timenow);
@@ -44,10 +44,15 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
       await checkbookingandnotusing(timenow);
       print(
           "--------------------------------------------------------------------");
-      await deleteallcancle();
+      await checkcanclesingleanddoublehavekey();
+      //await deleteallcancle();
     });
 
     //print("xxxxxxxxxxxxxxxxxxxxxxxxxx");
+  }
+
+  Future<Null> checkcanclesingleanddoublehavekey() async {
+    
   }
 
   Future<Null> deleteallcancle() async {
@@ -93,6 +98,28 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
         .delete();
   }
 
+  Future<Null> delete_boxslotrent_doubleforrent(
+      String doubleforrentdocid) async {
+    DocumentSnapshot doubleforrentdoc = await Datamanager.firestore
+        .collection("Doubleforrent")
+        .document(doubleforrentdocid)
+        .get();
+
+    //todo delete in boxslotrent
+    DocumentSnapshot boxslotrentdoc = await Datamanager.firestore
+        .collection("BoxslotRent")
+        .document(doubleforrentdoc['boxslotrentdocid'])
+        .get();
+    if ((boxslotrentdoc['ownerdropkey'] == true) ||
+        (boxslotrentdoc['iskey'] == true)) {
+      return;
+    }
+    await Datamanager.firestore
+        .collection("BoxslotRent")
+        .document(doubleforrentdoc['boxslotrentdocid'])
+        .delete();
+  }
+
   Future<Null> delete_boxslotrent_singleforrent(
       String singleforrentdocid) async {
     DocumentSnapshot singleforrentdoc = await Datamanager.firestore
@@ -126,9 +153,8 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
           .document(booking['boxslotrentdocid'])
           .get();
       if (boxslotrentDoc['ownerdropkey'] == true &&
-          (booking['startdate'] as Timestamp)
+          (booking['enddate'] as Timestamp)
               .toDate()
-              .add(Duration(hours: 1, minutes: 15))
               .isBefore(dateTime)) {
         await Datamanager.firestore
             .collection("Booking")
@@ -146,23 +172,23 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
         .where('iscancle', isEqualTo: false)
         .getDocuments();
     List<DocumentSnapshot> bookinglist = bookingDoc.documents;
-    if (bookinglist.isEmpty) {
-      print("booklist empty");
-    } else {
-      print("booklst not empty : ${bookinglist.length}");
-    }
+    // if (bookinglist.isEmpty) {
+    //   print("booklist empty");
+    // } else {
+    //   print("booklst not empty : ${bookinglist.length}");
+    // }
 
     for (var booking in bookinglist) {
       if (dateTime.isAfter((booking['startdate'] as Timestamp).toDate()) &&
-          dateTime.isBefore((booking['startdate'] as Timestamp)
+          dateTime.isBefore((booking['enddate'] as Timestamp)
               .toDate()
-              .add(Duration(hours: 1, minutes: 15)))) {
+              )) {
         print("working in time");
         continue;
       } else {
-        if (dateTime.isAfter((booking['startdate'] as Timestamp)
+        if (dateTime.isAfter((booking['enddate'] as Timestamp)
             .toDate()
-            .add(Duration(hours: 1, minutes: 15)))) {
+            )) {
           print("working overtime");
           //todo cancle next slot
           var bookingslotrent = await Datamanager.firestore
@@ -187,9 +213,9 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
             //todo check next slot
             if (dateTime.isAfter(
                     (boxslotrent['startdate'] as Timestamp).toDate()) &&
-                dateTime.isBefore((boxslotrent['startdate'] as Timestamp)
+                dateTime.isBefore((boxslotrent['enddate'] as Timestamp)
                     .toDate()
-                    .add(Duration(hours: 1, minutes: 15)))) {
+                    )) {
               print("this boxslotrent is should cancle");
               //todo find booking from boxsltrent
               var canclebookDoc = await Datamanager.firestore
@@ -218,10 +244,10 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
 
   Future<Null> checkownerdontreceivekey(
       DateTime dateTime, bool isintimeslot, String slotmatch) async {
-    if (!isintimeslot) {
-      print("return because not in slot");
-      return;
-    }
+    // if (!isintimeslot) {
+    //   print("return because not in slot");
+    //   return;
+    // }
 
     var bookingDoc = await Datamanager.firestore
         .collection("Booking")
@@ -229,18 +255,18 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
         .where('iscancle', isEqualTo: false)
         .getDocuments();
     List<DocumentSnapshot> bookinglist = bookingDoc.documents;
-    if (bookinglist.isEmpty) {
-      print("booklist empty");
-    } else {
-      print("booklst not empty : ${bookinglist.length}");
-    }
+    // if (bookinglist.isEmpty) {
+    //   print("booklist empty");
+    // } else {
+    //   print("booklst not empty : ${bookinglist.length}");
+    // }
 
     for (var booking in bookinglist) {
       print("${booking['bookingdocid']}");
       if (dateTime.isAfter((booking['startdate'] as Timestamp).toDate()) &&
-          dateTime.isBefore((booking['startdate'] as Timestamp)
+          dateTime.isBefore((booking['enddate'] as Timestamp)
               .toDate()
-              .add(Duration(hours: 1, minutes: 15)))) {
+              )) {
         print("end in time");
         continue;
       } else {
@@ -267,9 +293,9 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
           //todo check next slot
           if (dateTime
                   .isAfter((boxslotrent['startdate'] as Timestamp).toDate()) &&
-              dateTime.isBefore((boxslotrent['startdate'] as Timestamp)
+              dateTime.isBefore((boxslotrent['enddate'] as Timestamp)
                   .toDate()
-                  .add(Duration(hours: 1, minutes: 15)))) {
+                  )) {
             print("this boxslotrent is should cancle");
             //todo find booking from boxsltrent
             var canclebookDoc = await Datamanager.firestore
@@ -320,12 +346,40 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
             .updateData({
           'iscancle': true,
           'rentercanclealert': true,
-        }).whenComplete(() {
+        }).whenComplete(() async {
           //print("update success");
-          delete_boxslotrent_singleforrent(singleforrent['docid']);
+          await delete_boxslotrent_singleforrent(singleforrent['docid']);
+          print("---delete doubleforrent");
         });
       } else {
         //print("should not delete");
+      }
+    }
+    //todo check in doubleforrent
+    var doubleforrentDoc = await Datamanager.firestore
+        .collection("Doubleforrent")
+        .where('iscancle', isEqualTo: false)
+        .getDocuments();
+    List<DocumentSnapshot> doubleforrentlist = doubleforrentDoc.documents;
+    for (DocumentSnapshot doubleforrent in doubleforrentlist) {
+      //print("---double doc : ${doubleforrent['docid']}");
+      //print(dateTime);
+      //print('---double startdate : ${doubleforrent['startdate']}');
+      if ((doubleforrent['startdate'] as Timestamp)
+          .toDate()
+          .isBefore(dateTime)) {
+        print("doubleforrent doc is : ${doubleforrent['docid']}");
+        await Datamanager.firestore
+            .collection('Doubleforrent')
+            .document(doubleforrent['docid'])
+            .updateData({
+          'iscancle': true,
+          'rentercanclealert': true,
+        }).whenComplete(() {
+          //print("update success");
+          delete_boxslotrent_doubleforrent(doubleforrent['docid']);
+          //
+        });
       }
     }
 

@@ -5,3 +5,4 @@ class MotorBookListArguments{
   Motorcycle motorcycle;
   MotorBookListArguments({@required this.motorcycle});
 }
+
