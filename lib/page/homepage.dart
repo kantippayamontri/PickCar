@@ -10,6 +10,7 @@ import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/page/tabscreen.dart';
 import 'package:pickcar/ui/uisize.dart';
 import 'package:pickcar/widget/cancel.dart';
+import 'package:pickcar/widget/createcoupon.dart';
 import 'package:pickcar/widget/home/cardrental.dart';
 
 int i = 0;
@@ -117,6 +118,7 @@ class _HomePageState extends State<HomePage> {
 
     void _gotoregister() {
       Navigator.of(context).pushNamed(Datamanager.registerpage);
+      // createcoupon();
     }
 
     var data = MediaQuery.of(context);

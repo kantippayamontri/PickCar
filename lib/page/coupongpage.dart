@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/ui/uisize.dart';
+import 'package:pickcar/widget/couponghistory.dart';
+import 'package:pickcar/widget/usedcoupon.dart';
 
 class Coupongpage extends StatefulWidget {
   int indicatorpage = 0;
@@ -69,6 +71,13 @@ class _CoupongpageState extends State<Coupongpage> with TickerProviderStateMixin
     //     a =false;
     //   } 
     // }
+    body(BuildContext context){
+      if(widget.indicatorpage == 0){
+        return usecoupon(context);
+      }else{
+        return historycoupon(context);
+      }
+    }
     var data = MediaQuery.of(context);
     final List<Tab> myTabs = <Tab>[
       new Tab(
@@ -108,7 +117,7 @@ class _CoupongpageState extends State<Coupongpage> with TickerProviderStateMixin
             onTap: (data){
               setState(() {
                 widget.indicatorpage=data;
-                print(widget.indicatorpage);
+                // print(widget.indicatorpage);
                 widget.i =0;
               });
             },
@@ -125,7 +134,7 @@ class _CoupongpageState extends State<Coupongpage> with TickerProviderStateMixin
           },
         ),
       ),
-      // body: body(context),
+      body: body(context),
       );
   }
 }

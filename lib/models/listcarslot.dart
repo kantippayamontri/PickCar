@@ -6,6 +6,7 @@ import '../datamanager.dart';
 class Listcarslot {
   String time;
   DateTime startdate;
+  DateTime enddate;
   int day;
   int month;
   int year;
@@ -41,6 +42,8 @@ class Listcarslot {
        assert(map['iscancle'] != null),
        assert(map['ownercanclealert'] != null),
        assert(map['rentercanclealert'] != null),
+       assert(map['enddate'] != null),
+       enddate = (map['enddate'] as Timestamp).toDate(),
        iscancle = map['iscancle'],
        ownercanclealert = map['ownercanclealert'],
        rentercanclealert = map['rentercanclealert'],

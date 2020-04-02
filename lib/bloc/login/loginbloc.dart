@@ -237,7 +237,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             .listen((data) => data.documents.forEach((doc) async {
                   if (doc['isadmin']) {
                     Navigator.of(context).pushNamedAndRemoveUntil(
-                        Datamanager.chooseadminserverpage,
+                        Datamanager.adminmenu,
+                        // Datamanager.chooseadminserverpage,
                         ModalRoute.withName('/'));
                   } else {
                     Navigator.of(context).pushNamedAndRemoveUntil(

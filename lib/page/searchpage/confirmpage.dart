@@ -4,16 +4,23 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:pickcar/datamanager.dart';
 import 'package:pickcar/models/booking.dart';
+import 'package:pickcar/models/coupon.dart';
 import 'package:pickcar/models/history.dart';
 import 'package:pickcar/models/listcarslot.dart';
 import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/ui/uisize.dart';
 import 'package:flutter/services.dart';
+import 'package:pickcar/widget/usedcoupon.dart';
 class ConfirmPage extends StatefulWidget {
   var code = TextEditingController();
+  var discountpercent ;
+  var discountprice ;
+  String coderemember = "";
   bool isExpand = true;
   bool alertpolicy = false;
-  bool coupon = true;
+  bool coupon = false;
+  bool showcode = false;
+  bool nocode = false;
   var icon = Icons.arrow_drop_down;
   var pricefree;
   var pricetotal;
@@ -57,14 +64,14 @@ class _ConfirmPageState extends State<ConfirmPage> {
       return Container();
     }
   }
-  calculateprice(){
-    var price = Datamanager.listcarslot.price;
+  calculateprice(var rawprice){
+    var price = rawprice;
     widget.pricefree = price + 5;
     widget.pricevat = (widget.pricefree * 7)/100;
     var priceinclude = widget.pricefree+(widget.pricefree * 7)/100;
     String string = priceinclude.toString();
     var dot = string.split('.');
-    print(dot);
+    // print(dot);
     double numberdot = double.parse(dot[1]);
     double number = double.parse(dot[0]);
     if(numberdot>0 && numberdot<25){
@@ -78,6 +85,29 @@ class _ConfirmPageState extends State<ConfirmPage> {
     }
     widget.pricetotal = number;
     print(widget.pricetotal);
+  }
+  showselectcupon(BuildContext context){
+    Activate.activatecoupon = true;
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return usecoupon(context);
+      }
+    ).then((data){
+      Activate.activatecoupon = false;
+      if(Activate.pressed){
+        setState(() {
+          Activate.pressed = false;
+          var newprice = Datamanager.listcarslot.price-Datamanager.listcarslot.price*(Datamanager.couponshow.percent/100);
+          widget.showcode = true;
+          widget.coderemember = Datamanager.couponshow.code;
+          widget.code.text = "";
+          widget.discountpercent = Datamanager.couponshow.percent;
+          widget.discountprice = newprice;
+          calculateprice(newprice);
+        });
+      }
+    });
   }
   booking(BuildContext context) async {
     Booking booking = Booking(
@@ -102,8 +132,11 @@ class _ConfirmPageState extends State<ConfirmPage> {
       priceaddtax: widget.pricetotal,
       startdate: Datamanager.listcarslot.startdate,
       isinhistory: false,
+      enddate: Datamanager.listcarslot.enddate,
+      type: SearchString.type 
     );
-    await Firestore.instance.collection('Singleforrent')
+    if(SearchString.type == UseString.rent1){
+      await Firestore.instance.collection('Singleforrent')
                               .where('ownerdocid' ,isEqualTo: Datamanager.listcarslot.ownerdocid)
                               .getDocuments().then((data) {
                                 var document ;
@@ -177,8 +210,102 @@ class _ConfirmPageState extends State<ConfirmPage> {
                                                           .collection("historylist")
                                                           .document(document)
                                                           .setData(history.toJson());
+                                  try{
+                                    await Firestore.instance.collection("Coupon")
+                                                          .document(Datamanager.user.documentid)
+                                                          .collection("Coupongroup")
+                                                          .document(Datamanager.couponshow.coupondocid)
+                                                          .updateData({"use":true});
+                                  }catch(e){}
                                 });
                               });
+    }else if(SearchString.type == UseString.rent2){
+      await Firestore.instance.collection('Doubleforrent')
+                              .where('ownerdocid' ,isEqualTo: Datamanager.listcarslot.ownerdocid)
+                              .getDocuments().then((data) {
+                                var document ;
+                                Future.delayed(const Duration(milliseconds: 1000), () async {
+                                  if(data.documents.length == 1){
+                                    // print(data.documents.length);
+                                      var ref = await Datamanager.firestore.collection('Booking').add(booking.toJson());
+                                      document = ref.documentID;
+                                      Datamanager.firestore.collection("Booking").document(document).updateData(
+                                          {'bookingdocid' : document}
+                                      );
+                                      Datamanager.firestore.collection("Motorcycle")
+                                                            .document(Datamanager.listcarslot.motorcycledocid)
+                                                            .updateData({"isbook": true,"iswaiting":false});
+                                      Datamanager.firestore.collection('Doubleforrent').document(Datamanager.listcarslot.docid).delete();
+                                  }else{
+                                    print(data.documents.length);
+                                    print('=====');
+                                    var ref = await Datamanager.firestore.collection('Booking').add(booking.toJson());
+                                    document = ref.documentID;
+                                    Datamanager.firestore.collection("Booking").document(document).updateData(
+                                        {'bookingdocid' : document}
+                                    );
+                                    Datamanager.firestore.collection("Motorcycle")
+                                                          .document(Datamanager.listcarslot.motorcycledocid)
+                                                          .updateData({"isbook": true});
+                                    Datamanager.firestore.collection('Doubleforrent').document(Datamanager.listcarslot.docid).delete();
+                                   
+                                  }
+                                  History history = History(
+                                    times:Datamanager.listcarslot.time,
+                                    price:Datamanager.listcarslot.price,
+                                    motorcycledocid:Datamanager.listcarslot.motorcycledocid,
+                                    // boxname:,
+                                    // plancename:,
+                                    iscancel: false,
+                                    university:Datamanager.listcarslot.university,
+                                    priceaddtax:widget.pricetotal,
+                                    startdate:Datamanager.listcarslot.startdate,
+                                    ownername:Datamanager.user.name,
+                                    brand:Datamanager.motorcycleShow.brand,
+                                    generation:Datamanager.motorcycleShow.generation,
+                                    imagelink:Datamanager.motorcycleShow.motorfrontlink,
+                                    ownermotorcycle:Datamanager.listcarslot.ownerdocid,
+                                    renterdocid:Datamanager.user.documentid,
+                                  );
+                                  // Motorcyclehistory motorcycle = Motorcyclehistory(
+                                  //     brand:Datamanager.motorcycleShow.brand,
+                                  //     generation:Datamanager.motorcycleShow.generation,
+                                  //     cc:Datamanager.motorcycleShow.cc,
+                                  //     color:Datamanager.motorcycleShow.gear,
+                                  //     gear:Datamanager.motorcycleShow,
+                                  //     owneruid:Datamanager.motorcycleShow,
+                                  //     storagedocid:Datamanager.motorcycleShow,
+                                  //     motorprofilelink:Datamanager.motorcycleShow,
+                                  //     motorfrontlink:Datamanager.motorcycleShow,
+                                  //     motorbacklink:Datamanager.motorcycleShow,
+                                  //     motorleftlink:Datamanager.motorcycleShow,
+                                  //     motorrightlink:Datamanager.motorcycleShow,
+                                  //     motorreg:Datamanager.motorcycleShow,
+                                  //     motorgas:Datamanager.motorcycleShow,
+                                  //     myid:Datamanager.motorcycleShow,
+                                  // );
+                                  await Firestore.instance.collection("history")
+                                                          .document(Datamanager.user.documentid)
+                                                          .collection("historylist")
+                                                          .document(document)
+                                                          .setData(history.toJson());
+                                  await Firestore.instance.collection("history")
+                                                          .document(Datamanager.listcarslot.ownerdocid)
+                                                          .collection("historylist")
+                                                          .document(document)
+                                                          .setData(history.toJson());
+                                  try{
+                                    await Firestore.instance.collection("Coupon")
+                                                          .document(Datamanager.user.documentid)
+                                                          .collection("Coupongroup")
+                                                          .document(Datamanager.couponshow.coupondocid)
+                                                          .updateData({"use":true});
+                                  }catch(e){}
+                                  
+                                });
+                              });
+    }
+    
   }
   Future<void> _ackAlert(BuildContext context) {
     return showDialog<void>(
@@ -213,12 +340,36 @@ class _ConfirmPageState extends State<ConfirmPage> {
       },
     );
   }
+  Future<void> onetime(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(12.0))
+          ),
+          title: Text(UseString.couponrule),
+          content: Text(UseString.coupondetail),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(UseString.ok),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     var data = MediaQuery.of(context);
     var time = Datamanager.listcarslot.time.split('-');
-    calculateprice();
+    if(!widget.showcode){
+      calculateprice(Datamanager.listcarslot.price);
+    }
     return Scaffold(
       appBar: AppBar(
        backgroundColor: Colors.white,
@@ -484,6 +635,33 @@ class _ConfirmPageState extends State<ConfirmPage> {
                         ],
                       ),
                     ),
+                    Visibility(
+                      visible: widget.showcode,
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        width: double.infinity,
+                        margin: EdgeInsets.only(left:SizeConfig.blockSizeHorizontal*3,top: SizeConfig.blockSizeVertical),
+                        child: Stack(
+                          children: <Widget>[
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              width: double.infinity,
+                              child: Text(UseString.discount+" ("+widget.discountpercent.toString()+"%) ",
+                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colormain), 
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(right: SizeConfig.blockSizeHorizontal*3),
+                              alignment: Alignment.centerRight,
+                              width: double.infinity,
+                              child: Text(widget.discountprice.toString(),
+                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colormain), 
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                     Container(
                       alignment: Alignment.centerLeft,
                       width: double.infinity,
@@ -596,32 +774,19 @@ class _ConfirmPageState extends State<ConfirmPage> {
               Visibility(
                 visible: widget.coupon,
                 child: Container(
-                  width: SizeConfig.screenWidth,
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    margin: EdgeInsets.only(right:SizeConfig.blockSizeHorizontal*8),
-                    width: SizeConfig.blockSizeHorizontal*40,
-                    height: SizeConfig.blockSizeHorizontal*8,
-                    child: Container(),
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: widget.coupon,
-                child: Container(
                   // margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*5),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.blockSizeVertical*10,
+                  height: SizeConfig.blockSizeVertical*7,
                   // color:Colors.black,
                   child: Stack(
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.only(left:SizeConfig.blockSizeHorizontal*35,top:SizeConfig.blockSizeVertical),
+                        margin: EdgeInsets.only(left:SizeConfig.blockSizeHorizontal*26,top:SizeConfig.blockSizeVertical),
                         width: SizeConfig.blockSizeHorizontal*35,
                         height: SizeConfig.blockSizeVertical*5,
                         // color: Colors.blue,
                         child: Material(
-                          elevation: 8.0,
+                          elevation: 6.0,
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                           shadowColor: Colors.grey[300],
                           child: Center(
@@ -657,7 +822,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
                       ),
                       Container(
                         alignment: Alignment.topRight,
-                        margin: EdgeInsets.only(right:SizeConfig.blockSizeHorizontal*7),
+                        margin: EdgeInsets.only(right:SizeConfig.blockSizeHorizontal*16),
                         child: Container(
                           margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical),
                           width: SizeConfig.blockSizeHorizontal*20,
@@ -669,8 +834,39 @@ class _ConfirmPageState extends State<ConfirmPage> {
                               borderRadius: new BorderRadius.circular(8.0),
                               // side: BorderSide(color: Colors.red)
                             ),
-                            onPressed: (){
-                              
+                            onPressed: () async {
+                              if(widget.showcode == false){
+                                if(widget.code.text.length==12){
+                                  await Firestore.instance.collection("Coupon")
+                                                    .document(Datamanager.user.documentid)
+                                                    .collection("Coupongroup")
+                                                    .where("code",isEqualTo: widget.code.text)
+                                                    .snapshots().first.then((data){
+                                                      if(data.documents.length >0){
+                                                        Couponshow code = Couponshow.fromSnapshot(data.documents.first);
+                                                        setState(() {
+                                                          var newprice = Datamanager.listcarslot.price-Datamanager.listcarslot.price*(code.percent/100);
+                                                          widget.showcode = true;
+                                                          widget.coderemember = widget.code.text;
+                                                          widget.code.text = "";
+                                                          widget.discountpercent = code.percent;
+                                                          widget.discountprice = newprice;
+                                                          calculateprice(newprice);
+                                                        });
+                                                      }else{
+                                                        setState(() {
+                                                          widget.nocode = true;
+                                                        });
+                                                      }
+                                                    });
+                                }else{
+                                  setState(() {
+                                    widget.nocode = true;
+                                  });
+                                }
+                              }else{
+                                onetime(context);
+                              }
                             },
                             child: AutoSizeText(UseString.apply,
                               maxLines: 1,
@@ -679,8 +875,93 @@ class _ConfirmPageState extends State<ConfirmPage> {
                           ),
                         ),
                       ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.blue,
+                        ),
+                        margin: EdgeInsets.only(left:SizeConfig.blockSizeHorizontal*85,top:SizeConfig.blockSizeVertical),
+                        width: SizeConfig.blockSizeHorizontal*8,
+                        height: SizeConfig.blockSizeHorizontal*8,
+                        child: Center(
+                          child: GestureDetector(
+                            onTap: (){
+                              if(widget.showcode == false){
+                                showselectcupon(context);
+                              }else{
+                                onetime(context);
+                              }
+                            },
+                            child: Icon(Icons.open_in_browser,color: Colors.white,)
+                          ),
+                        ),
+                      ),
                     ],
                   ),
+                ),
+              ),
+              Visibility(
+                visible: widget.showcode,
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(left:SizeConfig.blockSizeHorizontal*22,top: SizeConfig.blockSizeVertical*1.5),
+                      width: SizeConfig.blockSizeHorizontal*48,
+                      height: SizeConfig.blockSizeVertical*4,
+                      // color: Colors.black,
+                      child: Center(
+                        child: AutoSizeText(UseString.coupon+" \""+widget.coderemember+"\" "+UseString.applied,
+                          maxLines: 1,
+                          style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*17,color: PickCarColor.colorFont1), 
+                        ),
+                      ),
+                    ),
+                    Container(
+                        alignment: Alignment.topRight,
+                        margin: EdgeInsets.only(right:SizeConfig.blockSizeHorizontal*7),
+                        child: Container(
+                          margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical),
+                          width: SizeConfig.blockSizeHorizontal*20,
+                          height: SizeConfig.blockSizeVertical*5,
+                          child: FlatButton(
+                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            color: Colors.red[600],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(8.0),
+                              // side: BorderSide(color: Colors.red)
+                            ),
+                            onPressed: () async {
+                              setState(() {
+                                widget.showcode = false;
+                              });
+                            },
+                            child: AutoSizeText(UseString.remove,
+                              maxLines: 1,
+                              style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*18,color: Colors.white), 
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              Visibility(
+                visible: widget.nocode,
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(left:SizeConfig.blockSizeHorizontal*40,),
+                      width: SizeConfig.blockSizeHorizontal*48,
+                      height: SizeConfig.blockSizeVertical*4,
+                      // color: Colors.black,
+                      child: Center(
+                        child: AutoSizeText(UseString.notfoundcoupon,
+                          maxLines: 1,
+                          style: TextStyle(fontWeight: FontWeight.normal,fontSize: data.textScaleFactor*17,color: PickCarColor.colorFont1), 
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
                 Container(

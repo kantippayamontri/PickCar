@@ -45,6 +45,19 @@ class _AdminmenuState extends State<Adminmenu> {
           onPressed: () {
           },
         ),
+        actions: <Widget>[
+          GestureDetector(
+            onTap: (){
+               Navigator.of(context).pushNamed(
+                        // Datamanager.adminmenu,
+                        Datamanager.serverpage,);
+            },
+            child: Container(
+              margin: EdgeInsets.only(right:SizeConfig.blockSizeHorizontal*3),
+              child: Icon(Icons.build,color: Colors.white,),
+            ),
+          ),
+        ],
       );
       var sizeappbar = AppBar().preferredSize.height;
       double sizetapbar = MediaQuery.of(context).padding.top;

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:latlong/latlong.dart' as A;
 import 'package:location/location.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
@@ -17,6 +18,8 @@ class Receivekeymap extends StatefulWidget {
   double zoom = 14;
   double latitude = 18.802587;
   double logtitude = 98.951556;
+  double latitudebox;
+  double logtitudebox;
   double latitudemark;
   double logtitudemark;
   bool openbutton = false;
@@ -64,6 +67,8 @@ class _ReceivekeymapState extends State<Receivekeymap>
           onTap: () {
             setState(() {
               widget.openbutton = true;
+              widget.latitudebox = latitude;
+              widget.logtitudebox = longitude;
               controller.forward();
             });
           },
@@ -85,7 +90,28 @@ class _ReceivekeymapState extends State<Receivekeymap>
 
     // print(i);
   }
-
+  showfar(BuildContext context,double meter){
+    var data = MediaQuery.of(context);
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(20),
+          ),
+          title: Text(UseString.fartitle+meter.toString()+" "+UseString.meters),
+          content: Text(UseString.fardetail,),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(UseString.ok),
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      });
+  }
   Completer<GoogleMapController> _controller = Completer();
   Future<LocationData> getCurrentLocation() async {
     Location location = Location();
@@ -149,9 +175,7 @@ class _ReceivekeymapState extends State<Receivekeymap>
           content: Text(
             notavailable,
             style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: data.textScaleFactor * 25,
-                color: PickCarColor.colorFont1),
+                fontWeight: FontWeight.bold,),
           ),
         );
       });
@@ -231,11 +255,23 @@ class _ReceivekeymapState extends State<Receivekeymap>
                       position: offset,
                       child: RaisedButton(
                         color: PickCarColor.colorbuttom,
-                        onPressed: () {
-                          if(Checkopenkey.checkkey && Checkopenkey.checkcar){
-                            Navigator.of(context).pushNamed(Datamanager.openkey);
+                        onPressed: () async {
+                          final A.Distance distance = new A.Distance();
+                          LocationData currentLocation;
+                          final GoogleMapController controller = await _controller.future;
+                          currentLocation = await getCurrentLocation();
+                           final double meter = distance(
+                                        new A.LatLng(currentLocation.latitude,currentLocation.longitude),
+                                        new A.LatLng(widget.latitudebox,widget.logtitudebox)
+                                      );
+                          if(meter<=20){
+                            if(Checkopenkey.checkkey && Checkopenkey.checkcar){
+                              Navigator.of(context).pushNamed(Datamanager.openkey);
+                            }else{
+                              shownotavailable(context);
+                            }
                           }else{
-                            shownotavailable(context);
+                            showfar(context,meter);
                           }
                         },
                         shape: RoundedRectangleBorder(
