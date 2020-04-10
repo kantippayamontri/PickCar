@@ -27,24 +27,24 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
       //todo init var
 
       //todo -----------
-      DateTime timenow = DateTime(DateTime.now().year, DateTime.now().month,
-          DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
-      //DateTime timenow = DateTime(2020, 3, 25, 9, 31);
+      // DateTime timenow = DateTime(DateTime.now().year, DateTime.now().month,
+      //     DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
+      DateTime timenow = DateTime(2020, 4, 3, 11, 1);
       bool istimeinslot = checkintimeslot(timenow);
       String timeslotin = timeslotmatch(timenow);
-      await checkownerdontdropkey(timenow);
+      //await checkownerdontdropkey(timenow);
       print(
           "--------------------------------------------------------------------");
       await checkownerdontreceivekey(timenow, istimeinslot, timeslotin);
       print(
           "--------------------------------------------------------------------");
-      await checkrenterdontdropkey(timenow, istimeinslot, timeslotin);
+      //await checkrenterdontdropkey(timenow, istimeinslot, timeslotin);
       print(
           "--------------------------------------------------------------------");
-      await checkbookingandnotusing(timenow);
+      //await checkbookingandnotusing(timenow);
       print(
           "--------------------------------------------------------------------");
-      await checkcanclesingleanddoublehavekey();
+      //await checkcanclesingleanddoublehavekey();
       //await deleteallcancle();
     });
 
