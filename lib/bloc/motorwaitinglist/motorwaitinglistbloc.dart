@@ -198,6 +198,78 @@ class MotorWaitingListBloc
         });
   }
 
+  Future<Null> deleteslot(String type, String docid) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Do you want to delete this slot?"),
+            content: Text("This slot will be removed."),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("Yes"),
+                onPressed: () async {
+                  String bslrdocid = forrentlist
+                      .where((fr) => fr.docid == docid)
+                      .toList()
+                      .first
+                      .boxslotrentdocid;
+                  if (type == "single") {
+                    await Datamanager.firestore
+                        .collection("Singleforrent")
+                        .document(docid)
+                        .delete();
+                    singleforrentlist.remove(singleforrentlist
+                        .where((sg) => sg.docid == docid)
+                        .toList()
+                        .first);
+                    forrentlist.remove(forrentlist
+                        .where((fr) => fr.docid == docid)
+                        .toList()
+                        .first);
+                  } else {
+                    await Datamanager.firestore
+                        .collection("Doubleforrent")
+                        .document(docid)
+                        .delete();
+                    doubleforrentlist.remove(doubleforrentlist
+                        .where((db) => db.docid == docid)
+                        .toList()
+                        .first);
+
+                    forrentlist.remove(forrentlist
+                        .where((fr) => fr.docid == docid)
+                        .toList()
+                        .first);
+                  }
+
+                  await Datamanager.firestore
+                      .collection("BoxslotRent")
+                      .document(bslrdocid)
+                      .delete();
+
+                  if (forrentlist.isEmpty) {
+                    await Datamanager.firestore
+                        .collection("Motorcycle")
+                        .document(motorcycle.firestoredocid)
+                        .updateData({'iswaiting': false});
+                  }
+
+                  setstate();
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                child: Text("No"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+
   Future<Null> editslot(String docid, String pricestring, String type) async {
     if (pricestring == "") {
       Navigator.pop(context);
@@ -217,19 +289,18 @@ class MotorWaitingListBloc
         }
 
         for (int i = 0; i < forrentlist.length; i++) {
-          if(forrentlist[i].docid == docid){
+          if (forrentlist[i].docid == docid) {
             forrentlist[i].price = value;
           }
-          
-          setstate();
-          Navigator.pop(context);
-          return;
         }
-      }else{
+        setstate();
+        Navigator.pop(context);
+        return;
+      } else {
         await Datamanager.firestore
-        .collection("Doubleforrent")
-        .document(docid)
-        .updateData({'price': value});
+            .collection("Doubleforrent")
+            .document(docid)
+            .updateData({'price': value});
 
         for (int i = 0; i < doubleforrentlist.length; i++) {
           if (doubleforrentlist[i].docid == docid) {
@@ -238,14 +309,13 @@ class MotorWaitingListBloc
         }
 
         for (int i = 0; i < forrentlist.length; i++) {
-          if(forrentlist[i].docid == docid){
+          if (forrentlist[i].docid == docid) {
             forrentlist[i].price = value;
           }
-          
-          setstate();
-          Navigator.pop(context);
-          return;
         }
+        setstate();
+        Navigator.pop(context);
+        return;
       }
 
       /*final double value = double.parse(pricestring);

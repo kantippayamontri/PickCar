@@ -10,8 +10,10 @@ class MotorBookItem extends StatefulWidget {
   Motorcycle motorcycle;
   MotorcycleBook motorbook;
   MediaQueryData mediaQueryData;
+  Function canclebook;
  
-  MotorBookItem({Key  key,@required this.motorcycle, @required this.motorbook , @required this.mediaQueryData}) : super(key : key) {}
+ 
+  MotorBookItem({Key  key,@required this.motorcycle, @required this.motorbook , @required this.mediaQueryData , @required this.canclebook }) : super(key : key) {}
 
   @override
   _MotorBookItemState createState() => _MotorBookItemState();
@@ -22,6 +24,8 @@ class _MotorBookItemState extends State<MotorBookItem> {
   Motorcycle _motorcycle;
   MotorcycleBook _motorcycleBook;
   MediaQueryData _mediaQueryData;
+  Function _canclebook;
+  
 
   @override
   void initState() {
@@ -30,6 +34,7 @@ class _MotorBookItemState extends State<MotorBookItem> {
     _motorcycle = widget.motorcycle;
     _motorcycleBook = widget.motorbook;
     _mediaQueryData = widget.mediaQueryData;
+    _canclebook = widget.canclebook;
     super.initState();
   }
   @override
@@ -130,7 +135,10 @@ class _MotorBookItemState extends State<MotorBookItem> {
                       style: TextStyle(color: Colors.white),
                     ),
                     color: Colors.red,
-                    onPressed: () {},
+                    onPressed: () {
+                      //todo cancle
+                      _canclebook(_motorcycleBook.bookingdocid);
+                    },
                   )
                 ],
               ),

@@ -55,9 +55,7 @@ class _MotorWaitingListPageState extends State<MotorWaitingListPage> {
               }
 
               if (state is MotorWaitingShowDataState) {
-                return 
-
-                LayoutBuilder(
+                return LayoutBuilder(
                   builder: (ctx, constraint) {
                     return ListView(
                       children: //_motorWaitingListBloc.motorcycletimeslotlist
@@ -74,12 +72,15 @@ class _MotorWaitingListPageState extends State<MotorWaitingListPage> {
                                           //motorWaitingListItem: motorslot,
                                           forrent: fr,
                                           deleteslot:
-                                              //_motorWaitingListBloc.deleteslot,
-                                              () {},
+                                              _motorWaitingListBloc.deleteslot,
                                           editslot: //_motorWaitingListBloc.editslot,
-                                            this._motorWaitingListBloc.editslot,
+                                              this
+                                                  ._motorWaitingListBloc
+                                                  .editslot,
                                           showbottomsheet: //_motorWaitingListBloc.showbottomsheet,
-                                              this._motorWaitingListBloc.showbottomsheet),
+                                              this
+                                                  ._motorWaitingListBloc
+                                                  .showbottomsheet),
                                       SizedBox(
                                         height: 10,
                                       )

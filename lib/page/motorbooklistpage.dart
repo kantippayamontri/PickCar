@@ -33,6 +33,8 @@ class _MotorBookListPageState extends State<MotorBookListPage> {
     MotorBookListBloc _motorBookListBloc =
         MotorBookListBloc(motorcycle: argument.motorcycle);
     _motorBookListBloc.add(MotorBookListLoadDataEvent());
+    _motorBookListBloc.context = context;
+    
 
     return Scaffold(
       body: Container(
@@ -65,6 +67,8 @@ class _MotorBookListPageState extends State<MotorBookListPage> {
                               mediaQueryData: MediaQuery.of(context),
                               motorcycle: _motorBookListBloc.motorcycle,
                               motorbook: motorbook,
+                              canclebook: _motorBookListBloc.canclebook,
+                              
                             ),
                       ],
                     ))

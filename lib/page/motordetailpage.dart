@@ -403,7 +403,12 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                                           Datamanager.motorbooklistpage,
                                           arguments: MotorBookListArguments(
                                               motorcycle:
-                                                  _motorDetailBloc.motorcycle));
+                                                  _motorDetailBloc.motorcycle,
+                                                  setstate: (){
+                                                    setState(() {
+                                                      
+                                                    });
+                                                  }));
                                     },
                                   ),
                                 ),

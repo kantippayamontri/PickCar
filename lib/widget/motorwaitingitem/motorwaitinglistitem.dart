@@ -158,6 +158,7 @@ class _MotorWaitingListItemState extends State<MotorWaitingListItem> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
+                        widget.deleteslot(_forrent.type , _forrent.docid);
                         // todo deleteslot await widget.deleteslot(_motortimeslot);
                       },
                     )

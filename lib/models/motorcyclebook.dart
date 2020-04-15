@@ -11,7 +11,7 @@ class MotorcycleBook {
   int month;
   int year;
   double price;
-
+  String type;
   String rentername;
   String  renterprofilelink;
 
@@ -25,7 +25,8 @@ class MotorcycleBook {
       @required this.time,
       @required this.bookingdocid,
       @required this.myid,
-      @required this.ownerid});
+      @required this.ownerid,
+      @required this.type});
 
   Map<String, dynamic> toJson() {
     return {
@@ -39,6 +40,7 @@ class MotorcycleBook {
       'month': this.month,
       'year': this.year,
       'price': this.price,
+      'type' : this.type
     };
   }
 }
