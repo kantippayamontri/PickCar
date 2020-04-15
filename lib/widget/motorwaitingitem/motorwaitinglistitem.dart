@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:pickcar/models/forrent.dart';
 import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/models/motorcycletimeslot.dart';
 import 'package:pickcar/models/singleforrent.dart';
@@ -10,7 +11,7 @@ import '../../datamanager.dart';
 class MotorWaitingListItem extends StatefulWidget {
   Motorcycle motorcycle;
   //MotorcycleTimeSlot motorWaitingListItem;
-  SingleForrent singleForrent;
+  Forrent forrent;
   BoxConstraints constraints;
   Function deleteslot;
   Function editslot;
@@ -18,7 +19,7 @@ class MotorWaitingListItem extends StatefulWidget {
   MotorWaitingListItem(
       {Key key,
       //@required this.motorWaitingListItem,
-      @required this.singleForrent,
+      @required this.forrent,
       @required this.constraints,
       @required this.motorcycle,
       @required this.deleteslot,
@@ -35,13 +36,13 @@ class _MotorWaitingListItemState extends State<MotorWaitingListItem> {
   Motorcycle _motorcycle;
   //MotorcycleTimeSlot _motortimeslot;
   BoxConstraints _constraints;
-  SingleForrent _singleForrent;
+  Forrent _forrent;
   
   @override
   void initState() {
     // TODO: implement initState
     //_motortimeslot = widget.motorWaitingListItem;
-    _singleForrent = widget.singleForrent;
+    _forrent = widget.forrent;
     _constraints = widget.constraints;
     _motorcycle = widget.motorcycle;
     super.initState();
@@ -110,12 +111,12 @@ class _MotorWaitingListItemState extends State<MotorWaitingListItem> {
                             Text(UseString.price +
                                 " : " +
                                 //_motortimeslot.prize.toString()
-                                _singleForrent.price.toString()
+                                _forrent.price.toString()
                                 ),
                             Text(UseString.time +
                                 " : " +
                                 //_motortimeslot.timeslot
-                                _singleForrent.time
+                                _forrent.time
                                 
                                 ),
                             Text(UseString.date +
@@ -124,9 +125,9 @@ class _MotorWaitingListItemState extends State<MotorWaitingListItem> {
                                   //_motortimeslot.year,
                                   //_motortimeslot.month,
                                  // _motortimeslot.day
-                                 _singleForrent.year,
-                                 _singleForrent.month,
-                                 _singleForrent.day
+                                 _forrent.year,
+                                 _forrent.month,
+                                 _forrent.day
                                 ]).format("MMM do yy")),
                           ],
                         )),
@@ -144,7 +145,7 @@ class _MotorWaitingListItemState extends State<MotorWaitingListItem> {
                       onPressed: () {
                         //todo openbuttomsheet
                         widget.showbottomsheet(
-                          widget.singleForrent,
+                          widget.forrent,
                           widget.editslot
                         );
                       },

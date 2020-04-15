@@ -114,6 +114,24 @@ flutter:
     - family: Correcticon
       fonts:
         - asset: assets/fonts/Correcticon.ttf
+    - family: Infoicon
+      fonts:
+        - asset: assets/fonts/Infoicon.ttf
+    - family: Motoricon
+      fonts:
+        - asset: assets/fonts/Motoricon.ttf
+    - family: Gearicon
+      fonts:
+       - asset: assets/fonts/Gearicon.ttf
+    - family:  Coloricon
+      fonts:
+       - asset: assets/fonts/Coloricon.ttf
+    - family:  Gasicon
+      fonts:
+       - asset: assets/fonts/Gasicon.ttf
+    - family:  Boxicon
+      fonts:
+       - asset: assets/fonts/Boxicon.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

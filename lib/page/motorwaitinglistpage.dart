@@ -61,8 +61,8 @@ class _MotorWaitingListPageState extends State<MotorWaitingListPage> {
                   builder: (ctx, constraint) {
                     return ListView(
                       children: //_motorWaitingListBloc.motorcycletimeslotlist
-                          _motorWaitingListBloc.singleforrentlist
-                              .map((sgfr) => Column(
+                          _motorWaitingListBloc.forrentlist
+                              .map((fr) => Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: <Widget>[
@@ -72,7 +72,7 @@ class _MotorWaitingListPageState extends State<MotorWaitingListPage> {
                                           motorcycle:
                                               _motorWaitingListBloc.motorcycle,
                                           //motorWaitingListItem: motorslot,
-                                          singleForrent: sgfr,
+                                          forrent: fr,
                                           deleteslot:
                                               //_motorWaitingListBloc.deleteslot,
                                               () {},

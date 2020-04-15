@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pickcar/bloc/motorwaitinglist/motorwaitinglistevent.dart';
 import 'package:pickcar/bloc/motorwaitinglist/motorwaitingliststate.dart';
+import 'package:pickcar/models/doubleforrent.dart';
+import 'package:pickcar/models/forrent.dart';
 import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/models/motorcycletimeslot.dart';
 import 'package:pickcar/models/singleforrent.dart';
@@ -18,6 +20,8 @@ class MotorWaitingListBloc
   Function setstate;
   //List<MotorcycleTimeSlot> motorcycletimeslotlist;
   List<SingleForrent> singleforrentlist;
+  List<DoubleForrent> doubleforrentlist;
+  List<Forrent> forrentlist;
 
   MotorWaitingListBloc(
       {@required this.context,
@@ -25,6 +29,8 @@ class MotorWaitingListBloc
       @required this.setstate}) {
     //motorcycletimeslotlist = List<MotorcycleTimeSlot>();
     singleforrentlist = List<SingleForrent>();
+    doubleforrentlist = List<DoubleForrent>();
+    forrentlist = List<Forrent>();
   }
 
   @override
@@ -86,36 +92,156 @@ class MotorWaitingListBloc
         print("startdate : " + sgfr.startdate.toString());
         print("Time now : " + DateTime.now().toString());
         this.singleforrentlist.add(sgfr);
+        this.forrentlist.add(Forrent(
+            type: "single",
+            boxdocid: doc['boxdocid'],
+            boxplacedocid: doc['boxplacedocid'],
+            boxslotdocid: doc['boxslotdocid'],
+            day: doc['day'],
+            month: doc['month'],
+            motorcycledocid: doc['motorcycledocid'],
+            motorplacelocdocid: doc['motorplacelocdocid'],
+            ownerdocid: doc['ownerdocid'],
+            price: doc['price'],
+            startdate: (doc['startdate'] as Timestamp).toDate(),
+            time: doc['time'],
+            university: doc['university'],
+            year: doc['year'],
+            status: doc['status'],
+            iscancle: doc['iscancle'],
+            ownercanclealert: doc['ownercanclealert'],
+            rentercanclealert: doc['rentercanclealert'],
+            enddate: (doc['enddate'] as Timestamp).toDate(),
+            boxslotrentdocid: doc['boxslotrentdocid'],
+            docid: doc['docid']));
+
+        print("***///single  ${doc['docid']}");
       }
     }
+
+    /******************Double******************************** */
+    QuerySnapshot doublequeysnap = await Datamanager.firestore
+        .collection("Doubleforrent")
+        .orderBy('startdate')
+        .getDocuments();
+    var doublelist = doublequeysnap.documents
+        .where((doc) => doc['ownerdocid'] == Datamanager.user.documentid);
+
+    for (var doc in doublelist) {
+      print("***double day : ${doc['day'].toString()} ${doc['time']}");
+      DoubleForrent dbfr = DoubleForrent(
+        boxdocid: doc['boxdocid'],
+        boxplacedocid: doc['boxplacedocid'],
+        boxslotdocid: doc['boxslotdocid'],
+        day: doc['day'],
+        month: doc['month'],
+        motorcycledocid: doc['motorcycledocid'],
+        motorplacelocdocid: doc['motorplacelocdocid'],
+        ownerdocid: doc['ownerdocid'],
+        price: doc['price'],
+        startdate: (doc['startdate'] as Timestamp).toDate(),
+        time: doc['time'],
+        university: doc['university'],
+        year: doc['year'],
+        status: doc['status'],
+        iscancle: doc['iscancle'],
+        ownercanclealert: doc['ownercanclealert'],
+        rentercanclealert: doc['rentercanclealert'],
+      );
+      dbfr.docid = doc['docid'];
+      dbfr.boxslotrentdocid = doc['boxslotrentdocid'];
+
+      if (dbfr.startdate.isAfter(DateTime.now())) {
+        // print("in add singleforrentlist naja");
+        // print("startdate : " + sgfr.startdate.toString());
+        // print("Time now : " + DateTime.now().toString());
+        //print("***double add uuccess");
+        this.doubleforrentlist.add(dbfr);
+        this.forrentlist.add(Forrent(
+            type: "double",
+            boxdocid: doc['boxdocid'],
+            boxplacedocid: doc['boxplacedocid'],
+            boxslotdocid: doc['boxslotdocid'],
+            day: doc['day'],
+            month: doc['month'],
+            motorcycledocid: doc['motorcycledocid'],
+            motorplacelocdocid: doc['motorplacelocdocid'],
+            ownerdocid: doc['ownerdocid'],
+            price: doc['price'],
+            startdate: (doc['startdate'] as Timestamp).toDate(),
+            time: doc['time'],
+            university: doc['university'],
+            year: doc['year'],
+            status: doc['status'],
+            iscancle: doc['iscancle'],
+            ownercanclealert: doc['ownercanclealert'],
+            rentercanclealert: doc['rentercanclealert'],
+            enddate: (doc['enddate'] as Timestamp).toDate(),
+            boxslotrentdocid: doc['boxslotrentdocid'],
+            docid: doc['docid']));
+        print("***///double  ${doc['docid']}");
+      }
+    }
+
+    //todo add forrent
   }
 
-  void showbottomsheet(SingleForrent singleForrent, Function editslot) {
+  void showbottomsheet(Forrent forrent, Function editslot) {
     print("in showbottomsheet function ");
     showModalBottomSheet(
         context: context,
         builder: (_) {
           return MotorWaitingEdit(
             editslot: editslot,
-            singleforrent: singleForrent,
+            forrent: forrent,
           );
         });
   }
 
-  Future<Null> editslot(String docid, String pricestring) async {
+  Future<Null> editslot(String docid, String pricestring, String type) async {
     if (pricestring == "") {
       Navigator.pop(context);
     } else {
       print("HAVE CONDITION");
       final double value = double.parse(pricestring);
-      await Datamanager.firestore
-          .collection("Singleforrent")
-          .document(docid)
-          .updateData({'price': value});
+      if (type == "single") {
+        await Datamanager.firestore
+            .collection("Singleforrent")
+            .document(docid)
+            .updateData({'price': value});
 
-      for (int i = 0; i < singleforrentlist.length; i++) {
-        if (singleforrentlist[i].docid == docid) {
-          singleforrentlist[i].price = value;
+        for (int i = 0; i < singleforrentlist.length; i++) {
+          if (singleforrentlist[i].docid == docid) {
+            singleforrentlist[i].price = value;
+          }
+        }
+
+        for (int i = 0; i < forrentlist.length; i++) {
+          if(forrentlist[i].docid == docid){
+            forrentlist[i].price = value;
+          }
+          
+          setstate();
+          Navigator.pop(context);
+          return;
+        }
+      }else{
+        await Datamanager.firestore
+        .collection("Doubleforrent")
+        .document(docid)
+        .updateData({'price': value});
+
+        for (int i = 0; i < doubleforrentlist.length; i++) {
+          if (doubleforrentlist[i].docid == docid) {
+            doubleforrentlist[i].price = value;
+          }
+        }
+
+        for (int i = 0; i < forrentlist.length; i++) {
+          if(forrentlist[i].docid == docid){
+            forrentlist[i].price = value;
+          }
+          
           setstate();
           Navigator.pop(context);
           return;

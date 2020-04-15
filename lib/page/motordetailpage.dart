@@ -1,11 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pickcar/bloc/motordetail/motordetailbloc.dart';
 import 'package:pickcar/bloc/motordetail/motordetailevent.dart';
 import 'package:pickcar/bloc/motordetail/motordetailstate.dart';
-import 'package:pickcar/main.dart';
+import 'package:pickcar/icon/coloricon_icons.dart';
+import 'package:pickcar/icon/gasicon_icons.dart';
+import 'package:pickcar/icon/gearicon_icons.dart';
+import 'package:pickcar/icon/infoicon_icons.dart';
+import 'package:pickcar/icon/motoricon_icons.dart';
 import 'package:pickcar/page/motorrentalformpage.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -68,7 +71,7 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                       height: 20,
                     ),
                     //todo profile
-                    _container(MediaQuery.of(context).size.height * 0.3,
+                    _container(MediaQuery.of(context).size.height * 0.25,
                         MediaQuery.of(context).size.width * 0.8, [
                       Flexible(
                         flex: 1,
@@ -132,51 +135,330 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                         ],
                       ),
                     ]),
+                    SizedBox(
+                      height: 20,
+                    ),
 
                     //todo information
-                    _container(MediaQuery.of(context).size.height * 0.5,
+                    _container(MediaQuery.of(context).size.height * 0.4,
                         MediaQuery.of(context).size.width * 0.9, [
-                      Text(
-                        UseString.information,
-                        style: _textstyle(),
+                      Row(
+                        children: <Widget>[
+                          Icon(
+                            Infoicon.database,
+                            color: PickCarColor.colormain,
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            UseString.information,
+                            style: _textstyle(),
+                          ),
+                        ],
+                      ),
+                      Divider(
+                        color: Colors.grey,
+                      ),
+                      SizedBox(
+                        height: 20,
                       ),
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Row(
                             children: <Widget>[
-                              Text(UseString.brand + " : "),
-                              Text(_motorDetailBloc.motorcycle.brand)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Icon(
+                                    Motoricon.motorcycle,
+                                    color: PickCarColor.colormain,
+                                  ),
+                                  Text(
+                                    "(" + UseString.brand + ")",
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                _motorDetailBloc.motorcycle.brand +
+                                    " " +
+                                    _motorDetailBloc.motorcycle.generation,
+                                style: TextStyle(fontSize: 24),
+                              )
                             ],
+                          ),
+                          SizedBox(
+                            height: 10,
                           ),
                           Row(
                             children: <Widget>[
-                              Text(UseString.cc + " : "),
-                              Text(_motorDetailBloc.motorcycle.cc.toString()),
+                              Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Icon(
+                                      Motoricon.motorcycle,
+                                      color: PickCarColor.colormain,
+                                    ),
+                                    Text(
+                                      "(" + UseString.cc + ")",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                  _motorDetailBloc.motorcycle.cc.toString(),
+                                  style: TextStyle(fontSize: 24),
+                                ),
                             ],
+                          ),
+                          SizedBox(
+                            height: 10,
                           ),
                           Row(
                             children: <Widget>[
-                              Text(UseString.gear),
-                              Text(_motorDetailBloc.motorcycle.gear),
+                              Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Icon(
+                                      Gearicon.cog,
+                                      color: PickCarColor.colormain,
+                                    ),
+                                    Text(
+                                      "(" + UseString.gear + ")",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                  _motorDetailBloc.motorcycle.gear,
+                                  style: TextStyle(fontSize: 24),
+                                ),
                             ],
+                          ),
+                          SizedBox(
+                            height: 10,
                           ),
                           Row(
                             children: <Widget>[
-                              Text(UseString.color),
-                              Text(_motorDetailBloc.motorcycle.color),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Icon(
+                                    Coloricon.format_color_fill,
+                                    color: PickCarColor.colormain,
+                                  ),
+                                  Text(
+                                    "(" + UseString.color + ")",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                _motorDetailBloc.motorcycle.color,
+                                style: TextStyle(fontSize: 24),
+                              ),
                             ],
+                          ),
+                          SizedBox(
+                            height: 10,
                           ),
                           Row(
                             children: <Widget>[
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Icon(
+                                    Gasicon.fuel,
+                                    color: PickCarColor.colormain,
+                                  ),
+                                  Text(
+                                    "(" + UseString.gas + ")",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
                               Text(UseString.generation + " : "),
-                              Text(_motorDetailBloc.motorcycle.generation),
+                              Text(_motorDetailBloc.motorcycle.motorgas),
                             ],
                           ),
                         ],
                       )
                     ]),
-                    _motorDetailBloc.motorcycle.iswaiting
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        _motorDetailBloc.motorcycle.iswaiting
+                            ? ClipOval(
+                                child: Material(
+                                  color: Colors.yellow,
+                                  child: InkWell(
+                                    splashColor: PickCarColor.colormain,
+                                    child: Container(
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                              0.2,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.2,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Icon(
+                                            Motoricon.motorcycle,
+                                            color: Colors.white,
+                                          ),
+                                          Text(
+                                            "waiting",
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.white),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MotorWaitingListPage(
+                                                    motorcycle: this
+                                                        ._motorDetailBloc
+                                                        .motorcycle,
+                                                  )));
+                                    },
+                                  ),
+                                ),
+                              )
+                            : SizedBox(
+                                height: 0,
+                              ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        _motorDetailBloc.motorcycle.isbook ||
+                                _motorDetailBloc.motorcycle.isworking
+                            ? ClipOval(
+                                child: Material(
+                                  color: Colors.blue,
+                                  child: InkWell(
+                                    splashColor: PickCarColor.colormain,
+                                    child: Container(
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                              0.2,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.2,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Icon(
+                                            Motoricon.motorcycle,
+                                            color: Colors.white,
+                                          ),
+                                          Text(
+                                            "book",
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.white),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    onTap: () async {
+                                      await Navigator.pushNamed(context,
+                                          Datamanager.motorbooklistpage,
+                                          arguments: MotorBookListArguments(
+                                              motorcycle:
+                                                  _motorDetailBloc.motorcycle));
+                                    },
+                                  ),
+                                ),
+                              )
+                            : SizedBox(
+                                height: 0,
+                              ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        
+                        ClipOval(
+                          child: Material(
+                            color: PickCarColor.colormain,
+                            child: InkWell(
+                              splashColor: PickCarColor.colormain,
+                              child: Container(
+                                height: MediaQuery.of(context).size.width * 0.2,
+                                width: MediaQuery.of(context).size.width * 0.2,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(
+                                      Motoricon.motorcycle,
+                                      color: Colors.white,
+                                    ),
+                                    Text(
+                                      "rent",
+                                      style: TextStyle(
+                                          fontSize: 12, color: Colors.white),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MotorRentalFormPage(
+                                            motorcycle:
+                                                _motorDetailBloc.motorcycle,
+                                          )),
+                                ).then((_) {
+                                  // print("in then in detailpage");
+                                  _motorDetailBloc.add(MotorDetailLoadData());
+                                });
+                              },
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 20,),
+                    /*_motorDetailBloc.motorcycle.iswaiting
                         ? ButtonTheme(
                             height: MediaQuery.of(context).size.height * 0.1,
                             minWidth: MediaQuery.of(context).size.width * 0.5,
@@ -204,7 +486,9 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                         : SizedBox(
                             width: 0,
                           ),
-                          SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     _motorDetailBloc.motorcycle.isbook ||
                             _motorDetailBloc.motorcycle.isworking
                         ? ButtonTheme(
@@ -229,7 +513,9 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                         : SizedBox(
                             width: 0,
                           ),
-                          SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     // _motorDetailBloc.motorcycle.isworking
                     //     ? RaisedButton(
                     //         child: Text("isworkinglist"),
@@ -266,7 +552,7 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                           });
                         },
                       ),
-                    ),
+                    ),*/
 
                     /*RaisedButton(
                       child: Text("realtime database"),
