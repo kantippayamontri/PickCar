@@ -450,6 +450,9 @@ class UseString {
   static String fartitle = "from box: ";
   static String meters = "meters";
   static String server = "SERVER";
+  static String plate = "License Plate";
+  static String gastype = "Gas Type";
+  
 }
 
 class Currency {

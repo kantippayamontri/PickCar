@@ -104,7 +104,10 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
   Future getImageGallery(String type) async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var image;
+    try{
+    image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    }catch(e){}
     setState(() {
       if(type == "profileimg"){
         profile = image;
@@ -125,8 +128,10 @@ class _EditProfileState extends State<EditProfile> {
     });
   }
   Future getImageCamera(String type) async {
-  var image = await ImagePicker.pickImage(source: ImageSource.camera);
-
+    var image;
+    try{
+      image = await ImagePicker.pickImage(source: ImageSource.camera);
+    }catch(e){}
     setState(() {
       if(type == "profileimg"){
         profile = image;
