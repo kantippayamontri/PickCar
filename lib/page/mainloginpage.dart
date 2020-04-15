@@ -56,7 +56,7 @@ class _MainloginpageState extends State<Mainloginpage> {
                           child: Image.asset("assets/images/imagelogin/bg.png")
                         ),
                         Center(
-                          child: Text(UseString.pickcar,
+                          child: Text(UseString.pickabike,
                           style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*30,color: Colors.white), 
                           ),
                         ),

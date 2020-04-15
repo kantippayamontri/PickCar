@@ -152,6 +152,7 @@ class _SendregistationState extends State<Sendregistation> {
       var image = await ImagePicker.pickImage(source: ImageSource.gallery);
       if(image !=null){
         setState(() {
+          widget.imagefile = image;
           widget.imagetype = 'hasimage';
           widget.heightimage =0;
           widget.visible = true;

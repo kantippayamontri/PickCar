@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:pickcar/models/booking.dart';
 import 'package:pickcar/models/boxslotnumber.dart';
 import 'package:pickcar/models/chat.dart';
@@ -529,8 +530,9 @@ void dispose() {
                     children: <Widget>[
                       Container(
                         margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical,left: SizeConfig.blockSizeHorizontal),
-                        child: Text(Datamanager.motorcycleShow.brand +" "+ Datamanager.motorcycleShow.generation,
-                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*30,color: PickCarColor.colorFont1), 
+                        child: AutoSizeText(Datamanager.motorcycleShow.brand +" "+ Datamanager.motorcycleShow.generation,
+                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*30,color: PickCarColor.colorFont1),
+                            maxLines: 1, 
                         ),
                       ),
                       Container(
@@ -577,18 +579,15 @@ void dispose() {
                                   );
                                 }).toList(),
                               ),
-                              SizedBox(
-                                height: 20,
-                              ),
                               Container(
-                                margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*25),
+                                margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*26),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: map<Widget>(imgList, (index, url) {
                                     return Container(
                                       width: SizeConfig.blockSizeHorizontal*2.5,
                                       height: SizeConfig.blockSizeVertical*2.5,
-                                      margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                                      margin: EdgeInsets.symmetric(vertical: 2.0, horizontal: 2.0),
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: _current == index ? PickCarColor.colormain : Colors.grey,
@@ -603,33 +602,52 @@ void dispose() {
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
-                        margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical,left:  SizeConfig.blockSizeHorizontal*3),
-                        child: Text(UseString.date+" : "+ Datamanager.booking.day.toString()+" "+monthy(Datamanager.booking.month)+" "+Datamanager.booking.year.toString(),
-                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*22,color: PickCarColor.colorFont1), 
+                        margin: EdgeInsets.only(left:  SizeConfig.blockSizeHorizontal*3),
+                        child: AutoSizeText(UseString.date+" : "+ Datamanager.booking.day.toString()+" "+monthy(Datamanager.booking.month)+" "+Datamanager.booking.year.toString(),
+                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorFont1), 
+                            maxLines:1,
                         ),
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
                         margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical,left:  SizeConfig.blockSizeHorizontal*3),
-                        child: Text(UseString.time+" : "+Datamanager.booking.time,
-                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*22,color: PickCarColor.colorFont1), 
+                        child: AutoSizeText(UseString.time+" : "+Datamanager.booking.time,
+                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorFont1),
+                            maxLines:1, 
                         ),
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
                         margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical,left:  SizeConfig.blockSizeHorizontal*3),
-                        child: Text(UseString.locationplace+" : "+ Datamanager.placelocationshow.name + ' '+ UseString.inuniversity +' '+ Datamanager.booking.university,
-                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*22,color: PickCarColor.colorFont1), 
+                        child: AutoSizeText(UseString.locationplace+" : "+ Datamanager.placelocationshow.name + ' '+ UseString.inuniversity +' '+ Datamanager.booking.university,
+                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorFont1), 
+                            maxLines:1,
                         ),
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
                         margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical,left:  SizeConfig.blockSizeHorizontal*3),
-                        child: Text(UseString.price+" : "+ Datamanager.booking.priceaddtax.toString(),
-                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*22,color: PickCarColor.colorFont1), 
+                        child: AutoSizeText(UseString.price+" : "+ Datamanager.booking.priceaddtax.toString(),
+                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorFont1), 
+                            maxLines:1,
                         ),
                       ),
-                      
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical,left:  SizeConfig.blockSizeHorizontal*3),
+                        child: AutoSizeText(UseString.plate+" : "+ Datamanager.motorcycleShow.motorreg.toString(),
+                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorFont1), 
+                            maxLines:1,
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical,left:  SizeConfig.blockSizeHorizontal*3),
+                        child: AutoSizeText(UseString.gastype+" : "+ Datamanager.motorcycleShow.motorgas.toString(),
+                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: data.textScaleFactor*20,color: PickCarColor.colorFont1), 
+                            maxLines:1,
+                        ),
+                      ),
                     ],
                   ),
                 ],
