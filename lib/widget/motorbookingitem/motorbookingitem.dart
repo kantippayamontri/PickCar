@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:pickcar/icon/motoricon_icons.dart';
 import 'package:pickcar/models/motorcycle.dart';
 import 'package:pickcar/models/motorcyclebook.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -11,21 +12,24 @@ class MotorBookItem extends StatefulWidget {
   MotorcycleBook motorbook;
   MediaQueryData mediaQueryData;
   Function canclebook;
- 
- 
-  MotorBookItem({Key  key,@required this.motorcycle, @required this.motorbook , @required this.mediaQueryData , @required this.canclebook }) : super(key : key) {}
+
+  MotorBookItem(
+      {Key key,
+      @required this.motorcycle,
+      @required this.motorbook,
+      @required this.mediaQueryData,
+      @required this.canclebook})
+      : super(key: key) {}
 
   @override
   _MotorBookItemState createState() => _MotorBookItemState();
 }
 
 class _MotorBookItemState extends State<MotorBookItem> {
-
   Motorcycle _motorcycle;
   MotorcycleBook _motorcycleBook;
   MediaQueryData _mediaQueryData;
   Function _canclebook;
-  
 
   @override
   void initState() {
@@ -37,12 +41,14 @@ class _MotorBookItemState extends State<MotorBookItem> {
     _canclebook = widget.canclebook;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
+    print("***motor book type : ${_motorcycleBook.status}");
     return Card(
       elevation: 20,
       child: Container(
-        height:_mediaQueryData.size.height * 0.3,
+        height: _mediaQueryData.size.height * 0.4,
         width: _mediaQueryData.size.width * 0.9,
         padding: EdgeInsets.all(8),
         child: Column(
@@ -77,29 +83,153 @@ class _MotorBookItemState extends State<MotorBookItem> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          FittedBox(
-                            fit: BoxFit.contain,
-                            child: Text(this._motorcycle.brand +
-                                " " +
-                                this._motorcycle.generation),
+                          SizedBox(
+                            height: 20,
                           ),
-                          Text(UseString.price +
-                              " : " +
-                              _motorcycleBook.price
-                                  .toString()),
-                          Text(UseString.time +
-                              " : " +
-                             _motorcycleBook.time),
-                          Text(UseString.date +
-                              " : " +
-                              Jiffy([
-                               _motorcycleBook.year,
-                                _motorcycleBook.month,
-                                _motorcycleBook.day,
-                                // _motortimeslot.year,
-                                // _motortimeslot.month,
-                                // _motortimeslot.day
-                              ]).format("MMM do yy")),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                  width:
+                                      (_mediaQueryData.size.width * 0.9) * 0.1,
+                                  child: Icon(Motoricon.motorcycle)),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                width: (_mediaQueryData.size.width * 0.9) * 0.3,
+                                child: FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: Text(
+                                    this._motorcycle.brand +
+                                        " " +
+                                        this._motorcycle.generation,
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                  width:
+                                      (_mediaQueryData.size.width * 0.9) * 0.1,
+                                  child: Icon(Icons.money_off)),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                width: (_mediaQueryData.size.width * 0.9) * 0.3,
+                                child: Text(
+                                  _motorcycleBook.price.toString(),
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                  width:
+                                      (_mediaQueryData.size.width * 0.9) * 0.1,
+                                  child: Icon(Icons.timer)),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                  width:
+                                      (_mediaQueryData.size.width * 0.9) * 0.3,
+                                  child: Text(
+                                    _motorcycleBook.time,
+                                    style: TextStyle(fontSize: 18),
+                                  )),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                  width:
+                                      (_mediaQueryData.size.width * 0.9) * 0.1,
+                                  child: Icon(Icons.table_chart)),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                width: (_mediaQueryData.size.width * 0.9) * 0.3,
+                                child: Text(
+                                  Jiffy([
+                                    _motorcycleBook.year,
+                                    _motorcycleBook.month,
+                                    _motorcycleBook.day,
+                                  ]).format("MMM do yy"),
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                  width:
+                                      (_mediaQueryData.size.width * 0.9) * 0.1,
+                                  child: Icon(Motoricon.motorcycle)),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                width: (_mediaQueryData.size.width * 0.9) * 0.3,
+                                child: RaisedButton(
+                                  onPressed: () {},
+                                  color: _motorcycleBook.status == "booking"
+                                      ? Colors.blueAccent
+                                      : _motorcycleBook.status == "working"
+                                          ? PickCarColor.colormain
+                                          : Colors.grey,
+                                  child: Text(
+                                    _motorcycleBook.status,
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.white),
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(18.0),
+                                      side: BorderSide(color: Colors.grey)),
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       )),
                 ],
@@ -119,27 +249,37 @@ class _MotorBookItemState extends State<MotorBookItem> {
                             shape: BoxShape.circle,
                             image: DecorationImage(
                                 fit: BoxFit.fill,
-                                image: NetworkImage(_motorcycleBook.renterprofilelink))),
+                                image: NetworkImage(
+                                    _motorcycleBook.renterprofilelink))),
                       ),
                       // Center(
                       //   child: Image.network(_motorBookListBloc
                       //         .motorcyclebooklist[0]
                       //         .renterprofilelink,),
                       // ),
-                      Text(_motorcycleBook.rentername)
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        _motorcycleBook.rentername,
+                        style:
+                            TextStyle(fontSize: 22, color: Colors.blueAccent),
+                      )
                     ],
                   ),
-                  RaisedButton(
-                    child: Text(
-                      UseString.cancel,
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    color: Colors.red,
-                    onPressed: () {
-                      //todo cancle
-                      _canclebook(_motorcycleBook.bookingdocid);
-                    },
-                  )
+                  _motorcycleBook.status == "booking"
+                      ? RaisedButton(
+                          child: Text(
+                            UseString.cancel,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          color: Colors.red,
+                          onPressed: () {
+                            //todo cancle
+                            _canclebook(_motorcycleBook.bookingdocid);
+                          },
+                        )
+                      : SizedBox(),
                 ],
               ),
             )

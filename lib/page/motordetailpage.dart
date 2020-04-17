@@ -404,11 +404,7 @@ class _MotorDetailPageState extends State<MotorDetailPage> {
                                           arguments: MotorBookListArguments(
                                               motorcycle:
                                                   _motorDetailBloc.motorcycle,
-                                                  setstate: (){
-                                                    setState(() {
-                                                      
-                                                    });
-                                                  }));
+                                                 ));
                                     },
                                   ),
                                 ),

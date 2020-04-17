@@ -1,5 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:pickcar/icon/boxicon_icons.dart';
+import 'package:pickcar/icon/keyiconna_icons.dart';
 import 'package:pickcar/models/boxlocation.dart';
 import 'package:pickcar/models/boxslotrent.dart';
 import 'package:pickcar/models/motorcycle.dart';
@@ -21,12 +23,15 @@ class MotorDetailReceiveBox extends StatefulWidget {
   final Placelocation motorplaceloc;
   final Boxlocation motorboxplace;
 
+  final int boxnumber;
+
   MotorDetailReceiveBox(
       {@required this.boxslotrent,
       @required this.motorcycle,
       @required this.bookingdocid,
       @required this.motorplaceloc,
-      @required this.motorboxplace}) {
+      @required this.motorboxplace,
+      @required this.boxnumber}) {
     print('boxslotrent eiei: ${boxslotrent.docid}');
     print('boxslotrent isopen eiei: ${boxslotrent.isopen}');
   }
@@ -47,6 +52,8 @@ class _MotorDetailReceiveBoxState extends State<MotorDetailReceiveBox> {
 
   bool isrealboxopen = false;
 
+  int _boxnumber;
+
   Future loaddata() async {}
 
   void starttimer() {
@@ -61,18 +68,18 @@ class _MotorDetailReceiveBoxState extends State<MotorDetailReceiveBox> {
       }
 
       bool checkrealbox;
-       var doc = await Datamanager.realtimedatabase
+      var doc = await Datamanager.realtimedatabase
           .reference()
           .child(this._boxslotrent.boxdocid)
           .child(this._boxslotrent.boxslotdocid)
           .once()
           .then((DataSnapshot doc) {
-            Map<dynamic , dynamic> result = doc.value;
-            checkrealbox = result['isopen'] as bool;
-            print("checkrealbox is ${checkrealbox}");
-          });
-      
-      if(this.isrealboxopen && !checkrealbox){
+        Map<dynamic, dynamic> result = doc.value;
+        checkrealbox = result['isopen'] as bool;
+        print("checkrealbox is ${checkrealbox}");
+      });
+
+      if (this.isrealboxopen && !checkrealbox) {
         this.currentcolor = Colors.red;
         this.statusbox = "Close";
         _boxslotrent.isopen = false;
@@ -87,7 +94,8 @@ class _MotorDetailReceiveBoxState extends State<MotorDetailReceiveBox> {
           await Datamanager.firestore
               .collection("BoxslotRent")
               .document(_boxslotrent.docid)
-              .updateData({'iskey': false, 'ownerdropkey': false , 'isopen' : false});
+              .updateData(
+                  {'iskey': false, 'ownerdropkey': false, 'isopen': false});
           //todo goto delete
           print("delete book");
           await Datamanager.firestore
@@ -103,8 +111,9 @@ class _MotorDetailReceiveBoxState extends State<MotorDetailReceiveBox> {
           await Datamanager.firestore
               .collection("BoxslotRent")
               .document(_boxslotrent.docid)
-              .updateData({'iskey': true, 'ownerdropkey': true , 'isopen' : false});
-              this.isrealboxopen = false;
+              .updateData(
+                  {'iskey': true, 'ownerdropkey': true, 'isopen': false});
+          this.isrealboxopen = false;
         }
 
         setstate();
@@ -160,9 +169,7 @@ class _MotorDetailReceiveBoxState extends State<MotorDetailReceiveBox> {
   }
 
   Future tapbox() async {
-
-    if(isrealboxopen == false){
-
+    if (isrealboxopen == false) {
       Datamanager.realtimedatabase
           .reference()
           .child(this._boxslotrent.boxdocid)
@@ -183,7 +190,6 @@ class _MotorDetailReceiveBoxState extends State<MotorDetailReceiveBox> {
       this.isrealboxopen = true;
       //todo realtimedatabase
       setstate();
-
     }
 
     // print("boxslotrent docid : ${_boxslotrent.docid}");
@@ -203,7 +209,6 @@ class _MotorDetailReceiveBoxState extends State<MotorDetailReceiveBox> {
     //   _boxslotrent.isopen = true;
     //   setstate();
     // }
-    
   }
 
   Future<void> showslertdropkey() async {
@@ -241,7 +246,7 @@ class _MotorDetailReceiveBoxState extends State<MotorDetailReceiveBox> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    this._boxnumber = widget.boxnumber;
     this._boxslotrent = widget.boxslotrent;
 
     if (_boxslotrent.isopen == false) {
@@ -294,9 +299,20 @@ class _MotorDetailReceiveBoxState extends State<MotorDetailReceiveBox> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              Icon(Icons.timer),
-                              Text(this._boxslotrent.time),
+                              Container(
+                                  width: (constraint.maxWidth * 0.9) * 0.1,
+                                  child: Icon(Icons.timer)),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                  width: (constraint.maxWidth * 0.9) * 0.5,
+                                  child: Text(
+                                    this._boxslotrent.time,
+                                    style: TextStyle(fontSize: 24),
+                                  )),
                             ],
                           ),
                           SizedBox(
@@ -306,12 +322,17 @@ class _MotorDetailReceiveBoxState extends State<MotorDetailReceiveBox> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
-                                  Icon(Icons.vpn_key),
+                                  Container(
+                                      width: (constraint.maxWidth * 0.9) * 0.1,
+                                      child: Icon(Icons.vpn_key)),
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  Text(widget.motorboxplace.name),
+                                  Container(
+                                      width: (constraint.maxWidth * 0.9) * 0.5,
+                                      child: Text(widget.motorboxplace.name)),
                                 ],
                               ),
                               RaisedButton(
@@ -333,12 +354,17 @@ class _MotorDetailReceiveBoxState extends State<MotorDetailReceiveBox> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
-                                  Icon(Icons.motorcycle),
+                                  Container(
+                                      width: (constraint.maxWidth * 0.9) * 0.1,
+                                      child: Icon(Icons.motorcycle)),
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  Text(widget.motorplaceloc.name),
+                                  Container(
+                                      width: (constraint.maxWidth * 0.9) * 0.5,
+                                      child: Text(widget.motorplaceloc.name)),
                                 ],
                               ),
                               RaisedButton(
@@ -352,12 +378,34 @@ class _MotorDetailReceiveBoxState extends State<MotorDetailReceiveBox> {
                                 onPressed: () {},
                               ),
                             ],
-                          )
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                  width: (constraint.maxWidth * 0.9) * 0.1,
+                                  child: Icon(Boxicon.box)),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                  width: (constraint.maxWidth * 0.9) * 0.5,
+                                  child: Text(
+                                    this._boxnumber.toString(),
+                                    style: TextStyle(fontSize: 18),
+                                  )),
+                            ],
+                          ),
                         ],
                       ),
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   //todo step 2
                   Card(
                     elevation: 10,
@@ -368,14 +416,15 @@ class _MotorDetailReceiveBoxState extends State<MotorDetailReceiveBox> {
                       width: constraint.maxWidth * 0.9,
                       height: constraint.maxHeight * 0.3,
                       decoration: BoxDecoration(
-                          color: /*this.isaddlocation
+                          color:
+                              /*this.isaddlocation
                               ? PickCarColor.colormain.withOpacity(0.3)
-                              :*/ Colors.white,
+                              :*/
+                              Colors.white,
                           borderRadius: BorderRadius.circular(15)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text("Step 2 : Open key box"),
                           SizedBox(
                             height: 15,
                           ),
@@ -391,20 +440,25 @@ class _MotorDetailReceiveBoxState extends State<MotorDetailReceiveBox> {
                                   height: constraint.maxWidth * 0.3,
                                   width: constraint.maxWidth * 0.3,
                                   decoration: BoxDecoration(
-                                      //color: this.currentcolor,
-                                      shape: BoxShape.circle,
-                                      gradient: LinearGradient(
+                                    color: this.currentcolor == Colors.red
+                                        ? Colors.white
+                                        : PickCarColor.colormain,
+                                    shape: BoxShape.circle,
+                                    /*gradient: LinearGradient(
                                           begin: Alignment.topLeft,
                                           end: Alignment.bottomRight,
                                           colors: [
                                             this.currentcolor,
                                             Colors.yellow
-                                          ])),
+                                          ])*/
+                                  ),
                                   child: Center(
-                                    child: Text(
-                                      this.statusbox,
-                                      style: TextStyle(
-                                          fontSize: 28, color: Colors.white),
+                                    child: Center(
+                                      child: Icon(
+                                        Keyiconna.access,
+                                        color: Colors.grey,
+                                        size: 80,
+                                      ),
                                     ),
                                   ),
                                 ),

@@ -14,9 +14,8 @@ class MotorBookListBloc extends Bloc<MotorBookListEvent, MotorBookListState> {
   Motorcycle motorcycle;
   List<MotorcycleBook> motorcyclebooklist;
   Function setstate;
-  MotorBookListBloc({@required this.motorcycle , @required this.setstate}) {
+  MotorBookListBloc({@required this.motorcycle, @required this.setstate}) {
     motorcyclebooklist = List<MotorcycleBook>();
-    this.setstate = setstate;
   }
 
   @override
@@ -45,7 +44,20 @@ class MotorBookListBloc extends Bloc<MotorBookListEvent, MotorBookListState> {
             actions: <Widget>[
               FlatButton(
                 child: Text("Yes"),
-                onPressed: () {
+                onPressed: () async {
+                  String boxslotrentdoc = motorcyclebooklist
+                      .where((mtb) => mtb.bookingdocid == docid).first.boxslotrentdocid;
+                  motorcyclebooklist.remove(motorcyclebooklist
+                      .where((mtb) => mtb.bookingdocid == docid));
+                  
+                  await Datamanager.firestore.collection("Booking")
+                  .document(docid)
+                  .delete();
+
+                  await Datamanager.firestore.collection("BoxslotRent")
+                  .document(boxslotrentdoc)
+                  .delete();
+
                   setstate();
                   Navigator.of(context).pop();
                 },
@@ -75,6 +87,7 @@ class MotorBookListBloc extends Bloc<MotorBookListEvent, MotorBookListState> {
         .where(
             (doc) => (doc['motorcycledocid'] == this.motorcycle.firestoredocid))
         .toList();
+  //print("***list size : ${list.length}");
 // print("rrrrrrrrrrrrrrrrrrrrr : ${list.length}");
     for (var doc in list) {
       // print("yyyyyyyyyyyyyyyyyyyyy");
@@ -90,6 +103,8 @@ class MotorBookListBloc extends Bloc<MotorBookListEvent, MotorBookListState> {
         time: doc['time'],
         year: doc['year'],
         type: doc['type'],
+        boxslotrentdocid: doc['boxslotrentdocid'],
+        status: doc['status'],
       );
 
       DocumentSnapshot renterdoc = await Datamanager.firestore

@@ -132,6 +132,9 @@ flutter:
     - family:  Boxicon
       fonts:
        - asset: assets/fonts/Boxicon.ttf
+    - family:  Keyiconna
+      fonts:
+       - asset: assets/fonts/Keyiconna.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

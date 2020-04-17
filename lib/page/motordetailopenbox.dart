@@ -5,6 +5,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:nice_button/NiceButton.dart';
 import 'package:pickcar/datamanager.dart';
+import 'package:pickcar/icon/boxicon_icons.dart';
+import 'package:pickcar/icon/keyiconna_icons.dart';
 import 'package:pickcar/models/boxlocation.dart';
 import 'package:pickcar/models/boxslotrent.dart';
 import 'package:pickcar/models/motorcycle.dart';
@@ -16,11 +18,14 @@ class MotorDetailOpenBox extends StatefulWidget {
   Motorcycle motorcycle;
   Placelocation placelocation;
   Boxlocation boxlocation;
+  int boxnumber;
   MotorDetailOpenBox(
       {@required this.boxslotrent,
       @required this.motorcycle,
       @required this.placelocation,
-      @required this.boxlocation});
+      @required this.boxlocation,
+      @required this.boxnumber,
+      });
 
   @override
   _MotorDetailOpenBoxState createState() => _MotorDetailOpenBoxState();
@@ -41,6 +46,8 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
 
   bool isrealboxopen = false;
 
+  int _boxnumber;
+
   Future loaddata() async {}
 
   void starttimer() {
@@ -57,10 +64,10 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
           .child(this._boxslotrent.boxslotdocid)
           .once()
           .then((DataSnapshot doc) {
-            Map<dynamic , dynamic> result = doc.value;
-            checkrealbox = result['isopen'] as bool;
-            print("checkrealbox is ${checkrealbox}");
-          });
+        Map<dynamic, dynamic> result = doc.value;
+        checkrealbox = result['isopen'] as bool;
+        print("checkrealbox is ${checkrealbox}");
+      });
 
       if (this.isrealboxopen && !checkrealbox) {
         this.currentcolor = Colors.red;
@@ -76,13 +83,15 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
           await Datamanager.firestore
               .collection("BoxslotRent")
               .document(_boxslotrent.docid)
-              .updateData({'iskey': true, 'ownerdropkey': true , 'isopen' : false});
+              .updateData(
+                  {'iskey': true, 'ownerdropkey': true, 'isopen': false});
           Navigator.of(context).pop();
         } else {
           await Datamanager.firestore
               .collection("BoxslotRent")
               .document(_boxslotrent.docid)
-              .updateData({'iskey': false, 'ownerdropkey': false , 'isopen' : false});
+              .updateData(
+                  {'iskey': false, 'ownerdropkey': false, 'isopen': false});
           this.isrealboxopen = false;
         }
 
@@ -273,6 +282,7 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
     // TODO: implement initState
     super.initState();
 
+    this._boxnumber = widget.boxnumber;
     this._boxslotrent = widget.boxslotrent;
 
     if (_boxslotrent.isopen == false) {
@@ -322,16 +332,24 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
                   Card(
                     elevation: 10,
                     child: Container(
-                      width: constraint.maxWidth * 0.9,
+                      width: constraint.maxWidth * 0.7,
                       height: constraint.maxHeight * 0.3,
                       padding: EdgeInsets.all(10),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              Icon(Icons.timer),
-                              Text(this._boxslotrent.time),
+                              Container(
+                                  width: (constraint.maxHeight * 0.3) * 0.1,
+                                  child: Icon(Icons.timer)),
+                              Container(
+                                  width: (constraint.maxHeight * 0.3) * 0.7,
+                                  child: Text(
+                                    this._boxslotrent.time,
+                                    style: TextStyle(fontSize: 24),
+                                  )),
                             ],
                           ),
                           SizedBox(
@@ -341,12 +359,20 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
-                                  Icon(Icons.vpn_key),
+                                  Container(
+                                      width: (constraint.maxHeight * 0.3) * 0.1,
+                                      child: Icon(Icons.vpn_key)),
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  Text(this.boxloc.name),
+                                  Container(
+                                      width: (constraint.maxHeight * 0.3) * 0.5,
+                                      child: Text(
+                                        this.boxloc.name,
+                                        style: TextStyle(fontSize: 24),
+                                      )),
                                 ],
                               ),
                               RaisedButton(
@@ -368,12 +394,20 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
-                                  Icon(Icons.motorcycle),
+                                  Container(
+                                      width: (constraint.maxHeight * 0.3) * 0.1,
+                                      child: Icon(Icons.motorcycle)),
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  Text(this.placeloc.name),
+                                  Container(
+                                      width: (constraint.maxHeight * 0.3) * 0.5,
+                                      child: Text(
+                                        this.placeloc.name,
+                                        style: TextStyle(fontSize: 24),
+                                      )),
                                 ],
                               ),
                               RaisedButton(
@@ -387,7 +421,24 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
                                 onPressed: () {},
                               ),
                             ],
-                          )
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                  width: (constraint.maxHeight * 0.3) * 0.1,
+                                  child: Icon(Boxicon.box)),
+                              Container(
+                                  width: (constraint.maxHeight * 0.3) * 0.7,
+                                  child: Text(
+                                    this._boxnumber.toString(),
+                                    style: TextStyle(fontSize: 24),
+                                  )),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -434,7 +485,7 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
                     child: Container(
                       padding: EdgeInsets.all(5),
                       width: constraint.maxWidth * 0.9,
-                      height: constraint.maxHeight * 0.3,
+                      height: constraint.maxHeight * 0.22,
                       decoration: BoxDecoration(
                           color: this.isaddlocation
                               ? PickCarColor.colormain.withOpacity(0.3)
@@ -491,9 +542,11 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
                       width: constraint.maxWidth * 0.9,
                       height: constraint.maxHeight * 0.3,
                       decoration: BoxDecoration(
-                          color: this._boxslotrent.isopen
+                          color:
+                              /*this._boxslotrent.isopen
                               ? PickCarColor.colormain.withOpacity(0.3)
-                              : Colors.white,
+                              : Colors.white*/
+                              Colors.white,
                           borderRadius: BorderRadius.circular(15)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -514,20 +567,17 @@ class _MotorDetailOpenBoxState extends State<MotorDetailOpenBox> {
                                   height: constraint.maxWidth * 0.3,
                                   width: constraint.maxWidth * 0.3,
                                   decoration: BoxDecoration(
-                                      //color: this.currentcolor,
-                                      shape: BoxShape.circle,
-                                      gradient: LinearGradient(
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                          colors: [
-                                            this.currentcolor,
-                                            Colors.yellow
-                                          ])),
+                                    //color: this.currentcolor,
+                                    shape: BoxShape.circle,
+                                    color: this.currentcolor == Colors.red
+                                        ? Colors.white
+                                        : PickCarColor.colormain,
+                                  ),
                                   child: Center(
-                                    child: Text(
-                                      this.statusbox,
-                                      style: TextStyle(
-                                          fontSize: 28, color: Colors.white),
+                                    child: Icon(
+                                      Keyiconna.access,
+                                      color: Colors.grey,
+                                      size: 80,
                                     ),
                                   ),
                                 ),

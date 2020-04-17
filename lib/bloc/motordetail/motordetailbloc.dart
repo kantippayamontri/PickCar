@@ -29,6 +29,9 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
   Placelocation receivemotorplace;
   Boxlocation receiveboxplace;
 
+  int boxdropnumber;
+  int boxreceivenumber;
+
   MotorDetailBloc(
       {@required this.context,
       @required this.firestoredocid,
@@ -152,6 +155,16 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
 
       this.receivebookdocid = doc['docid'];
       setstate();*/
+
+      print("*****************************************************");
+      DocumentSnapshot boxslotnumberdoc = await Datamanager.firestore.collection("box")
+      .document(receivebox.boxdocid)
+      .collection('boxslot')
+      .document(receivebox.boxslotdocid).get();
+      print("***boxslot number : ${boxslotnumberdoc['name']}");
+
+      boxreceivenumber = boxslotnumberdoc['name'];
+
     }
   }
 
@@ -241,6 +254,17 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
         name: boxlocationdoc['name'],
         universityname: boxlocationdoc['universityname'],
       );
+
+      //todo find number of boxslot
+      print("*****************************************************");
+      DocumentSnapshot boxslotnumberdoc = await Datamanager.firestore.collection("box")
+      .document(openbox.boxdocid)
+      .collection('boxslot')
+      .document(openbox.boxslotdocid).get();
+      print("***boxslot number : ${boxslotnumberdoc['name']}");
+
+      this.boxdropnumber = boxslotnumberdoc['name'];
+
     } else {
       print("this.openbox is : null");
     }
@@ -257,6 +281,7 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
                   motorcycle: this.motorcycle,
                   boxlocation: this.openboxboxplace,
                   placelocation: this.openboxmotorplace,
+                  boxnumber: this.boxdropnumber,
                 )));
 
     // print("data back is : ${message}");
@@ -272,6 +297,7 @@ class MotorDetailBloc extends Bloc<MotorDetailEvent, MotorDetailState> {
                   motorcycle: this.motorcycle,
                   motorboxplace: this.receiveboxplace,
                   motorplaceloc: this.receivemotorplace,
+                  boxnumber: this.boxreceivenumber,
                 )));
   }
 

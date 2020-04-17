@@ -14,6 +14,8 @@ class MotorcycleBook {
   String type;
   String rentername;
   String  renterprofilelink;
+  String boxslotrentdocid;
+  String status;
 
   MotorcycleBook(
       {@required this.year,
@@ -26,7 +28,10 @@ class MotorcycleBook {
       @required this.bookingdocid,
       @required this.myid,
       @required this.ownerid,
-      @required this.type});
+      @required this.type,
+      @required this.boxslotrentdocid,
+      @required this.status
+      });
 
   Map<String, dynamic> toJson() {
     return {
@@ -40,7 +45,9 @@ class MotorcycleBook {
       'month': this.month,
       'year': this.year,
       'price': this.price,
-      'type' : this.type
+      'type' : this.type,
+      'boxslotrentdocid' : this.boxslotrentdocid,
+      'status' : this.status
     };
   }
 }
