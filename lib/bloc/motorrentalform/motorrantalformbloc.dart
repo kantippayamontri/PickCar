@@ -81,6 +81,10 @@ class MotorRentalFormBloc
         print('goto rental double function');
         await rentaldouble();
       }
+
+      await Datamanager.firestore.collection("Motorcycle")
+      .document(motorcycle.firestoredocid)
+      .updateData({'isbook' : true});
     } else {
       print("form is not validate");
     }

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pickcar/datamanager.dart';
+import 'package:pickcar/models/forrent.dart';
 import 'package:pickcar/models/motorcycletimeslot.dart';
 import 'package:pickcar/models/singleforrent.dart';
 
 class MotorWaitingEdit extends StatefulWidget {
 
   Function editslot;
-  SingleForrent singleforrent;
-MotorWaitingEdit({@required this.editslot , @required this.singleforrent});
+  Forrent forrent;
+MotorWaitingEdit({@required this.editslot , @required this.forrent});
 
   @override
   _MotorWaitingEditState createState() => _MotorWaitingEditState();
@@ -22,7 +23,7 @@ class _MotorWaitingEditState extends State<MotorWaitingEdit> {
     // TODO: implement initState
 
     //pricecontroller.text = widget.motorslot.prize.toString();
-    pricecontroller.text = widget.singleforrent.price.toString();
+    pricecontroller.text = widget.forrent.price.toString();
 
     super.initState();
   }
@@ -57,7 +58,7 @@ class _MotorWaitingEditState extends State<MotorWaitingEdit> {
                     ),
                     onPressed: () {
                       //widget.editslot(widget.motorslot.docid , pricecontroller.text);
-                      widget.editslot(widget.singleforrent.docid , pricecontroller.text);
+                      widget.editslot(widget.forrent.docid , pricecontroller.text , widget.forrent.type);
                     },
                   )
                 ],

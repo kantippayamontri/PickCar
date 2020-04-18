@@ -5,6 +5,8 @@ import 'package:gradient_widgets/gradient_widgets.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:pickcar/bloc/motorrentalform/motorrantalformbloc.dart';
 import 'package:pickcar/bloc/motorrentalform/motorrentalformevent.dart';
+import 'package:pickcar/icon/boxicon_icons.dart';
+import 'package:pickcar/icon/motoricon_icons.dart';
 import 'package:pickcar/models/motorcycle.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -20,6 +22,8 @@ class MotorRentalFormPage extends StatefulWidget {
 
 class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
   MotorRentalFormBloc _motorRentalFormBloc;
+  bool isalreadymotor = false;
+  bool isalreadykeybox = false;
 
   @override
   void initState() {
@@ -41,6 +45,7 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
     if (Datamanager.placelocationshow != null) {
       print("place location : ${Datamanager.placelocationshow.name}");
       return Text('already select place');
+      isalreadymotor = true;
     } else {
       return Container();
     }
@@ -164,7 +169,7 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
                       height: constraint.maxHeight * 0.05,
                     ),
                     //todo price
-                    _container(constraint.maxHeight * 0.275,
+                    _container(constraint.maxHeight * 0.25,
                         constraint.maxWidth * 0.9, [
                       Text(
                         UseString.price,
@@ -181,6 +186,8 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
                         controller: _motorRentalFormBloc.pricecontroller,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 5.0, horizontal: 10.0),
                             hintText: UseString.price,
                             hintStyle:
                                 TextStyle(color: Colors.grey, fontSize: 12)),
@@ -190,21 +197,21 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
                       height: 20,
                     ),
                     _motorRentalFormBloc.type != null
-                        ? _container(constraint.maxHeight * 0.25,
+                        ? _container(constraint.maxHeight * 0.2,
                             constraint.maxWidth * 0.9, [
                             Text(
                               UseString.pleasechoosedate,
                               style: _textstyle(),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(Jiffy([
-                                  _motorRentalFormBloc.dateTime.year,
-                                  _motorRentalFormBloc.dateTime.month,
-                                  _motorRentalFormBloc.dateTime.day
-                                ]).yMMMMd)
-                              ],
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Center(
+                              child: Text(Jiffy([
+                                _motorRentalFormBloc.dateTime.year,
+                                _motorRentalFormBloc.dateTime.month,
+                                _motorRentalFormBloc.dateTime.day
+                              ]).yMMMMd),
                             ),
                             _button(UseString.choosedate, () {
                               setState(() {
@@ -274,26 +281,109 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
                     SizedBox(
                       height: 20,
                     ),
-                    RaisedButton(
+                    /*RaisedButton(
                       onPressed: () {
                         Navigator.of(context)
                             .pushNamed(Datamanager.mapplaceselect);
                       },
                       child: Text('location'),
                     ),
-                    locationcheck(context),
-                    RaisedButton(
+                    locationcheck(context),*/
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed(Datamanager.mapplaceselect);
+                          },
+                          child: Container(
+                            height: MediaQuery.of(context).size.width * 0.2,
+                            width: MediaQuery.of(context).size.width * 0.2,
+                            padding: EdgeInsets.all(0),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle, color: Colors.black),
+                            child: Datamanager.placelocationshow == null
+                                ? Card(
+                                    elevation: 10,
+                                    color: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(200)),
+                                    child: Icon(
+                                      Motoricon.motorcycle,
+                                      color: PickCarColor.colormain,
+                                    ),
+                                  )
+                                : Card(
+                                    elevation: 10,
+                                    color: PickCarColor.colormain,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(200)),
+                                    child: Icon(
+                                      Motoricon.motorcycle,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed(Datamanager.mapboxselect);
+                          },
+                          child: Container(
+                            height: MediaQuery.of(context).size.width * 0.2,
+                            width: MediaQuery.of(context).size.width * 0.2,
+                            padding: EdgeInsets.all(0),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle, color: Colors.black),
+                            child: Datamanager.boxlocationshow == null
+                                ? Card(
+                                    elevation: 10,
+                                    color: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(200)),
+                                    child: Icon(
+                                      Boxicon.box,
+                                      color: PickCarColor.colormain,
+                                    ),
+                                  )
+                                : Card(
+                                    elevation: 10,
+                                    color: PickCarColor.colormain,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(200)),
+                                    child: Icon(
+                                      Boxicon.box,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    /*RaisedButton(
                       onPressed: () {
                         Navigator.of(context)
                             .pushNamed(Datamanager.mapboxselect);
                       },
                       child: Text('select box'),
                     ),
-                    boxcheck(context),
+                    boxcheck(context),*/
+                    SizedBox(height: 40,),
                     _submitbutton(this.context, () {
                       _motorRentalFormBloc
                           .add(MotorRentalFormSubmitFormEvent());
-                    })
+                    }),
+                    SizedBox(height: 20,)
                   ],
                 ),
               ),
@@ -322,7 +412,7 @@ class _MotorRentalFormPageState extends State<MotorRentalFormPage> {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
         child: Center(
           child: Text(
-            UseString.signup,
+            "OK",
             style: TextStyle(fontSize: 24),
           ),
         ),

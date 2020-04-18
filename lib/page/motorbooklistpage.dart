@@ -23,6 +23,11 @@ class _MotorBookListPageState extends State<MotorBookListPage> {
     print("initstate");
     super.initState();
   }
+  void setstate (){
+    setState(() {
+      
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +36,10 @@ class _MotorBookListPageState extends State<MotorBookListPage> {
     final MotorBookListArguments argument =
         ModalRoute.of(context).settings.arguments;
     MotorBookListBloc _motorBookListBloc =
-        MotorBookListBloc(motorcycle: argument.motorcycle);
+        MotorBookListBloc(motorcycle: argument.motorcycle , setstate: setstate);
     _motorBookListBloc.add(MotorBookListLoadDataEvent());
+    _motorBookListBloc.context = context;
+    
 
     return Scaffold(
       body: Container(
@@ -65,6 +72,8 @@ class _MotorBookListPageState extends State<MotorBookListPage> {
                               mediaQueryData: MediaQuery.of(context),
                               motorcycle: _motorBookListBloc.motorcycle,
                               motorbook: motorbook,
+                              canclebook: _motorBookListBloc.canclebook,
+                              
                             ),
                       ],
                     ))
