@@ -50,9 +50,17 @@ class ListCarBloc extends Bloc<ListCarEvent, ListCarState> {
       List<DocumentSnapshot> singleforrentdoc = singleforrentquey.documents;
       if (singleforrentdoc.isNotEmpty) {
         print('single forrent is not empty');
-        deletelist = "singleforrent \\n";
+        deletelist = "singleforrent " + '\n';
         for (var singleforrent in singleforrentdoc) {
-          deletelist = deletelist + singleforrent['docid'] + '\n';
+          deletelist = deletelist +
+              singleforrent['day'].toString() +
+              "/" +
+              singleforrent['month'].toString() +
+              "/" +
+              singleforrent['year'].toString() +
+              " : " +
+              singleforrent['time'] +
+              '\n';
           singlefordelete.add((singleforrent['docid'] as String));
         }
       }
@@ -65,11 +73,19 @@ class ListCarBloc extends Bloc<ListCarEvent, ListCarState> {
           .where('ownercanclealert', isEqualTo: false)
           .getDocuments();
       List<DocumentSnapshot> doubleforrentdoc = doubleforrentquey.documents;
-      if(doubleforrentdoc.isNotEmpty){
+      if (doubleforrentdoc.isNotEmpty) {
         print('double forrent is not empty');
-        deletelist = "doubleforrent \\n";
-        for(var doubleforrent in doubleforrentdoc){
-          deletelist = deletelist + doubleforrent['docid']+ '\n';
+        deletelist = "doubleforrent" + '\n';;
+        for (var doubleforrent in doubleforrentdoc) {
+          deletelist = deletelist +
+              doubleforrent['day'].toString() +
+              "/" +
+              doubleforrent['month'].toString() +
+              "/" +
+              doubleforrent['year'].toString() +
+              " : " +
+              doubleforrent['time'] +
+              '\n';
           doublefordelete.add((doubleforrent['docid'] as String));
         }
       }
@@ -83,14 +99,24 @@ class ListCarBloc extends Bloc<ListCarEvent, ListCarState> {
           .getDocuments();
       if (bookingquey.documents.isNotEmpty) {
         print('booking not empty');
-        deletelist += "booking \\n";
+        deletelist += "booking" + '\n';
         for (var booking in bookingquey.documents) {
-          deletelist = deletelist + booking['bookingdocid'] + '\n';
+          deletelist = deletelist +
+              booking['day'].toString() +
+              "/" +
+              booking['month'].toString() +
+              "/" +
+              booking['year'].toString() +
+              " : " +
+              booking['time'] +
+              '\n';
           bookingfordelete.add((booking['bookingdocid'] as String));
         }
       }
 
-      if (singlefordelete.isNotEmpty || bookingfordelete.isNotEmpty || doublefordelete.isNotEmpty) {
+      if (singlefordelete.isNotEmpty ||
+          bookingfordelete.isNotEmpty ||
+          doublefordelete.isNotEmpty) {
         this.isshowalert = true;
         showDialog(
             context: this.context,
@@ -103,7 +129,8 @@ class ListCarBloc extends Bloc<ListCarEvent, ListCarState> {
                     child: Text("ok"),
                     onPressed: () async {
                       this.isshowalert = false;
-                      await confirmcancle(singlefordelete, bookingfordelete , doublefordelete);
+                      await confirmcancle(
+                          singlefordelete, bookingfordelete, doublefordelete);
                       Navigator.of(context).pop();
                     },
                   ),
@@ -133,10 +160,8 @@ class ListCarBloc extends Bloc<ListCarEvent, ListCarState> {
     });
   }
 
-  Future<Null> confirmcancle(
-      List<String> singlelistdoc, List<String> bookinglistdoc ,
-      List<String> doublelistdoc
-      ) async {
+  Future<Null> confirmcancle(List<String> singlelistdoc,
+      List<String> bookinglistdoc, List<String> doublelistdoc) async {
     for (var singleforrentdoc in singlelistdoc) {
       await Datamanager.firestore
           .collection("Singleforrent")
@@ -159,17 +184,16 @@ class ListCarBloc extends Bloc<ListCarEvent, ListCarState> {
       });
     }
 
-    for(var doubledocid in doublelistdoc){
+    for (var doubledocid in doublelistdoc) {
       await Datamanager.firestore
-      .collection("Doubleforrent")
-      .document(doubledocid)
-      .updateData({
+          .collection("Doubleforrent")
+          .document(doubledocid)
+          .updateData({
         'ownercanclealert': true,
       }).whenComplete(() {
         print('double complete');
       });
     }
-
   }
 
   void loadingmotordata() {

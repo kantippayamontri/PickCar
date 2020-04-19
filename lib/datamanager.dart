@@ -203,11 +203,11 @@ class UseString {
       "Driver Liscense Card(for motorcycle)";
   static String driverliscensecarcycle = "Driver Liscense Card(for car)";
   static String rentaltitle =
-      "Pickcar has created for make the great experience when you rental car from another one and make your life is excited.";
-  static String rentalbutton = "Rental Car";
+      "Pick-a-Bike has created for make the great experience when you rental motorcycle from another one and make your life is excited.";
+  static String rentalbutton = "Rental Bike";
   static String registertitle =
-      "The best way to make money from your car via Pickcar. We will give your new experience to earn more income. Let you make money with your car.";
-  static String registerbutton = "Register Car";
+      "The best way to make money from your Motorcycle via Pick-a-Bike. We will give your new experience to earn more income. Let you make money with your motorcycle.";
+  static String registerbutton = "Register Bike";
   static String motorcycle = "Motorcycle";
   static String car = "Car";
   static String brand = "Brand";
@@ -292,11 +292,11 @@ class UseString {
   static String selectplace = "Select place";
   static String confirmrent = "Confirm Rental";
   static String rentaldetail = "Rentail Detail";
-  static String selectedcar = "Selected Car";
+  static String selectedcar = "Selected Bike";
   static String getkey = "Get the key";
-  static String getcar = "Get the car";
-  static String receivecar = "Receive Car";
-  static String returncar = "Return Car";
+  static String getcar = "Get the Bike";
+  static String receivecar = "Receive Bike";
+  static String returncar = "Return Bike";
   static String day = "Datetime";
   static String totalprice = "Total price";
   static String pricedetail = "Price details";
@@ -334,7 +334,7 @@ class UseString {
   static String motor = "Motorcycle";
   static String notavailable = "Not Available";
   static String available = "Available";
-  static String carnotavai = "Car Not Available";
+  static String carnotavai = "Bike Not Available";
   static String keynotavai = "Key Not Available";
   static String wait = "wait";
   static String openmap = "Open Map location";
@@ -349,12 +349,12 @@ class UseString {
   static String notimeforrent = "No Time For Rent.";
   static String areyousure = "Are yor sure?";
   static String rentthis = "Are you confident that you will rent this car?";
-  static String pickcar = "PickCar";
+  static String pickcar = "Pick-a-Bike";
   static String inuniversity = "in";
-  static String notbooked = "You not have booked car";
+  static String notbooked = "You not have booked motorcycle";
   static String unlock = "Unlock";
-  static String thisplace = "The car is This location.";
-  static String thiscar = "This location car";
+  static String thisplace = "The Bike is This location.";
+  static String thiscar = "This location Bike";
   static String takekey = "Are you take a key?";
   static String checktakekey = "Check you already get key from box.";
   static String dropkey = "Are you drop a key?";
@@ -371,9 +371,9 @@ class UseString {
   static String petrol = "Petrol";
   static String gasandpetrol = "Gas(Petrol)";
   static String gasandpetrolval = "Please Enter Gas(Petrol)";
-  static String carregistration = "Car Registration";
-  static String carregistrationval = "Please Enter Car Registration";
-  static String carownercancle = "Your car is cancle";
+  static String carregistration = "Bike Registration";
+  static String carregistrationval = "Please Enter Bike Registration";
+  static String carownercancle = "Your motorcycle is cancle";
   static String sayhi = "Say hi to";
   static String sentimage = "sent image to you";
   static String you = "You";
@@ -418,7 +418,7 @@ class UseString {
   static String uploadregistration = 'Upload Vehicle registration';
 
   static String bookinreport = 'Your order  booking is cancel';
-  static String cancelrent = 'Your car is cancel';
+  static String cancelrent = 'Your bike is cancel';
   static String cancelappbar = 'CANCEL';
   static String sendlongmessage = 'new messages';
   static String fullslot = "You can't rent this time because this slot is full";
