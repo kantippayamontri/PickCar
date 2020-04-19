@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:pickcar/bloc/serve/serveevent.dart';
 import 'package:pickcar/bloc/serve/servestate.dart';
 import 'package:pickcar/datamanager.dart';
+import 'package:pickcar/widget/createcoupon.dart';
 
 class ServeBloc extends Bloc<ServeEvent, ServeState> {
   BuildContext context;
@@ -29,7 +30,7 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
       //todo -----------
       // DateTime timenow = DateTime(DateTime.now().year, DateTime.now().month,
       //     DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
-      DateTime timenow = DateTime(2020, 4, 3, 11, 1);
+      DateTime timenow = DateTime(2020, 4, 20, 9, 31);
       bool istimeinslot = checkintimeslot(timenow);
       String timeslotin = timeslotmatch(timenow);
       //await checkownerdontdropkey(timenow);
@@ -38,14 +39,14 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
       await checkownerdontreceivekey(timenow, istimeinslot, timeslotin);
       print(
           "--------------------------------------------------------------------");
-      //await checkrenterdontdropkey(timenow, istimeinslot, timeslotin);
+      await checkrenterdontdropkey(timenow, istimeinslot, timeslotin);
       print(
           "--------------------------------------------------------------------");
-      //await checkbookingandnotusing(timenow);
+      await checkbookingandnotusing(timenow);
       print(
           "--------------------------------------------------------------------");
-      //await checkcanclesingleanddoublehavekey();
-      //await deleteallcancle();
+      await checkcanclesingleanddoublehavekey();
+      await deleteallcancle();
     });
 
     //print("xxxxxxxxxxxxxxxxxxxxxxxxxx");
@@ -152,6 +153,7 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
           .collection("BoxslotRent")
           .document(booking['boxslotrentdocid'])
           .get();
+          print("***boxslot doc : " + booking['boxslotrentdocid']);
       if (boxslotrentDoc['ownerdropkey'] == true &&
           (booking['enddate'] as Timestamp)
               .toDate()
@@ -222,8 +224,11 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
                   .collection("Booking")
                   .where('boxslotrentdocid', isEqualTo: boxslotrent['docid'])
                   .getDocuments();
+              
 
               DocumentSnapshot canclebook = canclebookDoc.documents.first;
+              //todo add coupon
+              createcoupon(canclebook['myid']);
               print("bookingcancle docid : ${canclebook['bookingdocid']}");
               await Datamanager.firestore
                   .collection("Booking")
@@ -304,6 +309,8 @@ class ServeBloc extends Bloc<ServeEvent, ServeState> {
                 .getDocuments();
 
             DocumentSnapshot canclebook = canclebookDoc.documents.first;
+            //add coupon
+            createcoupon(canclebook['myid']);
             print("bookingcancle docid : ${canclebook['bookingdocid']}");
             await Datamanager.firestore
                 .collection("Booking")
